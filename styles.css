@@ -1,0 +1,56 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: pink;
+  text-align: center;
+}
+
+.card {
+  margin: 30px 30px 20px 30px;
+  padding: 10px;
+  background-color: white;
+  width: 50px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.cardContainer {
+  margin: auto;
+  background: rgb(13, 139, 61);
+  border-radius: 8px;
+  border-color: blue;
+  border-style: solid;
+  text-align: center;
+  width: 600px;
+  height: 200px;
+}
+
+.button {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.betDisplay {
+  margin: 20px auto;
+  display: inline-block;
+}
+.infoboard {
+  margin: 50px 30px 20px 30px;
+  padding: 10px;
+  background-color: white;
+  height: 100px;
+  width: auto;
+  text-align: center;
+  border-radius: 8px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.score {
+  margin: 20px auto;
+  display: inline-block;
+}
