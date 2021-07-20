@@ -132,20 +132,19 @@ const unshuffledDeck = makeDeck();
 // Shuffled deck as a copy of unshuffled deck
 let deck = shuffleCards([...unshuffledDeck]);
 
-// represents whether the user has recently clicked and we are waiting for the delay to end,
-// and to prevent user accidentally setting multiple timeouts
-let canClick = true;
-
 // Add the cardContainer DOM element as a global variable.
 let cardContainer;
 
 // Player 1 starts first
-let playersTurn = 1; // matches with starting instructions
+const playersTurn = 1; // matches with starting instructions
 // Player 1 cards
 const player1Cards = [];
+const player1ReplacedCards = [];
 
 // create player 1 draw button
 const player1Button = document.createElement('button');
+// create player 1 replace cards button
+const player1ReplaceButton = document.createElement('button');
 // Create game info div as global value
 const gameInfo = document.createElement('div');
 
@@ -156,9 +155,49 @@ const gameInfo = document.createElement('div');
 
 // Event handler on player 1's button to draw card and switch
 // to player 2's turn
+const player1ReplaceCardsClick = () => {
+  const SELECTED_CARDS = document.querySelectorAll('.selected');
+  const NEW_CARDS_LENGTH = SELECTED_CARDS.length;
+  /* Replace cards in player1Cards */
+  for (let i = 0; i < SELECTED_CARDS.length; i += 1) {
+    const CARD_DISPLAY_NAME = SELECTED_CARDS[i].firstChild.innerText;
+    const CARD_SUIT_SYMBOL = SELECTED_CARDS[i].lastChild.innerText;
+
+    const CARD_INDEX = player1Cards.findIndex(
+      (element) => (element.displayName === CARD_DISPLAY_NAME)
+      && (element.suitSymbol === CARD_SUIT_SYMBOL),
+    );
+
+    player1Cards.splice(CARD_INDEX, 1, deck.pop());
+  }
+  /* Replace cards in DOM */
+  cardContainer.innerHTML = '';
+  for (let i = 0; i < 5; i += 1) {
+    player1Cards.push(deck.pop());
+    // Create card element from card metadata
+    const cardElement = createCard(player1Cards[i]);
+    // Append the card element to the card container
+    cardContainer.appendChild(cardElement);
+  }
+
+  /* Remove helper text and button */
+  player1ReplaceButton.style.display = 'none';
+  gameInfo.style.display = 'none';
+};
+
+const player1CardClick = (event) => {
+  const CARD = event.currentTarget;
+  // if already selected
+  if (CARD.className.indexOf('selected') !== -1) {
+    CARD.classList.remove('selected');
+  } else {
+    CARD.classList.add('selected');
+  }
+};
+
 const player1Click = () => {
-  if (playersTurn === 1 && canClick === true) {
-    canClick = false;
+  if (playersTurn === 1) {
+    player1Button.disabled = true;
 
     setTimeout(() => {
       // create new deck and reshuffle if no cards left
@@ -171,7 +210,7 @@ const player1Click = () => {
       cardContainer.innerHTML = '';
 
       // Pop player 1's card metadata from the deck
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 5; i += 1) {
         player1Cards.push(deck.pop());
         // Create card element from card metadata
         const cardElement = createCard(player1Cards[i]);
@@ -179,9 +218,20 @@ const player1Click = () => {
         cardContainer.appendChild(cardElement);
       }
 
+      /* Disable player draw button and change status */
+      gameInfo.innerText = `Player ${playersTurn}, please choose any number of cards you would like to replace, and hit submit`;
+      player1Button.disabled = false;
+      player1Button.style.display = 'none';
+      player1ReplaceButton.style.display = 'inline-block';
+      /* Add event listeners on click to all cards */
+      const CARDS = cardContainer.querySelectorAll('.card');
+      for (let i = 0; i < CARDS.length; i += 1) {
+        CARDS[i].style.cursor = 'pointer';
+        CARDS[i].addEventListener('click', player1CardClick);
+      }
+
       // Switch to player 2's turn
-      playersTurn = 2;
-      canClick = true;
+      // playersTurn = 2;
     }, 500);
   }
 };
@@ -204,8 +254,14 @@ const initGame = () => {
 
   player1Button.addEventListener('click', player1Click);
 
+  player1ReplaceButton.innerText = 'Player 1 Replace Cards';
+  player1ReplaceButton.style.display = 'none';
+  document.body.appendChild(player1ReplaceButton);
+
+  player1ReplaceButton.addEventListener('click', player1ReplaceCardsClick);
+
   // fill game info div with starting instructions
-  gameInfo.innerText = 'Its player 1 turn. Click to draw 5 cards!';
+  gameInfo.innerText = `Its player ${playersTurn} turn. Click to draw 5 cards!`;
 
   document.body.appendChild(gameInfo);
 };

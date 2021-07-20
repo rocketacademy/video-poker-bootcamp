@@ -5,12 +5,18 @@ body {
 .card {
   margin: 10px;
   padding: 10px;
-  /* CX: Change colour to color */
   background-color: #fff;
   width: 50px;
   text-align: center;
   border-radius: 8px;
   display: inline-block;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.card.selected {
+  background-color: rgb(207, 207, 207);
 }
 
 .suit {
