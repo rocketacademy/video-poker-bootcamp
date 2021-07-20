@@ -12,7 +12,7 @@ isRoyalFlush=(rankTally)=>{
   return false;
 }
 isStraightFlush=(rankTally, suitTally)=>{
-  if(isFlush(suitTally)||isStraight(rankTally)){
+  if(isFlush(suitTally)&&isStraight(rankTally)){
     return true;
   }
    return false;
@@ -37,7 +37,7 @@ isFullHouse=(rankTally)=>{
 isFlush=(suitTally)=>{
   for(suit in suitTally)
   {
-    if(suitTally[suit]===5)
+    if(suitTally[suit]===maxHandSize)
     {
       return true;
     } 
@@ -48,7 +48,7 @@ isFlush=(suitTally)=>{
 isStraight=(rankTally)=>{
   //ace to 9
   for(let i=1; i<= 13 - maxHandSize + 1; i++){
-    const countSequential=0;
+    let countSequential=0;
     for(let j=0; j<maxHandSize; j++)
     {
       if(rankTally[i+j]>=1)
@@ -61,12 +61,12 @@ isStraight=(rankTally)=>{
     }
     if(countSequential===maxHandSize)
     {
+      
       return true;
     }
   }
   return false;
 }
-//to test if full house not true
 isThreeKind=(rankTally)=>{
   for(rank in rankTally)
   {
@@ -109,44 +109,68 @@ isJackOrBetter=(rankTally)=>{
   }
   return false;
 }
+/**
+ * Calculating score from pokerhands
+ * @param {*} rankTally 
+ * @param {*} suitTally 
+ * @returns score, hand type as string
+ */
 const calHandScore=(rankTally, suitTally)=>{
   let multiplier=0;
-  
+  let output='';
+  console.log(`rankTally `);
+  console.log(rankTally);
+  console.log(`suitTally `);
+   console.log(suitTally);
   if(isRoyalFlush(rankTally))
   {
     multiplier=800;
+    output='royal flush';
   }
   else if(isStraightFlush(rankTally, suitTally))
   {
     multiplier=50;
+    output='straight flush';
   }
   else if(isFourOfKind(rankTally))
   {
     multiplier=25;
+    output='four of a kind';
   }
   else if(isFullHouse(rankTally))
   {
     multiplier=9;
+    output='full house';
   }
   else if(isFlush(suitTally))
   {
     multiplier=6;
+    output='flush';
   }
   else if(isStraight(rankTally))
   {
     multiplier=4;
+    output='straight';
   }
   else if(isThreeKind(rankTally))
   {
     multiplier=3;
+    output='three of a kind';
+
   }
   else if(isTwoPair(rankTally))
   {
     multiplier=2;
+    output='two pair';
   }
   else if(isJackOrBetter(rankTally))
   {
     multiplier=1;
+    output= 'jack or better';
   }
-  return multiplier*bet;
+  else
+  {
+    output= 'all others';
+  }
+  return [multiplier*bet, output];
 }
