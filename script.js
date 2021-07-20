@@ -139,7 +139,6 @@ let cardContainer;
 const playersTurn = 1; // matches with starting instructions
 // Player 1 cards
 const player1Cards = [];
-const player1ReplacedCards = [];
 
 // create player 1 draw button
 const player1Button = document.createElement('button');
@@ -157,7 +156,6 @@ const gameInfo = document.createElement('div');
 // to player 2's turn
 const player1ReplaceCardsClick = () => {
   const SELECTED_CARDS = document.querySelectorAll('.selected');
-  const NEW_CARDS_LENGTH = SELECTED_CARDS.length;
   /* Replace cards in player1Cards */
   for (let i = 0; i < SELECTED_CARDS.length; i += 1) {
     const CARD_DISPLAY_NAME = SELECTED_CARDS[i].firstChild.innerText;
