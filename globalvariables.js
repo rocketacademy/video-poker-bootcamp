@@ -1,2 +1,6 @@
 // eslint-disable-next-line prefer-const
-let score = 100;
+let points = 100;
+let score;
+let playerCard;
+const playerArr = [];
+let bet;

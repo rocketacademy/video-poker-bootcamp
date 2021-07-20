@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 // create game layout
 // create instructions/gameplay board
 const gameInstructions = document.createElement('div');
@@ -15,7 +16,7 @@ infoPanel.appendChild(gameInstructions);
 infoPanel.appendChild(payoutTable);
 
 // create 5 cards and card container
-const card1 = document.createElement('div');
+let card1 = document.createElement('div');
 card1.classList.add('card');
 card1.id = 'card1';
 card1.innerText = 'card 1';
@@ -49,16 +50,16 @@ cardContainer.appendChild(card2);
 cardContainer.appendChild(card3);
 cardContainer.appendChild(card4);
 cardContainer.appendChild(card5);
-cardContainer.appendChild(gameMessage);
 // create  card panel to apphend 5 cards and game message
 const cardPanel = document.createElement('div');
 cardPanel.classList.add('cardPanel');
 cardPanel.appendChild(cardContainer);
+cardPanel.appendChild(gameMessage);
 
 // create bet button
-const betButton = document.createElement('button');
-betButton.classList.add('button');
-betButton.innerText = 'Bet: ';
+const betText = document.createElement('div');
+betText.classList.add('button');
+betText.innerText = 'Bet: ';
 
 // create bet dropdown
 const betAmount = document.createElement('input');
@@ -70,7 +71,7 @@ betAmount.setAttribute('max', '5');
 const betDisplay = document.createElement('div');
 betDisplay.classList.add('betDisplay');
 
-betDisplay.appendChild(betButton);
+betDisplay.appendChild(betText);
 betDisplay.appendChild(betAmount);
 document.body.appendChild(betDisplay);
 
@@ -92,12 +93,12 @@ controlPanel.appendChild(dealButton);
 controlPanel.appendChild(swapButton);
 
 const scoreText = document.createElement('div');
-scoreText.className = 'score';
-scoreText.innerText = 'Score: ';
+scoreText.className = 'points';
+scoreText.innerText = 'Points: ';
 
 const scoreBoard = document.createElement('div');
-scoreBoard.className = 'score';
-scoreBoard.innerHTML = `${score}`;
+scoreBoard.className = 'points';
+scoreBoard.innerHTML = `${points}`;
 
 const scoreDiv = document.createElement('div');
 scoreDiv.className = 'scoreDiv';

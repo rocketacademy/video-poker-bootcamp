@@ -18,6 +18,16 @@ body {
   display: inline-block;
 }
 
+.highlight {
+  border: solid;
+  border-color: gold;
+}
+
+.highlightRed {
+  border: solid;
+  border-color: red;
+}
+
 .cardContainer {
   margin: auto;
   background: rgb(13, 139, 61);
@@ -50,7 +60,27 @@ body {
   vertical-align: top;
 }
 
-.score {
+.points {
   margin: 20px auto;
   display: inline-block;
+}
+
+.suit {
+  margin: 5px;
+  font-size: 18px;
+}
+
+.name {
+  margin: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
 }
