@@ -80,6 +80,7 @@ const createCard=(cardObj)=>{
 const createCardImg=(cardObj)=>{
   const cardImg= document.createElement('img');
   cardImg.src= getFilePathCard(cardObj.suit, cardObj.displayName);
+  cardImg.classList.add('cardimg');
   return cardImg;
 }
 /**
@@ -87,10 +88,10 @@ const createCardImg=(cardObj)=>{
  * @param {*} cards 
  * @returns card dom elements
  */
-const createCards = (cards) => { 
+const createCards = () => { 
   const domCards=[];
-  for(let i=0; i<cards.length; i++)
-  { const refCard=cards[i];
+  for(let i=0; i<playerHand.length; i++)
+  { const refCard=playerHand[i];
     let name, suit;
     const card=document.createElement('div');
     card.classList.add('card','openCard');
@@ -102,20 +103,62 @@ const createCards = (cards) => {
     // card.appendChild(suit);
 
     domCards.push(card);
+    const holder= document.createElement('div');
+    card.appendChild(holder);
 
     card.addEventListener('click', ()=>{
       // card.removeChild(name);
       // card.removeChild(suit);
-      card.removeChild(cardImg);
+      // card.removeChild(cardImg);
       //if cards can only be swapped once, prefix name and suit 
-      const ncardImg= replaceCard(cards, i)
+      const ncardImg= replaceCard(playerHand[i], i)
       ;
-
-      card.appendChild(ncardImg);
-
+      playerHand[i].isHeld=!playerHand[i].isHeld;
+       console.log( refCard.isHeld);
+      if(playerHand[i].isHeld)
+        {
+          holder.classList.add('holder');
+          holder.innerText='hold'; 
+        }
+      else{
+          holder.classList.remove('holder');
+          holder.innerText=''; 
+      }
     })
   }
   return domCards;
+}
+
+const replaceUnheldCards = (cardsDom)=> {
+  //throaway action for cards
+  for(let i=0; i<playerHand.length;i++)
+  { 
+    const refCard=playerHand[i];
+    const refDom= cardsDom[i];
+   
+    if(refCard.isHeld==false)
+    { 
+      //scaling with rotation animation
+      // refDom.style.transform='scale(0.01,0.01)';
+       while (refDom.firstChild) {
+        
+        refDom.removeChild(refDom.lastChild);
+      }
+      
+      const cardImg=replaceCard(playerHand,i);
+      console.log('a');
+      refDom.appendChild(cardImg);
+    }
+    else{
+      const holder= document.createElement('div');
+      refDom.appendChild(holder);
+      holder.classList.add('holder');
+      holder.innerText='hold';
+
+    }
+
+  }
+
 }
 /**
  * replaces card

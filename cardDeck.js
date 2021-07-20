@@ -40,6 +40,7 @@ const makeDeck = () => {
         displayName: dispName,
         colour: suitColor,
         rank: rankCounter,
+        isHeld:false
       };
 
       // Add the new card to the deck
