@@ -1,6 +1,6 @@
 const makeDeck = () => {
   const newDeck = [];
-  const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+  const suits = ['h', 'd', 'c', 's'];
   const suitSymbols = ['♥', '♦', '♣', '♠'];
 
   // Loop over the suits array
@@ -16,18 +16,18 @@ const makeDeck = () => {
       // If rank is 1, 11, 12, or 13, set cardName to the ace or face card's name
       if (cardName === '1') {
         cardName = 'ace';
-        dispName = 'A';
+        dispName = 'a';
       } else if (cardName === '11') {
         cardName = 'jack';
-        dispName = 'J';
+        dispName = 'j';
       } else if (cardName === '12') {
         cardName = 'queen';
-        dispName = 'Q';
+        dispName = 'q';
       } else if (cardName === '13') {
         cardName = 'king';
-        dispName = 'K';
+        dispName = 'k';
       }
-      if (currentSuit === 'hearts' || currentSuit === 'diamonds')
+      if (currentSuit === 'h' || currentSuit === 'd')
       {
         suitColor = 'red';
       }

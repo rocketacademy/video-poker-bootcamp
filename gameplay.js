@@ -1,11 +1,17 @@
-const deck = shuffleCards(makeDeck());
 
+const deck = shuffleCards(makeDeck());
+const folderPath='./resources/cardFace';
 let points=100;
 let playerHand=[];
-let bet=1;
+let bet=0;
 const maxHandSize=5;
-const cardContainer=document.createElement('div');
+const handContainer=document.createElement('div');
 
+const getFilePathCard = (suit, displayName)=>
+{
+  const filePath=`${folderPath}/card_b_${suit}${displayName}_large.png`
+  return filePath;
+}
 
 //create cards that roll out
 //create cards as document elements that can be removed
@@ -70,6 +76,12 @@ const createCard=(cardObj)=>{
 
   return [name, suit];
 }
+
+const createCardImg=(cardObj)=>{
+  const cardImg= document.createElement('img');
+  cardImg.src= getFilePathCard(cardObj.suit, cardObj.displayName);
+  return cardImg;
+}
 /**
  * create card dom elements
  * @param {*} cards 
@@ -78,26 +90,29 @@ const createCard=(cardObj)=>{
 const createCards = (cards) => { 
   const domCards=[];
   for(let i=0; i<cards.length; i++)
-  {
+  { const refCard=cards[i];
     let name, suit;
     const card=document.createElement('div');
     card.classList.add('card','openCard');
-    [name, suit] = createCard(cards[i]);
+    // [name, suit] = createCard(refCard);
+    const cardImg=createCardImg(refCard);
+    card.appendChild(cardImg);
 
-    card.appendChild(name);
-    card.appendChild(suit);
+    // card.appendChild(name);
+    // card.appendChild(suit);
 
     domCards.push(card);
 
     card.addEventListener('click', ()=>{
-      card.removeChild(name);
-      card.removeChild(suit);
+      // card.removeChild(name);
+      // card.removeChild(suit);
+      card.removeChild(cardImg);
       //if cards can only be swapped once, prefix name and suit 
-      [nName, nSuit]= replaceCard(cards, i)
+      const ncardImg= replaceCard(cards, i)
       ;
 
-      card.appendChild(nName);
-      card.appendChild(nSuit);
+      card.appendChild(ncardImg);
+
     })
   }
   return domCards;
@@ -111,9 +126,12 @@ const createCards = (cards) => {
 const replaceCard = (cards, i)=>{
   const replacement= deck.pop();
   cards[i]=replacement;
-  return createCard(replacement);
+  return createCardImg(replacement);
 }
-
+/**
+ * Tally Hand
+ * @returns rankTally, suitTally
+ */
 const tallyHand = ()=>{
   const rankTally={};
   const suitTally={};
@@ -137,4 +155,8 @@ const tallyHand = ()=>{
   }
  
   return[rankTally, suitTally];
+}
+
+const getRandomInt=(max)=>{
+  return Math.floor(Math.random()*max);
 }
