@@ -18,23 +18,18 @@ infoPanel.appendChild(payoutTable);
 // create 5 cards and card container
 let card1 = document.createElement('div');
 card1.classList.add('card');
-card1.id = 'card1';
 card1.innerText = 'card 1';
 const card2 = document.createElement('div');
 card2.classList.add('card');
-card2.id = 'card2';
 card2.innerText = 'card 2';
 const card3 = document.createElement('div');
 card3.classList.add('card');
-card3.id = 'card3';
 card3.innerText = 'card 3';
 const card4 = document.createElement('div');
 card4.classList.add('card');
-card4.id = 'card4';
 card4.innerText = 'card 4';
 const card5 = document.createElement('div');
 card5.classList.add('card');
-card5.id = 'card5';
 card5.innerText = 'card 5';
 
 // create message board

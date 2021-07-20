@@ -113,34 +113,18 @@ const dealCards = () => {
     playerCard = deck.pop();
     playerArr.push(playerCard);
     // Create card element from card metadata
-    const cardElement = createCard(playerCard);
+    cardElement = createCard(playerCard);
     cardElement.id = `card${i + 1}`;
     // Append the card element to the card container
     cardContainer.appendChild(cardElement);
   }
-  document.querySelector('#card1').addEventListener('click', swapCard1);
-  document.querySelector('#card2').addEventListener('click', swapCard2);
-  document.querySelector('#card3').addEventListener('click', swapCard3);
-  document.querySelector('#card4').addEventListener('click', swapCard4);
-  document.querySelector('#card5').addEventListener('click', swapCard5);
+  document.querySelector('#card1').addEventListener('click', selectSwapCard1);
+  document.querySelector('#card2').addEventListener('click', selectSwapCard2);
+  document.querySelector('#card3').addEventListener('click', selectSwapCard3);
+  document.querySelector('#card4').addEventListener('click', selectSwapCard4);
+  document.querySelector('#card5').addEventListener('click', selectSwapCard5);
 };
 
-// create highlight function to indicate card to be swap
-const swapCard1 = () => {
-  document.querySelector('#card1').classList.toggle('highlightRed');
-};
-const swapCard2 = () => {
-  document.querySelector('#card2').classList.toggle('highlightRed');
-};
-const swapCard3 = () => {
-  document.querySelector('#card3').classList.toggle('highlightRed');
-};
-const swapCard4 = () => {
-  document.querySelector('#card4').classList.toggle('highlightRed');
-};
-const swapCard5 = () => {
-  document.querySelector('#card5').classList.toggle('highlightRed');
-};
 /**
  * represents a tool to calc score based on cards in hand
  * return value will be the score based on their cards in hand against the score chart
@@ -150,5 +134,27 @@ const calcHandScore = () => {
   return score;
 };
 
+// swap cards based on cards that are highlighted red
+// push new card data into player hand array
+const swapCard = () => {
+  const cardToBeSwapped = document.getElementsByClassName('highlightRed');
+
+  for (let i = 0; i < cardToBeSwapped.length; i += 1) {
+    playerCard = deck.pop();
+    playerArr.push(playerCard);
+    // Create card element from card metadata
+    cardElement = createCard(playerCard);
+    cardElement.id = `card${i + 1}`;
+    // Append the card element to the card container
+    cardContainer.appendChild(cardElement);
+  }
+  while (cardToBeSwapped[0]) {
+    cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
+  }
+};
+
+// get points use calc hand score
+// return player score and tabulate latest points
+
 dealButton.addEventListener('click', dealCards);
-document.querySelector('.card').addEventListener('click', swapCard);
+swapButton.addEventListener('click', swapCard);
