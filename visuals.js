@@ -78,7 +78,7 @@ dealButton.innerText = 'Deal';
 // create swap button
 const swapButton = document.createElement('button');
 swapButton.classList.add('button');
-swapButton.innerText = 'Swap';
+swapButton.innerText = 'Swap / End Round';
 
 const controlPanel = document.createElement('div');
 controlPanel.classList.add('controlPanel');

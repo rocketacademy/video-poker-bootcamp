@@ -80,7 +80,7 @@ const makeDeck = () => {
 };
 
 // create a shuffled deck
-const deck = shuffleCards(makeDeck());
+let deck = shuffleCards(makeDeck());
 
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
@@ -101,11 +101,14 @@ const createCard = (cardInfo) => {
 };
 
 const dealCards = () => {
-// Empty cardContainer
+  // make new deck
+  deck = shuffleCards(makeDeck());
+  // Empty cardContainer
   cardContainer.innerHTML = '';
   dealButton.disabled = true;
   bet = Number(betAmount.value);
   document.getElementById('betAmount').disabled = true;
+  swapButton.disabled = false;
   gameMessage.innerText = 'Please choose the cards to swap!';
 
   for (let i = 0; i < 5; i += 1) {
@@ -129,16 +132,13 @@ const dealCards = () => {
  * represents a tool to calc score based on cards in hand
  * return value will be the score based on their cards in hand against the score chart
  * */
-const calcHandScore = () => {
-  score = 1;
-  return score;
-};
+const calcHandScore = () => 1;
 
 // swap cards based on cards that are highlighted red
 // push new card data into player hand array
 const swapCard = () => {
   const cardToBeSwapped = document.getElementsByClassName('highlightRed');
-
+  // *** need to remove replaced card from playerArr***
   for (let i = 0; i < cardToBeSwapped.length; i += 1) {
     playerCard = deck.pop();
     playerArr.push(playerCard);
@@ -151,6 +151,14 @@ const swapCard = () => {
   while (cardToBeSwapped[0]) {
     cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
   }
+  swapButton.disabled = true;
+  dealButton.disabled = false;
+  document.getElementById('betAmount').disabled = false;
+  // eslint-disable-next-line prefer-const
+  let pointsForHand = calcHandScore();
+  points += pointsForHand;
+  gameMessage.innerHTML = `You won ${pointsForHand} points this round!`;
+  scoreBoard.innerHTML = `${points}`;
 };
 
 // get points use calc hand score
