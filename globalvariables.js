@@ -3,7 +3,7 @@
 let points = 100;
 let score;
 let playerCard;
-const playerArr = [];
+let playerArr = [];
 let bet;
 let cardElement;
 // eslint-disable-next-line prefer-const

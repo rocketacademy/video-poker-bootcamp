@@ -9,6 +9,17 @@ body {
   text-align: center;
 }
 
+.cardContainer {
+  margin: auto;
+  background: rgb(13, 139, 61);
+  border-radius: 8px;
+  border-color: blue;
+  border-style: solid;
+  text-align: center;
+  width: 600px;
+  height: 200px;
+  position: relative;
+}
 .card {
   margin: 30px 30px 20px 30px;
   padding: 10px;
@@ -20,23 +31,12 @@ body {
 
 .highlight {
   border: solid;
-  border-color: gold;
+  border-color: greenyellow;
 }
 
 .highlightRed {
   border: solid;
   border-color: red;
-}
-
-.cardContainer {
-  margin: auto;
-  background: rgb(13, 139, 61);
-  border-radius: 8px;
-  border-color: blue;
-  border-style: solid;
-  text-align: center;
-  width: 600px;
-  height: 200px;
 }
 
 .button {
@@ -84,3 +84,5 @@ body {
 .black {
   color: black;
 }
+
+/* relative for card container, abolute for card */

@@ -105,6 +105,7 @@ const dealCards = () => {
   deck = shuffleCards(makeDeck());
   // Empty cardContainer
   cardContainer.innerHTML = '';
+  playerArr = [];
   dealButton.disabled = true;
   bet = Number(betAmount.value);
   document.getElementById('betAmount').disabled = true;
