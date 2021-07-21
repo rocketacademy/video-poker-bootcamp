@@ -4,6 +4,59 @@
   box-sizing: border-box;
 }
 
+@keyframes fadeout {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 50;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 25;
+  }
+  100% {
+    opacity: 0;
+  }
+
+  /* 
+  from {
+  }
+  to {
+    opacity: 0.5;
+    transform: scale(0, 0) rotate(-20deg) translate(5000px, 0px);
+    
+  } */
+}
+.cardAnimateDiscard {
+  animation-name: fadeout;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fromTop {
+  from {
+    /* transform: translate(-1000px, 0px); */
+    transform: translate(0px, -500px);
+    /* rotateY(180deg) */
+  }
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+.cardAnimateOpenNew {
+  z-index: -10;
+  transform: translate(-5px, 0px);
+  animation-name: fromTop;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: backwards;
+  /* animation-direction: reverse; */
+}
+
 body {
   background-color: rgb(216, 216, 216);
   /* font-family: "Zen Loop", cursive; */
@@ -20,6 +73,13 @@ button {
 img {
   max-width: 100%;
   min-width: 100%;
+}
+
+.resetMessage {
+  position: absolute;
+  font-size: 48px;
+  text-shadow: 0 0 3px blueviolet, 0 0 5px cyan;
+  transform: translate(160px, -196px);
 }
 
 .vertical-center {

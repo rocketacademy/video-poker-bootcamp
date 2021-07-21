@@ -45,7 +45,6 @@ const makeDeck = () => {
 
       // Add the new card to the deck
       newDeck.push(card);
-      newDeck.push(card);
     }
   }
 
