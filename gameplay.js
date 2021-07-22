@@ -129,25 +129,26 @@ const dealCards = () => {
   document.querySelector('#card5').addEventListener('click', selectSwapCard5);
 };
 
-/**
- * represents a tool to calc score based on cards in hand
- * return value will be the score based on their cards in hand against the score chart
- * */
-const calcHandScore = () => 1;
 // swap cards based on cards that are highlighted red
 // push new card data into player hand array
 const swapCard = () => {
-  const cardToBeSwapped = document.getElementsByClassName('highlightRed');
+  const cardToBeSwapped = document.getElementsByClassName('selected');
   // *** need to remove replaced card from playerArr***
   for (let i = 0; i < cardToBeSwapped.length; i += 1) {
+    const cardDisplayName = cardToBeSwapped[i].firstChild.innerText;
+    const cardSuitSymbol = cardToBeSwapped[i].lastChild.innerText;
+
+    const cardIndex = playerArr.findIndex(
+      (ele) => (ele.displayName === cardDisplayName) && (ele.suitSymbol === cardSuitSymbol),
+    );
     playerCard = deck.pop();
-    playerArr.push(playerCard);
-    // playerArr.splice(1, 1, playerCard);
-    // Create card element from card metadata
     cardElement = createCard(playerCard);
-    // Append the card element to the card container
     cardContainer.appendChild(cardElement);
+
+    playerArr.splice(cardIndex, 1, playerCard);
+    // cardElement = createCard(playerCard);
   }
+
   // remove card to be swappedfrom card container
   while (cardToBeSwapped[0]) {
     cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
@@ -157,14 +158,11 @@ const swapCard = () => {
   dealButton.disabled = false;
   document.getElementById('betAmount').disabled = false;
   // eslint-disable-next-line prefer-const
-  let pointsForHand = calcHandScore();
+  const pointsForHand = calcHandScore();
   points += pointsForHand;
   gameMessage.innerHTML = `You won ${pointsForHand} points this round!`;
   scoreBoard.innerHTML = `${points}`;
 };
-
-// get points use calc hand score
-// return player score and tabulate latest points
 
 dealButton.addEventListener('click', dealCards);
 swapButton.addEventListener('click', swapCard);

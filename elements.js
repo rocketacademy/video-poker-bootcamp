@@ -8,7 +8,6 @@ gameInstructions.innerText = 'Game Play Instructions';
 const payoutTable = document.createElement('div');
 payoutTable.classList.add('payoutTable', 'infoboard');
 payoutTable.innerText = 'Payout Table';
-
 const infoPanel = document.createElement('div');
 infoPanel.classList.add('infoPanel');
 
@@ -35,7 +34,7 @@ card5.innerText = 'card 5';
 // create message board
 const gameMessage = document.createElement('div');
 gameMessage.classList.add('gameMessage');
-gameMessage.innerText = 'Hello, pls place a bet!';
+gameMessage.innerHTML = 'Hello, pls place a bet!';
 
 const cardContainer = document.createElement('div');
 cardContainer.classList.add('cardContainer');
