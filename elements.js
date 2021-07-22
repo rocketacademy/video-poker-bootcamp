@@ -62,6 +62,7 @@ betAmount.setAttribute('id', 'betAmount');
 betAmount.setAttribute('type', 'number');
 betAmount.setAttribute('min', '1');
 betAmount.setAttribute('max', '5');
+betAmount.setAttribute('value', '1');
 
 const betDisplay = document.createElement('div');
 betDisplay.classList.add('betDisplay');

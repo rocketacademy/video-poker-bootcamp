@@ -6,6 +6,7 @@ let playerCard;
 let playerArr = [];
 let bet;
 let cardElement;
+let toSwap = false;
 // eslint-disable-next-line prefer-const
 
 // create highlight function to indicate card to be swap

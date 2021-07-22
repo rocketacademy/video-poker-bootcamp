@@ -112,13 +112,13 @@ const dealCards = () => {
   swapButton.disabled = false;
   gameMessage.innerText = 'Please choose the cards to swap!';
 
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 1; i < 6; i += 1) {
     // Pop player's card metadata from the deck
     playerCard = deck.pop();
     playerArr.push(playerCard);
     // Create card element from card metadata
     cardElement = createCard(playerCard);
-    cardElement.id = `card${i + 1}`;
+    cardElement.id = `card${i}`;
     // Append the card element to the card container
     cardContainer.appendChild(cardElement);
   }
@@ -134,7 +134,6 @@ const dealCards = () => {
  * return value will be the score based on their cards in hand against the score chart
  * */
 const calcHandScore = () => 1;
-
 // swap cards based on cards that are highlighted red
 // push new card data into player hand array
 const swapCard = () => {
@@ -143,15 +142,17 @@ const swapCard = () => {
   for (let i = 0; i < cardToBeSwapped.length; i += 1) {
     playerCard = deck.pop();
     playerArr.push(playerCard);
+    // playerArr.splice(1, 1, playerCard);
     // Create card element from card metadata
     cardElement = createCard(playerCard);
-    cardElement.id = `card${i + 1}`;
     // Append the card element to the card container
     cardContainer.appendChild(cardElement);
   }
+  // remove card to be swappedfrom card container
   while (cardToBeSwapped[0]) {
     cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
   }
+
   swapButton.disabled = true;
   dealButton.disabled = false;
   document.getElementById('betAmount').disabled = false;
