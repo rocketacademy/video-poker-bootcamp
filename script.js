@@ -172,7 +172,6 @@ const player1ReplaceCardsClick = () => {
   /* Replace cards in DOM */
   cardContainer.innerHTML = '';
   for (let i = 0; i < 5; i += 1) {
-    player1Cards.push(deck.pop());
     // Create card element from card metadata
     const cardElement = createCard(player1Cards[i]);
     // Append the card element to the card container
