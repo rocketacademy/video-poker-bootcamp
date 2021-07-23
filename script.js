@@ -83,11 +83,11 @@ const makeDeck = () => {
       }
 
       // Create a new card with the current name, suit, and rank
-      // CX fix: set aces to 13, as highest rank
+      // CX fix: set aces to 14, as highest rank (above king)
       const card = {
         name: cardName,
         suit: currentSuit,
-        rank: (rankCounter === 1) ? 13 : rankCounter,
+        rank: (rankCounter === 1) ? 14 : rankCounter,
         suitSymbol,
         displayName,
         colour,
@@ -181,7 +181,7 @@ const player1ReplaceCardsClick = () => {
 
   /* Remove helper text and button */
   player1ReplaceButton.style.display = 'none';
-  gameInfo.style.display = 'none';
+  gameInfo.innerText = `Player ${playersTurn}, your replaced hand has ${recognizeCurrentHand(player1Cards)}.`;
 };
 
 const player1CardClick = (event) => {
@@ -212,43 +212,43 @@ const player1Click = () => {
       // ♠, ♥, ♣, ♦️
       const TEST_HAND = [
         {
-          name: 'ace',
+          name: 'queen',
           suit: 'clubs',
-          rank: 13,
+          rank: 12,
           suitSymbol: '♣',
-          displayName: 'A',
+          displayName: 'Q',
           colour: 'black',
         },
         {
           name: 'king',
-          suit: 'clubs',
-          rank: 12,
-          suitSymbol: '♣',
+          suit: 'hearts',
+          rank: 13,
+          suitSymbol: '♥',
           displayName: 'K',
-          colour: 'black',
-        },
-        {
-          name: '8',
-          suit: 'clubs',
-          rank: 8,
-          suitSymbol: '♣',
-          displayName: '8',
-          colour: 'black',
+          colour: 'red',
         },
         {
           name: 'ace',
           suit: 'clubs',
-          rank: 13,
+          rank: 14,
           suitSymbol: '♣',
           displayName: 'A',
           colour: 'black',
         },
         {
-          name: '8',
+          name: 'jack',
           suit: 'clubs',
-          rank: 8,
+          rank: 11,
           suitSymbol: '♣',
-          displayName: '8',
+          displayName: 'J',
+          colour: 'black',
+        },
+        {
+          name: '10',
+          suit: 'spades',
+          rank: 10,
+          suitSymbol: '♠',
+          displayName: '10',
           colour: 'black',
         },
       ];
@@ -265,7 +265,7 @@ const player1Click = () => {
       }
 
       /* Disable player draw button and change status */
-      gameInfo.innerText = `Player ${playersTurn}, your current hand has a ${recognizeCurrentHand(player1Cards)}. Please choose any number of cards you would like to replace, and hit submit`;
+      gameInfo.innerText = `Player ${playersTurn}, your current hand has ${recognizeCurrentHand(player1Cards)}. Please choose any number of cards you would like to replace, and hit submit`;
       player1Button.disabled = false;
       player1Button.style.display = 'none';
       player1ReplaceButton.style.display = 'inline-block';
@@ -289,6 +289,17 @@ const player1Click = () => {
 
 const sortCurrentHand = (firstCard, secondCard) => firstCard.rank - secondCard.rank;
 
+const getStraights = (hand) => {
+  const IS_STRAIGHT = true;
+  // comparing current card with next, so we want to stop at 2nd last card
+  for (let i = 0; i < hand.length - 1; i++) {
+    if (hand[i + 1].rank - hand[i].rank !== 1) {
+      return false;
+    }
+  }
+  return IS_STRAIGHT;
+};
+
 const recognizeCurrentHand = (hand) => {
   console.log('current hand:', hand);
   // initialize hand string
@@ -310,18 +321,37 @@ const recognizeCurrentHand = (hand) => {
     }
   }
 
+  // initialize isStraight
+  const IS_STRAIGHT = getStraights(SORTED_HAND);
+  // comparing current card with next, so we want to stop at 2nd last card
+  for (let i = 0; i < SORTED_HAND.length - 1; i++) {
+    const cardRank = SORTED_HAND[i].rank;
+  }
+  // initialize three of a kind
+  const THREES = Object.keys(tally).filter((key) => tally[key] === 3);
   // initialize pairs
   const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
   const FIRST_PAIR = PAIRS[0];
   // hand recognition logic
-  if (PAIRS.length === 2) {
-    string += `2 pairs of ${FIRST_PAIR} and ${PAIRS[1]}`;
-  } else if (PAIRS.length > 0) {
-    const PAIR = PAIRS[0];
-    string += `pair of ${FIRST_PAIR}s`;
+  // STRAIGHTS
+  if (IS_STRAIGHT) {
+    string += `a straight starting from a ${SORTED_HAND[0].name} of ${SORTED_HAND[0].suit}, and ending with a ${SORTED_HAND[SORTED_HAND.length - 1].name} of ${SORTED_HAND[SORTED_HAND.length - 1].suit}`;
   }
+  // THREE OF A KIND
+  else if (THREES.length === 1) {
+    string += `a three of a kind with ${THREES[0]}s`;
+  }
+  // 2 PAIRS
+  else if (PAIRS.length === 2) {
+    string += `2 pairs of ${FIRST_PAIR}s and ${PAIRS[1]}s`;
+  }
+  // A PAIR
+  else if (PAIRS.length > 0) {
+    string += `a pair of ${FIRST_PAIR}s`;
+  }
+  // HIGH CARD
   else {
-    string += `high card of ${SORTED_HAND[SORTED_HAND.length - 1].name}`;
+    string += `a high card of ${SORTED_HAND[SORTED_HAND.length - 1].name}`;
   }
 
   return string;
