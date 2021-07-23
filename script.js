@@ -243,12 +243,12 @@ const player1Click = () => {
           colour: 'red',
         },
         {
-          name: 'ace',
-          suit: 'spades',
-          rank: 14,
-          suitSymbol: '♠',
-          displayName: 'A',
-          colour: 'black',
+          name: 'queen',
+          suit: 'hearts',
+          rank: 12,
+          suitSymbol: '♥',
+          displayName: 'Q',
+          colour: 'red',
         },
       ];
 
@@ -331,6 +331,8 @@ const recognizeCurrentHand = (hand) => {
     }
   }
 
+  // initialize fours
+  const FOURS = Object.keys(tally).filter((key) => tally[key] === 4);
   // initialize isFlush
   const IS_FLUSH = getFlush(SORTED_HAND);
   // initialize isStraight
@@ -341,8 +343,12 @@ const recognizeCurrentHand = (hand) => {
   const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
   const FIRST_PAIR = PAIRS[0];
   // hand recognition logic
+  // FOUR OF A KIND
+  if (FOURS.length > 0) {
+    string += `a four of a kind with ${FOURS[0]}s`;
+  }
   // FULL HOUSE
-  if (THREES.length > 0 && PAIRS.length > 0) {
+  else if (THREES.length > 0 && PAIRS.length > 0) {
     string += `a full house: a three of a kind with ${THREES[0]}s, and a pair of ${FIRST_PAIR}s`;
   }
   // FLUSH
