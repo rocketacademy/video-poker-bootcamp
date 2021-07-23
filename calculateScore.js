@@ -1,5 +1,13 @@
 
-isRoyalFlush=(rankTally)=>{
+isRoyalFlush=(rankTally,suitTally)=>{
+  if (isRoyalStraight(rankTally) && isFlush(suitTally))
+  {
+    return true;
+  }
+  return false;
+}
+
+isRoyalStraight=(rankTally)=>{
   if (
   rankTally['1']===1 && 
   rankTally['13']===1 && 
@@ -11,6 +19,8 @@ isRoyalFlush=(rankTally)=>{
   }
   return false;
 }
+
+
 isStraightFlush=(rankTally, suitTally)=>{
   if(isFlush(suitTally)&&isStraight(rankTally)){
     return true;
@@ -122,7 +132,7 @@ const calHandScore=(rankTally, suitTally)=>{
   console.log(rankTally);
   console.log(`suitTally `);
    console.log(suitTally);
-  if(isRoyalFlush(rankTally))
+  if(isRoyalFlush(rankTally, suitTally))
   {
     multiplier=800;
     output='royal flush';
@@ -147,7 +157,7 @@ const calHandScore=(rankTally, suitTally)=>{
     multiplier=6;
     output='flush';
   }
-  else if(isStraight(rankTally))
+  else if(isStraight(rankTally)||isRoyalStraight(rankTally) )
   {
     multiplier=4;
     output='straight';

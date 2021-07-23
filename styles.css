@@ -43,12 +43,11 @@ img {
 } */
 
 .game-container {
-  /* font-family: "Zen Loop", cursive; */
   font-family: "Tourney", cursive;
   font-weight: bold;
   font-style: italic;
   text-shadow: 0 0 3px yellow, 0 0 5px white;
-  width: 1900px;
+  width: 2000px;
 }
 @keyframes fadeout {
   0% {
@@ -66,15 +65,10 @@ img {
   100% {
     opacity: 0;
   }
-
-  /* 
-  from {
-  }
-  to {
-    opacity: 0.5;
-    transform: scale(0, 0) rotate(-20deg) translate(5000px, 0px);
-    
-  } */
+}
+.card-container {
+  display: flex;
+  align-items: center;
 }
 .cardAnimateDiscard {
   animation-name: fadeout;
@@ -85,10 +79,8 @@ img {
 
 @keyframes fromTop {
   from {
-    /* transform: translate(-1000px, 0px); */
     transform: translate(0px, -500px);
     opacity: 0;
-    /* rotateY(180deg) */
   }
   to {
     transform: translate(0px, 0px);
@@ -101,13 +93,15 @@ img {
   animation-duration: 0.5s;
   animation-timing-function: ease-in;
   animation-fill-mode: backwards;
-  /* animation-direction: reverse; */
 }
 .resetMessage {
-  position: relative;
   font-size: 48px;
   text-shadow: 0 0 3px blueviolet, 0 0 5px cyan;
-  transform: translate(175px, -155px);
+}
+.hand-outer {
+  width: 1600px;
+  display: inline-flex;
+  justify-content: center;
 }
 
 .absolute {
@@ -118,33 +112,31 @@ img {
   display: block;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.19);
-  /* transform: translateY(-312px); */
   transform: translate(0px, calc(var(--card-height) * -1.011));
 
   width: var(--card-width);
   line-height: 1.6;
 }
+
 .large-button {
   font-family: "Tourney", cursive;
   /* font-family: "Cantarell", sans-serif; */
   /* font-family: "Orbitron", sans-serif; */
   font-weight: bold;
   font-style: italic;
-  /* -webkit-text-stroke: 0.5px yellow; */
   text-shadow: 0 0 3px yellow, 0 0 5px white;
-
-  /* box-shadow: 1px 1px 6px yellow, 1px 1px 8px white; */
   background-color: transparent;
   border: 0px;
-  border-bottom: 3px solid black;
+
   color: black;
-  /* padding: 15px 32px; */
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 36px;
   margin: 0px 30px;
   cursor: pointer;
+}
+.button-bottom-border {
+  border-bottom: 3px solid black;
 }
 .cardimg {
   width: var(--card-width);
@@ -171,7 +163,6 @@ img {
   width: 170px;
   height: 100px;
 
-  /* vertical-align: center; */
   position: relative;
 }
 .inline-block {
@@ -214,8 +205,6 @@ img {
 }
 
 .card {
-  /* position: absolute;*/
-
   margin: 5px;
   padding: auto;
   background-color: transparent;
@@ -225,26 +214,6 @@ img {
   text-align: center;
   display: inline-block;
   z-index: 1;
-}
-
-.suit {
-  margin: 5px;
-  font-size: 20px;
-}
-
-.name {
-  margin: 5px;
-  font-size: 24px;
-  font-weight: bold;
-  font-family: sans-serif;
-}
-
-.red {
-  color: red;
-}
-
-.black {
-  color: black;
 }
 .openCard {
   background-color: aliceblue;

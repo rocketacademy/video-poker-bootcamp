@@ -128,8 +128,7 @@ const replaceUnheldCards = (cardsDom) => {
     const refDom = cardsDom[i];
     if (refCard.isHeld === false)
     {
-      // scaling with rotation animation
-      // refDom.style.transform='scale(0.01,0.01)';
+
        refDom.classList.add('cardAnimateDiscard');
         
        setTimeout(()=>{

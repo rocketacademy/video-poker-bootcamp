@@ -1,10 +1,11 @@
 
 suitColor = 'green';
 currentSuitSym= "🎃";
+//royal flush
 //k
 const king = {
-        suitSymbol: "🎵",
-        suit: 'hearts',
+        suitSymbol: currentSuitSym,
+        suit: 'c',
         name: 'k',
         displayName: 'k',
         colour: suitColor,
@@ -13,7 +14,7 @@ const king = {
 //Q
 const queen = {
         suitSymbol: currentSuitSym,
-        suit: 'clubs',
+        suit: 'c',
         name: 'q',
         displayName: 'q',
         colour: suitColor,
@@ -21,8 +22,8 @@ const queen = {
       };
 //J
 const jack = {
-        suitSymbol: "🎵",
-        suit: 'hearts',
+        suitSymbol: currentSuitSym,
+        suit: 'c',
         name: 'j',
         displayName: 'j',
         colour: suitColor,
@@ -31,7 +32,7 @@ const jack = {
 //A
 const ace = {
         suitSymbol: currentSuitSym,
-        suit: 'clubs',
+        suit: 'c',
         name: 'a',
         displayName: 'a',
         colour: suitColor,
@@ -39,13 +40,65 @@ const ace = {
       };
 //10
 const ten = {
-        suitSymbol: "🎵",
-        suit: 'hearts',
+        suitSymbol: currentSuitSym,
+        suit: 'c',
         name: '10',
         displayName: '10',
         colour: suitColor,
         rank: 10,
       };
+
+
+
+
+
+
+
+// //k
+// const king = {
+//         suitSymbol: "🎵",
+//         suit: 'hearts',
+//         name: 'k',
+//         displayName: 'k',
+//         colour: suitColor,
+//         rank: 13,
+//       };
+// //Q
+// const queen = {
+//         suitSymbol: currentSuitSym,
+//         suit: 'clubs',
+//         name: 'q',
+//         displayName: 'q',
+//         colour: suitColor,
+//         rank: 12,
+//       };
+// //J
+// const jack = {
+//         suitSymbol: "🎵",
+//         suit: 'hearts',
+//         name: 'j',
+//         displayName: 'j',
+//         colour: suitColor,
+//         rank: 11,
+//       };
+// //A
+// const ace = {
+//         suitSymbol: currentSuitSym,
+//         suit: 'clubs',
+//         name: 'a',
+//         displayName: 'a',
+//         colour: suitColor,
+//         rank: 1,
+//       };
+// //10
+// const ten = {
+//         suitSymbol: "🎵",
+//         suit: 'hearts',
+//         name: '10',
+//         displayName: '10',
+//         colour: suitColor,
+//         rank: 10,
+//       };
 //9
 const nine = {
         suitSymbol: currentSuitSym,
