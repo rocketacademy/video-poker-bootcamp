@@ -66,10 +66,7 @@ img {
     opacity: 0;
   }
 }
-.card-container {
-  display: flex;
-  align-items: center;
-}
+
 .cardAnimateDiscard {
   animation-name: fadeout;
   animation-duration: 0.5s;
@@ -97,11 +94,13 @@ img {
 .resetMessage {
   font-size: 48px;
   text-shadow: 0 0 3px blueviolet, 0 0 5px cyan;
+  align-self: center;
 }
 .hand-outer {
   width: 1600px;
   display: inline-flex;
   justify-content: center;
+  align-items: center;
 }
 
 .absolute {
@@ -154,12 +153,10 @@ img {
   align-items: center;
 }
 .tokencontainer {
-  display: inline-block;
   width: 100px;
   position: relative;
 }
 .betcontainer {
-  display: inline-block;
   width: 170px;
   height: 100px;
 
@@ -200,11 +197,16 @@ img {
   border-bottom: 0px;
   padding: 0px;
 }
-.cardContainer {
-  display: inline-block;
-}
 
+.hand-container {
+  vertical-align: top;
+  width: 1600px;
+  height: var(--card-height);
+  display: inline-flex;
+  justify-content: center;
+}
 .card {
+  display: inline;
   margin: 5px;
   padding: auto;
   background-color: transparent;

@@ -46,7 +46,6 @@ const gameinit = () => {
   const header = document.createElement('h1');
   const cardContainer = document.createElement('div');
   const deckContainer = document.createElement('div');
-  const handOuter=document.createElement('div');
   const faceDownImg = document.createElement('img');
 
 
@@ -81,14 +80,14 @@ const gameinit = () => {
 
   handContainer.innerHTML = '';
   gameContainer.classList.add('game-container');
-  deckContainer.classList.add('card', 'cardContainer');
-  handOuter.classList.add('hand-outer');
-  handContainer.classList.add('cardContainer');
+  deckContainer.classList.add('card');
+
+  handContainer.classList.add('hand-container');
   betContainer.classList.add('betcontainer');
   betButton.classList.add('inline-block', 'large-button','button-bottom-border');
   dealButton.classList.add('inline-block', 'large-button');
   scoreButton.classList.add('inline-block', 'large-button');
-  tokenCount.classList.add('inline-block');
+
   tokensContainer.classList.add('inline-block', 'tokencontainer');
   betArrows.classList.add('bet-arrows');
   upBet.classList.add('arrow-up');
@@ -158,11 +157,11 @@ const gameinit = () => {
     totalPoints.innerText = points;
     dealCanClick=true;
     dealButton.classList.add('button-bottom-border');
-    scoreButton.classList.add('button-bottom-border');
+
     betButton.classList.remove('button-bottom-border');
   })
 
-
+ 
   let cardsDom = document.createElement('div');
   // refresh deck
   dealButton.addEventListener('click', () => {
@@ -171,9 +170,10 @@ const gameinit = () => {
       return;
     }
     scoreCanClick=true;
+    scoreButton.classList.add('button-bottom-border');
     if (consecutiveDeals === 0) {
       consecutiveDeals+=1;
-    
+      
       handContainer.innerHTML = '';
       // For testing
       //  playerHand= royalFlush;
@@ -187,8 +187,6 @@ const gameinit = () => {
       firstDeal = false;
     }
     else if(consecutiveDeals < 2){
-
-
       console.log('in 2nd deal');
       consecutiveDeals+=1;
       cardsDom = createCards(playerHand);
@@ -197,7 +195,6 @@ const gameinit = () => {
       replaceUnheldCards(cardsDom);
       dealCanClick=false;
       dealButton.classList.remove('button-bottom-border');
-      scoreButton.classList.add('button-bottom-border');
     }
   });
 
@@ -219,30 +216,38 @@ const gameinit = () => {
     scoreButton.classList.remove('button-bottom-border');
     
       handContainer.classList.remove('cardAnimateOpenNew');
-      handContainer.classList.add('cardAnimateDiscard');
+      setTimeout(()=>{
+        handContainer.classList.add('cardAnimateDiscard');
+      },1000)
+      
       console.log(`deck count: ${deck.length}`);
       betCanClick = true;
       upCanClick=true;
       downCanClick=true;
       dealCanClick=false;
       scoreCanClick=false;
+       betButton.classList.add('button-bottom-border');
       setTimeout(() => {
-      handContainer.innerHTML = '';
-      betButton.classList.add('button-bottom-border');
+      
+      handContainer.innerHTML = '';  
+      results.innerText ='';
+
       if(deck.length < maxHandSize*2 ){
         console.log(`in reset condition`);
+        handContainer.classList.remove('cardAnimateDiscard');
         const resetMsg= document.createElement('div');
         resetMsg.innerText = 'Out of cards, deal to reset.';
         resetMsg.classList.add('resetMessage');
-        // cardContainer.appendChild(resetMsg);
-        handContainer.innerHTML = 'Out of cards, deal to reset.';
-        handContainer.classList.remove('cardAnimateDiscard');
-        handContainer.classList.add('resetMessage');
+        handContainer.appendChild(resetMsg);
+        
+     
+        
+
         dealButton.disabled = false;
         deck = shuffleCards(makeDeck());
         firstDeal=true;
       }
-    }, 750);
+    }, 2000);
   });
 
   deckContainer.appendChild(faceDownImg);
