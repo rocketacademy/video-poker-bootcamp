@@ -219,36 +219,36 @@ const player1Click = () => {
           colour: 'black',
         },
         {
-          name: 'queen',
-          suit: 'spades',
-          rank: 12,
-          suitSymbol: '♠',
-          displayName: 'Q',
+          name: '9',
+          suit: 'clubs',
+          rank: 9,
+          suitSymbol: '♣',
+          displayName: '9',
           colour: 'black',
         },
         {
-          name: 'ace',
-          suit: 'hearts',
-          rank: 14,
-          suitSymbol: '♥',
-          displayName: 'A',
-          colour: 'red',
+          name: 'jack',
+          suit: 'clubs',
+          rank: 11,
+          suitSymbol: '♣',
+          displayName: 'J',
+          colour: 'black',
         },
         {
-          name: 'queen',
-          suit: 'diamonds',
-          rank: 12,
-          suitSymbol: '♦️',
-          displayName: 'Q',
-          colour: 'red',
+          name: '8',
+          suit: 'clubs',
+          rank: 8,
+          suitSymbol: '♣',
+          displayName: '8',
+          colour: 'black',
         },
         {
-          name: 'queen',
-          suit: 'hearts',
-          rank: 12,
-          suitSymbol: '♥',
-          displayName: 'Q',
-          colour: 'red',
+          name: '10',
+          suit: 'clubs',
+          rank: 10,
+          suitSymbol: '♣',
+          displayName: '10',
+          colour: 'black',
         },
       ];
 
@@ -343,8 +343,12 @@ const recognizeCurrentHand = (hand) => {
   const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
   const FIRST_PAIR = PAIRS[0];
   // hand recognition logic
+  // STRAIGHT FLUSH
+  if (IS_FLUSH && IS_STRAIGHT) {
+    string += `a straight flush starting from a ${SORTED_HAND[0].name} of ${SORTED_HAND[0].suit}, and ending with a ${SORTED_HAND[SORTED_HAND.length - 1].name} of ${SORTED_HAND[SORTED_HAND.length - 1].suit}`;
+  }
   // FOUR OF A KIND
-  if (FOURS.length > 0) {
+  else if (FOURS.length > 0) {
     string += `a four of a kind with ${FOURS[0]}s`;
   }
   // FULL HOUSE
