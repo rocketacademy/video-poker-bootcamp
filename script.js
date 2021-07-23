@@ -208,9 +208,56 @@ const player1Click = () => {
       // Empty cardContainer in case this is not the 1st round of gameplay
       cardContainer.innerHTML = '';
 
+      // For testing: use this hand
+      // ♠, ♥, ♣, ♦️
+      const TEST_HAND = [
+        {
+          name: 'ace',
+          suit: 'clubs',
+          rank: 13,
+          suitSymbol: '♣',
+          displayName: 'A',
+          colour: 'black',
+        },
+        {
+          name: 'king',
+          suit: 'clubs',
+          rank: 12,
+          suitSymbol: '♣',
+          displayName: 'K',
+          colour: 'black',
+        },
+        {
+          name: '8',
+          suit: 'clubs',
+          rank: 8,
+          suitSymbol: '♣',
+          displayName: '8',
+          colour: 'black',
+        },
+        {
+          name: 'ace',
+          suit: 'clubs',
+          rank: 13,
+          suitSymbol: '♣',
+          displayName: 'A',
+          colour: 'black',
+        },
+        {
+          name: '8',
+          suit: 'clubs',
+          rank: 8,
+          suitSymbol: '♣',
+          displayName: '8',
+          colour: 'black',
+        },
+      ];
+
       // Pop player 1's card metadata from the deck
       for (let i = 0; i < 5; i += 1) {
-        player1Cards.push(deck.pop());
+        // For testing: use this hand
+        player1Cards.push(TEST_HAND[i]);
+        // player1Cards.push(deck.pop());
         // Create card element from card metadata
         const cardElement = createCard(player1Cards[i]);
         // Append the card element to the card container
@@ -218,7 +265,7 @@ const player1Click = () => {
       }
 
       /* Disable player draw button and change status */
-      gameInfo.innerText = `Player ${playersTurn}, your current hand is ${recognizeCurrentHand(player1Cards)}. Please choose any number of cards you would like to replace, and hit submit`;
+      gameInfo.innerText = `Player ${playersTurn}, your current hand has a ${recognizeCurrentHand(player1Cards)}. Please choose any number of cards you would like to replace, and hit submit`;
       player1Button.disabled = false;
       player1Button.style.display = 'none';
       player1ReplaceButton.style.display = 'inline-block';
@@ -244,9 +291,40 @@ const sortCurrentHand = (firstCard, secondCard) => firstCard.rank - secondCard.r
 
 const recognizeCurrentHand = (hand) => {
   console.log('current hand:', hand);
-  const sortedHand = [...hand].sort(sortCurrentHand);
-  console.log('sorted current hand:', sortedHand);
-  return `Your current hand has a high card of ${sortedHand[sortedHand.length - 1].name}`;
+  // initialize hand string
+  let string = '';
+  // initialize sorted hand using a shallow copy of current hand
+  const SORTED_HAND = [...hand].sort(sortCurrentHand);
+  console.log('sorted current hand:', SORTED_HAND);
+  // initialize tally
+  const tally = {};
+  for (let i = 0; i < SORTED_HAND.length; i += 1) {
+    const cardName = SORTED_HAND[i].name;
+    // If we have seen the card name before, increment its count
+    if (cardName in tally) {
+      tally[cardName] += 1;
+    }
+    // Else, initialise count of this card name to 1
+    else {
+      tally[cardName] = 1;
+    }
+  }
+
+  // initialize pairs
+  const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
+  const FIRST_PAIR = PAIRS[0];
+  // hand recognition logic
+  if (PAIRS.length === 2) {
+    string += `2 pairs of ${FIRST_PAIR} and ${PAIRS[1]}`;
+  } else if (PAIRS.length > 0) {
+    const PAIR = PAIRS[0];
+    string += `pair of ${FIRST_PAIR}s`;
+  }
+  else {
+    string += `high card of ${SORTED_HAND[SORTED_HAND.length - 1].name}`;
+  }
+
+  return string;
 };
 
 /**
