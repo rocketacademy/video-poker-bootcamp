@@ -235,19 +235,19 @@ const player1Click = () => {
       //     colour: 'black',
       //   },
       //   {
-      //     name: 'king',
-      //     suit: 'clubs',
-      //     rank: 13,
-      //     suitSymbol: '♣',
-      //     displayName: 'K',
-      //     colour: 'black',
-      //   },
-      //   {
       //     name: '10',
       //     suit: 'clubs',
       //     rank: 10,
       //     suitSymbol: '♣',
       //     displayName: '10',
+      //     colour: 'black',
+      //   },
+      //   {
+      //     name: 'queen',
+      //     suit: 'spades',
+      //     rank: 12,
+      //     suitSymbol: '♠',
+      //     displayName: 'Q',
       //     colour: 'black',
       //   },
       // ];
@@ -342,6 +342,10 @@ const recognizeCurrentHand = (hand) => {
   // initialize pairs
   const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
   const FIRST_PAIR = PAIRS[0];
+  let firstPairRank = -1;
+  if (PAIRS.length > 0) {
+    firstPairRank = SORTED_HAND.filter((item) => item.name === FIRST_PAIR)[0].rank;
+  }
   // hand recognition logic
   // ROYAL FLUSH
   if (
@@ -378,9 +382,13 @@ const recognizeCurrentHand = (hand) => {
   else if (PAIRS.length === 2) {
     string += `2 pairs of ${FIRST_PAIR}s and ${PAIRS[1]}s`;
   }
-  // A PAIR
+  // A HIGH PAIR (JACK AND ABOVE)
+  else if (PAIRS.length > 0 && firstPairRank >= 11) {
+    string += `a pair of ${FIRST_PAIR}s. The odds are even`;
+  }
+  // A LOW PAIR (10s AND BELOW)
   else if (PAIRS.length > 0) {
-    string += `a pair of ${FIRST_PAIR}s`;
+    string += `a pair of ${FIRST_PAIR}s. You will lose your bet if you do not replace any cards`;
   }
   // HIGH CARD
   else {
