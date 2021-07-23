@@ -83,10 +83,11 @@ const makeDeck = () => {
       }
 
       // Create a new card with the current name, suit, and rank
+      // CX fix: set aces to 13, as highest rank
       const card = {
         name: cardName,
         suit: currentSuit,
-        rank: rankCounter,
+        rank: (rankCounter === 1) ? 13 : rankCounter,
         suitSymbol,
         displayName,
         colour,
@@ -217,7 +218,7 @@ const player1Click = () => {
       }
 
       /* Disable player draw button and change status */
-      gameInfo.innerText = `Player ${playersTurn}, please choose any number of cards you would like to replace, and hit submit`;
+      gameInfo.innerText = `Player ${playersTurn}, your current hand is ${recognizeCurrentHand(player1Cards)}. Please choose any number of cards you would like to replace, and hit submit`;
       player1Button.disabled = false;
       player1Button.style.display = 'none';
       player1ReplaceButton.style.display = 'inline-block';
@@ -232,6 +233,16 @@ const player1Click = () => {
       // playersTurn = 2;
     }, 500);
   }
+};
+
+/**
+ * GAMEPLAY MECHANICS
+ *
+ */
+
+const recognizeCurrentHand = (hand) => {
+  console.log('current hand:', hand);
+  return 'current hand recognized!';
 };
 
 /**
