@@ -219,35 +219,35 @@ const player1Click = () => {
           colour: 'black',
         },
         {
-          name: 'king',
-          suit: 'clubs',
-          rank: 13,
-          suitSymbol: '♣',
-          displayName: 'K',
+          name: 'queen',
+          suit: 'spades',
+          rank: 12,
+          suitSymbol: '♠',
+          displayName: 'Q',
           colour: 'black',
         },
         {
           name: 'ace',
-          suit: 'clubs',
+          suit: 'hearts',
           rank: 14,
-          suitSymbol: '♣',
+          suitSymbol: '♥',
           displayName: 'A',
-          colour: 'black',
+          colour: 'red',
         },
         {
-          name: '3',
-          suit: 'clubs',
-          rank: 3,
-          suitSymbol: '♣',
-          displayName: '3',
-          colour: 'black',
+          name: 'queen',
+          suit: 'diamonds',
+          rank: 12,
+          suitSymbol: '♦️',
+          displayName: 'Q',
+          colour: 'red',
         },
         {
-          name: '2',
-          suit: 'clubs',
-          rank: 2,
-          suitSymbol: '♣',
-          displayName: '2',
+          name: 'ace',
+          suit: 'spades',
+          rank: 14,
+          suitSymbol: '♠',
+          displayName: 'A',
           colour: 'black',
         },
       ];
@@ -341,8 +341,12 @@ const recognizeCurrentHand = (hand) => {
   const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
   const FIRST_PAIR = PAIRS[0];
   // hand recognition logic
+  // FULL HOUSE
+  if (THREES.length > 0 && PAIRS.length > 0) {
+    string += `a full house: a three of a kind with ${THREES[0]}s, and a pair of ${FIRST_PAIR}s`;
+  }
   // FLUSH
-  if (IS_FLUSH) {
+  else if (IS_FLUSH) {
     string += `a flush of ${SORTED_HAND[0].suit}`;
   }
   // STRAIGHTS
