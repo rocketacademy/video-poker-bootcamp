@@ -82,6 +82,7 @@ const gameinit = () => {
   gameContainer.classList.add('game-container');
   deckContainer.classList.add('card');
 
+  cardContainer.classList.add('middle-bar')
   handContainer.classList.add('hand-container');
   betContainer.classList.add('betcontainer');
   betButton.classList.add('inline-block', 'large-button','button-bottom-border');
@@ -146,15 +147,27 @@ const gameinit = () => {
     tokensContainer.appendChild(tokensDom);
     tokenCount.innerText = bet;
   });
-
+  let cardsDom = document.createElement('div');
   betButton.addEventListener('click',()=>{
     if(!betCanClick){
       return;
     }
+    
+      handContainer.innerHTML = '';
+      // For testing
+      //  playerHand= royalFlush;
+
+    playerHand = dealCards(maxHandSize);
+    cardsDom = createCards(playerHand);
+    appendChilds(handContainer, cardsDom);
+    handContainer.classList.remove('cardAnimateDiscard');
+    handContainer.classList.add('cardAnimateOpenNew');
+
     upCanClick=false;
     downCanClick=false;
     points -= bet;
     totalPoints.innerText = points;
+    betCanClick=false;
     dealCanClick=true;
     dealButton.classList.add('button-bottom-border');
 
@@ -162,8 +175,10 @@ const gameinit = () => {
   })
 
  
-  let cardsDom = document.createElement('div');
+
   // refresh deck
+  let parentNodes=[];
+  let inners;
   dealButton.addEventListener('click', () => {
     if(!dealCanClick)
     {
@@ -171,30 +186,39 @@ const gameinit = () => {
     }
     scoreCanClick=true;
     scoreButton.classList.add('button-bottom-border');
+    
     if (consecutiveDeals === 0) {
       consecutiveDeals+=1;
-      
-      handContainer.innerHTML = '';
-      // For testing
-      //  playerHand= royalFlush;
+      //flip card here
+      // const cards= document.querySelector('div.card');
+      inners = document.querySelectorAll('div.card-inner');
 
-      playerHand = dealCards(maxHandSize);
+      console.log(inners);
+
+     
+      [].forEach.call(inners,function(inner){
+        inner.classList.add('card-flip');
+        parentNodes.push(inner.parentNode)
+      })
+      console.log(inners);
+      console.log(parentNodes);
+      
+
       cardsDom = createCards(playerHand);
-      appendChilds(handContainer, cardsDom);
-      handContainer.classList.remove('cardAnimateDiscard');
-      handContainer.classList.add('cardAnimateOpenNew');
       console.log(cardsDom);
+      handContainer.innerHTML = '';
+      appendChilds(handContainer, parentNodes);
+
       firstDeal = false;
     }
     else if(consecutiveDeals < 2){
       console.log('in 2nd deal');
       consecutiveDeals+=1;
-      cardsDom = createCards(playerHand);
-      handContainer.innerHTML = '';
-      appendChilds(handContainer, cardsDom);
-      replaceUnheldCards(cardsDom);
+
+      replaceUnheldCards(parentNodes);
       dealCanClick=false;
       dealButton.classList.remove('button-bottom-border');
+      parentNodes=[];
     }
   });
 

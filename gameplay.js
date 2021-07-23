@@ -80,7 +80,7 @@ const createCard = (cardObj) => {
 const createCardImg = (cardObj) => {
   const cardImg = document.createElement('img');
   cardImg.src = getFilePathCard(cardObj.suit, cardObj.displayName);
-  cardImg.classList.add('cardimg');
+  cardImg.classList.add('cardimg','card-inner');
   return cardImg;
 };
 /**
@@ -95,16 +95,34 @@ const createCards = () => {
     let name; let
       suit;
     const card = document.createElement('div');
-    card.classList.add('card', 'openCard');
-    // [name, suit] = createCard(refCard);
-    const cardImg = createCardImg(refCard);
-    card.appendChild(cardImg);
+    const cardInner= document.createElement('div');
+    const cardFront= document.createElement('div');
+    const cardBack = document.createElement('div');
+    const cardBackImg= document.createElement('img');
 
     domCards.push(card);
-    const holder = document.createElement('div');
-    card.appendChild(holder);
 
-    card.addEventListener('click', () => {
+    card.classList.add('card');
+    cardInner.classList.add('card-inner');
+    cardFront.classList.add('openCard');
+    cardBack.classList.add('closeCard');
+    
+    cardInner.appendChild(cardFront);
+    cardInner.appendChild(cardBack);
+
+    card.appendChild(cardInner);
+
+    cardBackImg.src='./resources/cardFace/deck_4_large.png';
+    cardBack.appendChild(cardBackImg);
+    
+
+    const cardOpenImg = createCardImg(refCard);
+    cardFront.appendChild(cardOpenImg);
+
+    
+    const holder = document.createElement('div');
+    cardFront.appendChild(holder);
+    cardFront.addEventListener('click', () => {
       playerHand[i].isHeld = !playerHand[i].isHeld;
 
       if (playerHand[i].isHeld)
@@ -126,6 +144,7 @@ const replaceUnheldCards = (cardsDom) => {
   {
     const refCard = playerHand[i];
     const refDom = cardsDom[i];
+     console.log(cardsDom);
     if (refCard.isHeld === false)
     {
 
@@ -134,6 +153,7 @@ const replaceUnheldCards = (cardsDom) => {
        setTimeout(()=>{
         while (refDom.firstChild) {
          refDom.removeChild(refDom.lastChild);
+         
         }
 
         },500)
@@ -146,12 +166,6 @@ const replaceUnheldCards = (cardsDom) => {
         refDom.classList.add('cardAnimateOpenNew');
       },1000);
    
-    }
-    else {
-      const holder = document.createElement('div');
-      refDom.appendChild(holder);
-      holder.classList.add('holder');
-      holder.innerText = 'hold';
     }
   }
 };

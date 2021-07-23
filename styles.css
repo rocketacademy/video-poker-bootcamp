@@ -107,13 +107,9 @@ img {
   position: absolute;
 }
 .holder {
-  z-index: 1;
-  display: block;
-  position: absolute;
   background-color: rgba(0, 0, 0, 0.19);
   transform: translate(0px, calc(var(--card-height) * -1.011));
-
-  width: var(--card-width);
+  text-align: center;
   line-height: 1.6;
 }
 
@@ -144,12 +140,15 @@ img {
 .results {
   width: 600px;
 }
+.middle-bar {
+  /* border: 3px dotted blueviolet; */
+  /* padding: 20px; */
+}
 .bottom-bar {
   width: 100%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  position: relative;
   align-items: center;
 }
 .tokencontainer {
@@ -168,13 +167,19 @@ img {
 
 .arrow-up {
   display: block;
-  margin: 10px;
-  width: 0px;
-  height: 0px;
   border-left: 15px solid rgb(216, 216, 216);
   border-right: 15px solid rgb(216, 216, 216);
   border-bottom: 15px solid lightslategray;
   border-top: 0px;
+  padding: 0px;
+}
+
+.arrow-down {
+  display: block;
+  border-left: 15px solid rgb(216, 216, 216);
+  border-right: 15px solid rgb(216, 216, 216);
+  border-top: 15px solid lightslategray;
+  border-bottom: 0px;
   padding: 0px;
 }
 .bet-arrows {
@@ -182,20 +187,7 @@ img {
   text-align: center;
   display: inline-block;
   right: 0px;
-  vertical-align: center;
   position: absolute;
-}
-
-.arrow-down {
-  display: block;
-  margin: 10px;
-  width: 0px;
-  height: 0px;
-  border-left: 15px solid rgb(216, 216, 216);
-  border-right: 15px solid rgb(216, 216, 216);
-  border-top: 15px solid lightslategray;
-  border-bottom: 0px;
-  padding: 0px;
 }
 
 .hand-container {
@@ -206,17 +198,49 @@ img {
   justify-content: center;
 }
 .card {
-  display: inline;
   margin: 5px;
-  padding: auto;
-  background-color: transparent;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
   width: var(--card-width);
   height: var(--card-height);
-  text-align: center;
   display: inline-block;
   z-index: 1;
+  perspective: 1000px;
+}
+
+.card-inner {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* transition: transform 2s;
+  transform-style: preserve-3d; */
+}
+
+@keyframes flipCard {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(180deg);
+  }
+}
+
+.card-flip {
+  transform-style: preserve-3d;
+  animation-name: flipCard;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+.openCard,
+.closeCard {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .openCard {
-  background-color: aliceblue;
+  transform: rotateY(180deg);
 }
