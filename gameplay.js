@@ -106,6 +106,8 @@ const dealCards = () => {
   // Empty cardContainer
   cardContainer.innerHTML = '';
   playerArr = [];
+  cardRankTally = {};
+  cardSuitTally = {};
   dealButton.disabled = true;
   bet = Number(betAmount.value);
   document.getElementById('betAmount').disabled = true;
@@ -132,8 +134,8 @@ const dealCards = () => {
 // swap cards based on cards that are highlighted red
 // push new card data into player hand array
 const swapCard = () => {
+  // get cards selected to be swapped and swap it with new cards
   const cardToBeSwapped = document.getElementsByClassName('selected');
-  // *** need to remove replaced card from playerArr***
   for (let i = 0; i < cardToBeSwapped.length; i += 1) {
     const cardDisplayName = cardToBeSwapped[i].firstChild.innerText;
     const cardSuitSymbol = cardToBeSwapped[i].lastChild.innerText;
@@ -146,21 +148,20 @@ const swapCard = () => {
     cardContainer.appendChild(cardElement);
 
     playerArr.splice(cardIndex, 1, playerCard);
-    // cardElement = createCard(playerCard);
   }
 
-  // remove card to be swappedfrom card container
+  // remove card to be swapped from card container
   while (cardToBeSwapped[0]) {
     cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
   }
-
+  createRankTally();
+  createSuitTally();
   swapButton.disabled = true;
   dealButton.disabled = false;
   document.getElementById('betAmount').disabled = false;
-  // eslint-disable-next-line prefer-const
-  const pointsForHand = calcHandScore();
+  const pointsForHand = calcHandScore(cardRankTally, cardSuitTally);
   points += pointsForHand;
-  gameMessage.innerHTML = `You won ${pointsForHand} points this round!`;
+  gameMessage.innerHTML = `Your points for this round is ${pointsForHand}!`;
   scoreBoard.innerHTML = `${points}`;
 };
 
