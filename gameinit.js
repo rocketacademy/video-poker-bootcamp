@@ -42,11 +42,12 @@ const createtokens = () => {
 let firstDeal = true;
 let consecutiveDeals=0;
 const gameinit = () => {
+  const gameContainer=document.createElement('div');
   const header = document.createElement('h1');
   const cardContainer = document.createElement('div');
   const deckContainer = document.createElement('div');
   const faceDownImg = document.createElement('img');
-  const totalPoints = document.createElement('div');
+
 
   const bottomBar = document.createElement('div');
   const betContainer = document.createElement('div');
@@ -62,13 +63,21 @@ const gameinit = () => {
   const scoreButton = document.createElement('button');
   const results = document.createElement('div');
 
+  const creditContainer=document.createElement('div');
+  
+  const creditTxt = document.createElement('div');
+  const totalPoints = document.createElement('div');
+
   header.innerText = 'Video Poker!';
   totalPoints.innerText = points;
   dealButton.innerText = 'Deal';
   scoreButton.innerText = 'Score';
+  creditTxt.innerText = 'Credits';
+
+  
 
   handContainer.innerHTML = '';
-
+  gameContainer.classList.add('game-container');
   deckContainer.classList.add('card', 'cardContainer');
   handContainer.classList.add('cardContainer');
   betContainer.classList.add('betcontainer');
@@ -79,8 +88,9 @@ const gameinit = () => {
   betArrows.classList.add('bet-arrows');
   upBet.classList.add('arrow-up');
   downBet.classList.add('arrow-down');
-  buttonContainer.classList.add('inline-block', 'vertical-center');
+  buttonContainer.classList.add('inline-block');
   bottomBar.classList.add('bottom-bar');
+  results.classList.add('inline-block','results');
 
   faceDownImg.src = './resources/cardFace/deck_4_large.png';
   addTokens();
@@ -112,13 +122,14 @@ const gameinit = () => {
       handContainer.innerHTML = '';
       // For testing
       // playerHand= doubleJack;
-      console.log('in 1st deal');
 
       playerHand = dealCards(maxHandSize);
       cardsDom = createCards(playerHand);
       appendChilds(handContainer, cardsDom);
+      handContainer.classList.add('cardAnimateOpenNew');
       console.log(cardsDom);
       firstDeal = false;
+     
     }
     else if(consecutiveDeals < 2){
       console.log('in 2nd deal');
@@ -130,10 +141,8 @@ const gameinit = () => {
      
     }
     else{
-    // dealButton.disabled = true;
     }
   });
-  // endgame message when deck is exhausted
 
   scoreButton.addEventListener('click', () => {
     if(firstDeal)
@@ -150,8 +159,8 @@ const gameinit = () => {
     consecutiveDeals=1;
 
     setTimeout(() => {
-      
 
+      handContainer.classList.remove('cardAnimateOpenNew');
       handContainer.classList.add('cardAnimateDiscard');
 
       handContainer.innerHTML = '';
@@ -159,7 +168,6 @@ const gameinit = () => {
         const resetMsg= document.createElement('div');
         resetMsg.innerText = 'Out of cards, deal to reset.';
         resetMsg.classList.add('resetMessage');
-        // resetMsg.style.transform='translate (400px, 160px)'
         handContainer.appendChild(resetMsg);
         
         dealButton.disabled = false;
@@ -171,7 +179,8 @@ const gameinit = () => {
         appendChilds(handContainer, createCards());
 
         setTimeout(()=>{ 
-          handContainer.classList.add('cardAnimateOpenNew');},
+        handContainer.classList.remove('cardAnimateDiscard');
+        handContainer.classList.add('cardAnimateOpenNew');},
           500);
        
       }
@@ -185,21 +194,28 @@ const gameinit = () => {
   betArrows.appendChild(tokenCount);
   betArrows.appendChild(upBet);
   betArrows.appendChild(downBet);
-  buttonContainer.appendChild(dealButton);
-  buttonContainer.appendChild(scoreButton);
+
 
   betContainer.appendChild(tokensContainer);
   betContainer.appendChild(betArrows);
 
+  buttonContainer.appendChild(dealButton);
+  buttonContainer.appendChild(scoreButton);
+
+  creditContainer.appendChild(creditTxt);
+  creditContainer.appendChild(totalPoints);
+
   bottomBar.appendChild(betContainer);
   bottomBar.appendChild(buttonContainer);
   bottomBar.appendChild(results);
+  bottomBar.appendChild(creditContainer);
 
-  document.body.appendChild(header);
-  document.body.appendChild(totalPoints);
+  gameContainer.appendChild(header);
+  
 
-  document.body.appendChild(cardContainer);
+  gameContainer.appendChild(cardContainer);
 
-  document.body.appendChild(bottomBar);
+  gameContainer.appendChild(bottomBar);
+  document.body.appendChild(gameContainer);
 };
 gameinit();

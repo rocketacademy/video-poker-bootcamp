@@ -122,13 +122,10 @@ const createCards = () => {
 };
 
 const replaceUnheldCards = (cardsDom) => {
-  // throaway action for cards
-   console.log(playerHand);
   for (let i = 0; i < playerHand.length; i++)
   {
     const refCard = playerHand[i];
     const refDom = cardsDom[i];
-    console.log(refCard.isHeld);
     if (refCard.isHeld === false)
     {
       // scaling with rotation animation
@@ -167,7 +164,6 @@ const replaceUnheldCards = (cardsDom) => {
  */
 const replaceCard = (cards, i) => {
   const replacement = deck.pop();
-  console.log(deck);
   cards[i] = replacement;
   return createCardImg(replacement);
 };
