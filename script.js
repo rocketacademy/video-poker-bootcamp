@@ -128,6 +128,11 @@ const createCard = (cardInfo) => {
  * Global variables that store game-wide data or DOM elements
  */
 
+// GAME STATE STRING CONSTANTS
+const INIT_COINS = 'INIT_COINS';
+const SET_BET = 'SET_BET';
+const PLAY_CARDS = 'PLAY_CARDS';
+
 // Initialize unshuffled deck
 const unshuffledDeck = makeDeck();
 // Shuffled deck as a copy of unshuffled deck
@@ -135,6 +140,8 @@ let deck = shuffleCards([...unshuffledDeck]);
 
 // Add the cardContainer DOM element as a global variable.
 let cardContainer;
+let coinsInput;
+let coinsInputButton;
 
 // Player 1 starts first
 const playersTurn = 1; // matches with starting instructions
@@ -147,6 +154,11 @@ const player1Button = document.createElement('button');
 const player1ReplaceButton = document.createElement('button');
 // Create game info div as global value
 const gameInfo = document.createElement('div');
+// initialize gameState
+let gameState = INIT_COINS;
+// initialize totalCoins
+let totalCoins = 0;
+const totalWinnings = 0;
 
 /**
  * PLAYER ACTION CALLBACKS
@@ -155,6 +167,25 @@ const gameInfo = document.createElement('div');
 
 // Event handler on player 1's button to draw card and switch
 // to player 2's turn
+const insertCoinsSubmit = () => {
+  const COINS_INPUT = document.querySelector('.coinsInput');
+  const COINS = Number(COINS_INPUT.value);
+  const IS_COINS_NUMBER = !Number.isNaN(COINS);
+  if (COINS_INPUT.value.trim() !== '' && IS_COINS_NUMBER && COINS > 0 && COINS <= 1000) {
+    resetUI();
+    totalCoins = COINS;
+    initGame();
+  } else {
+    const COINS_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.coinsInputFeedback');
+    if (COINS_INPUT_FEEDBACK_PARAGRAPHS.length === 0) {
+      const COINS_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
+      COINS_INPUT_FEEDBACK_PARAGRAPH.classList.add('coinsInputFeedback');
+      COINS_INPUT_FEEDBACK_PARAGRAPH.innerText = 'Please insert a minimum of 1 coin, and a maximum of 1000 coins.';
+      document.body.appendChild(COINS_INPUT_FEEDBACK_PARAGRAPH);
+    }
+  }
+};
+
 const player1ReplaceCardsClick = () => {
   const SELECTED_CARDS = document.querySelectorAll('.selected');
   /* Replace cards in player1Cards */
@@ -403,7 +434,22 @@ const recognizeCurrentHand = (hand) => {
  * We can now centralise our game initialisation into a single function called `initGame`.
  */
 
+const showTotalCoins = () => {
+  const TOTAL_COINS_PARAGRAPH = document.createElement('p');
+  TOTAL_COINS_PARAGRAPH.innerText = `Coins left: ${totalCoins}`;
+  document.body.appendChild(TOTAL_COINS_PARAGRAPH);
+};
+
+const showTotalWinnings = () => {
+  const YOUR_WINNINGS_PARAGRAPH = document.createElement('p');
+  YOUR_WINNINGS_PARAGRAPH.innerText = `Your winnings: ${totalWinnings}`;
+  document.body.appendChild(YOUR_WINNINGS_PARAGRAPH);
+};
+
 const initGame = () => {
+  gameState = PLAY_CARDS;
+  showTotalCoins();
+  showTotalWinnings();
   // Initialise cardContainer as a div with CSS class card-container,
   // and add it to the document body. Add this logic to the initGame function.
   cardContainer = document.createElement('div');
@@ -428,5 +474,42 @@ const initGame = () => {
   document.body.appendChild(gameInfo);
 };
 
+const initCoins = () => {
+  // set game state
+  gameState = INIT_COINS;
+  // initialize coins input
+  coinsInput = document.createElement('input');
+  coinsInput.setAttribute('type', 'number');
+  coinsInput.classList.add('coinsInput');
+  document.body.appendChild(coinsInput);
+
+  // initialize coins input button
+  coinsInputButton = document.createElement('button');
+  coinsInputButton.innerText = 'insert coins';
+  coinsInputButton.addEventListener('click', insertCoinsSubmit);
+  document.body.appendChild(coinsInputButton);
+};
+
+const resetUI = () => {
+  const PARAGRAPHS = document.querySelectorAll('p');
+  const DIVS = document.querySelectorAll('div');
+  const INPUTS = document.querySelectorAll('input');
+  const BUTTONS = document.querySelectorAll('button');
+  for (let i = 0; i < PARAGRAPHS.length; i += 1) {
+    PARAGRAPHS[i].remove();
+  }
+  for (let i = 0; i < DIVS.length; i += 1) {
+    DIVS[i].remove();
+  }
+  for (let i = 0; i < INPUTS.length; i += 1) {
+    INPUTS[i].remove();
+  }
+  for (let i = 0; i < BUTTONS.length; i += 1) {
+    BUTTONS[i].remove();
+  }
+};
+
 // CX: Run initGame() to start everything!
-initGame();
+// initGame();
+
+initCoins();
