@@ -47,7 +47,6 @@ let createRankTally = () => {
       cardRankTally[rank] = 1;
     }
   }
-  console.log(cardRankTally);
 };
 
 let createSuitTally = () => {
@@ -64,5 +63,4 @@ let createSuitTally = () => {
       cardSuitTally[suit] = 1;
     }
   }
-  console.log(cardSuitTally);
 };
