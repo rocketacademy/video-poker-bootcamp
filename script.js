@@ -240,9 +240,13 @@ const player1Click = () => {
  *
  */
 
+const sortCurrentHand = (firstCard, secondCard) => firstCard.rank - secondCard.rank;
+
 const recognizeCurrentHand = (hand) => {
   console.log('current hand:', hand);
-  return 'current hand recognized!';
+  const sortedHand = [...hand].sort(sortCurrentHand);
+  console.log('sorted current hand:', sortedHand);
+  return `Your current hand has a high card of ${sortedHand[sortedHand.length - 1].name}`;
 };
 
 /**
