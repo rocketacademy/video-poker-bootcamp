@@ -209,54 +209,54 @@ const player1Click = () => {
 
       // For testing: use this hand
       // ♠, ♥, ♣, ♦️
-      const TEST_HAND = [
-        {
-          name: 'queen',
-          suit: 'clubs',
-          rank: 12,
-          suitSymbol: '♣',
-          displayName: 'Q',
-          colour: 'black',
-        },
-        {
-          name: '9',
-          suit: 'clubs',
-          rank: 9,
-          suitSymbol: '♣',
-          displayName: '9',
-          colour: 'black',
-        },
-        {
-          name: 'jack',
-          suit: 'clubs',
-          rank: 11,
-          suitSymbol: '♣',
-          displayName: 'J',
-          colour: 'black',
-        },
-        {
-          name: '8',
-          suit: 'clubs',
-          rank: 8,
-          suitSymbol: '♣',
-          displayName: '8',
-          colour: 'black',
-        },
-        {
-          name: '10',
-          suit: 'clubs',
-          rank: 10,
-          suitSymbol: '♣',
-          displayName: '10',
-          colour: 'black',
-        },
-      ];
+      // const TEST_HAND = [
+      //   {
+      //     name: 'queen',
+      //     suit: 'clubs',
+      //     rank: 12,
+      //     suitSymbol: '♣',
+      //     displayName: 'Q',
+      //     colour: 'black',
+      //   },
+      //   {
+      //     name: 'ace',
+      //     suit: 'clubs',
+      //     rank: 14,
+      //     suitSymbol: '♣',
+      //     displayName: 'A',
+      //     colour: 'black',
+      //   },
+      //   {
+      //     name: 'jack',
+      //     suit: 'clubs',
+      //     rank: 11,
+      //     suitSymbol: '♣',
+      //     displayName: 'J',
+      //     colour: 'black',
+      //   },
+      //   {
+      //     name: 'king',
+      //     suit: 'clubs',
+      //     rank: 13,
+      //     suitSymbol: '♣',
+      //     displayName: 'K',
+      //     colour: 'black',
+      //   },
+      //   {
+      //     name: '10',
+      //     suit: 'clubs',
+      //     rank: 10,
+      //     suitSymbol: '♣',
+      //     displayName: '10',
+      //     colour: 'black',
+      //   },
+      // ];
 
       // Pop player 1's card metadata from the deck
       for (let i = 0; i < 5; i += 1) {
         // For testing: use this hand
-        player1Cards.push(TEST_HAND[i]);
-        // player1Cards.push(deck.pop());
+        // player1Cards.push(TEST_HAND[i]);
+        player1Cards.push(deck.pop());
         // Create card element from card metadata
         const cardElement = createCard(player1Cards[i]);
         // Append the card element to the card container
@@ -343,8 +343,15 @@ const recognizeCurrentHand = (hand) => {
   const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
   const FIRST_PAIR = PAIRS[0];
   // hand recognition logic
+  // ROYAL FLUSH
+  if (
+    IS_FLUSH && IS_STRAIGHT
+    && SORTED_HAND[0].rank === 10 && SORTED_HAND[SORTED_HAND.length - 1].rank === 14
+  ) {
+    string += `a royal flush of ${SORTED_HAND[0].suit}`;
+  }
   // STRAIGHT FLUSH
-  if (IS_FLUSH && IS_STRAIGHT) {
+  else if (IS_FLUSH && IS_STRAIGHT) {
     string += `a straight flush starting from a ${SORTED_HAND[0].name} of ${SORTED_HAND[0].suit}, and ending with a ${SORTED_HAND[SORTED_HAND.length - 1].name} of ${SORTED_HAND[SORTED_HAND.length - 1].suit}`;
   }
   // FOUR OF A KIND
