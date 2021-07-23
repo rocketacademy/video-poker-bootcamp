@@ -220,11 +220,11 @@ const player1Click = () => {
         },
         {
           name: 'king',
-          suit: 'hearts',
+          suit: 'clubs',
           rank: 13,
-          suitSymbol: '♥',
+          suitSymbol: '♣',
           displayName: 'K',
-          colour: 'red',
+          colour: 'black',
         },
         {
           name: 'ace',
@@ -235,19 +235,19 @@ const player1Click = () => {
           colour: 'black',
         },
         {
-          name: 'jack',
+          name: '3',
           suit: 'clubs',
-          rank: 11,
+          rank: 3,
           suitSymbol: '♣',
-          displayName: 'J',
+          displayName: '3',
           colour: 'black',
         },
         {
-          name: '10',
-          suit: 'spades',
-          rank: 10,
-          suitSymbol: '♠',
-          displayName: '10',
+          name: '2',
+          suit: 'clubs',
+          rank: 2,
+          suitSymbol: '♣',
+          displayName: '2',
           colour: 'black',
         },
       ];
@@ -291,12 +291,23 @@ const sortCurrentHand = (firstCard, secondCard) => firstCard.rank - secondCard.r
 const getStraights = (hand) => {
   const IS_STRAIGHT = true;
   // comparing current card with next, so we want to stop at 2nd last card
-  for (let i = 0; i < hand.length - 1; i++) {
+  for (let i = 0; i < hand.length - 1; i += 1) {
     if (hand[i + 1].rank - hand[i].rank !== 1) {
       return false;
     }
   }
   return IS_STRAIGHT;
+};
+
+const getFlush = (hand) => {
+  const IS_FLUSH = true;
+  for (let i = 0; i < hand.length - 1; i += 1) {
+    if (hand[i + 1].suit !== hand[i].suit) {
+      return false;
+    }
+  }
+
+  return IS_FLUSH;
 };
 
 const recognizeCurrentHand = (hand) => {
@@ -320,20 +331,22 @@ const recognizeCurrentHand = (hand) => {
     }
   }
 
+  // initialize isFlush
+  const IS_FLUSH = getFlush(SORTED_HAND);
   // initialize isStraight
   const IS_STRAIGHT = getStraights(SORTED_HAND);
-  // comparing current card with next, so we want to stop at 2nd last card
-  for (let i = 0; i < SORTED_HAND.length - 1; i++) {
-    const cardRank = SORTED_HAND[i].rank;
-  }
   // initialize three of a kind
   const THREES = Object.keys(tally).filter((key) => tally[key] === 3);
   // initialize pairs
   const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
   const FIRST_PAIR = PAIRS[0];
   // hand recognition logic
+  // FLUSH
+  if (IS_FLUSH) {
+    string += `a flush of ${SORTED_HAND[0].suit}`;
+  }
   // STRAIGHTS
-  if (IS_STRAIGHT) {
+  else if (IS_STRAIGHT) {
     string += `a straight starting from a ${SORTED_HAND[0].name} of ${SORTED_HAND[0].suit}, and ending with a ${SORTED_HAND[SORTED_HAND.length - 1].name} of ${SORTED_HAND[SORTED_HAND.length - 1].suit}`;
   }
   // THREE OF A KIND
