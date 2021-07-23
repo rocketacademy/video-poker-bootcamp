@@ -76,11 +76,76 @@ const isFlush = (cardSuitTally) => {
   }
   return false;
 };
+
+const isStraight = () => {
+  let min = Math.min.apply(Math, playerArr.map((o) => o.rank));
+
+  let max = Math.max.apply(Math, playerArr.map((o) => o.rank));
+
+  // check if elements is unique if max - min + 1 = arrLength
+  if (max - min + 1 === 5) {
+    /* Create a temp array to hold visited flag of all elements.
+    all values are initialized as false */
+    let visited = new Array(5);
+    for (let i = 0; i < 5; i += 1)
+    {
+      visited[i] = false;
+    }
+
+    for (let i = 0; i < 5; i += 1)
+    {
+      // If we see an element again, then return false
+      if (visited[playerArr[i] - min] !== false)
+      {
+        return false;
+      }
+      // If visited first time, then mark the element as visited
+      visited[playerArr[i] - min] = true;
+    }
+    // If all elements occur once, then return true
+    return true;
+  }
+  return false; // if (max - min  + 1 != 5)
+};
+
+const isRoyalStraight = (cardRankTally) => {
+  if ((cardRankTally[10] === 1
+    || cardRankTally[11] === 1
+    || cardRankTally[12] === 1
+    || cardRankTally[13] === 1
+    || cardRankTally[1] === 1
+  )) {
+    return true;
+  }
+  return false;
+};
+
+const isSuitAllSpade = (cardSuitTally) => {
+  for (suit in cardSuitTally) {
+    if (cardSuitTally.spades === 5) {
+      return true;
+    }
+  }
+  return false;
+};
+
 let calcHandScore = (cardRankTally, cardSuitTally) => {
   let payoutRate;
   let pointsWon;
 
-  if (isFourOfAKind(cardRankTally)) {
+  if ((isRoyalStraight) && (isSuitAllSpade)) {
+    payoutRate = 800;
+    pointsWon = bet * payoutRate;
+    console.log('Royal flush');
+  } else if ((isStraight) && (isFlush)) {
+    payoutRate = 50;
+    pointsWon = bet * payoutRate;
+    console.log('straight flush');
+  } else if (isStraight) {
+    payoutRate = 4;
+    pointsWon = bet * payoutRate;
+    console.log('straight');
+  } else if (isFourOfAKind(cardRankTally)) {
     payoutRate = 25;
     pointsWon = bet * payoutRate;
     console.log('4ofAkind');

@@ -134,6 +134,13 @@ const dealCards = () => {
 // swap cards based on cards that are highlighted red
 // push new card data into player hand array
 const swapCard = () => {
+  const playerArr = [
+    { rank: 11, suit: 'spades', name: 'j' },
+    { rank: 10, suit: 'spades', name: '10' },
+    { rank: 12, suit: 'spades', name: '8' },
+    { rank: 13, suit: 'spades', name: '7' },
+    { rank: 1, suit: 'spades', name: '9' },
+  ];
   // get cards selected to be swapped and swap it with new cards
   const cardToBeSwapped = document.getElementsByClassName('selected');
   for (let i = 0; i < cardToBeSwapped.length; i += 1) {
