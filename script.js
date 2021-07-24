@@ -131,7 +131,7 @@ const createCard = (cardInfo) => {
 // GAME STATE STRING CONSTANTS
 const INIT_COINS = 'INIT_COINS';
 const SET_BET = 'SET_BET';
-const PLAY_CARDS = 'PLAY_CARDS';
+const SHOW_INITIAL_HAND = 'SHOW_INITIAL_HAND';
 
 // Initialize unshuffled deck
 const unshuffledDeck = makeDeck();
@@ -155,6 +155,7 @@ const player1ReplaceButton = document.createElement('button');
 // Create game info div as global value
 const gameInfo = document.createElement('div');
 // initialize gameState
+let prevGameState = '';
 let gameState = INIT_COINS;
 // initialize totalCoins
 let totalCoins = 0;
@@ -172,8 +173,7 @@ const insertCoinsSubmit = () => {
   const COINS = Number(COINS_INPUT.value);
   const IS_COINS_NUMBER = !Number.isNaN(COINS);
   if (COINS_INPUT.value.trim() !== '' && IS_COINS_NUMBER && COINS > 0 && COINS <= 1000) {
-    resetUI();
-    totalCoins = COINS;
+    totalCoins += COINS;
     initGame();
   } else {
     const COINS_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.coinsInputFeedback');
@@ -430,8 +430,8 @@ const recognizeCurrentHand = (hand) => {
 };
 
 /**
- * GAME INITIALISATION
- * We can now centralise our game initialisation into a single function called `initGame`.
+ * UI TOGGLES
+ *
  */
 
 const showTotalCoins = () => {
@@ -446,67 +446,79 @@ const showTotalWinnings = () => {
   document.body.appendChild(YOUR_WINNINGS_PARAGRAPH);
 };
 
+const toggleInsertCoins = () => {
+  if (gameState === INIT_COINS) {
+    // initialize coins input
+    coinsInput = document.createElement('input');
+    coinsInput.setAttribute('type', 'number');
+    coinsInput.classList.add('coinsInput');
+    coinsInput.classList.add('initCoins');
+    document.body.appendChild(coinsInput);
+
+    // initialize coins input button
+    coinsInputButton = document.createElement('button');
+    coinsInputButton.classList.add('initCoins');
+    coinsInputButton.innerText = 'insert coins';
+    coinsInputButton.addEventListener('click', insertCoinsSubmit);
+    document.body.appendChild(coinsInputButton);
+  } else {
+    const INIT_COINS_ELEMENTS = document.querySelectorAll('.initCoins');
+    for (let i = 0; i < INIT_COINS_ELEMENTS.length; i += 1) {
+      INIT_COINS_ELEMENTS[i].remove();
+    }
+  }
+};
+
+const toggleShowInitialHand = () => {
+  if (gameState === SHOW_INITIAL_HAND) {
+    showTotalCoins();
+    showTotalWinnings();
+    // Initialise cardContainer as a div with CSS class card-container,
+    // and add it to the document body. Add this logic to the initGame function.
+    cardContainer = document.createElement('div');
+    cardContainer.classList.add('card-container');
+    document.body.appendChild(cardContainer);
+
+    // initialize button functionality
+    player1Button.innerText = 'Player 1 Draw';
+    document.body.appendChild(player1Button);
+
+    player1Button.addEventListener('click', player1Click);
+
+    player1ReplaceButton.innerText = 'Player 1 Replace Cards';
+    player1ReplaceButton.style.display = 'none';
+    document.body.appendChild(player1ReplaceButton);
+
+    player1ReplaceButton.addEventListener('click', player1ReplaceCardsClick);
+
+    // fill game info div with starting instructions
+    gameInfo.innerText = `Its player ${playersTurn} turn. Click to draw 5 cards!`;
+
+    document.body.appendChild(gameInfo);
+  }
+};
+
+const toggleUI = () => {
+  toggleInsertCoins();
+  toggleShowInitialHand();
+};
+
+/**
+ * GAME INITIALISATION
+ * We can now centralise our game initialisation into a single function called `initGame`.
+ */
+
 const initGame = () => {
-  gameState = PLAY_CARDS;
-  showTotalCoins();
-  showTotalWinnings();
-  // Initialise cardContainer as a div with CSS class card-container,
-  // and add it to the document body. Add this logic to the initGame function.
-  cardContainer = document.createElement('div');
-  cardContainer.classList.add('card-container');
-  document.body.appendChild(cardContainer);
-
-  // initialize button functionality
-  player1Button.innerText = 'Player 1 Draw';
-  document.body.appendChild(player1Button);
-
-  player1Button.addEventListener('click', player1Click);
-
-  player1ReplaceButton.innerText = 'Player 1 Replace Cards';
-  player1ReplaceButton.style.display = 'none';
-  document.body.appendChild(player1ReplaceButton);
-
-  player1ReplaceButton.addEventListener('click', player1ReplaceCardsClick);
-
-  // fill game info div with starting instructions
-  gameInfo.innerText = `Its player ${playersTurn} turn. Click to draw 5 cards!`;
-
-  document.body.appendChild(gameInfo);
+  prevGameState = gameState;
+  gameState = SHOW_INITIAL_HAND;
+  toggleUI();
 };
 
 const initCoins = () => {
   // set game state
   gameState = INIT_COINS;
-  // initialize coins input
-  coinsInput = document.createElement('input');
-  coinsInput.setAttribute('type', 'number');
-  coinsInput.classList.add('coinsInput');
-  document.body.appendChild(coinsInput);
-
-  // initialize coins input button
-  coinsInputButton = document.createElement('button');
-  coinsInputButton.innerText = 'insert coins';
-  coinsInputButton.addEventListener('click', insertCoinsSubmit);
-  document.body.appendChild(coinsInputButton);
-};
-
-const resetUI = () => {
-  const PARAGRAPHS = document.querySelectorAll('p');
-  const DIVS = document.querySelectorAll('div');
-  const INPUTS = document.querySelectorAll('input');
-  const BUTTONS = document.querySelectorAll('button');
-  for (let i = 0; i < PARAGRAPHS.length; i += 1) {
-    PARAGRAPHS[i].remove();
-  }
-  for (let i = 0; i < DIVS.length; i += 1) {
-    DIVS[i].remove();
-  }
-  for (let i = 0; i < INPUTS.length; i += 1) {
-    INPUTS[i].remove();
-  }
-  for (let i = 0; i < BUTTONS.length; i += 1) {
-    BUTTONS[i].remove();
-  }
+  // set UI
+  toggleUI();
 };
 
 // CX: Run initGame() to start everything!
