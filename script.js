@@ -300,11 +300,11 @@ const drawInitialHand = () => {
   // ♠, ♥, ♣, ♦️
   // const TEST_HAND = [
   //   {
-  //     name: 'queen',
+  //     name: 'king',
   //     suit: 'clubs',
-  //     rank: 12,
+  //     rank: 13,
   //     suitSymbol: '♣',
-  //     displayName: 'Q',
+  //     displayName: 'K',
   //     colour: 'black',
   //   },
   //   {
@@ -316,20 +316,20 @@ const drawInitialHand = () => {
   //     colour: 'black',
   //   },
   //   {
-  //     name: 'jack',
-  //     suit: 'clubs',
-  //     rank: 11,
-  //     suitSymbol: '♣',
-  //     displayName: 'J',
+  //     name: '3',
+  //     suit: 'spades',
+  //     rank: 3,
+  //     suitSymbol: '♠',
+  //     displayName: '3',
   //     colour: 'black',
   //   },
   //   {
-  //     name: '10',
-  //     suit: 'clubs',
-  //     rank: 10,
-  //     suitSymbol: '♣',
-  //     displayName: '10',
-  //     colour: 'black',
+  //     name: '9',
+  //     suit: 'hearts',
+  //     rank: 9,
+  //     suitSymbol: '♥',
+  //     displayName: '9',
+  //     colour: 'red',
   //   },
   //   {
   //     name: 'queen',
@@ -558,21 +558,22 @@ const recognizeCurrentHand = (hand) => {
 
   const HAND_SCORE = calcHandScore(hand);
   const BET_SCORE = HAND_SCORE * currentBet;
+  const WINNINGS = BET_SCORE - currentBet;
 
-  if (BET_SCORE - currentBet > 0 && gameState === 'SHOW_INITIAL_HAND') {
-    string += ` You will win ${BET_SCORE - currentBet} coin(s) if you do not replace your cards!`;
-  } else if (BET_SCORE - currentBet > 0) {
-    totalWinnings += BET_SCORE - currentBet;
-    totalCoins += BET_SCORE - currentBet;
+  if (WINNINGS > 0 && gameState === 'SHOW_INITIAL_HAND') {
+    string += ` You will win ${WINNINGS} coin(s) if you do not replace your cards!`;
+  } else if (WINNINGS > 0) {
+    totalWinnings += WINNINGS;
+    totalCoins += WINNINGS + currentBet;
     currentBet = 0;
-    string += ` You have won ${BET_SCORE - currentBet} coin(s) this round!`;
+    string += ` You have won ${WINNINGS} coin(s) this round!`;
   } else if (BET_SCORE - currentBet === 0 && gameState === 'SHOW_INITIAL_HAND') {
     string += ' You will not win or lose any coins if you do not replace your cards.';
   } else if (BET_SCORE - currentBet === 0) {
-    totalCoins += BET_SCORE;
+    totalCoins += currentBet;
     currentBet = 0;
     string += ' You have not won or lost any coins this round.';
-  } else if (BET_SCORE < 0 && gameState === 'SHOW_INITIAL_HAND') {
+  } else if (BET_SCORE - currentBet < 0 && gameState === 'SHOW_INITIAL_HAND') {
     string += ` You will lose ${Math.abs(BET_SCORE)} coins if you do not replace your cards.`;
   } else {
     totalWinnings -= Math.abs(BET_SCORE);
