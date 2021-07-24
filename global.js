@@ -104,3 +104,12 @@ const processResults = () => {
   gameMessage.innerHTML = `Your points for this round is ${pointsForHand}!`;
   scoreBoard.innerHTML = `${points}`;
 };
+
+const output = (hand, payoutRate) => {
+  const handMessage = document.createElement('div');
+  handMessage.classList.add('handMessage');
+  handMessage.innerHTML = `${hand}`;
+  cardContainer.appendChild(handMessage);
+  pointsWon = bet * payoutRate;
+  return pointsWon;
+};

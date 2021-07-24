@@ -94,33 +94,6 @@ const isStraight = () => {
   return false;
 };
 
-// let max = Math.max.apply(Math, playerArr.map((o) => o.rank));
-// let min = Math.min.apply(Math, playerArr.map((o) => o.rank));
-
-// if (max - min + 1 === 5) {
-//     for (let i = 0; i < playerArr.length; i += 1)
-//     {
-//       for (let j = 0; j < playerArr.length; j += 1)
-//       {
-//         if (i !== j)
-//         {
-//           if (playerArr[i] === playerArr[j])
-//           {
-//             return false; // means there are duplicate values
-//           }
-//         }
-//       }
-//     }
-//     return true; // means there are no duplicate values.
-//   }
-// };
-//     if (playerArr.length === new Set(playerArr).size) {
-//       return true;
-//     } return false;
-//   }
-//   return false; // if ranks are repeated
-// };
-
 const isRoyalStraight = (cardRankTally) => {
   if ((cardRankTally[10] === 1
     && cardRankTally[11] === 1
@@ -142,51 +115,52 @@ const isSuitAllSpade = (cardSuitTally) => {
   return false;
 };
 let calcHandScore = () => {
-  let payoutRate;
   let pointsWon;
+  let hand;
 
   if ((isRoyalStraight(cardRankTally)) && (isSuitAllSpade(cardSuitTally))) {
     payoutRate = 800;
-    pointsWon = bet * payoutRate;
+    hand = 'Royal Flush';
     console.log('Royal flush');
   } else if ((isStraight(playerArr, numOfCards)) && (isFlush(cardSuitTally))) {
     payoutRate = 50;
-    pointsWon = bet * payoutRate;
+    hand = 'Straight Flush';
     console.log('straight flush');
   } else if (isFourOfAKind(cardRankTally)) {
     payoutRate = 25;
-    pointsWon = bet * payoutRate;
+    hand = '4 of a Kind';
     console.log('4ofAkind');
   } else if (isFullHouse(cardRankTally)) {
     payoutRate = 9;
-    pointsWon = bet * payoutRate;
+    hand = 'Full House';
     console.log('fullhse');
   } else if (isFlush(cardSuitTally)) {
     payoutRate = 6;
-    pointsWon = bet * payoutRate;
+    hand = 'Flush';
     console.log('flush');
   } else if (isStraight(playerArr, numOfCards)) {
     payoutRate = 4;
-    pointsWon = bet * payoutRate;
+    hand = 'Straight';
     console.log('straight');
   } else if (isRoyalStraight(cardRankTally)) {
     payoutRate = 4;
-    pointsWon = bet * payoutRate;
+    hand = 'Royal Straight';
     console.log('royal straight');
   } else if (isThreeOfAKind(cardRankTally)) {
     payoutRate = 3;
-    pointsWon = bet * payoutRate;
+    hand = '3 of a Kind';
     console.log('3ofAkind');
   } else if (isTwoPair(cardRankTally)) {
     payoutRate = 2;
-    pointsWon = bet * payoutRate;
+    hand = 'Two Pairs';
     console.log('2pair');
   } else if (isJacksOrBetter(cardRankTally)) {
+    hand = 'Jacks or Better';
     payoutRate = 1;
-    pointsWon = bet * payoutRate;
     console.log('Js');
   } else {
-    pointsWon = -bet;
+    hand = 'No Luck!';
+    payoutRate = -1;
   }
-  return pointsWon;
+  return output(hand, payoutRate);
 };
