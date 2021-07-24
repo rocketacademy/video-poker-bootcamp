@@ -138,10 +138,13 @@ const unshuffledDeck = makeDeck();
 // Shuffled deck as a copy of unshuffled deck
 let deck = shuffleCards([...unshuffledDeck]);
 
+// UI VARIABLES
 // Add the cardContainer DOM element as a global variable.
 let cardContainer;
 let coinsInput;
 let coinsInputButton;
+let currentBetInput;
+let currentBetSubmitButton;
 
 // Player 1 starts first
 const playersTurn = 1; // matches with starting instructions
@@ -159,6 +162,7 @@ let prevGameState = '';
 let gameState = INIT_COINS;
 // initialize totalCoins
 let totalCoins = 0;
+let currentBet = 0;
 const totalWinnings = 0;
 
 /**
@@ -174,14 +178,35 @@ const insertCoinsSubmit = () => {
   const IS_COINS_NUMBER = !Number.isNaN(COINS);
   if (COINS_INPUT.value.trim() !== '' && IS_COINS_NUMBER && COINS > 0 && COINS <= 1000) {
     totalCoins += COINS;
-    initGame();
+    initBet();
   } else {
     const COINS_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.coinsInputFeedback');
     if (COINS_INPUT_FEEDBACK_PARAGRAPHS.length === 0) {
       const COINS_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
       COINS_INPUT_FEEDBACK_PARAGRAPH.classList.add('coinsInputFeedback');
+      COINS_INPUT_FEEDBACK_PARAGRAPH.classList.add('initCoins');
       COINS_INPUT_FEEDBACK_PARAGRAPH.innerText = 'Please insert a minimum of 1 coin, and a maximum of 1000 coins.';
       document.body.appendChild(COINS_INPUT_FEEDBACK_PARAGRAPH);
+    }
+  }
+};
+
+const placeBetsSubmit = () => {
+  const BET_INPUT = document.querySelector('.currentBetInput');
+  const BET = Number(BET_INPUT.value);
+  const IS_BET_NUMBER = !Number.isNaN(BET);
+  if (BET_INPUT.value.trim() !== '' && IS_BET_NUMBER && BET > 0 && BET <= totalCoins) {
+    totalCoins -= BET;
+    currentBet += BET;
+    initGame();
+  } else {
+    const BET_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.betInputFeedback');
+    if (BET_INPUT_FEEDBACK_PARAGRAPHS.length === 0) {
+      const BET_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
+      BET_INPUT_FEEDBACK_PARAGRAPH.classList.add('betInputFeedback');
+      BET_INPUT_FEEDBACK_PARAGRAPH.classList.add('setBet');
+      BET_INPUT_FEEDBACK_PARAGRAPH.innerText = 'You must bet at least 1 coin, and at most your total coins left.';
+      document.body.appendChild(BET_INPUT_FEEDBACK_PARAGRAPH);
     }
   }
 };
@@ -435,15 +460,39 @@ const recognizeCurrentHand = (hand) => {
  */
 
 const showTotalCoins = () => {
-  const TOTAL_COINS_PARAGRAPH = document.createElement('p');
-  TOTAL_COINS_PARAGRAPH.innerText = `Coins left: ${totalCoins}`;
-  document.body.appendChild(TOTAL_COINS_PARAGRAPH);
+  const TOTAL_COINS_PARAGRAPHS = document.querySelectorAll('.totalCoins');
+  if (TOTAL_COINS_PARAGRAPHS.length > 0) {
+    TOTAL_COINS_PARAGRAPHS[0].innerText = `Coins left: ${totalCoins}`;
+  } else {
+    const TOTAL_COINS_PARAGRAPH = document.createElement('p');
+    TOTAL_COINS_PARAGRAPH.classList.add('totalCoins');
+    TOTAL_COINS_PARAGRAPH.innerText = `Coins left: ${totalCoins}`;
+    document.body.appendChild(TOTAL_COINS_PARAGRAPH);
+  }
+};
+
+const showCurrentBet = () => {
+  const CURRENT_BET_PARAGRAPHS = document.querySelectorAll('.currentBet');
+  if (CURRENT_BET_PARAGRAPHS.length > 0) {
+    CURRENT_BET_PARAGRAPHS[0].innerText = `Current bet: ${currentBet}`;
+  } else {
+    const CURRENT_BET_PARAGRAPH = document.createElement('p');
+    CURRENT_BET_PARAGRAPH.classList.add('currentBet');
+    CURRENT_BET_PARAGRAPH.innerText = `Current bet: ${currentBet}`;
+    document.body.appendChild(CURRENT_BET_PARAGRAPH);
+  }
 };
 
 const showTotalWinnings = () => {
-  const YOUR_WINNINGS_PARAGRAPH = document.createElement('p');
-  YOUR_WINNINGS_PARAGRAPH.innerText = `Your winnings: ${totalWinnings}`;
-  document.body.appendChild(YOUR_WINNINGS_PARAGRAPH);
+  const YOUR_WINNINGS_PARAGRAPHS = document.querySelectorAll('.yourWinnings');
+  if (YOUR_WINNINGS_PARAGRAPHS.length > 0) {
+    YOUR_WINNINGS_PARAGRAPHS[0].innerText = `Your winnings: ${totalWinnings}`;
+  } else {
+    const YOUR_WINNINGS_PARAGRAPH = document.createElement('p');
+    YOUR_WINNINGS_PARAGRAPH.classList.add('yourWinnings');
+    YOUR_WINNINGS_PARAGRAPH.innerText = `Your winnings: ${totalWinnings}`;
+    document.body.appendChild(YOUR_WINNINGS_PARAGRAPH);
+  }
 };
 
 const toggleInsertCoins = () => {
@@ -469,9 +518,35 @@ const toggleInsertCoins = () => {
   }
 };
 
+const toggleSetBet = () => {
+  if (gameState === SET_BET) {
+    showTotalCoins();
+    showCurrentBet();
+    showTotalWinnings();
+
+    currentBetInput = document.createElement('input');
+    currentBetInput.setAttribute('type', 'number');
+    currentBetInput.classList.add('currentBetInput');
+    currentBetInput.classList.add('setBet');
+    document.body.appendChild(currentBetInput);
+
+    currentBetSubmitButton = document.createElement('button');
+    currentBetSubmitButton.innerText = 'Bet!';
+    currentBetSubmitButton.classList.add('setBet');
+    currentBetSubmitButton.addEventListener('click', placeBetsSubmit);
+    document.body.appendChild(currentBetSubmitButton);
+  } else {
+    const INIT_BET_ELEMENTS = document.querySelectorAll('.setBet');
+    for (let i = 0; i < INIT_BET_ELEMENTS.length; i += 1) {
+      INIT_BET_ELEMENTS[i].remove();
+    }
+  }
+};
+
 const toggleShowInitialHand = () => {
   if (gameState === SHOW_INITIAL_HAND) {
     showTotalCoins();
+    showCurrentBet();
     showTotalWinnings();
     // Initialise cardContainer as a div with CSS class card-container,
     // and add it to the document body. Add this logic to the initGame function.
@@ -500,6 +575,7 @@ const toggleShowInitialHand = () => {
 
 const toggleUI = () => {
   toggleInsertCoins();
+  toggleSetBet();
   toggleShowInitialHand();
 };
 
@@ -507,6 +583,12 @@ const toggleUI = () => {
  * GAME INITIALISATION
  * We can now centralise our game initialisation into a single function called `initGame`.
  */
+
+const initBet = () => {
+  prevGameState = gameState;
+  gameState = SET_BET;
+  toggleUI();
+};
 
 const initGame = () => {
   prevGameState = gameState;
