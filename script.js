@@ -161,7 +161,7 @@ let gameState = INIT_COINS;
 // initialize totalCoins
 let totalCoins = 0;
 let currentBet = 0;
-const totalWinnings = 0;
+let totalWinnings = 0;
 
 /**
  * PLAYER ACTION CALLBACKS
@@ -558,22 +558,31 @@ const recognizeCurrentHand = (hand) => {
 
   const HAND_SCORE = calcHandScore(hand);
   const BET_SCORE = HAND_SCORE * currentBet;
-  console.log('HAND SCORE:', HAND_SCORE);
-  console.log('currentBet:', currentBet);
-  console.log('BET_SCORE:', BET_SCORE);
+
   if (BET_SCORE - currentBet > 0 && gameState === 'SHOW_INITIAL_HAND') {
     string += ` You will win ${BET_SCORE - currentBet} coin(s) if you do not replace your cards!`;
   } else if (BET_SCORE - currentBet > 0) {
+    totalWinnings += BET_SCORE - currentBet;
+    totalCoins += BET_SCORE - currentBet;
+    currentBet = 0;
     string += ` You have won ${BET_SCORE - currentBet} coin(s) this round!`;
   } else if (BET_SCORE - currentBet === 0 && gameState === 'SHOW_INITIAL_HAND') {
     string += ' You will not win or lose any coins if you do not replace your cards.';
   } else if (BET_SCORE - currentBet === 0) {
+    totalCoins += BET_SCORE;
+    currentBet = 0;
     string += ' You have not won or lost any coins this round.';
   } else if (BET_SCORE < 0 && gameState === 'SHOW_INITIAL_HAND') {
     string += ` You will lose ${Math.abs(BET_SCORE)} coins if you do not replace your cards.`;
   } else {
+    totalWinnings -= Math.abs(BET_SCORE);
+    currentBet = 0;
     string += ` You have lost ${Math.abs(BET_SCORE)} coins this round.`;
   }
+
+  showOrUpdateTotalCoins();
+  showOrUpdateCurrentBet();
+  showOrUpdateTotalWinnings();
 
   return string;
 };
