@@ -48,16 +48,43 @@ body {
   margin: 20px auto;
   display: inline-block;
 }
-.infoboard {
+.info-board {
+  font-family: Tahoma, sans-serif;
+  display: flex;
   margin: 50px 30px 20px 30px;
   padding: 10px;
   background-color: white;
-  height: 100px;
-  width: auto;
-  text-align: center;
-  border-radius: 8px;
+  height: 400px;
+  width: 80%;
+  /* text-align: center; */
+  border-radius: 16px;
   display: inline-block;
+  vertical-align: center;
+}
+
+.payout-board {
+  border: blue 1px solid;
+  display: inline-block;
+  text-align: justify;
+  height: 300px;
+  width: 45%;
   vertical-align: top;
+}
+.payout-table {
+  display: inline-block;
+  text-align: justify;
+  height: 300px;
+  width: 70%;
+  vertical-align: top;
+}
+
+.game-play {
+  border: blue 1px solid;
+  display: inline-block;
+  text-align: justify;
+  height: 300px;
+  width: 45%;
+  /* vertical-align: top; */
 }
 
 .points {

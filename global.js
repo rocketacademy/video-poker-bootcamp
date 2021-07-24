@@ -64,3 +64,43 @@ let createSuitTally = () => {
     }
   }
 };
+
+const newRoundSetUp = () => {
+  cardContainer.innerHTML = '';
+  playerArr = [];
+  cardRankTally = {};
+  cardSuitTally = {};
+  dealButton.disabled = true;
+  bet = Number(betAmount.value);
+  document.getElementById('betAmount').disabled = true;
+  swapButton.disabled = false;
+  gameMessage.innerText = 'Please choose the cards to swap!';
+  for (let i = 1; i < 6; i += 1) {
+    // Pop player's card metadata from the deck
+    playerCard = deck.pop();
+    playerArr.push(playerCard);
+    // Create card element from card metadata
+    cardElement = createCard(playerCard);
+    cardElement.id = `card${i}`;
+    // Append the card element to the card container
+    cardContainer.appendChild(cardElement);
+  }
+};
+
+const swapCardSetup = () => {
+  swapButton.disabled = true;
+  dealButton.disabled = false;
+  document.getElementById('betAmount').disabled = false;
+};
+
+const processResults = () => {
+  createRankTally();
+  createSuitTally();
+  console.log(cardRankTally);
+  console.log(cardSuitTally);
+
+  const pointsForHand = calcHandScore();
+  points += pointsForHand;
+  gameMessage.innerHTML = `Your points for this round is ${pointsForHand}!`;
+  scoreBoard.innerHTML = `${points}`;
+};

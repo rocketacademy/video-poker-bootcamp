@@ -1,18 +1,18 @@
 /* eslint-disable prefer-const */
 // create game layout
 // create instructions/gameplay board
-const gameInstructions = document.createElement('div');
-gameInstructions.classList.add('infoboard');
-gameInstructions.innerText = 'Game Play Instructions';
+// const gameInstructions = document.createElement('div');
+// gameInstructions.classList.add('infoboard');
+// gameInstructions.innerText = 'Game Play Instructions';
 
-const payoutTable = document.createElement('div');
-payoutTable.classList.add('payoutTable', 'infoboard');
-payoutTable.innerText = 'Payout Table';
-const infoPanel = document.createElement('div');
-infoPanel.classList.add('infoPanel');
+// const payoutTable = document.createElement('div');
+// payoutTable.classList.add('payoutTable', 'infoboard');
+// payoutTable.innerText = 'Payout Table';
+// const infoPanel = document.createElement('div');
+// infoPanel.classList.add('infoPanel');
 
-infoPanel.appendChild(gameInstructions);
-infoPanel.appendChild(payoutTable);
+// infoPanel.appendChild(gameInstructions);
+// infoPanel.appendChild(payoutTable);
 
 // create 5 cards and card container
 let card1 = document.createElement('div');
@@ -101,7 +101,7 @@ scoreDiv.className = 'scoreDiv';
 scoreDiv.appendChild(scoreText);
 scoreDiv.appendChild(scoreBoard);
 
-document.body.appendChild(infoPanel);
+// document.body.appendChild(infoPanel);
 document.body.appendChild(cardPanel);
 document.body.appendChild(controlPanel);
 document.body.appendChild(scoreDiv);

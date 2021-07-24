@@ -104,26 +104,8 @@ const dealCards = () => {
   // make new deck
   deck = shuffleCards(makeDeck());
   // Empty cardContainer
-  cardContainer.innerHTML = '';
-  playerArr = [];
-  cardRankTally = {};
-  cardSuitTally = {};
-  dealButton.disabled = true;
-  bet = Number(betAmount.value);
-  document.getElementById('betAmount').disabled = true;
-  swapButton.disabled = false;
-  gameMessage.innerText = 'Please choose the cards to swap!';
+  newRoundSetUp();
 
-  for (let i = 1; i < 6; i += 1) {
-    // Pop player's card metadata from the deck
-    playerCard = deck.pop();
-    playerArr.push(playerCard);
-    // Create card element from card metadata
-    cardElement = createCard(playerCard);
-    cardElement.id = `card${i}`;
-    // Append the card element to the card container
-    cardContainer.appendChild(cardElement);
-  }
   document.querySelector('#card1').addEventListener('click', selectSwapCard1);
   document.querySelector('#card2').addEventListener('click', selectSwapCard2);
   document.querySelector('#card3').addEventListener('click', selectSwapCard3);
@@ -134,13 +116,6 @@ const dealCards = () => {
 // swap cards based on cards that are highlighted red
 // push new card data into player hand array
 const swapCard = () => {
-  playerArr = [
-    { rank: 5, suit: 'spades', name: 'j' },
-    { rank: 5, suit: 'spades', name: '10' },
-    { rank: 4, suit: 'spades', name: '8' },
-    { rank: 1, suit: 'spades', name: '7' },
-    { rank: 5, suit: 'spades', name: '9' },
-  ];
   // get cards selected to be swapped and swap it with new cards
   const cardToBeSwapped = document.getElementsByClassName('selected');
   for (let i = 0; i < cardToBeSwapped.length; i += 1) {
@@ -152,8 +127,8 @@ const swapCard = () => {
     );
     playerCard = deck.pop();
     cardElement = createCard(playerCard);
-    cardContainer.appendChild(cardElement);
 
+    cardContainer.appendChild(cardElement);
     playerArr.splice(cardIndex, 1, playerCard);
   }
 
@@ -161,18 +136,9 @@ const swapCard = () => {
   while (cardToBeSwapped[0]) {
     cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
   }
-  createRankTally();
-  createSuitTally();
-  console.log(cardRankTally);
-  console.log(cardSuitTally);
-  swapButton.disabled = true;
-  dealButton.disabled = false;
-  document.getElementById('betAmount').disabled = false;
-  const pointsForHand = calcHandScore();
-  points += pointsForHand;
-  gameMessage.innerHTML = `Your points for this round is ${pointsForHand}!`;
-  scoreBoard.innerHTML = `${points}`;
+  swapCardSetup();
+  processResults();
 };
-
+swapButton.disabled = true;
 dealButton.addEventListener('click', dealCards);
 swapButton.addEventListener('click', swapCard);

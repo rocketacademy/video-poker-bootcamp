@@ -1,3 +1,4 @@
+/* eslint-disable prefer-spread */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
 /* eslint-disable prefer-const */
@@ -79,58 +80,46 @@ const isFlush = (cardSuitTally) => {
 };
 // https://www.geeksforgeeks.org/check-if-array-elements-are-consecutive/
 
-const isStraight = (arr, n) => {
-  function getMin(arr, n)
-  {
-    let min = arr[0].rank;
-    for (let i = 1; i < n; i += 1)
-    {
-      if (arr[i].rank < min) min = arr[i].rank;
-    }
-    return min;
-  }
-  function getMax(arr, n)
-  {
-    let max = arr[0].rank;
-    for (let i = 1; i < n; i += 1)
-    {
-      if (arr[i].rank > max) max = arr[i].rank;
-    }
-    return max;
-  }
-  /* 1) Get the minimum element in array */
-  let min = getMin(arr, n);
+const isStraight = () => {
+  let sortedHand = playerArr.sort((a, b) => parseFloat(a.rank) - parseFloat(b.rank));
 
-  /* 2) Get the maximum element in array */
-  let max = getMax(arr, n);
-
-  /* 3) max - min + 1 is equal to n,  then only check all elements */
-  if (max - min + 1 == n)
-  {
-    // Create a temp array to hold visited flag of all elements.
-    // all values are initialized as false
-    let visited = new Array(n);
-
-    for (let i = 0; i < n; i += 1)
-    {
-      visited[i] = false;
-    }
-    let i;
-    for (i = 0; i < n; i += 1)
-    {
-      /* If we see an element again, then return false */
-      if (visited[arr[i].rank - min] !== false)
-      {
-        return false;
-      }
-      /* If visited first time, then mark the element as visited */
-      visited[arr[i].rank - min] === true;
-    }
-    /* If all elements occur once, then return true */
-    return true;
+  let consecutiveCount = 1;
+  for (let i = 1; i < sortedHand.length; i += 1) {
+    if (sortedHand[i].rank == sortedHand[i - 1].rank + 1) {
+      consecutiveCount += 1; }
+    else { consecutiveCount = 1; }
+    if (consecutiveCount === 5)
+    { return true; }
   }
-  return false; // if (max - min  + 1 != n)
+  return false;
 };
+
+// let max = Math.max.apply(Math, playerArr.map((o) => o.rank));
+// let min = Math.min.apply(Math, playerArr.map((o) => o.rank));
+
+// if (max - min + 1 === 5) {
+//     for (let i = 0; i < playerArr.length; i += 1)
+//     {
+//       for (let j = 0; j < playerArr.length; j += 1)
+//       {
+//         if (i !== j)
+//         {
+//           if (playerArr[i] === playerArr[j])
+//           {
+//             return false; // means there are duplicate values
+//           }
+//         }
+//       }
+//     }
+//     return true; // means there are no duplicate values.
+//   }
+// };
+//     if (playerArr.length === new Set(playerArr).size) {
+//       return true;
+//     } return false;
+//   }
+//   return false; // if ranks are repeated
+// };
 
 const isRoyalStraight = (cardRankTally) => {
   if ((cardRankTally[10] === 1
