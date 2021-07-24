@@ -132,6 +132,7 @@ const createCard = (cardInfo) => {
 const INIT_COINS = 'INIT_COINS';
 const SET_BET = 'SET_BET';
 const SHOW_INITIAL_HAND = 'SHOW_INITIAL_HAND';
+const SHOW_FINAL_HAND = 'SHOW_FINAL_HAND';
 
 // Initialize unshuffled deck
 const unshuffledDeck = makeDeck();
@@ -145,18 +146,15 @@ let coinsInput;
 let coinsInputButton;
 let currentBetInput;
 let currentBetSubmitButton;
+let raiseInput;
+let raiseAndReplaceButton;
+let gameInfo;
 
 // Player 1 starts first
 const playersTurn = 1; // matches with starting instructions
 // Player 1 cards
 const player1Cards = [];
 
-// create player 1 draw button
-const player1Button = document.createElement('button');
-// create player 1 replace cards button
-const player1ReplaceButton = document.createElement('button');
-// Create game info div as global value
-const gameInfo = document.createElement('div');
 // initialize gameState
 let prevGameState = '';
 let gameState = INIT_COINS;
@@ -205,13 +203,13 @@ const placeBetsSubmit = () => {
       const BET_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
       BET_INPUT_FEEDBACK_PARAGRAPH.classList.add('betInputFeedback');
       BET_INPUT_FEEDBACK_PARAGRAPH.classList.add('setBet');
-      BET_INPUT_FEEDBACK_PARAGRAPH.innerText = 'You must bet at least 1 coin, and at most your total coins left.';
+      BET_INPUT_FEEDBACK_PARAGRAPH.innerText = `You must bet at least 1 coin, and at most ${totalCoins} coin(s).`;
       document.body.appendChild(BET_INPUT_FEEDBACK_PARAGRAPH);
     }
   }
 };
 
-const player1ReplaceCardsClick = () => {
+const showFinalHand = () => {
   const SELECTED_CARDS = document.querySelectorAll('.selected');
   /* Replace cards in player1Cards */
   for (let i = 0; i < SELECTED_CARDS.length; i += 1) {
@@ -235,8 +233,47 @@ const player1ReplaceCardsClick = () => {
   }
 
   /* Remove helper text and button */
-  player1ReplaceButton.style.display = 'none';
   gameInfo.innerText = `Player ${playersTurn}, your replaced hand has ${recognizeCurrentHand(player1Cards)}.`;
+};
+
+const replaceHand = () => {
+  const SELECTED_CARDS = document.querySelectorAll('.selected');
+  /* Replace cards in player1Cards */
+  for (let i = 0; i < SELECTED_CARDS.length; i += 1) {
+    const CARD_DISPLAY_NAME = SELECTED_CARDS[i].firstChild.innerText;
+    const CARD_SUIT_SYMBOL = SELECTED_CARDS[i].lastChild.innerText;
+
+    const CARD_INDEX = player1Cards.findIndex(
+      (element) => (element.displayName === CARD_DISPLAY_NAME)
+      && (element.suitSymbol === CARD_SUIT_SYMBOL),
+    );
+
+    player1Cards.splice(CARD_INDEX, 1, deck.pop());
+  }
+};
+
+const raiseAndReplaceClick = () => {
+  const RAISE_INPUT = document.querySelector('.raiseInput');
+  const RAISE = Number(RAISE_INPUT.value);
+  const IS_RAISE_NUMBER = !Number.isNaN(RAISE);
+  if (RAISE_INPUT.value.trim() !== '' && IS_RAISE_NUMBER && RAISE > 0 && RAISE <= totalCoins) {
+    currentBet += RAISE;
+    totalCoins -= RAISE;
+    replaceHand();
+    initFinalHand();
+  } else if (RAISE_INPUT.value.trim() !== '' && IS_RAISE_NUMBER && RAISE > 0) {
+    const RAISE_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.raiseInputFeedback');
+    if (RAISE_INPUT_FEEDBACK_PARAGRAPHS.length === 0) {
+      const RAISE_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
+      RAISE_INPUT_FEEDBACK_PARAGRAPH.classList.add('raiseInputFeedback');
+      RAISE_INPUT_FEEDBACK_PARAGRAPH.classList.add('showInitialHand');
+      RAISE_INPUT_FEEDBACK_PARAGRAPH.innerText = `You can only raise a maximum of ${totalCoins} coins!`;
+      document.body.appendChild(RAISE_INPUT_FEEDBACK_PARAGRAPH);
+    }
+  } else {
+    replaceHand();
+    initFinalHand();
+  }
 };
 
 const player1CardClick = (event) => {
@@ -249,91 +286,80 @@ const player1CardClick = (event) => {
   }
 };
 
-const player1Click = () => {
-  if (playersTurn === 1) {
-    player1Button.disabled = true;
+const drawInitialHand = () => {
+  // create new deck and reshuffle if no cards left
+  if (deck.length === 0) {
+    console.log("end of deck reached in player 1's turn! time to reshuffle.");
+    deck = shuffleCards([...unshuffledDeck]);
+  }
 
-    setTimeout(() => {
-      // create new deck and reshuffle if no cards left
-      if (deck.length === 0) {
-        console.log("end of deck reached in player 1's turn! time to reshuffle.");
-        deck = shuffleCards([...unshuffledDeck]);
-      }
+  // Empty cardContainer in case this is not the 1st round of gameplay
+  cardContainer.innerHTML = '';
 
-      // Empty cardContainer in case this is not the 1st round of gameplay
-      cardContainer.innerHTML = '';
+  // For testing: use this hand
+  // ♠, ♥, ♣, ♦️
+  // const TEST_HAND = [
+  //   {
+  //     name: 'queen',
+  //     suit: 'clubs',
+  //     rank: 12,
+  //     suitSymbol: '♣',
+  //     displayName: 'Q',
+  //     colour: 'black',
+  //   },
+  //   {
+  //     name: 'ace',
+  //     suit: 'clubs',
+  //     rank: 14,
+  //     suitSymbol: '♣',
+  //     displayName: 'A',
+  //     colour: 'black',
+  //   },
+  //   {
+  //     name: 'jack',
+  //     suit: 'clubs',
+  //     rank: 11,
+  //     suitSymbol: '♣',
+  //     displayName: 'J',
+  //     colour: 'black',
+  //   },
+  //   {
+  //     name: '10',
+  //     suit: 'clubs',
+  //     rank: 10,
+  //     suitSymbol: '♣',
+  //     displayName: '10',
+  //     colour: 'black',
+  //   },
+  //   {
+  //     name: 'queen',
+  //     suit: 'spades',
+  //     rank: 12,
+  //     suitSymbol: '♠',
+  //     displayName: 'Q',
+  //     colour: 'black',
+  //   },
+  // ];
 
-      // For testing: use this hand
-      // ♠, ♥, ♣, ♦️
-      // const TEST_HAND = [
-      //   {
-      //     name: 'queen',
-      //     suit: 'clubs',
-      //     rank: 12,
-      //     suitSymbol: '♣',
-      //     displayName: 'Q',
-      //     colour: 'black',
-      //   },
-      //   {
-      //     name: 'ace',
-      //     suit: 'clubs',
-      //     rank: 14,
-      //     suitSymbol: '♣',
-      //     displayName: 'A',
-      //     colour: 'black',
-      //   },
-      //   {
-      //     name: 'jack',
-      //     suit: 'clubs',
-      //     rank: 11,
-      //     suitSymbol: '♣',
-      //     displayName: 'J',
-      //     colour: 'black',
-      //   },
-      //   {
-      //     name: '10',
-      //     suit: 'clubs',
-      //     rank: 10,
-      //     suitSymbol: '♣',
-      //     displayName: '10',
-      //     colour: 'black',
-      //   },
-      //   {
-      //     name: 'queen',
-      //     suit: 'spades',
-      //     rank: 12,
-      //     suitSymbol: '♠',
-      //     displayName: 'Q',
-      //     colour: 'black',
-      //   },
-      // ];
+  // Pop player 1's card metadata from the deck
+  for (let i = 0; i < 5; i += 1) {
+    // For testing: use this hand
+    // player1Cards.push(TEST_HAND[i]);
+    player1Cards.push(deck.pop());
+    // Create card element from card metadata
+    const cardElement = createCard(player1Cards[i]);
+    cardElement.classList.add('showInitialHand');
+    // Append the card element to the card container
+    cardContainer.appendChild(cardElement);
+  }
 
-      // Pop player 1's card metadata from the deck
-      for (let i = 0; i < 5; i += 1) {
-        // For testing: use this hand
-        // player1Cards.push(TEST_HAND[i]);
-        player1Cards.push(deck.pop());
-        // Create card element from card metadata
-        const cardElement = createCard(player1Cards[i]);
-        // Append the card element to the card container
-        cardContainer.appendChild(cardElement);
-      }
-
-      /* Disable player draw button and change status */
-      gameInfo.innerText = `Player ${playersTurn}, your current hand has ${recognizeCurrentHand(player1Cards)}. Please choose any number of cards you would like to replace, and hit submit`;
-      player1Button.disabled = false;
-      player1Button.style.display = 'none';
-      player1ReplaceButton.style.display = 'inline-block';
-      /* Add event listeners on click to all cards */
-      const CARDS = cardContainer.querySelectorAll('.card');
-      for (let i = 0; i < CARDS.length; i += 1) {
-        CARDS[i].style.cursor = 'pointer';
-        CARDS[i].addEventListener('click', player1CardClick);
-      }
-
-      // Switch to player 2's turn
-      // playersTurn = 2;
-    }, 500);
+  gameInfo = document.createElement('div');
+  gameInfo.innerText = `Player ${playersTurn}, your current hand has ${recognizeCurrentHand(player1Cards)}. You may choose any number of cards to replace, or raise your bet.`;
+  /* Add event listeners on click to all cards */
+  const CARDS = cardContainer.querySelectorAll('.card');
+  for (let i = 0; i < CARDS.length; i += 1) {
+    CARDS[i].style.cursor = 'pointer';
+    CARDS[i].addEventListener('click', player1CardClick);
   }
 };
 
@@ -459,7 +485,7 @@ const recognizeCurrentHand = (hand) => {
  *
  */
 
-const showTotalCoins = () => {
+const showOrUpdateTotalCoins = () => {
   const TOTAL_COINS_PARAGRAPHS = document.querySelectorAll('.totalCoins');
   if (TOTAL_COINS_PARAGRAPHS.length > 0) {
     TOTAL_COINS_PARAGRAPHS[0].innerText = `Coins left: ${totalCoins}`;
@@ -471,7 +497,7 @@ const showTotalCoins = () => {
   }
 };
 
-const showCurrentBet = () => {
+const showOrUpdateCurrentBet = () => {
   const CURRENT_BET_PARAGRAPHS = document.querySelectorAll('.currentBet');
   if (CURRENT_BET_PARAGRAPHS.length > 0) {
     CURRENT_BET_PARAGRAPHS[0].innerText = `Current bet: ${currentBet}`;
@@ -483,7 +509,7 @@ const showCurrentBet = () => {
   }
 };
 
-const showTotalWinnings = () => {
+const showOrUpdateTotalWinnings = () => {
   const YOUR_WINNINGS_PARAGRAPHS = document.querySelectorAll('.yourWinnings');
   if (YOUR_WINNINGS_PARAGRAPHS.length > 0) {
     YOUR_WINNINGS_PARAGRAPHS[0].innerText = `Your winnings: ${totalWinnings}`;
@@ -520,9 +546,9 @@ const toggleInsertCoins = () => {
 
 const toggleSetBet = () => {
   if (gameState === SET_BET) {
-    showTotalCoins();
-    showCurrentBet();
-    showTotalWinnings();
+    showOrUpdateTotalCoins();
+    showOrUpdateCurrentBet();
+    showOrUpdateTotalWinnings();
 
     currentBetInput = document.createElement('input');
     currentBetInput.setAttribute('type', 'number');
@@ -545,31 +571,70 @@ const toggleSetBet = () => {
 
 const toggleShowInitialHand = () => {
   if (gameState === SHOW_INITIAL_HAND) {
-    showTotalCoins();
-    showCurrentBet();
-    showTotalWinnings();
+    showOrUpdateTotalCoins();
+    showOrUpdateCurrentBet();
+    showOrUpdateTotalWinnings();
     // Initialise cardContainer as a div with CSS class card-container,
     // and add it to the document body. Add this logic to the initGame function.
     cardContainer = document.createElement('div');
     cardContainer.classList.add('card-container');
+    cardContainer.classList.add('showInitialHand');
     document.body.appendChild(cardContainer);
 
-    // initialize button functionality
-    player1Button.innerText = 'Player 1 Draw';
-    document.body.appendChild(player1Button);
+    // draw initial hand
+    drawInitialHand();
 
-    player1Button.addEventListener('click', player1Click);
-
-    player1ReplaceButton.innerText = 'Player 1 Replace Cards';
-    player1ReplaceButton.style.display = 'none';
-    document.body.appendChild(player1ReplaceButton);
-
-    player1ReplaceButton.addEventListener('click', player1ReplaceCardsClick);
-
-    // fill game info div with starting instructions
-    gameInfo.innerText = `Its player ${playersTurn} turn. Click to draw 5 cards!`;
-
+    gameInfo.classList.add('showInitialHand');
     document.body.appendChild(gameInfo);
+
+    raiseInput = document.createElement('input');
+    raiseInput.classList.add('raiseInput');
+    raiseInput.classList.add('showInitialHand');
+    document.body.appendChild(raiseInput);
+
+    // create raise and replace cards button
+    raiseAndReplaceButton = document.createElement('button');
+    raiseAndReplaceButton.innerText = 'Continue';
+    raiseAndReplaceButton.classList.add('showInitialHand');
+    raiseAndReplaceButton.addEventListener('click', raiseAndReplaceClick);
+    document.body.appendChild(raiseAndReplaceButton);
+  } else {
+    const SHOW_INITIAL_HAND_ELEMENTS = document.querySelectorAll('.showInitialHand');
+    for (let i = 0; i < SHOW_INITIAL_HAND_ELEMENTS.length; i += 1) {
+      SHOW_INITIAL_HAND_ELEMENTS[i].remove();
+    }
+  }
+};
+
+const toggleShowFinalHand = () => {
+  if (gameState === SHOW_FINAL_HAND) {
+    showOrUpdateTotalCoins();
+    showOrUpdateCurrentBet();
+    showOrUpdateTotalWinnings();
+
+    // Initialise cardContainer as a div with CSS class card-container,
+    // and add it to the document body. Add this logic to the initGame function.
+    cardContainer = document.createElement('div');
+    cardContainer.classList.add('card-container');
+    cardContainer.classList.add('showFinalHand');
+    document.body.appendChild(cardContainer);
+
+    // Pop player 1's card metadata from the deck
+    for (let i = 0; i < player1Cards.length; i += 1) {
+      // Create card element from card metadata
+      const cardElement = createCard(player1Cards[i]);
+      cardElement.classList.add('showFinalHand');
+      // Append the card element to the card container
+      cardContainer.appendChild(cardElement);
+    }
+    gameInfo = document.createElement('div');
+    gameInfo.innerText = `Player ${playersTurn}, your replaced hand has ${recognizeCurrentHand(player1Cards)}.`;
+    document.body.appendChild(gameInfo);
+  } else {
+    const SHOW_FINAL_HAND_ELEMENTS = document.querySelectorAll('.showFinalHand');
+    for (let i = 0; i < SHOW_FINAL_HAND_ELEMENTS.length; i += 1) {
+      SHOW_FINAL_HAND_ELEMENTS[i].remove();
+    }
   }
 };
 
@@ -577,6 +642,7 @@ const toggleUI = () => {
   toggleInsertCoins();
   toggleSetBet();
   toggleShowInitialHand();
+  toggleShowFinalHand();
 };
 
 /**
@@ -593,6 +659,12 @@ const initBet = () => {
 const initGame = () => {
   prevGameState = gameState;
   gameState = SHOW_INITIAL_HAND;
+  toggleUI();
+};
+
+const initFinalHand = () => {
+  prevGameState = gameState;
+  gameState = SHOW_FINAL_HAND;
   toggleUI();
 };
 
