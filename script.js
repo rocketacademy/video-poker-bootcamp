@@ -354,7 +354,8 @@ const drawInitialHand = () => {
   }
 
   gameInfo = document.createElement('div');
-  gameInfo.innerText = `Player ${playersTurn}, your current hand has ${recognizeCurrentHand(player1Cards)}. You may choose any number of cards to replace, or raise your bet.`;
+  gameInfo.innerText = `Player ${playersTurn}, your current hand has ${recognizeCurrentHand(player1Cards)}`;
+  gameInfo.innerText += ' You may choose any number of cards to replace, or raise your bet.';
   /* Add event listeners on click to all cards */
   const CARDS = cardContainer.querySelectorAll('.card');
   for (let i = 0; i < CARDS.length; i += 1) {
@@ -390,6 +391,84 @@ const getFlush = (hand) => {
   }
 
   return IS_FLUSH;
+};
+
+const calcHandScore = (hand) => {
+  // initialize sorted hand using a shallow copy of current hand
+  const SORTED_HAND = [...hand].sort(sortCurrentHand);
+  console.log('sorted current hand:', SORTED_HAND);
+  // initialize tally
+  const tally = {};
+  for (let i = 0; i < SORTED_HAND.length; i += 1) {
+    const cardName = SORTED_HAND[i].name;
+    // If we have seen the card name before, increment its count
+    if (cardName in tally) {
+      tally[cardName] += 1;
+    }
+    // Else, initialise count of this card name to 1
+    else {
+      tally[cardName] = 1;
+    }
+  }
+
+  // initialize fours
+  const FOURS = Object.keys(tally).filter((key) => tally[key] === 4);
+  // initialize isFlush
+  const IS_FLUSH = getFlush(SORTED_HAND);
+  // initialize isStraight
+  const IS_STRAIGHT = getStraights(SORTED_HAND);
+  // initialize three of a kind
+  const THREES = Object.keys(tally).filter((key) => tally[key] === 3);
+  // initialize pairs
+  const PAIRS = Object.keys(tally).filter((key) => tally[key] === 2);
+  const FIRST_PAIR = PAIRS[0];
+  let firstPairRank = -1;
+  if (PAIRS.length > 0) {
+    firstPairRank = SORTED_HAND.filter((item) => item.name === FIRST_PAIR)[0].rank;
+  }
+  // hand recognition logic
+  // ROYAL FLUSH
+  if (
+    IS_FLUSH && IS_STRAIGHT
+    && SORTED_HAND[0].rank === 10 && SORTED_HAND[SORTED_HAND.length - 1].rank === 14
+  ) {
+    return 250;
+  }
+  // STRAIGHT FLUSH
+  if (IS_FLUSH && IS_STRAIGHT) {
+    return 50;
+  }
+  // FOUR OF A KIND
+  if (FOURS.length > 0) {
+    return 25;
+  }
+  // FULL HOUSE
+  if (THREES.length > 0 && PAIRS.length > 0) {
+    return 9;
+  }
+  // FLUSH
+  if (IS_FLUSH) {
+    return 6;
+  }
+  // STRAIGHTS
+  if (IS_STRAIGHT) {
+    return 4;
+  }
+  // THREE OF A KIND
+  if (THREES.length === 1) {
+    return 3;
+  }
+  // 2 PAIRS
+  if (PAIRS.length === 2) {
+    return 2;
+  }
+  // A HIGH PAIR (JACK AND ABOVE)
+  if (PAIRS.length > 0 && firstPairRank >= 11) {
+    return 1;
+  }
+  // A LOW PAIR (10s AND BELOW), OR HIGH CARD
+
+  return -1;
 };
 
 const recognizeCurrentHand = (hand) => {
@@ -434,47 +513,66 @@ const recognizeCurrentHand = (hand) => {
     IS_FLUSH && IS_STRAIGHT
     && SORTED_HAND[0].rank === 10 && SORTED_HAND[SORTED_HAND.length - 1].rank === 14
   ) {
-    string += `a royal flush of ${SORTED_HAND[0].suit}`;
+    string += `a royal flush of ${SORTED_HAND[0].suit}.`;
   }
   // STRAIGHT FLUSH
   else if (IS_FLUSH && IS_STRAIGHT) {
-    string += `a straight flush starting from a ${SORTED_HAND[0].name} of ${SORTED_HAND[0].suit}, and ending with a ${SORTED_HAND[SORTED_HAND.length - 1].name} of ${SORTED_HAND[SORTED_HAND.length - 1].suit}`;
+    string += `a straight flush starting from a ${SORTED_HAND[0].name} of ${SORTED_HAND[0].suit}, and ending with a ${SORTED_HAND[SORTED_HAND.length - 1].name} of ${SORTED_HAND[SORTED_HAND.length - 1].suit}.`;
   }
   // FOUR OF A KIND
   else if (FOURS.length > 0) {
-    string += `a four of a kind with ${FOURS[0]}s`;
+    string += `a four of a kind with ${FOURS[0]}s.`;
   }
   // FULL HOUSE
   else if (THREES.length > 0 && PAIRS.length > 0) {
-    string += `a full house: a three of a kind with ${THREES[0]}s, and a pair of ${FIRST_PAIR}s`;
+    string += `a full house: a three of a kind with ${THREES[0]}s, and a pair of ${FIRST_PAIR}s.`;
   }
   // FLUSH
   else if (IS_FLUSH) {
-    string += `a flush of ${SORTED_HAND[0].suit}`;
+    string += `a flush of ${SORTED_HAND[0].suit}.`;
   }
   // STRAIGHTS
   else if (IS_STRAIGHT) {
-    string += `a straight starting from a ${SORTED_HAND[0].name} of ${SORTED_HAND[0].suit}, and ending with a ${SORTED_HAND[SORTED_HAND.length - 1].name} of ${SORTED_HAND[SORTED_HAND.length - 1].suit}`;
+    string += `a straight starting from a ${SORTED_HAND[0].name} of ${SORTED_HAND[0].suit}, and ending with a ${SORTED_HAND[SORTED_HAND.length - 1].name} of ${SORTED_HAND[SORTED_HAND.length - 1].suit}.`;
   }
   // THREE OF A KIND
   else if (THREES.length === 1) {
-    string += `a three of a kind with ${THREES[0]}s`;
+    string += `a three of a kind with ${THREES[0]}s.`;
   }
   // 2 PAIRS
   else if (PAIRS.length === 2) {
-    string += `2 pairs of ${FIRST_PAIR}s and ${PAIRS[1]}s`;
+    string += `2 pairs of ${FIRST_PAIR}s and ${PAIRS[1]}s.`;
   }
   // A HIGH PAIR (JACK AND ABOVE)
   else if (PAIRS.length > 0 && firstPairRank >= 11) {
-    string += `a pair of ${FIRST_PAIR}s. The odds are even`;
+    string += `a pair of ${FIRST_PAIR}s.`;
   }
   // A LOW PAIR (10s AND BELOW)
   else if (PAIRS.length > 0) {
-    string += `a pair of ${FIRST_PAIR}s. You will lose your bet if you do not replace any cards`;
+    string += `a pair of ${FIRST_PAIR}s.`;
   }
   // HIGH CARD
   else {
-    string += `a high card of ${SORTED_HAND[SORTED_HAND.length - 1].name}`;
+    string += `a high card of ${SORTED_HAND[SORTED_HAND.length - 1].name}.`;
+  }
+
+  const HAND_SCORE = calcHandScore(hand);
+  const BET_SCORE = HAND_SCORE * currentBet;
+  console.log('HAND SCORE:', HAND_SCORE);
+  console.log('currentBet:', currentBet);
+  console.log('BET_SCORE:', BET_SCORE);
+  if (BET_SCORE - currentBet > 0 && gameState === 'SHOW_INITIAL_HAND') {
+    string += ` You will win ${BET_SCORE - currentBet} coin(s) if you do not replace your cards!`;
+  } else if (BET_SCORE - currentBet > 0) {
+    string += ` You have won ${BET_SCORE - currentBet} coin(s) this round!`;
+  } else if (BET_SCORE - currentBet === 0 && gameState === 'SHOW_INITIAL_HAND') {
+    string += ' You will not win or lose any coins if you do not replace your cards.';
+  } else if (BET_SCORE - currentBet === 0) {
+    string += ' You have not won or lost any coins this round.';
+  } else if (BET_SCORE < 0 && gameState === 'SHOW_INITIAL_HAND') {
+    string += ` You will lose ${Math.abs(BET_SCORE)} coins if you do not replace your cards.`;
+  } else {
+    string += ` You have lost ${Math.abs(BET_SCORE)} coins this round.`;
   }
 
   return string;
@@ -628,7 +726,7 @@ const toggleShowFinalHand = () => {
       cardContainer.appendChild(cardElement);
     }
     gameInfo = document.createElement('div');
-    gameInfo.innerText = `Player ${playersTurn}, your replaced hand has ${recognizeCurrentHand(player1Cards)}.`;
+    gameInfo.innerText = `Player ${playersTurn}, your replaced hand has ${recognizeCurrentHand(player1Cards)}`;
     document.body.appendChild(gameInfo);
   } else {
     const SHOW_FINAL_HAND_ELEMENTS = document.querySelectorAll('.showFinalHand');
