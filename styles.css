@@ -3,63 +3,142 @@
 *:after {
   box-sizing: border-box;
 }
-
+#header {
+  width: 550px;
+  margin: auto;
+}
 body {
   background-color: pink;
   text-align: center;
+<<<<<<< HEAD
   width: 100vw;
   height: 100vh;
+=======
+  display: inline-block;
+  height: auto;
+  width: auto;
+  margin: auto;
 }
 
+h4,
+th {
+  text-align: center;
+  padding-bottom: 0px;
+}
+.info-board {
+  margin: auto;
+  font-family: Tahoma, sans-serif;
+  padding: 8px;
+  /* background-color: white; */
+  width: 500px;
+  border-radius: 16px;
+  display: inline-block;
+  padding: 20px 20px;
+}
+
+.game-play {
+  display: inline-block;
+  text-align: left;
+  height: 420px;
+  width: 47%;
+  padding: 0px 28px 8px 16px;
+  box-shadow: 0 0 5px 5px grey;
+  background-color: white;
+}
+.instructions {
+  padding: 0px 16px;
+}
+table {
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid black;
+  padding: 4px 4px;
+}
+
+li {
+  padding-left: 8px;
+  padding-top: 8px;
+}
+
+.payout-board {
+  display: inline-block;
+  text-align: justify;
+  height: 420px;
+  width: 47%;
+  vertical-align: top;
+  box-shadow: 0 0 5px 5px grey;
+  background-color: white;
+>>>>>>> calcHandScore
+}
+
+.payout-table {
+  display: inline-block;
+  text-align: justify;
+  height: 350px;
+  width: 100%;
+  vertical-align: top;
+  padding-top: 16px;
+  padding-left: 16px;
+}
+.cardPanel {
+  padding-top: 16px;
+  font-size: 20px;
+}
 .cardContainer {
   margin: auto;
+  display: inline-block;
   background: rgb(13, 139, 61);
   border-radius: 8px;
-  border-color: blue;
+  border-color: black;
   border-style: solid;
   text-align: center;
-  width: 600px;
-  height: 200px;
-  position: relative;
+  width: 550px;
+  height: 190px;
+  padding-top: 16px 0px 0px 0px;
+  vertical-align: top;
 }
 .card {
-  margin: 30px 30px 20px 30px;
-  padding: 10px;
+  margin: 32px 24px 20px 24px;
+  padding: 8px;
   background-color: white;
-  width: 50px;
+  height: 90px;
+  width: 60px;
   border-radius: 8px;
   display: inline-block;
 }
 
-.highlight {
-  border: solid;
-  border-color: greenyellow;
+.gameMessage {
+  padding-top: 16px;
+  font-size: 20px;
 }
 
-.selected {
-  border: solid;
-  border-color: red;
+.handMessage {
+  font-family: Tahoma, sans-serif;
+  color: blue;
+  padding-bottom: 5px;
+}
+
+.scoreDiv {
+  font-size: 20px;
+}
+.controlPanel {
+  width: 550px;
+  margin: auto;
+  padding-top: 16px;
+  font-size: 20px;
 }
 
 .button {
   margin-left: 10px;
   display: inline-block;
+  font-size: 20px;
 }
 
 .betDisplay {
   margin: 20px auto;
   display: inline-block;
-}
-.infoboard {
-  margin: 50px 30px 20px 30px;
-  padding: 10px;
-  background-color: white;
-  height: 100px;
-  width: auto;
-  text-align: center;
-  border-radius: 8px;
-  display: inline-block;
-  vertical-align: top;
 }
 
 .points {
@@ -67,6 +146,11 @@ body {
   display: inline-block;
 }
 
+.scoreDiv {
+  width: 100vw;
+}
+
+/* for card display */
 .suit {
   margin: 5px;
   font-size: 18px;
@@ -87,19 +171,12 @@ body {
   color: black;
 }
 
-#payoutTable {
-  display: flex;
-  justify-content: flex-end;
-  display: inline-block;
-  height: 200px;
-  width: 100px;
-  vertical-align: top;
+.highlight {
+  border: solid;
+  border-color: greenyellow;
 }
 
-#gamePlay {
-  display: inline-block;
-  text-align: justify;
-  height: 200px;
-  width: 100px;
-  /* vertical-align: top; */
+.selected {
+  border: solid;
+  border-color: red;
 }
