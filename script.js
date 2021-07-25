@@ -153,10 +153,9 @@ let gameInfo;
 // Player 1 starts first
 const playersTurn = 1; // matches with starting instructions
 // Player 1 cards
-const player1Cards = [];
+let player1Cards = [];
 
 // initialize gameState
-let prevGameState = '';
 let gameState = INIT_COINS;
 // initialize totalCoins
 let totalCoins = 0;
@@ -252,6 +251,22 @@ const replaceHand = () => {
   }
 };
 
+const newRoundOrGameClick = () => {
+  // create new deck and reshuffle
+  deck = shuffleCards([...unshuffledDeck]);
+  // reset existing player cards
+  player1Cards = [];
+
+  if (totalCoins > 0) {
+    currentBet = 0;
+    initBet();
+  } else {
+    totalCoins = 0;
+    currentBet = 0;
+    initCoins();
+  }
+};
+
 const raiseAndReplaceClick = () => {
   const RAISE_INPUTS = document.querySelectorAll('.raiseInput');
   let raise = 0;
@@ -293,12 +308,6 @@ const player1CardClick = (event) => {
 };
 
 const drawInitialHand = () => {
-  // create new deck and reshuffle if no cards left
-  if (deck.length === 0) {
-    console.log("end of deck reached in player 1's turn! time to reshuffle.");
-    deck = shuffleCards([...unshuffledDeck]);
-  }
-
   // Empty cardContainer in case this is not the 1st round of gameplay
   cardContainer.innerHTML = '';
 
@@ -360,6 +369,7 @@ const drawInitialHand = () => {
   }
 
   gameInfo = document.createElement('div');
+  gameInfo.classList.add('gameInfo');
   gameInfo.innerText = `Player ${playersTurn}, your current hand has ${recognizeCurrentHand(player1Cards)}`;
   if (totalCoins > 0) {
     gameInfo.innerText += ' You may choose any number of cards to replace, or raise your bet.';
@@ -634,17 +644,46 @@ const showOrUpdateCurrentBet = () => {
 const showOrUpdateTotalWinnings = () => {
   const YOUR_WINNINGS_PARAGRAPHS = document.querySelectorAll('.yourWinnings');
   if (YOUR_WINNINGS_PARAGRAPHS.length > 0) {
-    YOUR_WINNINGS_PARAGRAPHS[0].innerText = `Your winnings: ${totalWinnings}`;
+    YOUR_WINNINGS_PARAGRAPHS[0].innerText = `Lifetime winnings: ${totalWinnings}`;
   } else {
     const YOUR_WINNINGS_PARAGRAPH = document.createElement('p');
     YOUR_WINNINGS_PARAGRAPH.classList.add('yourWinnings');
-    YOUR_WINNINGS_PARAGRAPH.innerText = `Your winnings: ${totalWinnings}`;
+    YOUR_WINNINGS_PARAGRAPH.innerText = `Lifetime winnings: ${totalWinnings}`;
     document.body.appendChild(YOUR_WINNINGS_PARAGRAPH);
   }
 };
 
+const hideTotalCoins = () => {
+  const TOTAL_COINS_PARAGRAPHS = document.querySelectorAll('.totalCoins');
+  for (let i = 0; i < TOTAL_COINS_PARAGRAPHS.length; i += 1) {
+    TOTAL_COINS_PARAGRAPHS[i].remove();
+  }
+};
+
+const hideCurrentBet = () => {
+  const CURRENT_BET_PARAGRAPHS = document.querySelectorAll('.currentBet');
+  for (let i = 0; i < CURRENT_BET_PARAGRAPHS.length; i += 1) {
+    CURRENT_BET_PARAGRAPHS[i].remove();
+  }
+};
+
+const hideYourWinnings = () => {
+  const YOUR_WINNINGS_PARAGRAPHS = document.querySelectorAll('.yourWinnings');
+  for (let i = 0; i < YOUR_WINNINGS_PARAGRAPHS.length; i += 1) {
+    YOUR_WINNINGS_PARAGRAPHS[i].remove();
+  }
+};
+
+const hideCoins = () => {
+  hideTotalCoins();
+  hideCurrentBet();
+  hideYourWinnings();
+};
+
 const toggleInsertCoins = () => {
   if (gameState === INIT_COINS) {
+    // hide coins indicators from previous UI states
+    hideCoins();
     // initialize coins input
     coinsInput = document.createElement('input');
     coinsInput.setAttribute('type', 'number');
@@ -757,8 +796,21 @@ const toggleShowFinalHand = () => {
       cardContainer.appendChild(cardElement);
     }
     gameInfo = document.createElement('div');
+    gameInfo.classList.add('showFinalHand');
     gameInfo.innerText = `Player ${playersTurn}, your replaced hand has ${recognizeCurrentHand(player1Cards)}`;
     document.body.appendChild(gameInfo);
+    if (gameState === 'SHOW_FINAL_HAND') {
+      const newRoundOrGameButton = document.createElement('button');
+      newRoundOrGameButton.classList.add('newRoundOrGameButton');
+      newRoundOrGameButton.classList.add('showFinalHand');
+      newRoundOrGameButton.addEventListener('click', newRoundOrGameClick);
+      if (totalCoins > 0) {
+        newRoundOrGameButton.innerText = 'Start New Round';
+      } else {
+        newRoundOrGameButton.innerText = 'Insert More Coins';
+      }
+      document.body.appendChild(newRoundOrGameButton);
+    }
   } else {
     const SHOW_FINAL_HAND_ELEMENTS = document.querySelectorAll('.showFinalHand');
     for (let i = 0; i < SHOW_FINAL_HAND_ELEMENTS.length; i += 1) {
@@ -780,19 +832,16 @@ const toggleUI = () => {
  */
 
 const initBet = () => {
-  prevGameState = gameState;
   gameState = SET_BET;
   toggleUI();
 };
 
 const initGame = () => {
-  prevGameState = gameState;
   gameState = SHOW_INITIAL_HAND;
   toggleUI();
 };
 
 const initFinalHand = () => {
-  prevGameState = gameState;
   gameState = SHOW_FINAL_HAND;
   toggleUI();
 };
