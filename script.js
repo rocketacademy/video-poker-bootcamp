@@ -253,15 +253,21 @@ const replaceHand = () => {
 };
 
 const raiseAndReplaceClick = () => {
-  const RAISE_INPUT = document.querySelector('.raiseInput');
-  const RAISE = Number(RAISE_INPUT.value);
-  const IS_RAISE_NUMBER = !Number.isNaN(RAISE);
-  if (RAISE_INPUT.value.trim() !== '' && IS_RAISE_NUMBER && RAISE > 0 && RAISE <= totalCoins) {
-    currentBet += RAISE;
-    totalCoins -= RAISE;
+  const RAISE_INPUTS = document.querySelectorAll('.raiseInput');
+  let raise = 0;
+  let isRaiseNumber = false;
+
+  if (RAISE_INPUTS.length > 0) {
+    raise = Number(RAISE_INPUTS[0].value);
+    isRaiseNumber = !Number.isNaN(raise);
+  }
+
+  if (RAISE_INPUTS.length > 0 && RAISE_INPUTS[0].value.trim() !== '' && isRaiseNumber && raise > 0 && raise <= totalCoins) {
+    currentBet += raise;
+    totalCoins -= raise;
     replaceHand();
     initFinalHand();
-  } else if (RAISE_INPUT.value.trim() !== '' && IS_RAISE_NUMBER && RAISE > 0) {
+  } else if (RAISE_INPUTS.length > 0 && RAISE_INPUTS[0].value.trim() !== '' && isRaiseNumber && raise > 0) {
     const RAISE_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.raiseInputFeedback');
     if (RAISE_INPUT_FEEDBACK_PARAGRAPHS.length === 0) {
       const RAISE_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
@@ -355,7 +361,12 @@ const drawInitialHand = () => {
 
   gameInfo = document.createElement('div');
   gameInfo.innerText = `Player ${playersTurn}, your current hand has ${recognizeCurrentHand(player1Cards)}`;
-  gameInfo.innerText += ' You may choose any number of cards to replace, or raise your bet.';
+  if (totalCoins > 0) {
+    gameInfo.innerText += ' You may choose any number of cards to replace, or raise your bet.';
+  } else {
+    gameInfo.innerText += ' Since you have no coins left, you cannot raise your bet any further. You may still choose any number of cards to replace.';
+  }
+
   /* Add event listeners on click to all cards */
   const CARDS = cardContainer.querySelectorAll('.card');
   for (let i = 0; i < CARDS.length; i += 1) {
@@ -565,19 +576,16 @@ const recognizeCurrentHand = (hand) => {
   } else if (WINNINGS > 0) {
     totalWinnings += WINNINGS;
     totalCoins += WINNINGS + currentBet;
-    currentBet = 0;
     string += ` You have won ${WINNINGS} coin(s) this round!`;
   } else if (BET_SCORE - currentBet === 0 && gameState === 'SHOW_INITIAL_HAND') {
     string += ' You will not win or lose any coins if you do not replace your cards.';
   } else if (BET_SCORE - currentBet === 0) {
     totalCoins += currentBet;
-    currentBet = 0;
     string += ' You have not won or lost any coins this round.';
   } else if (BET_SCORE - currentBet < 0 && gameState === 'SHOW_INITIAL_HAND') {
     string += ` You will lose ${Math.abs(BET_SCORE)} coins if you do not replace your cards.`;
   } else {
     totalWinnings -= Math.abs(BET_SCORE);
-    currentBet = 0;
     string += ` You have lost ${Math.abs(BET_SCORE)} coins this round.`;
   }
 
@@ -695,10 +703,17 @@ const toggleShowInitialHand = () => {
     gameInfo.classList.add('showInitialHand');
     document.body.appendChild(gameInfo);
 
-    raiseInput = document.createElement('input');
-    raiseInput.classList.add('raiseInput');
-    raiseInput.classList.add('showInitialHand');
-    document.body.appendChild(raiseInput);
+    if (totalCoins > 0) {
+      raiseInput = document.createElement('input');
+      raiseInput.classList.add('raiseInput');
+      raiseInput.classList.add('showInitialHand');
+      document.body.appendChild(raiseInput);
+    } else {
+      const RAISE_INPUTS = document.querySelectorAll('.raiseInput');
+      for (let i = 0; i < RAISE_INPUTS.length; i += 1) {
+        RAISE_INPUTS[i].remove();
+      }
+    }
 
     // create raise and replace cards button
     raiseAndReplaceButton = document.createElement('button');
