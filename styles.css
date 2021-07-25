@@ -16,6 +16,7 @@ body {
   background-position: center;
   margin: 0;
   font-family: "Rubik", sans-serif;
+  color: #fff;
 }
 
 .flex {
@@ -107,7 +108,8 @@ body {
 }
 
 .init-coins-container,
-.set-bet-wrapper {
+.set-bet-wrapper,
+.show-initial-hand-wrapper {
   height: 100%;
 }
 
@@ -194,7 +196,8 @@ body {
   text-shadow: 1px 1px 1px #000;
 }
 
-.set-bet-wrapper {
+.set-bet-wrapper,
+.show-initial-hand-wrapper {
   padding: 10px;
 }
 
@@ -323,8 +326,11 @@ body {
 }
 
 .red {
-  /* CX: Change colour to color */
   color: red;
+}
+
+.black {
+  color: black;
 }
 
 /* Media queries */

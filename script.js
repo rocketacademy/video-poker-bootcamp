@@ -599,10 +599,10 @@ const recognizeCurrentHand = (hand) => {
     totalCoins += currentBet;
     string += ' You have not won or lost any coins this round.';
   } else if (BET_SCORE - currentBet < 0 && gameState === 'SHOW_INITIAL_HAND') {
-    string += ` You will lose ${Math.abs(BET_SCORE)} coins if you do not replace your cards.`;
+    string += ` You will lose your bet of ${Math.abs(BET_SCORE)} coins if you do not replace your cards.`;
   } else {
     totalWinnings -= Math.abs(BET_SCORE);
-    string += ` You have lost ${Math.abs(BET_SCORE)} coins this round.`;
+    string += ` You have lost your bet of ${Math.abs(BET_SCORE)} coins this round.`;
   }
 
   if (totalCoins > 0 && gameState === 'SHOW_FINAL_HAND') {
