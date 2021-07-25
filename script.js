@@ -879,6 +879,7 @@ const toggleShowInitialHand = () => {
     document.body.appendChild(SHOW_INITIAL_HAND_WRAPPER);
     SHOW_INITIAL_HAND_WRAPPER.appendChild(VIEW_COINS_WRAPPER);
     SHOW_INITIAL_HAND_WRAPPER.appendChild(SHOW_INITIAL_HAND_CONTAINER);
+
     showOrUpdateCoins();
     // Initialise cardContainer as a div with CSS class card-container,
     // and add it to the document body. Add this logic to the initGame function.
@@ -921,6 +922,16 @@ const toggleShowInitialHand = () => {
 
 const toggleShowFinalHand = () => {
   if (gameState === SHOW_FINAL_HAND) {
+    const SHOW_FINAL_HAND_WRAPPER = document.createElement('div');
+    SHOW_FINAL_HAND_WRAPPER.className = 'showFinalHand show-final-hand-wrapper flex flex-direction-column';
+    const VIEW_COINS_WRAPPER = document.createElement('div');
+    VIEW_COINS_WRAPPER.className = 'viewCoinsWrapper view-coins-wrapper flex-grow-zero flex-shrink-zero flex';
+    const SHOW_FINAL_HAND_CONTAINER = document.createElement('div');
+    SHOW_FINAL_HAND_CONTAINER.className = 'showFinalHand showFinalHandContainer show-final-hand-container flex flex-direction-column justify-content-center flex-grow-one flex-shrink-one';
+    document.body.appendChild(SHOW_FINAL_HAND_WRAPPER);
+    SHOW_FINAL_HAND_WRAPPER.appendChild(VIEW_COINS_WRAPPER);
+    SHOW_FINAL_HAND_WRAPPER.appendChild(SHOW_FINAL_HAND_CONTAINER);
+
     showOrUpdateCoins();
 
     // Initialise cardContainer as a div with CSS class card-container,
@@ -928,7 +939,7 @@ const toggleShowFinalHand = () => {
     cardContainer = document.createElement('div');
     cardContainer.classList.add('card-container');
     cardContainer.classList.add('showFinalHand');
-    document.body.appendChild(cardContainer);
+    SHOW_FINAL_HAND_CONTAINER.appendChild(cardContainer);
 
     // Pop player 1's card metadata from the deck
     for (let i = 0; i < player1Cards.length; i += 1) {
@@ -941,7 +952,7 @@ const toggleShowFinalHand = () => {
     gameInfo = document.createElement('div');
     gameInfo.classList.add('showFinalHand');
     gameInfo.innerText = `Player ${playersTurn}, your replaced hand has ${recognizeCurrentHand(player1Cards)}`;
-    document.body.appendChild(gameInfo);
+    SHOW_FINAL_HAND_CONTAINER.appendChild(gameInfo);
     if (gameState === 'SHOW_FINAL_HAND') {
       const newRoundOrGameButton = document.createElement('button');
       newRoundOrGameButton.classList.add('newRoundOrGameButton');
@@ -952,7 +963,7 @@ const toggleShowFinalHand = () => {
       } else {
         newRoundOrGameButton.innerText = 'Insert More Coins';
       }
-      document.body.appendChild(newRoundOrGameButton);
+      SHOW_FINAL_HAND_CONTAINER.appendChild(newRoundOrGameButton);
     }
   } else {
     const SHOW_FINAL_HAND_ELEMENTS = document.querySelectorAll('.showFinalHand');
@@ -998,3 +1009,4 @@ const initCoins = () => {
 
 initCoins();
 // initBet();
+// initGame();

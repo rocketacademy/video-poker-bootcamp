@@ -109,7 +109,8 @@ body {
 
 .init-coins-container,
 .set-bet-wrapper,
-.show-initial-hand-wrapper {
+.show-initial-hand-wrapper,
+.show-final-hand-wrapper {
   height: 100%;
 }
 
@@ -197,7 +198,8 @@ body {
 }
 
 .set-bet-wrapper,
-.show-initial-hand-wrapper {
+.show-initial-hand-wrapper,
+.show-final-hand-wrapper {
   padding: 10px;
 }
 
