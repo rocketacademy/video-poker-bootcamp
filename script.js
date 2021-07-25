@@ -977,5 +977,5 @@ const initCoins = () => {
   toggleUI();
 };
 
-initCoins();
-// initBet();
+// initCoins();
+initBet();

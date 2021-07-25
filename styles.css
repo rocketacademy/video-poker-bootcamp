@@ -346,11 +346,11 @@ body {
   }
 
   .coins-wrapper > div {
-    flex-basis: 30%;
+    flex-basis: 40%;
   }
 
   .coins-wrapper > div:last-child {
-    flex-basis: 30%;
+    flex-basis: 60%;
   }
 
   .coins-wrapper > div {
@@ -359,6 +359,10 @@ body {
 
   .coins-wrapper > div:last-child {
     margin-right: 0;
+  }
+
+  .coins-wrapper > div div {
+    font-size: 1em;
   }
 }
 
@@ -381,7 +385,7 @@ body {
 
   .coins-wrapper > div,
   .coins-wrapper > div:last-child {
-    flex-basis: 23%;
+    flex-basis: 28%;
   }
 }
 
