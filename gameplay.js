@@ -127,7 +127,6 @@ const swapCard = () => {
     );
     playerCard = deck.pop();
     cardElement = createCard(playerCard);
-
     cardContainer.appendChild(cardElement);
     playerArr.splice(cardIndex, 1, playerCard);
   }
@@ -136,6 +135,13 @@ const swapCard = () => {
   while (cardToBeSwapped[0]) {
     cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
   }
+  // playerArr = [
+  //   { rank: 11, suit: 'spades', name: 'j' },
+  //   { rank: 10, suit: 'spades', name: '5' },
+  //   { rank: 8, suit: 'spades', name: '5' },
+  //   { rank: 7, suit: 'spades', name: '7' },
+  //   { rank: 3, suit: 'spades', name: '9' },
+  // ];
   swapCardSetup();
   processResults();
 };

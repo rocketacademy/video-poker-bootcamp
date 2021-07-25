@@ -2,14 +2,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
 /* eslint-disable prefer-const */
-// let playerArr = [
-//   { rank: 11, suit: 'hearts', name: 'j' },
-//   { rank: 5, suit: 'diamonds', name: '5' },
-//   { rank: 5, suit: 'spades', name: '5' },
-//   { rank: 7, suit: 'spades', name: '7' },
-//   { rank: 9, suit: 'hearts', name: '9' },
-// ];
-const numOfCards = 5;
 // https://www.codeproject.com/Articles/1187548/Video-Poker
 const isJacksOrBetter = (cardRankTally) => {
   if (cardRankTally[11] === 2
@@ -122,7 +114,7 @@ let calcHandScore = () => {
     payoutRate = 800;
     hand = 'Royal Flush';
     console.log('Royal flush');
-  } else if ((isStraight(playerArr, numOfCards)) && (isFlush(cardSuitTally))) {
+  } else if ((isStraight(playerArr)) && (isFlush(cardSuitTally))) {
     payoutRate = 50;
     hand = 'Straight Flush';
     console.log('straight flush');
@@ -138,7 +130,7 @@ let calcHandScore = () => {
     payoutRate = 6;
     hand = 'Flush';
     console.log('flush');
-  } else if (isStraight(playerArr, numOfCards)) {
+  } else if (isStraight(playerArr)) {
     payoutRate = 4;
     hand = 'Straight';
     console.log('straight');

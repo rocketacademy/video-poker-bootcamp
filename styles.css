@@ -10,13 +10,9 @@
 body {
   background-color: pink;
   text-align: center;
-<<<<<<< HEAD
   width: 100vw;
   height: 100vh;
-=======
   display: inline-block;
-  height: auto;
-  width: auto;
   margin: auto;
 }
 
@@ -70,7 +66,6 @@ li {
   vertical-align: top;
   box-shadow: 0 0 5px 5px grey;
   background-color: white;
->>>>>>> calcHandScore
 }
 
 .payout-table {
@@ -85,6 +80,7 @@ li {
 .cardPanel {
   padding-top: 16px;
   font-size: 20px;
+  min-width: 550px;
 }
 .cardContainer {
   margin: auto;
@@ -112,6 +108,8 @@ li {
 .gameMessage {
   padding-top: 16px;
   font-size: 20px;
+  margin: 20px auto;
+  display: block;
 }
 
 .handMessage {
@@ -136,6 +134,9 @@ li {
   font-size: 20px;
 }
 
+input {
+  font-size: 20px;
+}
 .betDisplay {
   margin: 20px auto;
   display: inline-block;
@@ -147,7 +148,9 @@ li {
 }
 
 .scoreDiv {
-  width: 100vw;
+  /* width: 100vw; */
+  margin: 20px auto;
+  display: inline-block;
 }
 
 /* for card display */
