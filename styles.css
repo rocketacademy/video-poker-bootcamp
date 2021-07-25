@@ -103,11 +103,11 @@ body {
     0 0 6px rgb(255, 127, 127), 0 0 8px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0),
     0 0 12px rgb(255, 0, 0), 0 0 14px rgb(255, 0, 0), 0 0 16px rgb(255, 0, 0);
   padding: 1rem 1.5rem 1rem 1rem;
-  width: 90%;
   border: 0.2rem solid white;
   border-radius: 2rem;
   box-shadow: 0 0 0.1rem #fff, 0 0 0.1rem #fff, 0 0 1rem #bc13fe,
     0 0 0.4rem #bc13fe, 0 0 1.4rem #bc13fe, inset 0 0 0.65rem #bc13fe;
+  display: inline-block;
 }
 
 .coins-input-paragraph {
@@ -225,8 +225,7 @@ body {
 
   .video-poker-header {
     font-size: 5.5em;
-    padding: 1rem 1.5rem 1rem 1rem;
-    width: 90%;
+    padding: 1.5rem 2.25rem 1.5rem 1.5rem;
   }
 
   .coins-input-paragraph {
@@ -241,8 +240,6 @@ body {
   }
 
   .video-poker-header {
-    width: auto;
-    display: inline-block;
     font-size: 7em;
     padding: 2rem 3rem 2rem 2rem;
   }
