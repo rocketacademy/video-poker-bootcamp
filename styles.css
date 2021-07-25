@@ -60,6 +60,7 @@ body {
   outline: none;
   font-weight: 700;
   cursor: pointer;
+  box-shadow: 1px 1px 1px solid #000;
 }
 
 .button.big {
@@ -116,6 +117,7 @@ body {
   color: #fff;
   text-align: center;
   font-size: 1.25em;
+  text-shadow: 1px 1px 1px #000;
 }
 
 .coins-input-paragraph .coin,
@@ -125,6 +127,8 @@ body {
   border-radius: 50%;
   background: #ffeb3b;
   color: #ff8f00;
+  box-shadow: 1px 1px 1px #000;
+  text-shadow: 0 0 0;
 }
 
 .coins-input {
@@ -138,6 +142,7 @@ body {
   color: #fff;
   width: 150px;
   text-align: center;
+  text-shadow: 1px 1px 1px #000;
 }
 
 .coins-input-button {
@@ -151,6 +156,7 @@ body {
   text-align: center;
   margin: 0 0 20px 0;
   padding: 0 20px;
+  text-shadow: 1px 1px 1px #000;
 }
 
 /* red */
