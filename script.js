@@ -739,10 +739,18 @@ const hideYourWinnings = () => {
   }
 };
 
+const hideViewCoinsWrapper = () => {
+  const VIEW_COINS_WRAPPERS = document.querySelectorAll('.viewCoinsWrapper');
+  for (let i = 0; i < VIEW_COINS_WRAPPERS.length; i += 1) {
+    VIEW_COINS_WRAPPERS[i].remove();
+  }
+};
+
 const hideCoins = () => {
   hideTotalCoins();
   hideCurrentBet();
   hideYourWinnings();
+  hideViewCoinsWrapper();
 };
 
 const toggleInsertCoins = () => {
@@ -817,6 +825,8 @@ const toggleInsertCoins = () => {
 
 const toggleSetBet = () => {
   if (gameState === SET_BET) {
+    // hide coins indicators from previous UI states
+    hideCoins();
     // create set bet container
     const SET_BET_WRAPPER = document.createElement('div');
     SET_BET_WRAPPER.className = 'setBet set-bet-wrapper flex flex-direction-column';
@@ -870,6 +880,9 @@ const toggleSetBet = () => {
 
 const toggleShowInitialHand = () => {
   if (gameState === SHOW_INITIAL_HAND) {
+    // hide coins indicators from previous UI states
+    hideCoins();
+
     const SHOW_INITIAL_HAND_WRAPPER = document.createElement('div');
     SHOW_INITIAL_HAND_WRAPPER.className = 'showInitialHand show-initial-hand-wrapper flex flex-direction-column';
     const VIEW_COINS_WRAPPER = document.createElement('div');
@@ -922,6 +935,9 @@ const toggleShowInitialHand = () => {
 
 const toggleShowFinalHand = () => {
   if (gameState === SHOW_FINAL_HAND) {
+    // hide coins indicators from previous UI states
+    hideCoins();
+
     const SHOW_FINAL_HAND_WRAPPER = document.createElement('div');
     SHOW_FINAL_HAND_WRAPPER.className = 'showFinalHand show-final-hand-wrapper flex flex-direction-column';
     const VIEW_COINS_WRAPPER = document.createElement('div');
