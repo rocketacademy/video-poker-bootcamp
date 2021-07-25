@@ -149,7 +149,7 @@ const replaceUnheldCards = (cardsDom) => {
     {
 
        refDom.classList.add('cardAnimateDiscard');
-        
+        //remove card
        setTimeout(()=>{
         while (refDom.firstChild) {
          refDom.removeChild(refDom.lastChild);

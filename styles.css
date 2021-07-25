@@ -75,12 +75,21 @@ img {
 }
 
 @keyframes fromTop {
-  from {
-    transform: translate(0px, -500px);
+  0% {
+    transform: translate(-1600px, -0px);
     opacity: 0;
   }
-  to {
-    transform: translate(0px, 0px);
+  25% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }
 .cardAnimateOpenNew {
@@ -207,6 +216,17 @@ img {
   perspective: 1000px;
 }
 
+.box-shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.grey-scale img {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+.zero-opacity {
+  opacity: 0;
+}
+
 .card-inner {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   position: relative;
@@ -243,4 +263,22 @@ img {
 }
 .openCard {
   transform: rotateY(180deg);
+}
+
+@keyframes float-up {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: translate(0px, -100px);
+    opacity: 0;
+  }
+}
+
+.sign-float {
+  font-size: 36px;
+  animation-name: float-up;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
 }

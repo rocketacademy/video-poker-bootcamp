@@ -1,18 +1,21 @@
 /* eslint-disable no-eval */
 
-const tokens = [];
-const tokenTranslation = [];
+let tokens = [];
+let tokenTranslation = [];
 
-const addTokens = () => {
+const addTokens = (num=1) => {
   if (bet === points) {
     return;
   }
   const colors = ['biege', 'black', 'blue', 'gray', 'green', 'lightblue', 'pink', 'purple', 'red', 'white', 'yellow'];
-  const addition = colors[getRandomInt(colors.length)];
-  const translation = `${getRandomInt(15) - 5}px , ${-7 * tokens.length + 20}px`;
-  bet += 1;
-  tokens.push(addition);
-  tokenTranslation.push(translation);
+  for(let i=0; i<num;i+=1){
+    const addition = colors[getRandomInt(colors.length)];
+    const translation = `${getRandomInt(15) - 5}px , ${-7 * tokens.length + 20}px`;
+    bet += 1;
+    tokens.push(addition);
+    tokenTranslation.push(translation);
+  }
+
 };
 const removeToken = () => {
   if (bet === 1) {
@@ -24,7 +27,7 @@ const removeToken = () => {
 };
 const createtokens = () => {
   const tokenContainer = document.createElement('div');
-
+  tokenContainer.id='tokens';
   for (let i = 0; i < tokens.length; i++)
   {
     const token = document.createElement('img');
@@ -38,6 +41,26 @@ const createtokens = () => {
   }
   return tokenContainer;
 };
+
+const refreshTokens=()=>{
+    tokens = [];  
+    tokenTranslation = [];
+    const betVal=bet;
+    addTokens(bet);
+    bet-=betVal;
+    tokensDom = createtokens();
+    return tokensDom;
+}
+
+const updateTokenCon=(tokensContainer, tokensDom, tokenCount, bet)=>{
+    tokensContainer.removeChild(tokensDom);
+    tokensDom = createtokens();
+    tokensContainer.appendChild(tokensDom);
+    tokenCount.innerText = bet;
+
+    
+}
+
 
 let firstDeal = true;
 let consecutiveDeals=0;
@@ -65,9 +88,21 @@ const gameinit = () => {
   const results = document.createElement('div');
 
   const creditContainer=document.createElement('div');
+
+
+
+  const resetMsg= document.createElement('div');
+
   
+  const credits= document.createElement('div');
   const creditTxt = document.createElement('div');
   const totalPoints = document.createElement('div');
+  const creditEffects= document.createElement('div');
+
+
+  resetMsg.classList.add('resetMessage');
+  handContainer.appendChild(resetMsg);
+  resetMsg.innerText='Bet to start';
 
   header.innerText = 'Video Poker!';
   totalPoints.innerText = points;
@@ -76,11 +111,8 @@ const gameinit = () => {
   scoreButton.innerText = 'Score';
   creditTxt.innerText = 'Credits';
 
-  
-
-  handContainer.innerHTML = '';
   gameContainer.classList.add('game-container');
-  deckContainer.classList.add('card');
+  deckContainer.classList.add('card','box-shadow');
 
   cardContainer.classList.add('middle-bar')
   handContainer.classList.add('hand-container');
@@ -96,13 +128,11 @@ const gameinit = () => {
   buttonContainer.classList.add('inline-block');
   bottomBar.classList.add('bottom-bar');
   results.classList.add('inline-block','results');
-
+  
+  creditEffects.classList.add('credit-effects', 'inline-block');
+  credits.classList.add('inline-block');
+  
   faceDownImg.src = './resources/cardFace/deck_4_large.png';
-  addTokens();
-  tokenCount.innerText = bet;
-  let tokensDom = createtokens(bet);
-  tokensContainer.appendChild(tokensDom);
-  tokensContainer.style.width = '100px';
 
   //create table for scoreboard
   //highlight the type of hand when player wins
@@ -117,13 +147,21 @@ const gameinit = () => {
 
   //when player clicks deal, noo more change of bets.
   //create bet button for player to freeze bet before starting
-  
+
   //can click series
   let upCanClick=true;
   let downCanClick=true;
   let betCanClick=true;
   let dealCanClick=false;
   let scoreCanClick=false;
+
+
+
+  addTokens(5);
+  tokenCount.innerText = bet;
+  let tokensDom = createtokens();
+  tokensContainer.appendChild(tokensDom);
+
 
   upBet.addEventListener('click', () => {
     if(!upCanClick)
@@ -132,7 +170,7 @@ const gameinit = () => {
     }
     addTokens();
     tokensContainer.removeChild(tokensDom);
-    tokensDom = createtokens(bet);
+    tokensDom = createtokens();
     tokensContainer.appendChild(tokensDom);
     tokenCount.innerText = bet;
   });
@@ -142,21 +180,45 @@ const gameinit = () => {
       return;
     }
     removeToken();
+
     tokensContainer.removeChild(tokensDom);
-    tokensDom = createtokens(bet);
+    tokensDom = createtokens();
     tokensContainer.appendChild(tokensDom);
     tokenCount.innerText = bet;
   });
+
+
+
   let cardsDom = document.createElement('div');
   betButton.addEventListener('click',()=>{
     if(!betCanClick){
       return;
     }
-    
-      handContainer.innerHTML = '';
+    results.innerText ='';
+    handContainer.innerHTML = '';
+
       // For testing
       //  playerHand= royalFlush;
 
+    creditEffects.innerText='-';
+    creditEffects.classList.add('sign-float');
+    creditEffects.style.animationIterationCount=bet;
+
+    let pointCount=0;
+    const pointInterval=setInterval(() => {
+      if(pointCount===bet)
+      {
+        clearInterval(pointInterval);
+        creditEffects.innerText = '';
+        creditEffects.classList.remove('sign-float');
+        return;
+      }
+      points-=1;
+      pointCount+=1;
+      totalPoints.innerText = points;
+    }, 500);
+    
+    deckContainer.classList.remove('cardAnimateDiscard');
     playerHand = dealCards(maxHandSize);
     cardsDom = createCards(playerHand);
     appendChilds(handContainer, cardsDom);
@@ -165,16 +227,13 @@ const gameinit = () => {
 
     upCanClick=false;
     downCanClick=false;
-    points -= bet;
-    totalPoints.innerText = points;
+
     betCanClick=false;
     dealCanClick=true;
     dealButton.classList.add('button-bottom-border');
 
     betButton.classList.remove('button-bottom-border');
   })
-
- 
 
   // refresh deck
   let parentNodes=[];
@@ -186,23 +245,20 @@ const gameinit = () => {
     }
     scoreCanClick=true;
     scoreButton.classList.add('button-bottom-border');
-    
+    deckContainer.classList.remove('cardAnimateDiscard');
     if (consecutiveDeals === 0) {
+      parentNodes=[]
       consecutiveDeals+=1;
-      //flip card here
-      // const cards= document.querySelector('div.card');
       inners = document.querySelectorAll('div.card-inner');
 
       console.log(inners);
-
-     
       [].forEach.call(inners,function(inner){
         inner.classList.add('card-flip');
         parentNodes.push(inner.parentNode)
       })
       console.log(inners);
       console.log(parentNodes);
-      
+
 
       cardsDom = createCards(playerHand);
       console.log(cardsDom);
@@ -231,47 +287,75 @@ const gameinit = () => {
       outputString;
     [rankTally, suitTally] = tallyHand();
     [prize, outputString] = calHandScore(rankTally, suitTally);
-    points += prize;
+    // points += prize;
     totalPoints.innerText = points;
-    
-    results.innerText = `${outputString}, you win ${prize} points`;
+
+    if(prize>0)
+    {
+      results.innerText = `${outputString}, you win ${prize} points`;
+
+      creditEffects.innerText='+';
+      creditEffects.classList.add('sign-float');
+      creditEffects.style.animationIterationCount=prize;
+      
+      let pointCount=0;
+      const pointPosInterval=setInterval(() => {
+        if(pointCount===prize)
+        {
+          clearInterval(pointPosInterval);
+          creditEffects.innerText = '';
+          creditEffects.classList.remove('sign-float');
+          return;
+        }
+        console.log(prize);
+        points+=1;
+        totalPoints.innerText = points;
+        pointCount+=1;
+    }, 500);
+    }
+    else{
+      results.innerText = `${outputString}`;
+    }
+
     consecutiveDeals=0;
-    dealButton.classList.remove('button-bottom-border');
-    scoreButton.classList.remove('button-bottom-border');
-    
-      handContainer.classList.remove('cardAnimateOpenNew');
-      setTimeout(()=>{
+
+    handContainer.classList.remove('cardAnimateOpenNew');
+    setTimeout(()=>{
+        tokensDom.classList.add('cardAnimateDiscard');
         handContainer.classList.add('cardAnimateDiscard');
-      },1000)
-      
-      console.log(`deck count: ${deck.length}`);
-      betCanClick = true;
-      upCanClick=true;
-      downCanClick=true;
-      dealCanClick=false;
-      scoreCanClick=false;
-       betButton.classList.add('button-bottom-border');
-      setTimeout(() => {
-      
-      handContainer.innerHTML = '';  
-      results.innerText ='';
+        if(deck.length < maxHandSize*2 ){
+        deckContainer.classList.add('cardAnimateDiscard');}
+    },1000)
+
+    setTimeout(() => {
+      handContainer.innerHTML = '';
+      handContainer.classList.remove('cardAnimateDiscard');
+      handContainer.appendChild(resetMsg);
+      tokensDom.classList.remove('cardAnimateDiscard');
+
+      tokensDom=refreshTokens();
+      tokensContainer.innerHTML='';
+      tokensContainer.appendChild(tokensDom);
 
       if(deck.length < maxHandSize*2 ){
-        console.log(`in reset condition`);
-        handContainer.classList.remove('cardAnimateDiscard');
-        const resetMsg= document.createElement('div');
-        resetMsg.innerText = 'Out of cards, deal to reset.';
-        resetMsg.classList.add('resetMessage');
-        handContainer.appendChild(resetMsg);
-        
-     
-        
-
-        dealButton.disabled = false;
+        resetMsg.innerText = 'Out of cards, Bet to reset.';
         deck = shuffleCards(makeDeck());
-        firstDeal=true;
       }
-    }, 2000);
+      else{
+        resetMsg.innerText = 'Place your bet';
+      }
+    }, 1500);
+
+      console.log(`deck count: ${deck.length}`);
+      betCanClick = true;
+      upCanClick = true;
+      downCanClick = true;
+      dealCanClick = false;
+      scoreCanClick = false;
+      dealButton.classList.remove('button-bottom-border');
+      scoreButton.classList.remove('button-bottom-border');
+      betButton.classList.add('button-bottom-border');
+
   });
 
   deckContainer.appendChild(faceDownImg);
@@ -289,8 +373,11 @@ const gameinit = () => {
   buttonContainer.appendChild(dealButton);
   buttonContainer.appendChild(scoreButton);
 
-  creditContainer.appendChild(creditTxt);
-  creditContainer.appendChild(totalPoints);
+  credits.appendChild(creditTxt);
+  credits.appendChild(totalPoints);
+
+  creditContainer.appendChild(creditEffects);
+  creditContainer.appendChild(credits);
 
   bottomBar.appendChild(betContainer);
   bottomBar.appendChild(buttonContainer);
@@ -298,7 +385,7 @@ const gameinit = () => {
   bottomBar.appendChild(creditContainer);
 
   gameContainer.appendChild(header);
-  
+
 
   gameContainer.appendChild(cardContainer);
 
