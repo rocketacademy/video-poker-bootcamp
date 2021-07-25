@@ -174,6 +174,7 @@ const coinsInputKeypress = (e) => {
     insertCoinsSubmit();
   }
 };
+
 const insertCoinsSubmit = () => {
   const COINS_INPUT = document.querySelector('.coinsInput');
   const COINS = Number(COINS_INPUT.value);
@@ -190,6 +191,12 @@ const insertCoinsSubmit = () => {
   }
 };
 
+const currentBetInputKeypress = (e) => {
+  if (e.keyCode === 13) {
+    placeBetsSubmit();
+  }
+};
+
 const placeBetsSubmit = () => {
   const BET_INPUT = document.querySelector('.currentBetInput');
   const BET = Number(BET_INPUT.value);
@@ -200,12 +207,9 @@ const placeBetsSubmit = () => {
     initGame();
   } else {
     const BET_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.betInputFeedback');
-    if (BET_INPUT_FEEDBACK_PARAGRAPHS.length === 0) {
-      const BET_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
-      BET_INPUT_FEEDBACK_PARAGRAPH.classList.add('betInputFeedback');
-      BET_INPUT_FEEDBACK_PARAGRAPH.classList.add('setBet');
-      BET_INPUT_FEEDBACK_PARAGRAPH.innerText = `You must bet at least 1 coin, and at most ${totalCoins} coin(s).`;
-      document.body.appendChild(BET_INPUT_FEEDBACK_PARAGRAPH);
+    if (BET_INPUT_FEEDBACK_PARAGRAPHS.length > 0 && BET_INPUT_FEEDBACK_PARAGRAPHS[0].classList.contains('invisible')) {
+      BET_INPUT_FEEDBACK_PARAGRAPHS[0].classList.remove('invisible');
+      BET_INPUT_FEEDBACK_PARAGRAPHS[0].classList.add('visible');
     }
   }
 };
@@ -607,9 +611,7 @@ const recognizeCurrentHand = (hand) => {
     string += ' You are out of coins! Click the button below to insert some coins!';
   }
 
-  showOrUpdateTotalCoins();
-  showOrUpdateCurrentBet();
-  showOrUpdateTotalWinnings();
+  showOrUpdateCoins();
 
   return string;
 };
@@ -619,40 +621,91 @@ const recognizeCurrentHand = (hand) => {
  *
  */
 
+const showOrUpdateCoinsWrapper = () => {
+  const VIEW_COINS_WRAPPERS = document.querySelectorAll('.viewCoinsWrapper');
+  const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
+  if (VIEW_COINS_WRAPPERS.length > 0 && COINS_WRAPPERS.length <= 0) {
+    const COINS_WRAPPER = document.createElement('div');
+    COINS_WRAPPER.className = 'coinsWrapper coins-wrapper';
+    VIEW_COINS_WRAPPERS[0].appendChild(COINS_WRAPPER);
+  }
+};
+
 const showOrUpdateTotalCoins = () => {
   const TOTAL_COINS_PARAGRAPHS = document.querySelectorAll('.totalCoins');
-  if (TOTAL_COINS_PARAGRAPHS.length > 0) {
-    TOTAL_COINS_PARAGRAPHS[0].innerText = `Coins left: ${totalCoins}`;
-  } else {
-    const TOTAL_COINS_PARAGRAPH = document.createElement('p');
-    TOTAL_COINS_PARAGRAPH.classList.add('totalCoins');
-    TOTAL_COINS_PARAGRAPH.innerText = `Coins left: ${totalCoins}`;
-    document.body.appendChild(TOTAL_COINS_PARAGRAPH);
+  const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
+  if (TOTAL_COINS_PARAGRAPHS.length > 0 && COINS_WRAPPERS.length > 0) {
+    const TOTAL_COINS_SUB_VALUE = document.querySelector('.totalCoinsSubValue');
+    TOTAL_COINS_SUB_VALUE.innerText = `${totalCoins}`;
+  } else if (COINS_WRAPPERS.length > 0) {
+    const TOTAL_COINS_PARAGRAPH = document.createElement('div');
+    TOTAL_COINS_PARAGRAPH.className = 'totalCoins total-coins flex';
+    const TOTAL_COINS_SUB_HEADER = document.createElement('div');
+    TOTAL_COINS_SUB_HEADER.innerHTML = '<i class="lni lni-coin"></i> Left';
+    const TOTAL_COINS_SUB_VALUE = document.createElement('div');
+    TOTAL_COINS_SUB_VALUE.classList.add('totalCoinsSubValue');
+    TOTAL_COINS_SUB_VALUE.innerText = `${totalCoins}`;
+    COINS_WRAPPERS[0].appendChild(TOTAL_COINS_PARAGRAPH);
+    TOTAL_COINS_PARAGRAPH.appendChild(TOTAL_COINS_SUB_HEADER);
+    TOTAL_COINS_PARAGRAPH.appendChild(TOTAL_COINS_SUB_VALUE);
   }
 };
 
 const showOrUpdateCurrentBet = () => {
   const CURRENT_BET_PARAGRAPHS = document.querySelectorAll('.currentBet');
-  if (CURRENT_BET_PARAGRAPHS.length > 0) {
-    CURRENT_BET_PARAGRAPHS[0].innerText = `Current bet: ${currentBet}`;
-  } else {
-    const CURRENT_BET_PARAGRAPH = document.createElement('p');
-    CURRENT_BET_PARAGRAPH.classList.add('currentBet');
-    CURRENT_BET_PARAGRAPH.innerText = `Current bet: ${currentBet}`;
-    document.body.appendChild(CURRENT_BET_PARAGRAPH);
+  const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
+  if (CURRENT_BET_PARAGRAPHS.length > 0 && COINS_WRAPPERS.length > 0) {
+    const CURRENT_BET_SUB_VALUE = document.querySelector('.currentBetSubValue');
+    CURRENT_BET_SUB_VALUE.innerText = `${currentBet}`;
+  } else if (COINS_WRAPPERS.length > 0) {
+    const CURRENT_BET_PARAGRAPH = document.createElement('div');
+    CURRENT_BET_PARAGRAPH.className = 'currentBet current-bet flex';
+    const CURRENT_BET_SUB_HEADER = document.createElement('div');
+    CURRENT_BET_SUB_HEADER.innerHTML = 'Bet <i class="lni lni-coin"></i>';
+    const CURRENT_BET_SUB_VALUE = document.createElement('div');
+    CURRENT_BET_SUB_VALUE.classList.add('currentBetSubValue');
+    CURRENT_BET_SUB_VALUE.innerText = `${currentBet}`;
+    COINS_WRAPPERS[0].appendChild(CURRENT_BET_PARAGRAPH);
+    CURRENT_BET_PARAGRAPH.appendChild(CURRENT_BET_SUB_HEADER);
+    CURRENT_BET_PARAGRAPH.appendChild(CURRENT_BET_SUB_VALUE);
   }
 };
 
 const showOrUpdateTotalWinnings = () => {
   const YOUR_WINNINGS_PARAGRAPHS = document.querySelectorAll('.yourWinnings');
+  const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
   if (YOUR_WINNINGS_PARAGRAPHS.length > 0) {
-    YOUR_WINNINGS_PARAGRAPHS[0].innerText = `Lifetime winnings: ${totalWinnings}`;
-  } else {
-    const YOUR_WINNINGS_PARAGRAPH = document.createElement('p');
-    YOUR_WINNINGS_PARAGRAPH.classList.add('yourWinnings');
-    YOUR_WINNINGS_PARAGRAPH.innerText = `Lifetime winnings: ${totalWinnings}`;
-    document.body.appendChild(YOUR_WINNINGS_PARAGRAPH);
+    const YOUR_WINNINGS_SUB_VALUE = document.querySelector('.yourWinningsSubValue');
+    YOUR_WINNINGS_SUB_VALUE.innerText = `${totalWinnings}`;
+  } else if (COINS_WRAPPERS.length > 0) {
+    const YOUR_WINNINGS_PARAGRAPH = document.createElement('div');
+    YOUR_WINNINGS_PARAGRAPH.className = 'yourWinnings your-winnings flex';
+    const YOUR_WINNINGS_SUB_HEADER = document.createElement('div');
+    YOUR_WINNINGS_SUB_HEADER.innerHTML = 'Winnings <i class="lni lni-coin"></i>';
+    const YOUR_WINNINGS_SUB_VALUE = document.createElement('div');
+    YOUR_WINNINGS_SUB_VALUE.className = 'yourWinningsSubValue your-winnings-sub-value';
+    YOUR_WINNINGS_SUB_VALUE.innerText = `${totalWinnings}`;
+    if (totalWinnings > 0) {
+      YOUR_WINNINGS_SUB_VALUE.classList.add('text-positive');
+      YOUR_WINNINGS_SUB_VALUE.classList.remove('text-negative');
+    } else if (totalWinnings === 0) {
+      YOUR_WINNINGS_SUB_VALUE.classList.remove('text-positive');
+      YOUR_WINNINGS_SUB_VALUE.classList.remove('text-negative');
+    } else {
+      YOUR_WINNINGS_SUB_VALUE.classList.remove('text-positive');
+      YOUR_WINNINGS_SUB_VALUE.classList.add('text-negative');
+    }
+    COINS_WRAPPERS[0].appendChild(YOUR_WINNINGS_PARAGRAPH);
+    YOUR_WINNINGS_PARAGRAPH.appendChild(YOUR_WINNINGS_SUB_HEADER);
+    YOUR_WINNINGS_PARAGRAPH.appendChild(YOUR_WINNINGS_SUB_VALUE);
   }
+};
+
+const showOrUpdateCoins = () => {
+  showOrUpdateCoinsWrapper();
+  showOrUpdateTotalCoins();
+  showOrUpdateCurrentBet();
+  showOrUpdateTotalWinnings();
 };
 
 const hideTotalCoins = () => {
@@ -754,21 +807,49 @@ const toggleInsertCoins = () => {
 
 const toggleSetBet = () => {
   if (gameState === SET_BET) {
-    showOrUpdateTotalCoins();
-    showOrUpdateCurrentBet();
-    showOrUpdateTotalWinnings();
+    // create set bet container
+    const SET_BET_WRAPPER = document.createElement('div');
+    SET_BET_WRAPPER.className = 'setBet set-bet-wrapper flex flex-direction-column';
+    const VIEW_COINS_WRAPPER = document.createElement('div');
+    VIEW_COINS_WRAPPER.className = 'viewCoinsWrapper view-coins-wrapper flex-grow-zero flex-shrink-zero flex';
+    const SET_BET_CONTAINER = document.createElement('div');
+    SET_BET_CONTAINER.className = 'setBet setBetContainer set-bet-container flex flex-direction-column justify-content-center flex-grow-one flex-shrink-one';
+    document.body.appendChild(SET_BET_WRAPPER);
+    SET_BET_WRAPPER.appendChild(VIEW_COINS_WRAPPER);
+    SET_BET_WRAPPER.appendChild(SET_BET_CONTAINER);
 
+    showOrUpdateCoins();
+
+    // initialize bet input
+    const CURRENT_BET_INPUT_PARAGRAPH = document.createElement('p');
+    CURRENT_BET_INPUT_PARAGRAPH.className = 'currentBetParagraph current-bet-paragraph setBet';
+    const INSERT_SPAN = document.createElement('span');
+    INSERT_SPAN.style.marginRight = '10px';
+    INSERT_SPAN.innerText = 'Bet';
+    CURRENT_BET_INPUT_PARAGRAPH.appendChild(INSERT_SPAN);
     currentBetInput = document.createElement('input');
     currentBetInput.setAttribute('type', 'number');
-    currentBetInput.classList.add('currentBetInput');
-    currentBetInput.classList.add('setBet');
-    document.body.appendChild(currentBetInput);
+    currentBetInput.className = 'currentBetInput setBet current-bet-input';
+    currentBetInput.addEventListener('keypress', currentBetInputKeypress);
+    CURRENT_BET_INPUT_PARAGRAPH.appendChild(currentBetInput);
+    const COINS_SPAN = document.createElement('span');
+    COINS_SPAN.innerHTML = '<i class="lni lni-coin coin"></i>';
+    COINS_SPAN.style.marginLeft = '10px';
+    CURRENT_BET_INPUT_PARAGRAPH.appendChild(COINS_SPAN);
+    SET_BET_CONTAINER.appendChild(CURRENT_BET_INPUT_PARAGRAPH);
 
+    // initialize current bet input feedback
+    const BET_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
+    BET_INPUT_FEEDBACK_PARAGRAPH.className = 'betInputFeedback setBet bet-input-feedback text-danger invisible';
+    BET_INPUT_FEEDBACK_PARAGRAPH.innerHTML = `You must bet at least 1 <i class="lni lni-coin coin"></i>, and at most ${totalCoins} <i class="lni lni-coin coin"></i>.`;
+    SET_BET_CONTAINER.appendChild(BET_INPUT_FEEDBACK_PARAGRAPH);
+
+    // initialize current bet button
     currentBetSubmitButton = document.createElement('button');
-    currentBetSubmitButton.innerText = 'Bet!';
-    currentBetSubmitButton.classList.add('setBet');
+    currentBetSubmitButton.innerText = 'Continue';
+    currentBetSubmitButton.className = 'setBet current-bet-input-button button cta big';
     currentBetSubmitButton.addEventListener('click', placeBetsSubmit);
-    document.body.appendChild(currentBetSubmitButton);
+    SET_BET_CONTAINER.appendChild(currentBetSubmitButton);
   } else {
     const INIT_BET_ELEMENTS = document.querySelectorAll('.setBet');
     for (let i = 0; i < INIT_BET_ELEMENTS.length; i += 1) {
@@ -779,9 +860,7 @@ const toggleSetBet = () => {
 
 const toggleShowInitialHand = () => {
   if (gameState === SHOW_INITIAL_HAND) {
-    showOrUpdateTotalCoins();
-    showOrUpdateCurrentBet();
-    showOrUpdateTotalWinnings();
+    showOrUpdateCoins();
     // Initialise cardContainer as a div with CSS class card-container,
     // and add it to the document body. Add this logic to the initGame function.
     cardContainer = document.createElement('div');
@@ -823,9 +902,7 @@ const toggleShowInitialHand = () => {
 
 const toggleShowFinalHand = () => {
   if (gameState === SHOW_FINAL_HAND) {
-    showOrUpdateTotalCoins();
-    showOrUpdateCurrentBet();
-    showOrUpdateTotalWinnings();
+    showOrUpdateCoins();
 
     // Initialise cardContainer as a div with CSS class card-container,
     // and add it to the document body. Add this logic to the initGame function.
@@ -900,7 +977,5 @@ const initCoins = () => {
   toggleUI();
 };
 
-// CX: Run initGame() to start everything!
-// initGame();
-
 initCoins();
+// initBet();
