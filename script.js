@@ -677,6 +677,16 @@ const showOrUpdateTotalWinnings = () => {
   if (YOUR_WINNINGS_PARAGRAPHS.length > 0) {
     const YOUR_WINNINGS_SUB_VALUE = document.querySelector('.yourWinningsSubValue');
     YOUR_WINNINGS_SUB_VALUE.innerText = `${totalWinnings}`;
+    if (totalWinnings > 0) {
+      YOUR_WINNINGS_SUB_VALUE.classList.add('text-positive');
+      YOUR_WINNINGS_SUB_VALUE.classList.remove('text-negative');
+    } else if (totalWinnings === 0) {
+      YOUR_WINNINGS_SUB_VALUE.classList.remove('text-positive');
+      YOUR_WINNINGS_SUB_VALUE.classList.remove('text-negative');
+    } else {
+      YOUR_WINNINGS_SUB_VALUE.classList.remove('text-positive');
+      YOUR_WINNINGS_SUB_VALUE.classList.add('text-negative');
+    }
   } else if (COINS_WRAPPERS.length > 0) {
     const YOUR_WINNINGS_PARAGRAPH = document.createElement('div');
     YOUR_WINNINGS_PARAGRAPH.className = 'yourWinnings your-winnings flex';
