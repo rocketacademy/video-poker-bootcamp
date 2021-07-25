@@ -833,7 +833,7 @@ const toggleSetBet = () => {
     currentBetInput.addEventListener('keypress', currentBetInputKeypress);
     CURRENT_BET_INPUT_PARAGRAPH.appendChild(currentBetInput);
     const COINS_SPAN = document.createElement('span');
-    COINS_SPAN.innerHTML = '<i class="lni lni-coin coin"></i>';
+    COINS_SPAN.innerHTML = '<i class="lni lni-coin coin"></i> this round';
     COINS_SPAN.style.marginLeft = '10px';
     CURRENT_BET_INPUT_PARAGRAPH.appendChild(COINS_SPAN);
     SET_BET_CONTAINER.appendChild(CURRENT_BET_INPUT_PARAGRAPH);
@@ -977,5 +977,5 @@ const initCoins = () => {
   toggleUI();
 };
 
-// initCoins();
-initBet();
+initCoins();
+// initBet();

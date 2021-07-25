@@ -259,6 +259,10 @@ body {
   color: #e64a19;
 }
 
+.current-bet-paragraph .coin {
+  margin-right: 10px;
+}
+
 /* red */
 /*0 0 2px rgb(255, 127, 127), 0 0 4px rgb(255, 127, 127),
     0 0 6px rgb(255, 127, 127), 0 0 8px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0),
