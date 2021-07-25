@@ -25,7 +25,6 @@ th {
   margin: auto;
   font-family: Tahoma, sans-serif;
   padding: 8px;
-  /* background-color: white; */
   width: 500px;
   border-radius: 16px;
   display: inline-block;
@@ -91,18 +90,19 @@ li {
   border-style: solid;
   text-align: center;
   width: 550px;
-  height: 190px;
+  height: 200px;
   padding-top: 16px 0px 0px 0px;
   vertical-align: top;
 }
 .card {
-  margin: 32px 24px 20px 24px;
+  margin: 48px 24px 20px 24px;
   padding: 8px;
   background-color: white;
   height: 90px;
   width: 60px;
   border-radius: 8px;
   display: inline-block;
+  vertical-align: top;
 }
 
 .gameMessage {
@@ -148,9 +148,10 @@ input {
 }
 
 .scoreDiv {
-  /* width: 100vw; */
   margin: 20px auto;
   display: inline-block;
+  width: 550px;
+  font-size: 20px;
 }
 
 /* for card display */

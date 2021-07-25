@@ -1,23 +1,33 @@
 /* eslint-disable prefer-const */
 // create game layout
 // create instructions/gameplay board
+const card1holder = document.createElement('div');
+card1holder.classList.add('cardholder');
+const card2holder = document.createElement('div');
+card2holder.classList.add('cardholder');
+const card3holder = document.createElement('div');
+card3holder.classList.add('cardholder');
+const card4holder = document.createElement('div');
+card4holder.classList.add('cardholder');
+const card5holder = document.createElement('div');
+card5holder.classList.add('cardholder');
 
 // create 5 cards and card container
-let card1 = document.createElement('div');
+let card1 = document.createElement('img');
 card1.classList.add('card');
-card1.innerText = 'card 1';
-const card2 = document.createElement('div');
+card1.src = 'images/pokerBack.jpeg';
+let card2 = document.createElement('img');
 card2.classList.add('card');
-card2.innerText = 'card 2';
-const card3 = document.createElement('div');
+card2.src = 'images/pokerBack.jpeg';
+let card3 = document.createElement('img');
 card3.classList.add('card');
-card3.innerText = 'card 3';
-const card4 = document.createElement('div');
+card3.src = 'images/pokerBack.jpeg';
+let card4 = document.createElement('img');
 card4.classList.add('card');
-card4.innerText = 'card 4';
-const card5 = document.createElement('div');
+card4.src = 'images/pokerBack.jpeg';
+let card5 = document.createElement('img');
 card5.classList.add('card');
-card5.innerText = 'card 5';
+card5.src = 'images/pokerBack.jpeg';
 
 // create message board
 const gameMessage = document.createElement('div');
