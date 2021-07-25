@@ -589,6 +589,12 @@ const recognizeCurrentHand = (hand) => {
     string += ` You have lost ${Math.abs(BET_SCORE)} coins this round.`;
   }
 
+  if (totalCoins > 0 && gameState === 'SHOW_FINAL_HAND') {
+    string += ' Click the button below to start a new round.';
+  } else if (gameState === 'SHOW_FINAL_HAND') {
+    string += ' You are out of coins! Click the button below to insert some coins!';
+  }
+
   showOrUpdateTotalCoins();
   showOrUpdateCurrentBet();
   showOrUpdateTotalWinnings();
