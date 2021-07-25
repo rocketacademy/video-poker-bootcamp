@@ -4,10 +4,10 @@
   box-sizing: border-box;
 }
 :root {
-  /* --card-width: 200px;
-  --card-height: 312px; */
-  --card-width: 300px;
-  --card-height: 468px;
+  /* --card-width: 300px;
+  --card-height: 468px; */
+  --card-width: 12vw;
+  --card-height: 18.72vw;
 }
 body {
   display: flex;
@@ -18,16 +18,16 @@ body {
 }
 
 div {
-  font-size: 36px;
+  font-size: 2vw;
 }
-button {
-  margin: 10px;
-}
+
 img {
   max-width: 100%;
   min-width: 100%;
 }
-
+button {
+  margin: 5px;
+}
 /* @font-face {
   font-family: "Tourney";
   src: url("https://fonts.googleapis.com/css2?family=Tourney:ital,wght@1,100&display=swap");
@@ -47,7 +47,7 @@ img {
   font-weight: bold;
   font-style: italic;
   text-shadow: 0 0 3px yellow, 0 0 5px white;
-  width: 2000px;
+  width: 90vw;
 }
 @keyframes fadeout {
   0% {
@@ -76,7 +76,7 @@ img {
 
 @keyframes fromTop {
   0% {
-    transform: translate(-1600px, -0px);
+    transform: translate(-60vw, -0px);
     opacity: 0;
   }
   25% {
@@ -93,31 +93,25 @@ img {
   }
 }
 .cardAnimateOpenNew {
-  z-index: -10;
-  transform: translate(-5px, 0px);
+  z-index: -1;
   animation-name: fromTop;
   animation-duration: 0.5s;
   animation-timing-function: ease-in;
   animation-fill-mode: backwards;
 }
 .resetMessage {
-  font-size: 48px;
+  font-size: 1.5em;
   text-shadow: 0 0 3px blueviolet, 0 0 5px cyan;
   align-self: center;
-}
-.hand-outer {
-  width: 1600px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .absolute {
   position: absolute;
 }
 .holder {
+  font-size: 0.5em;
   background-color: rgba(0, 0, 0, 0.19);
-  transform: translate(0px, calc(var(--card-height) * -1.011));
+  transform: translate(0px, calc(var(--card-height) * -1.013));
   text-align: center;
   line-height: 1.6;
 }
@@ -135,38 +129,39 @@ img {
   color: black;
   text-align: center;
   text-decoration: none;
-  font-size: 36px;
-  margin: 0px 30px;
+  font-size: 1em;
+  margin: 0px 1em;
   cursor: pointer;
 }
 .button-bottom-border {
-  border-bottom: 3px solid black;
+  border-bottom: 2px solid black;
 }
 .cardimg {
   width: var(--card-width);
   height: var(--card-height);
 }
 .results {
-  width: 600px;
+  width: 30vw;
 }
 .middle-bar {
+  width: 90vw;
   /* border: 3px dotted blueviolet; */
   /* padding: 20px; */
 }
 .bottom-bar {
-  width: 100%;
+  width: 85vw;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
   align-items: center;
 }
 .tokencontainer {
-  width: 100px;
+  width: 5vw;
   position: relative;
 }
 .betcontainer {
-  width: 170px;
-  height: 100px;
+  width: 10vw;
+  height: 5vw;
 
   position: relative;
 }
@@ -176,23 +171,23 @@ img {
 
 .arrow-up {
   display: block;
-  border-left: 15px solid rgb(216, 216, 216);
-  border-right: 15px solid rgb(216, 216, 216);
-  border-bottom: 15px solid lightslategray;
+  border-left: 1.2em solid rgb(216, 216, 216);
+  border-right: 1.2em solid rgb(216, 216, 216);
+  border-bottom: 1.2em solid lightslategray;
   border-top: 0px;
   padding: 0px;
 }
 
 .arrow-down {
   display: block;
-  border-left: 15px solid rgb(216, 216, 216);
-  border-right: 15px solid rgb(216, 216, 216);
-  border-top: 15px solid lightslategray;
+  border-left: 1.2em solid rgb(216, 216, 216);
+  border-right: 1.2em solid rgb(216, 216, 216);
+  border-top: 1.2em solid lightslategray;
   border-bottom: 0px;
   padding: 0px;
 }
 .bet-arrows {
-  margin: 5px;
+  margin: 0.5em;
   text-align: center;
   display: inline-block;
   right: 0px;
@@ -201,14 +196,13 @@ img {
 
 .hand-container {
   vertical-align: top;
-  width: 1600px;
+  width: 75vw;
   height: var(--card-height);
   display: inline-flex;
   justify-content: center;
 }
 .card {
-  margin: 5px;
-
+  margin: 0.5em;
   width: var(--card-width);
   height: var(--card-height);
   display: inline-block;
@@ -267,18 +261,120 @@ img {
 
 @keyframes float-up {
   from {
-    transform: rotateY(0deg);
   }
   to {
-    transform: translate(0px, -100px);
+    transform: translate(0px, -25vh);
     opacity: 0;
   }
 }
 
 .sign-float {
-  font-size: 36px;
+  font-size: 1em;
   animation-name: float-up;
   animation-duration: 0.5s;
   animation-timing-function: ease-in;
   animation-fill-mode: forwards;
+}
+.credit-container {
+  /* text-align: right; */
+  display: block;
+}
+
+@media only screen and (max-width: 420px) {
+  div {
+    font-size: 1em;
+  }
+  body {
+    align-items: flex-start;
+  }
+  :root {
+    --card-width: 10vw;
+    --card-height: 15.6vw;
+  }
+  /* .game-container {
+    width: 100%;
+  } */
+  .bottom-bar {
+    display: flexbox;
+    width: 100%;
+    justify-content: flex-end;
+    height: 0px;
+    /* align-items: baseline; */
+  }
+  @keyframes fromTop {
+    0% {
+      transform: translate(-60vw, -0px);
+      opacity: 0;
+    }
+  }
+  .holder {
+    font-size: 0.5rem;
+  }
+  .resetMessage {
+    font-size: 0.8rem;
+    text-shadow: 0 0 1px blueviolet, 0 0 2px cyan;
+  }
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 90vw;
+  }
+
+  .large-button {
+    font-size: 0.8rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+  }
+
+  .results {
+    font-size: 0.8rem;
+    width: 90vw;
+    margin: 0.5rem 0.5rem;
+    text-align: left;
+    text-shadow: none;
+    transform: translate(0px, -3em);
+  }
+  .button-bottom-border {
+    border-bottom: 1px solid black;
+  }
+  .tokencontainer {
+    width: 20vw;
+  }
+  .betcontainer {
+    display: block;
+    width: 35vw;
+    transform: translate(0px, 12vw);
+  }
+
+  .arrow-up {
+    display: block;
+    border-left: 0.8em solid rgb(216, 216, 216);
+    border-right: 0.8em solid rgb(216, 216, 216);
+    border-bottom: 0.8em solid lightslategray;
+  }
+  .arrow-down {
+    display: block;
+    border-left: 0.8em solid rgb(216, 216, 216);
+    border-right: 0.8em solid rgb(216, 216, 216);
+    border-top: 0.8em solid lightslategray;
+  }
+
+  .bet-arrows {
+    margin: 0px;
+  }
+  .credit-container {
+    transform: translate(0px, 35vw);
+    position: absolute;
+  }
+  .box-shadow {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.19);
+  }
+  .card-inner {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.19);
+  }
+  @keyframes float-up {
+    to {
+      transform: translate(0px, -20vw);
+    }
+  }
 }

@@ -105,11 +105,11 @@ const gameinit = () => {
   resetMsg.innerText='Bet to start';
 
   header.innerText = 'Video Poker!';
-  totalPoints.innerText = points;
+  totalPoints.innerText = `${points} credits`;
   betButton.innerText='Bet';
   dealButton.innerText = 'Deal';
   scoreButton.innerText = 'Score';
-  creditTxt.innerText = 'Credits';
+  // creditTxt.innerText = 'Credits';
 
   gameContainer.classList.add('game-container');
   deckContainer.classList.add('card','box-shadow');
@@ -125,13 +125,15 @@ const gameinit = () => {
   betArrows.classList.add('bet-arrows');
   upBet.classList.add('arrow-up');
   downBet.classList.add('arrow-down');
-  buttonContainer.classList.add('inline-block');
+  buttonContainer.classList.add('inline-block','button-container');
   bottomBar.classList.add('bottom-bar');
   results.classList.add('inline-block','results');
   
   creditEffects.classList.add('credit-effects', 'inline-block');
-  credits.classList.add('inline-block');
-  
+  credits.classList.add('inline-block','credit-container');
+  creditContainer.classList.add('credit-container');
+  totalPoints.classList.add('inline-block');
+
   faceDownImg.src = './resources/cardFace/deck_4_large.png';
 
   //create table for scoreboard
@@ -215,7 +217,7 @@ const gameinit = () => {
       }
       points-=1;
       pointCount+=1;
-      totalPoints.innerText = points;
+      totalPoints.innerText = `${points} credits`;
     }, 500);
     
     deckContainer.classList.remove('cardAnimateDiscard');
@@ -288,7 +290,7 @@ const gameinit = () => {
     [rankTally, suitTally] = tallyHand();
     [prize, outputString] = calHandScore(rankTally, suitTally);
     // points += prize;
-    totalPoints.innerText = points;
+    totalPoints.innerText =`${points} credits`;
 
     if(prize>0)
     {
@@ -309,7 +311,7 @@ const gameinit = () => {
         }
         console.log(prize);
         points+=1;
-        totalPoints.innerText = points;
+        totalPoints.innerText = `${points} credits`;
         pointCount+=1;
     }, 500);
     }
@@ -373,17 +375,17 @@ const gameinit = () => {
   buttonContainer.appendChild(dealButton);
   buttonContainer.appendChild(scoreButton);
 
-  credits.appendChild(creditTxt);
+  // credits.appendChild(creditTxt);
   credits.appendChild(totalPoints);
 
   creditContainer.appendChild(creditEffects);
-  creditContainer.appendChild(credits);
+  creditContainer.appendChild(totalPoints);
+  // creditContainer.appendChild(credits);
 
   bottomBar.appendChild(betContainer);
   bottomBar.appendChild(buttonContainer);
   bottomBar.appendChild(results);
   bottomBar.appendChild(creditContainer);
-
   gameContainer.appendChild(header);
 
 
