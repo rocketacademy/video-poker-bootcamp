@@ -154,6 +154,16 @@ input {
   font-size: 20px;
 }
 
+.blink {
+  animation: blinker 2s step-start infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 /* for card display */
 .suit {
   margin: 5px;

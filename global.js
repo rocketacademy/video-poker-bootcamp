@@ -107,7 +107,7 @@ const processResults = () => {
 
 const output = (hand, payoutRate) => {
   const handMessage = document.createElement('div');
-  handMessage.classList.add('handMessage');
+  handMessage.classList.add('handMessage', 'blink');
   handMessage.innerHTML = `${hand}`;
   cardContainer.appendChild(handMessage);
   pointsWon = bet * payoutRate;

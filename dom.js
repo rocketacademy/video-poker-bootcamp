@@ -32,7 +32,7 @@ card5.src = 'images/pokerBack.jpeg';
 // create message board
 const gameMessage = document.createElement('div');
 gameMessage.classList.add('gameMessage');
-gameMessage.innerHTML = 'Hello, pls place a bet!';
+gameMessage.innerHTML = 'Hello, please place a bet!';
 
 const cardContainer = document.createElement('div');
 cardContainer.classList.add('cardContainer');
@@ -58,7 +58,7 @@ const betAmount = document.createElement('input');
 betAmount.setAttribute('id', 'betAmount');
 betAmount.setAttribute('type', 'number');
 betAmount.setAttribute('min', '1');
-betAmount.setAttribute('max', '5');
+betAmount.setAttribute('max', '10');
 betAmount.setAttribute('value', '1');
 
 const betDisplay = document.createElement('div');

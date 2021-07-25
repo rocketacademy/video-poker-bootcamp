@@ -77,7 +77,7 @@ const isStraight = () => {
 
   let consecutiveCount = 1;
   for (let i = 1; i < sortedHand.length; i += 1) {
-    if (sortedHand[i].rank == sortedHand[i - 1].rank + 1) {
+    if (sortedHand[i].rank === sortedHand[i - 1].rank + 1) {
       consecutiveCount += 1; }
     else { consecutiveCount = 1; }
     if (consecutiveCount === 5)
@@ -151,7 +151,7 @@ let calcHandScore = () => {
     payoutRate = 1;
     console.log('Js');
   } else {
-    hand = 'No Luck!';
+    hand = 'No Winning Hand! Better luck next time!!';
     payoutRate = -1;
   }
   return output(hand, payoutRate);

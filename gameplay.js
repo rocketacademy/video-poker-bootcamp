@@ -116,7 +116,7 @@ const dealCards = () => {
 // swap cards based on cards that are highlighted red
 // push new card data into player hand array
 const swapCard = () => {
-  // get cards selected to be swapped and swap it with new cards
+  // get cards selected to be swapped and swap it with new cards in player array
   const cardToBeSwapped = document.getElementsByClassName('selected');
   for (let i = 0; i < cardToBeSwapped.length; i += 1) {
     const cardDisplayName = cardToBeSwapped[i].firstChild.innerText;
@@ -131,9 +131,28 @@ const swapCard = () => {
     playerArr.splice(cardIndex, 1, playerCard);
   }
 
+  // get cards selected to be swapped and display it with new cards in card panel
   // remove card to be swapped from card container
   while (cardToBeSwapped[0]) {
     cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
+  }
+  cardContainer.innerHTML = '';
+
+  for (let i = 0; i < playerArr.length; i += 1) {
+    const name = document.createElement('div');
+    name.classList.add('name', playerArr[i].color);
+    name.innerHTML = playerArr[i].displayName;
+
+    const suit = document.createElement('div');
+    suit.classList.add('suit');
+    suit.innerHTML = playerArr[i].suitSymbol;
+
+    const card = document.createElement('div');
+    card.classList.add('card', 'highlight');
+
+    card.appendChild(name);
+    card.appendChild(suit);
+    cardContainer.appendChild(card);
   }
   // playerArr = [
   //   { rank: 11, suit: 'spades', name: 'j' },
@@ -145,6 +164,7 @@ const swapCard = () => {
   swapCardSetup();
   processResults();
 };
+
 swapButton.disabled = true;
 dealButton.addEventListener('click', dealCards);
 swapButton.addEventListener('click', swapCard);
