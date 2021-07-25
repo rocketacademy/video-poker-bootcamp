@@ -870,25 +870,34 @@ const toggleSetBet = () => {
 
 const toggleShowInitialHand = () => {
   if (gameState === SHOW_INITIAL_HAND) {
+    const SHOW_INITIAL_HAND_WRAPPER = document.createElement('div');
+    SHOW_INITIAL_HAND_WRAPPER.className = 'showInitialHand show-initial-hand-wrapper flex flex-direction-column';
+    const VIEW_COINS_WRAPPER = document.createElement('div');
+    VIEW_COINS_WRAPPER.className = 'viewCoinsWrapper view-coins-wrapper flex-grow-zero flex-shrink-zero flex';
+    const SHOW_INITIAL_HAND_CONTAINER = document.createElement('div');
+    SHOW_INITIAL_HAND_CONTAINER.className = 'showInitialHand showInitialHandContainer show-initial-hand-container flex flex-direction-column justify-content-center flex-grow-one flex-shrink-one';
+    document.body.appendChild(SHOW_INITIAL_HAND_WRAPPER);
+    SHOW_INITIAL_HAND_WRAPPER.appendChild(VIEW_COINS_WRAPPER);
+    SHOW_INITIAL_HAND_WRAPPER.appendChild(SHOW_INITIAL_HAND_CONTAINER);
     showOrUpdateCoins();
     // Initialise cardContainer as a div with CSS class card-container,
     // and add it to the document body. Add this logic to the initGame function.
     cardContainer = document.createElement('div');
     cardContainer.classList.add('card-container');
     cardContainer.classList.add('showInitialHand');
-    document.body.appendChild(cardContainer);
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(cardContainer);
 
     // draw initial hand
     drawInitialHand();
 
     gameInfo.classList.add('showInitialHand');
-    document.body.appendChild(gameInfo);
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(gameInfo);
 
     if (totalCoins > 0) {
       raiseInput = document.createElement('input');
       raiseInput.classList.add('raiseInput');
       raiseInput.classList.add('showInitialHand');
-      document.body.appendChild(raiseInput);
+      SHOW_INITIAL_HAND_CONTAINER.appendChild(raiseInput);
     } else {
       const RAISE_INPUTS = document.querySelectorAll('.raiseInput');
       for (let i = 0; i < RAISE_INPUTS.length; i += 1) {
@@ -901,7 +910,7 @@ const toggleShowInitialHand = () => {
     raiseAndReplaceButton.innerText = 'Continue';
     raiseAndReplaceButton.classList.add('showInitialHand');
     raiseAndReplaceButton.addEventListener('click', raiseAndReplaceClick);
-    document.body.appendChild(raiseAndReplaceButton);
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(raiseAndReplaceButton);
   } else {
     const SHOW_INITIAL_HAND_ELEMENTS = document.querySelectorAll('.showInitialHand');
     for (let i = 0; i < SHOW_INITIAL_HAND_ELEMENTS.length; i += 1) {
