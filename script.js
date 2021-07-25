@@ -169,6 +169,11 @@ let totalWinnings = 0;
 
 // Event handler on player 1's button to draw card and switch
 // to player 2's turn
+const coinsInputKeypress = (e) => {
+  if (e.keyCode === 13) {
+    insertCoinsSubmit();
+  }
+};
 const insertCoinsSubmit = () => {
   const COINS_INPUT = document.querySelector('.coinsInput');
   const COINS = Number(COINS_INPUT.value);
@@ -178,12 +183,9 @@ const insertCoinsSubmit = () => {
     initBet();
   } else {
     const COINS_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.coinsInputFeedback');
-    if (COINS_INPUT_FEEDBACK_PARAGRAPHS.length === 0) {
-      const COINS_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
-      COINS_INPUT_FEEDBACK_PARAGRAPH.classList.add('coinsInputFeedback');
-      COINS_INPUT_FEEDBACK_PARAGRAPH.classList.add('initCoins');
-      COINS_INPUT_FEEDBACK_PARAGRAPH.innerText = 'Please insert a minimum of 1 coin, and a maximum of 1000 coins.';
-      document.body.appendChild(COINS_INPUT_FEEDBACK_PARAGRAPH);
+    if (COINS_INPUT_FEEDBACK_PARAGRAPHS.length > 0 && COINS_INPUT_FEEDBACK_PARAGRAPHS[0].classList.contains('invisible')) {
+      COINS_INPUT_FEEDBACK_PARAGRAPHS[0].classList.remove('invisible');
+      COINS_INPUT_FEEDBACK_PARAGRAPHS[0].classList.add('visible');
     }
   }
 };
@@ -684,19 +686,64 @@ const toggleInsertCoins = () => {
   if (gameState === INIT_COINS) {
     // hide coins indicators from previous UI states
     hideCoins();
+
+    // create insert coins container
+    const INSERT_COINS_CONTAINER = document.createElement('div');
+    INSERT_COINS_CONTAINER.className += ' initCoins init-coins-container flex flex-direction-column justify-content-center';
+    document.body.appendChild(INSERT_COINS_CONTAINER);
+
+    // add headers
+    const WELCOME_TO_HEADER = document.createElement('h2');
+    WELCOME_TO_HEADER.classList.add('welcome-to-header');
+    WELCOME_TO_HEADER.classList.add('initCoins');
+    WELCOME_TO_HEADER.innerText = 'Welcome to';
+    INSERT_COINS_CONTAINER.appendChild(WELCOME_TO_HEADER);
+
+    const VIDEO_POKER_HEADER = document.createElement('h1');
+    VIDEO_POKER_HEADER.classList.add('video-poker-header');
+    VIDEO_POKER_HEADER.classList.add('initCoins');
+    const VIDEO_HEADER = document.createElement('span');
+    VIDEO_HEADER.classList.add('video-header');
+    VIDEO_HEADER.classList.add('initCoins');
+    VIDEO_HEADER.innerText = 'Video';
+    VIDEO_POKER_HEADER.appendChild(VIDEO_HEADER);
+    const POKER_HEADER = document.createElement('span');
+    POKER_HEADER.classList.add('poker-header');
+    POKER_HEADER.classList.add('initCoins');
+    POKER_HEADER.innerText = 'Poker';
+    VIDEO_POKER_HEADER.appendChild(POKER_HEADER);
+    INSERT_COINS_CONTAINER.appendChild(VIDEO_POKER_HEADER);
+
     // initialize coins input
+    const COINS_INPUT_PARAGRAPH = document.createElement('p');
+    COINS_INPUT_PARAGRAPH.className = 'coinsInputParagraph coins-input-paragraph initCoins';
+    const INSERT_SPAN = document.createElement('span');
+    INSERT_SPAN.style.marginRight = '10px';
+    INSERT_SPAN.innerText = 'Insert';
+    COINS_INPUT_PARAGRAPH.appendChild(INSERT_SPAN);
     coinsInput = document.createElement('input');
     coinsInput.setAttribute('type', 'number');
-    coinsInput.classList.add('coinsInput');
-    coinsInput.classList.add('initCoins');
-    document.body.appendChild(coinsInput);
+    coinsInput.className = 'coinsInput initCoins coins-input';
+    coinsInput.addEventListener('keypress', coinsInputKeypress);
+    COINS_INPUT_PARAGRAPH.appendChild(coinsInput);
+    const COINS_SPAN = document.createElement('span');
+    COINS_SPAN.innerHTML = '<i class="lni lni-coin coin"></i>';
+    COINS_SPAN.style.marginLeft = '10px';
+    COINS_INPUT_PARAGRAPH.appendChild(COINS_SPAN);
+    INSERT_COINS_CONTAINER.appendChild(COINS_INPUT_PARAGRAPH);
+
+    // initialize coins input feedback
+    const COINS_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
+    COINS_INPUT_FEEDBACK_PARAGRAPH.className = 'coinsInputFeedback initCoins coins-input-feedback text-danger invisible';
+    COINS_INPUT_FEEDBACK_PARAGRAPH.innerHTML = 'Please insert a minimum of 1 <i class="lni lni-coin coin"></i>, and a maximum of 1000 <i class="lni lni-coin coin"></i>.';
+    INSERT_COINS_CONTAINER.appendChild(COINS_INPUT_FEEDBACK_PARAGRAPH);
 
     // initialize coins input button
     coinsInputButton = document.createElement('button');
-    coinsInputButton.classList.add('initCoins');
-    coinsInputButton.innerText = 'insert coins';
+    coinsInputButton.className = 'initCoins coins-input-button button cta big';
+    coinsInputButton.innerText = 'Start';
     coinsInputButton.addEventListener('click', insertCoinsSubmit);
-    document.body.appendChild(coinsInputButton);
+    INSERT_COINS_CONTAINER.appendChild(coinsInputButton);
   } else {
     const INIT_COINS_ELEMENTS = document.querySelectorAll('.initCoins');
     for (let i = 0; i < INIT_COINS_ELEMENTS.length; i += 1) {

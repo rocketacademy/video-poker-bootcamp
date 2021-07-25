@@ -1,6 +1,186 @@
-body {
-  background-color: pink;
+* {
+  box-sizing: border-box;
 }
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    url("img/bg.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  margin: 0;
+  font-family: "Rubik", sans-serif;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-wrap-wrap {
+  flex-wrap: wrap;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.text-danger {
+  color: #e57373;
+}
+
+.button {
+  font-family: "Rubik", sans-serif;
+  font-size: 1em;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-transform: lowercase;
+  border: 0;
+  outline: none;
+  font-weight: 700;
+}
+
+.button.big {
+  border-radius: 20px;
+  padding: 15px 30px;
+  font-size: 1.25em;
+}
+
+.button.cta {
+  background: #8bc34a;
+  color: #fff;
+}
+
+.button.cta:hover {
+  background: #aed581;
+}
+
+.init-coins-container {
+  height: 100%;
+}
+
+.welcome-to-header {
+  font-family: "Beon", sans-serif;
+  width: 100%;
+  margin: 0 0 15px 0;
+  color: #fff;
+  text-align: center;
+  font-size: 2em;
+  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff,
+    0 0 42px rgb(0, 47, 255), 0 0 82px rgb(0, 47, 255), 0 0 92px rgb(0, 47, 255),
+    0 0 102px rgb(0, 47, 255), 0 0 151px rgb(0, 47, 255);
+}
+
+.video-poker-header {
+  margin: 0 auto 50px auto;
+  font-family: "Las Enter", san-serif;
+  text-align: center;
+  font-size: 3em;
+  transform: rotate(-5deg);
+  color: #fff;
+  text-shadow: 0 0 2px rgb(255, 127, 127), 0 0 4px rgb(255, 127, 127),
+    0 0 6px rgb(255, 127, 127), 0 0 8px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0),
+    0 0 12px rgb(255, 0, 0), 0 0 14px rgb(255, 0, 0), 0 0 16px rgb(255, 0, 0);
+  padding: 1rem 1.5rem 1rem 1rem;
+  width: 90%;
+  border: 0.2rem solid white;
+  border-radius: 2rem;
+  box-shadow: 0 0 0.1rem #fff, 0 0 0.1rem #fff, 0 0 1rem #bc13fe,
+    0 0 0.4rem #bc13fe, 0 0 1.4rem #bc13fe, inset 0 0 0.65rem #bc13fe;
+}
+
+.coins-input-paragraph {
+  font-family: "Rubik", sans-serif;
+  color: #fff;
+  text-align: center;
+  font-size: 1.25em;
+}
+
+.coins-input-paragraph .coin,
+.coins-input-feedback .coin {
+  font-size: 1em;
+  vertical-align: -0.125em;
+  border-radius: 50%;
+  background: #ffeb3b;
+  color: #ff8f00;
+}
+
+.coins-input {
+  font-size: 1.125em;
+  font-family: "Rubik", sans-serif;
+  background: transparent;
+  border-left: 1px transparent solid;
+  border-right: 1px transparent solid;
+  border-top: 1px transparent solid;
+  outline: none;
+  color: #fff;
+  width: 150px;
+  text-align: center;
+}
+
+.coins-input-button {
+  font-size: 1.25em;
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.coins-input-feedback {
+  font-family: "Rubik";
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+/* red */
+/*0 0 2px rgb(255, 127, 127), 0 0 4px rgb(255, 127, 127),
+    0 0 6px rgb(255, 127, 127), 0 0 8px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0),
+    0 0 12px rgb(255, 0, 0), 0 0 14px rgb(255, 0, 0), 0 0 16px rgb(255, 0, 0);*/
+
+/* purple */
+/*
+0 0 0.2rem #fff, 0 0 0.2rem #fff, 0 0 2rem #bc13fe,
+    0 0 0.8rem #bc13fe, 0 0 2.8rem #bc13fe, inset 0 0 1.3rem #bc13fe;*/
+
+/* .video-header {
+  position: relative;
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 0 2px rgb(255, 244, 141), 0 0 4px rgb(255, 244, 141),
+    0 0 6px rgb(255, 244, 141), 0 0 8px rgb(255, 230, 0),
+    0 0 10px rgb(255, 230, 0), 0 0 12px rgb(255, 230, 0),
+    0 0 14px rgb(255, 230, 0), 0 0 16px rgb(255, 230, 0);
+  z-index: 2;
+}
+
+.poker-header {
+  position: relative;
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 0 2px rgb(255, 127, 127), 0 0 4px rgb(255, 127, 127),
+    0 0 6px rgb(255, 127, 127), 0 0 8px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0),
+    0 0 12px rgb(255, 0, 0), 0 0 14px rgb(255, 0, 0), 0 0 16px rgb(255, 0, 0);
+} */
 
 .card {
   margin: 10px;
@@ -34,4 +214,42 @@ body {
 .red {
   /* CX: Change colour to color */
   color: red;
+}
+
+/* Media queries */
+@media screen and (min-width: 568px) {
+  .welcome-to-header {
+    margin: 0 0 15px 0;
+    font-size: 3.5em;
+  }
+
+  .video-poker-header {
+    font-size: 5.5em;
+    padding: 1rem 1.5rem 1rem 1rem;
+    width: 90%;
+  }
+
+  .coins-input-paragraph {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .welcome-to-header {
+    margin: 0 0 15px 0;
+    font-size: 4em;
+  }
+
+  .video-poker-header {
+    width: auto;
+    display: inline-block;
+    font-size: 7em;
+    padding: 2rem 3rem 2rem 2rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .coins-input-button {
+    width: 35%;
+  }
 }

@@ -1,0 +1,16 @@
+/* Beon */
+@font-face {
+  font-family: "Beon";
+  src: url("fonts/Beon/Beon.woff2") format("woff2"),
+    url("fonts/Beon/Beon.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Las Enter";
+  src: url("fonts/LasEnter/LasEnter.woff2") format("woff2"),
+    url("fonts/LasEnter/LasEnter.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
