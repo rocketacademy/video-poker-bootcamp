@@ -3,6 +3,13 @@
  *
  */
 
+/**
+ * Draws first 5 cards in SHOW_INITIAL_HAND game state
+ * Updates UI in DOM to show cards
+ * Add click event listeners on all cards for marking .selected CSS class
+ * @function
+ * @param {null}
+ */
 const drawInitialHand = () => {
   // Empty cardContainer in case this is not the 1st round of gameplay
   cardContainer.innerHTML = '';
@@ -64,8 +71,6 @@ const drawInitialHand = () => {
     cardContainer.appendChild(cardElement);
   }
 
-  const CURRENT_HAND_STATUS = calcHandScore(player1Cards);
-
   /* Add event listeners on click to all cards */
   const CARDS = cardContainer.querySelectorAll('.card');
   for (let i = 0; i < CARDS.length; i += 1) {
@@ -74,6 +79,13 @@ const drawInitialHand = () => {
   }
 };
 
+/**
+ * Replaces the cards marked in DOM with .selected CSS class
+ * Finds selected cards based on their display names and suit symbols
+ * Replaces selected cards with new cards from deck
+ * @function
+ * @param {null}
+ */
 const replaceHand = () => {
   const SELECTED_CARDS = document.querySelectorAll('.selected');
   /* Replace cards in player1Cards */
@@ -90,8 +102,21 @@ const replaceHand = () => {
   }
 };
 
+/**
+ * Callback to be used for sorting hand with .sort()
+ * @function
+ * @param {object} firstCard - For retrieving rank
+ * @param {object} secondCard - For retrieving rank
+ * @returns {number} Rank of firstCard minus rank of secondCard
+ */
 const sortCurrentHand = (firstCard, secondCard) => firstCard.rank - secondCard.rank;
 
+/**
+ * Check if hand is a straight
+ * @function
+ * @param {array} hand - A hand of 5 card objects
+ * @returns {boolean} Is the hand a straight?
+ */
 const getStraights = (hand) => {
   const IS_STRAIGHT = true;
   // comparing current card with next, so we want to stop at 2nd last card
@@ -103,6 +128,13 @@ const getStraights = (hand) => {
   return IS_STRAIGHT;
 };
 
+/**
+ * Check if hand is a flush
+ * Compares current item's suit with next item's
+ * @function
+ * @param {array} hand - A hand of 5 card objects
+ * @returns {boolean} Is the hand a flush?
+ */
 const getFlush = (hand) => {
   const IS_FLUSH = true;
   for (let i = 0; i < hand.length - 1; i += 1) {
@@ -114,6 +146,13 @@ const getFlush = (hand) => {
   return IS_FLUSH;
 };
 
+/**
+ * Gets score of hand
+ * Also returns various strings based on game state and score of hand
+ * @function
+ * @param {array} hand - A hand of 5 card objects
+ * @returns {object} The score, and various UI feedback strings
+ */
 const calcHandScore = (hand) => {
   // initialize score
   let score = -1;
