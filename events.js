@@ -1,13 +1,15 @@
-/**
- * EVENT HANDLERS AND CALLBACKS
- *
- */
+/** *
+ ** * EVENT HANDLERS AND CALLBACKS
+ ** *
+ ** */
 
 /**
- * PLAYER ACTION CALLBACKS
- * Callbacks that get triggered when player 1 and 2 click on their respective buttons.
+ * Submission of value for coins inserted
+ * Input validation in .coinInput
+ * Updates coins inserted and changes game state when valid
+ * @function
+ * @param {null}
  */
-
 const insertCoinsSubmit = () => {
   const COINS_INPUT = document.querySelector('.coinsInput');
   const COINS = Number(COINS_INPUT.value);
@@ -24,18 +26,35 @@ const insertCoinsSubmit = () => {
   }
 };
 
+/**
+ * Tracks keypresses in .coinInput
+ * @function
+ * @param {event} e - for tracking pressing "Enter"
+ */
 const coinsInputKeypress = (e) => {
   if (e.keyCode === 13) {
     insertCoinsSubmit();
   }
 };
 
+/**
+ * Tracks keypresses in .currentBetInput
+ * @function
+ * @param {event} e - for tracking pressing "Enter"
+ */
 const currentBetInputKeypress = (e) => {
   if (e.keyCode === 13) {
     placeBetsSubmit();
   }
 };
 
+/**
+ * Submission of value for coins to bet
+ * Input validation in .currentBetInput
+ * Updates coins inserted, total coins, and changes game state when valid
+ * @function
+ * @param {null}
+ */
 const placeBetsSubmit = () => {
   const BET_INPUT = document.querySelector('.currentBetInput');
   const BET = Number(BET_INPUT.value);
@@ -53,22 +72,13 @@ const placeBetsSubmit = () => {
   }
 };
 
-const replaceHand = () => {
-  const SELECTED_CARDS = document.querySelectorAll('.selected');
-  /* Replace cards in player1Cards */
-  for (let i = 0; i < SELECTED_CARDS.length; i += 1) {
-    const CARD_DISPLAY_NAME = SELECTED_CARDS[i].firstChild.innerText;
-    const CARD_SUIT_SYMBOL = SELECTED_CARDS[i].lastChild.innerText;
-
-    const CARD_INDEX = player1Cards.findIndex(
-      (element) => (element.displayName === CARD_DISPLAY_NAME)
-      && (element.suitSymbol === CARD_SUIT_SYMBOL),
-    );
-
-    player1Cards.splice(CARD_INDEX, 1, deck.pop());
-  }
-};
-
+/**
+ * Re-shuffles deck
+ * Resets hand
+ * Reset game state to new round or game depending on coins remaining
+ * @function
+ * @param {null}
+ */
 const newRoundOrGameClick = () => {
   // create new deck and reshuffle
   deck = shuffleCards([...unshuffledDeck]);
@@ -85,6 +95,14 @@ const newRoundOrGameClick = () => {
   }
 };
 
+/**
+ * Handler for button click when initial hand is shown
+ * Checks if raise number is valid, updates bet and total coins if so
+ * Checks if there are cards to be replaced, updates hand if so
+ * Changes game state to SHOW_FINAL_HAND
+ * @function
+ * @param {null}
+ */
 const raiseAndReplaceClick = () => {
   const RAISE_INPUTS = document.querySelectorAll('.raiseInputInput');
   let raise = 0;
@@ -112,6 +130,12 @@ const raiseAndReplaceClick = () => {
   }
 };
 
+/**
+ * Handler for clicking a card to be replaced
+ * Toggles .selected CSS class on card
+ * @function
+ * @param {event} event - for marking card to be selected for replacement
+ */
 const cardClick = (event) => {
   const CARD = event.currentTarget;
   // if already selected

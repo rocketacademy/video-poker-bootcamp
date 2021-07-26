@@ -74,6 +74,22 @@ const drawInitialHand = () => {
   }
 };
 
+const replaceHand = () => {
+  const SELECTED_CARDS = document.querySelectorAll('.selected');
+  /* Replace cards in player1Cards */
+  for (let i = 0; i < SELECTED_CARDS.length; i += 1) {
+    const CARD_DISPLAY_NAME = SELECTED_CARDS[i].firstChild.innerText;
+    const CARD_SUIT_SYMBOL = SELECTED_CARDS[i].lastChild.innerText;
+
+    const CARD_INDEX = player1Cards.findIndex(
+      (element) => (element.displayName === CARD_DISPLAY_NAME)
+      && (element.suitSymbol === CARD_SUIT_SYMBOL),
+    );
+
+    player1Cards.splice(CARD_INDEX, 1, deck.pop());
+  }
+};
+
 const sortCurrentHand = (firstCard, secondCard) => firstCard.rank - secondCard.rank;
 
 const getStraights = (hand) => {
