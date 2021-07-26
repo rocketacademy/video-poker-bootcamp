@@ -319,36 +319,6 @@ body {
   font-size: 1.25em;
 }
 
-/* red */
-/*0 0 2px rgb(255, 127, 127), 0 0 4px rgb(255, 127, 127),
-    0 0 6px rgb(255, 127, 127), 0 0 8px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0),
-    0 0 12px rgb(255, 0, 0), 0 0 14px rgb(255, 0, 0), 0 0 16px rgb(255, 0, 0);*/
-
-/* purple */
-/*
-0 0 0.2rem #fff, 0 0 0.2rem #fff, 0 0 2rem #bc13fe,
-    0 0 0.8rem #bc13fe, 0 0 2.8rem #bc13fe, inset 0 0 1.3rem #bc13fe;*/
-
-/* .video-header {
-  position: relative;
-  display: inline-block;
-  color: rgb(255, 255, 255);
-  text-shadow: 0 0 2px rgb(255, 244, 141), 0 0 4px rgb(255, 244, 141),
-    0 0 6px rgb(255, 244, 141), 0 0 8px rgb(255, 230, 0),
-    0 0 10px rgb(255, 230, 0), 0 0 12px rgb(255, 230, 0),
-    0 0 14px rgb(255, 230, 0), 0 0 16px rgb(255, 230, 0);
-  z-index: 2;
-}
-
-.poker-header {
-  position: relative;
-  display: inline-block;
-  color: rgb(255, 255, 255);
-  text-shadow: 0 0 2px rgb(255, 127, 127), 0 0 4px rgb(255, 127, 127),
-    0 0 6px rgb(255, 127, 127), 0 0 8px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0),
-    0 0 12px rgb(255, 0, 0), 0 0 14px rgb(255, 0, 0), 0 0 16px rgb(255, 0, 0);
-} */
-
 .card-container {
   display: flex;
   justify-content: space-around;
