@@ -1,0 +1,21 @@
+div.table-body {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ffeb3b;
+}
+
+th:last-child,
+td:last-child {
+  border-left: 0px;
+}
