@@ -684,7 +684,7 @@ const calcHandScore = (hand) => {
     scoreFeedback = `You will <span class="text-danger">lose</span> your bet of <span class="text-danger">${Math.abs(BET_SCORE)}</span> <i class="lni lni-coin coin"></i> if you do not replace your cards.`;
   } else {
     totalWinnings -= Math.abs(BET_SCORE);
-    scoreFeedback = `You have <span class="text-danger">lost/span> your bet of <span class="text-danger">${Math.abs(BET_SCORE)}</span> <i class="lni lni-coin coin"></i> this round.`;
+    scoreFeedback = `You have <span class="text-danger">lost</span> your bet of <span class="text-danger">${Math.abs(BET_SCORE)}</span> <i class="lni lni-coin coin"></i> this round.`;
   }
 
   if (totalCoins > 0 && gameState === 'SHOW_FINAL_HAND') {
@@ -1082,14 +1082,11 @@ const toggleShowFinalHand = () => {
 
     showOrUpdateCoins();
 
-    const CURRENT_HAND_STATUS = calcHandScore(player1Cards);
-
     // Initialise cardContainer as a div with CSS class card-container,
     // and add it to the document body. Add this logic to the initGame function.
     cardContainer = document.createElement('div');
     cardContainer.classList.add('card-container');
     cardContainer.classList.add('showFinalHand');
-    SHOW_FINAL_HAND_CONTAINER.appendChild(cardContainer);
 
     // Pop player 1's card metadata from the deck
     for (let i = 0; i < player1Cards.length; i += 1) {
@@ -1099,22 +1096,37 @@ const toggleShowFinalHand = () => {
       // Append the card element to the card container
       cardContainer.appendChild(cardElement);
     }
-    gameInfo = document.createElement('div');
-    gameInfo.classList.add('showFinalHand');
-    gameInfo.innerHTML = `Player ${playersTurn}, your replaced hand: ${CURRENT_HAND_STATUS.handString}`;
-    SHOW_FINAL_HAND_CONTAINER.appendChild(gameInfo);
-    if (gameState === 'SHOW_FINAL_HAND') {
-      const newRoundOrGameButton = document.createElement('button');
-      newRoundOrGameButton.classList.add('newRoundOrGameButton');
-      newRoundOrGameButton.classList.add('showFinalHand');
-      newRoundOrGameButton.addEventListener('click', newRoundOrGameClick);
-      if (totalCoins > 0) {
-        newRoundOrGameButton.innerText = 'Start New Round';
-      } else {
-        newRoundOrGameButton.innerText = 'Insert More Coins';
-      }
-      SHOW_FINAL_HAND_CONTAINER.appendChild(newRoundOrGameButton);
+
+    const CURRENT_HAND_STATUS = calcHandScore(player1Cards);
+
+    // set current hand header
+    const CURRENT_HAND_HEADER = document.createElement('h2');
+    CURRENT_HAND_HEADER.classList.add('text-align-center', 'font-variant-small-caps', 'current-hand-header', 'showFinalHand');
+    CURRENT_HAND_HEADER.innerText = 'Your Hand:';
+    SHOW_FINAL_HAND_CONTAINER.appendChild(CURRENT_HAND_HEADER);
+    const CURRENT_HAND_SUBHEADER = document.createElement('h1');
+    CURRENT_HAND_SUBHEADER.classList.add('text-align-center', 'current-hand-subheader', 'showFinalHand');
+    CURRENT_HAND_SUBHEADER.innerHTML = `${CURRENT_HAND_STATUS.handString}`;
+    SHOW_FINAL_HAND_CONTAINER.appendChild(CURRENT_HAND_SUBHEADER);
+
+    SHOW_FINAL_HAND_CONTAINER.appendChild(cardContainer);
+
+    const SCORE_FEEDBACK_PARAGRAPH = document.createElement('p');
+    SCORE_FEEDBACK_PARAGRAPH.classList.add('showFinalHand', 'text-align-center', 'score-feedback-paragraph');
+    SCORE_FEEDBACK_PARAGRAPH.innerHTML = `${CURRENT_HAND_STATUS.scoreFeedback}`;
+    SHOW_FINAL_HAND_CONTAINER.appendChild(SCORE_FEEDBACK_PARAGRAPH);
+
+    // final button
+    const newRoundOrGameButton = document.createElement('button');
+    newRoundOrGameButton.classList.add('newRoundOrGameButton');
+    newRoundOrGameButton.classList.add('showFinalHand', 'button', 'cta', 'final-button');
+    newRoundOrGameButton.addEventListener('click', newRoundOrGameClick);
+    if (totalCoins > 0) {
+      newRoundOrGameButton.innerText = 'Start New Round';
+    } else {
+      newRoundOrGameButton.innerText = 'Insert More Coins';
     }
+    SHOW_FINAL_HAND_CONTAINER.appendChild(newRoundOrGameButton);
   } else {
     const SHOW_FINAL_HAND_ELEMENTS = document.querySelectorAll('.showFinalHand');
     for (let i = 0; i < SHOW_FINAL_HAND_ELEMENTS.length; i += 1) {
@@ -1160,3 +1172,4 @@ const initCoins = () => {
 initCoins();
 // initBet();
 // initGame();
+// initFinalHand();

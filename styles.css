@@ -210,7 +210,8 @@ body {
 
 .coins-input-button,
 .current-bet-input-button,
-.raise-and-replace-button {
+.raise-and-replace-button,
+.final-button {
   font-size: 1.25em;
   display: block;
   width: 80%;
@@ -420,7 +421,8 @@ body {
 
   .coins-input-button,
   .current-bet-input-button,
-  .raise-and-replace-button {
+  .raise-and-replace-button,
+  .final-button {
     width: 50%;
   }
 
@@ -476,7 +478,8 @@ body {
 
   .coins-input-button,
   .current-bet-input-button,
-  .raise-and-replace-button {
+  .raise-and-replace-button,
+  .final-button {
     width: 40%;
   }
 
@@ -506,7 +509,8 @@ body {
 @media screen and (min-width: 1024px) {
   .coins-input-button,
   .current-bet-input-button,
-  .raise-and-replace-button {
+  .raise-and-replace-button,
+  .final-button {
     width: 35%;
   }
 
