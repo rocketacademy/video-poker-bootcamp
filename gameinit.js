@@ -475,7 +475,6 @@ const gameinit = () => {
       coinAdd.play();
 
       const winSound=new Audio('./resources/sounds/win.wav')
-      // const winSound=new Audio('./resources/sounds/Pickup_005.wav')
       winSound.volume=0.2;
       winSound.play();
       
@@ -502,6 +501,9 @@ const gameinit = () => {
     }, 1500/prize);
     }
     else{
+      const loseSound=new Audio('./resources/sounds/Jump_004.wav')
+      loseSound.volume=0.1;
+      loseSound.play();
       results.innerText = `${outputString}`;
     }
 
