@@ -337,10 +337,10 @@ body {
 }
 
 .card .card-image {
-  margin-left: -4.5px;
-  margin-top: -22px;
-  margin-right: -4.5px;
-  margin-bottom: -13px;
+  margin-left: -0.05em;
+  margin-top: -0.27em;
+  margin-right: -0.05em;
+  margin-bottom: -0.165em;
 }
 
 .cursor-pointer {
@@ -422,10 +422,10 @@ body {
   }
 
   .card .card-image {
-    margin-left: -8px;
-    margin-top: -44px;
-    margin-right: -8px;
-    margin-bottom: -25px;
+    margin-left: -0.05em;
+    margin-top: -0.275em;
+    margin-right: -0.06em;
+    margin-bottom: -0.16em;
   }
 
   .current-hand-header,
@@ -464,10 +464,10 @@ body {
   }
 
   .card .card-image {
-    margin-left: -11px;
-    margin-top: -59px;
-    margin-right: -11px;
-    margin-bottom: -33px;
+    margin-left: -0.06em;
+    margin-top: -0.275em;
+    margin-right: -0.06em;
+    margin-bottom: -0.16em;
   }
 
   .current-hand-header,
@@ -495,9 +495,9 @@ body {
   }
 
   .card .card-image {
-    margin-left: -12px;
-    margin-top: -65px;
-    margin-right: -12px;
-    margin-bottom: -37px;
+    margin-left: -0.05em;
+    margin-top: -0.27em;
+    margin-right: -0.05em;
+    margin-bottom: -0.155em;
   }
 }
