@@ -79,6 +79,10 @@ body {
   color: #e57373;
 }
 
+.text-cta {
+  color: #a5d6a7;
+}
+
 .button {
   font-family: "Rubik", sans-serif;
   font-size: 1em;
@@ -177,6 +181,7 @@ body {
 .bet-input-feedback .coin,
 .raise-input-paragraph .coin,
 .raise-input-feedback .coin,
+.score-feedback-paragraph .coin,
 .total-coins-feedback-paragraph .coin {
   font-size: 1em;
   vertical-align: -0.125em;

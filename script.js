@@ -670,21 +670,21 @@ const calcHandScore = (hand) => {
   const WINNINGS = BET_SCORE - currentBet;
 
   if (WINNINGS > 0 && gameState === 'SHOW_INITIAL_HAND') {
-    scoreFeedback = `You will win ${WINNINGS} coin(s) if you do not replace your cards!`;
+    scoreFeedback = `You will <span class="text-cta">win ${WINNINGS}</span> <i class="lni lni-coin coin"></i> if you do not replace your cards!`;
   } else if (WINNINGS > 0) {
     totalWinnings += WINNINGS;
     totalCoins += WINNINGS + currentBet;
-    scoreFeedback = `You have won ${WINNINGS} coin(s) this round!`;
+    scoreFeedback = `You have <span class="text-cta">won ${WINNINGS}</span> <i class="lni lni-coin coin"></i> this round!`;
   } else if (BET_SCORE - currentBet === 0 && gameState === 'SHOW_INITIAL_HAND') {
-    scoreFeedback = 'You will not win or lose any coins if you do not replace your cards.';
+    scoreFeedback = 'You will not win or lose any <i class="lni lni-coin coin"></i> if you do not replace your cards.';
   } else if (BET_SCORE - currentBet === 0) {
     totalCoins += currentBet;
-    scoreFeedback = 'You have not won or lost any coins this round.';
+    scoreFeedback = 'You have not won or lost any <i class="lni lni-coin coin"></i> this round.';
   } else if (BET_SCORE - currentBet < 0 && gameState === 'SHOW_INITIAL_HAND') {
-    scoreFeedback = `You will lose your bet of ${Math.abs(BET_SCORE)} coins if you do not replace your cards.`;
+    scoreFeedback = `You will <span class="text-danger">lose</span> your bet of <span class="text-danger">${Math.abs(BET_SCORE)}</span> <i class="lni lni-coin coin"></i> if you do not replace your cards.`;
   } else {
     totalWinnings -= Math.abs(BET_SCORE);
-    scoreFeedback = `You have lost your bet of ${Math.abs(BET_SCORE)} coins this round.`;
+    scoreFeedback = `You have <span class="text-danger">lost/span> your bet of <span class="text-danger">${Math.abs(BET_SCORE)}</span> <i class="lni lni-coin coin"></i> this round.`;
   }
 
   if (totalCoins > 0 && gameState === 'SHOW_FINAL_HAND') {
