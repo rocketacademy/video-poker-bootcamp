@@ -3,6 +3,7 @@
 let tokens = [];
 let tokenTranslation = [];
 
+
 const addTokens = (num=1) => {
   if (bet === points) {
     return;
@@ -10,7 +11,8 @@ const addTokens = (num=1) => {
   const colors = ['biege', 'black', 'blue', 'gray', 'green', 'lightblue', 'pink', 'purple', 'red', 'white', 'yellow'];
   for(let i=0; i<num;i+=1){
     const addition = colors[getRandomInt(colors.length)];
-    const translation = `${getRandomInt(15) - 5}px , ${-7 * tokens.length + 20}px`;
+     const translation = `${getRandomInt(12)/10}vw , ${-0.8*tokens.length+2 }vw`;
+
     bet += 1;
     tokens.push(addition);
     tokenTranslation.push(translation);
@@ -58,19 +60,65 @@ const updateTokenCon=(tokensContainer, tokensDom, tokenCount, bet)=>{
     tokensContainer.appendChild(tokensDom);
     tokenCount.innerText = bet;
 
-    
 }
+const createTable=(variation, wonHand='')=>{
+    const table =document.createElement('table');
+    const tableRow= document.createElement('tr');
+    const rowHeader= document.createElement('th');
+    const maxNum = bet < 5? 5: bet; 
+
+    rowHeader.innerText='Hand';
+    tableRow.appendChild(rowHeader);
+    for(let i = maxNum-4 ; i <= maxNum; i+=1)
+      {
+         const rowData= document.createElement('td');
+         rowData.innerText=i;
+         tableRow.appendChild(rowData);
+      }
+    table.appendChild(tableRow);
+       
+    for(const hand in variation)
+    {
+       const tableRow= document.createElement('tr');
+       const rowHeader= document.createElement('th');
+       
+       rowHeader.innerText=hand;
+       tableRow.appendChild(rowHeader);
+       //make variable to number of bets
+       for(let i = maxNum-4 ; i <= maxNum; i+=1)
+       {
+         const rowData= document.createElement('td');
+         rowData.innerText=variation[hand]*i;
+         tableRow.appendChild(rowData);
+         console.log(hand)
+         if(hand==wonHand && i==maxNum)
+         {
+           tableRow.classList.add('highlight-text');
+         }
+       }
+       if(hand==wonHand)
+       {
+         tableRow.classList.add('hightlight-row');
+       }
+       table.appendChild(tableRow);
+    }
+    return table;
+  }
 
 
 let firstDeal = true;
 let consecutiveDeals=0;
 const gameinit = () => {
   const gameContainer=document.createElement('div');
+
+  const topBar= document.createElement('div');
+  const tableContainer= document.createElement('div');
+  const tableButton= document.createElement('button');
+
   const header = document.createElement('h1');
   const cardContainer = document.createElement('div');
   const deckContainer = document.createElement('div');
   const faceDownImg = document.createElement('img');
-
 
   const bottomBar = document.createElement('div');
   const betContainer = document.createElement('div');
@@ -88,17 +136,13 @@ const gameinit = () => {
   const results = document.createElement('div');
 
   const creditContainer=document.createElement('div');
-
-
-
   const resetMsg= document.createElement('div');
 
-  
   const credits= document.createElement('div');
-  const creditTxt = document.createElement('div');
   const totalPoints = document.createElement('div');
   const creditEffects= document.createElement('div');
 
+  let table = createTable(jackOrBetterScore);
 
   resetMsg.classList.add('resetMessage');
   handContainer.appendChild(resetMsg);
@@ -109,12 +153,20 @@ const gameinit = () => {
   betButton.innerText='Bet';
   dealButton.innerText = 'Deal';
   scoreButton.innerText = 'Score';
-  // creditTxt.innerText = 'Credits';
+  tableButton.innerText='Scoring table';
+
+ 
+
+  
 
   gameContainer.classList.add('game-container');
+  topBar.classList.add('top-bar');
   deckContainer.classList.add('card','box-shadow');
-
-  cardContainer.classList.add('middle-bar')
+  header.classList.add('inline-block'); 
+  
+  tableContainer.classList.add('table-container');
+  tableButton.classList.add('large-button','button-bottom-border','table-button');
+  cardContainer.classList.add('middle-bar');
   handContainer.classList.add('hand-container');
   betContainer.classList.add('betcontainer');
   betButton.classList.add('inline-block', 'large-button','button-bottom-border');
@@ -142,13 +194,7 @@ const gameinit = () => {
   //more instructions to player on how to play the game
   //joke responses
 
-  //disappearing bets. reset bet after scoring when loss
-  //animation for increase in credit score after score button
-
   //player gold pile
-
-  //when player clicks deal, noo more change of bets.
-  //create bet button for player to freeze bet before starting
 
   //can click series
   let upCanClick=true;
@@ -156,8 +202,17 @@ const gameinit = () => {
   let betCanClick=true;
   let dealCanClick=false;
   let scoreCanClick=false;
+  let isTableHidden=false;
 
-
+  tableButton.addEventListener('click',()=>{
+    if(isTableHidden){
+       table.classList.remove('hide');
+    }
+    else{
+       table.classList.add('hide');
+    }
+    isTableHidden =! isTableHidden;
+  })
 
   addTokens(5);
   tokenCount.innerText = bet;
@@ -175,6 +230,10 @@ const gameinit = () => {
     tokensDom = createtokens();
     tokensContainer.appendChild(tokensDom);
     tokenCount.innerText = bet;
+
+    tableContainer.removeChild(table);
+    table = createTable(jackOrBetterScore);
+    tableContainer.appendChild(table);
   });
   downBet.addEventListener('click', () => {
     if(!downCanClick)
@@ -187,6 +246,10 @@ const gameinit = () => {
     tokensDom = createtokens();
     tokensContainer.appendChild(tokensDom);
     tokenCount.innerText = bet;
+
+    tableContainer.removeChild(table);
+    table = createTable(jackOrBetterScore);
+    tableContainer.appendChild(table);
   });
 
 
@@ -291,7 +354,10 @@ const gameinit = () => {
     [prize, outputString] = calHandScore(rankTally, suitTally);
     // points += prize;
     totalPoints.innerText =`${points} credits`;
-
+  
+    tableContainer.removeChild(table);
+    table = createTable(jackOrBetterScore,outputString);
+    tableContainer.appendChild(table);
     if(prize>0)
     {
       results.innerText = `${outputString}, you win ${prize} points`;
@@ -382,15 +448,19 @@ const gameinit = () => {
   creditContainer.appendChild(totalPoints);
   // creditContainer.appendChild(credits);
 
+  tableContainer.appendChild(table);
+
+  topBar.appendChild(header);
+  topBar.appendChild(tableButton);
+
   bottomBar.appendChild(betContainer);
   bottomBar.appendChild(buttonContainer);
   bottomBar.appendChild(results);
   bottomBar.appendChild(creditContainer);
-  gameContainer.appendChild(header);
-
-
+  
+  gameContainer.appendChild(tableContainer);
+  gameContainer.appendChild(topBar);
   gameContainer.appendChild(cardContainer);
-
   gameContainer.appendChild(bottomBar);
   document.body.appendChild(gameContainer);
 };

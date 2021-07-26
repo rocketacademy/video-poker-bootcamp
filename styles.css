@@ -4,19 +4,21 @@
   box-sizing: border-box;
 }
 :root {
-  /* --card-width: 300px;
-  --card-height: 468px; */
   --card-width: 12vw;
   --card-height: 18.72vw;
 }
 body {
   display: flex;
   height: 100vh;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   background-color: rgb(216, 216, 216);
 }
-
+h1 {
+  font-size: 2em;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
 div {
   font-size: 2vw;
 }
@@ -109,7 +111,7 @@ button {
   position: absolute;
 }
 .holder {
-  font-size: 0.5em;
+  font-size: 0.7em;
   background-color: rgba(0, 0, 0, 0.19);
   transform: translate(0px, calc(var(--card-height) * -1.013));
   text-align: center;
@@ -143,6 +145,58 @@ button {
 .results {
   width: 30vw;
 }
+.table-container {
+  width: 90vw;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.67em;
+}
+table {
+  text-align: left;
+  font-family: "Yomogi", cursive;
+  font-size: 0.5em;
+  /* text-shadow: 0 0 3px tomato, 0 0 5px white; */
+  text-shadow: none;
+  border-collapse: collapse;
+}
+td,
+th {
+  border: 1px solid rgb(116, 116, 116);
+
+  padding: 0px;
+}
+th {
+  width: 10vw;
+}
+td {
+  width: 5vw;
+}
+.hide {
+  visibility: hidden;
+  /* display: none; */
+}
+
+.hightlight-row {
+  box-shadow: 0 0 10px yellow inset, 0 0 5px white inset, 0 0 10px yellow,
+    0 0 5px white;
+
+  border: 1px solid yellow;
+}
+.highlight-text {
+  text-shadow: 0 0 3px yellow, 0 0 5px white;
+}
+
+.top-bar {
+  width: 90vw;
+  display: flex;
+  margin-bottom: 0.67em;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.table-button {
+  /* text-shadow: none; */
+  /* border-bottom: 1px solid black; */
+}
 .middle-bar {
   width: 90vw;
   /* border: 3px dotted blueviolet; */
@@ -171,23 +225,23 @@ button {
 
 .arrow-up {
   display: block;
-  border-left: 1.2em solid rgb(216, 216, 216);
-  border-right: 1.2em solid rgb(216, 216, 216);
-  border-bottom: 1.2em solid lightslategray;
+  border-left: 1vw solid rgb(216, 216, 216);
+  border-right: 1vw solid rgb(216, 216, 216);
+  border-bottom: 1vw solid lightslategray;
   border-top: 0px;
   padding: 0px;
 }
 
 .arrow-down {
   display: block;
-  border-left: 1.2em solid rgb(216, 216, 216);
-  border-right: 1.2em solid rgb(216, 216, 216);
-  border-top: 1.2em solid lightslategray;
+  border-left: 1vw solid rgb(216, 216, 216);
+  border-right: 1vw solid rgb(216, 216, 216);
+  border-top: 1vw solid lightslategray;
   border-bottom: 0px;
   padding: 0px;
 }
 .bet-arrows {
-  margin: 0.5em;
+  margin: 0.5vw;
   text-align: center;
   display: inline-block;
   right: 0px;
@@ -206,7 +260,7 @@ button {
   width: var(--card-width);
   height: var(--card-height);
   display: inline-block;
-  z-index: 1;
+  /* z-index: 1; */
   perspective: 1000px;
 }
 
@@ -233,9 +287,11 @@ button {
 @keyframes flipCard {
   from {
     transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
   }
   to {
     transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
   }
 }
 
@@ -252,11 +308,13 @@ button {
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
 }
 .openCard {
   transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
 }
 
 @keyframes float-up {
@@ -291,9 +349,18 @@ button {
     --card-width: 10vw;
     --card-height: 15.6vw;
   }
-  /* .game-container {
-    width: 100%;
-  } */
+
+  .table-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.67em;
+  }
+  th {
+    width: 30vw;
+  }
+  td {
+    width: 10vw;
+  }
   .bottom-bar {
     display: flexbox;
     width: 100%;

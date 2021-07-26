@@ -14,8 +14,6 @@ const getFilePathCard = (suit, displayName) =>
   return filePath;
 };
 
-// create cards that roll out
-// create cards as document elements that can be removed
 /**
  * Append multiple childs
  * @param {*} parentDom
@@ -52,29 +50,6 @@ const popMultiple = (array, num) => {
     popped.push(array.pop());
   }
   return popped;
-};
-
-// deal deck with animation
-// deals card face down
-// slides down container
-// flip one by one
-/**
- * Creates card content dom from card object
- * @param {*} cardObj
- * @returns card contents
- */
-const createCard = (cardObj) => {
-  const suit = document.createElement('div');
-  const name = document.createElement('div');
-  const color = cardObj.colour;
-
-  suit.classList.add('suit', color);
-  name.classList.add('name', color);
-
-  suit.innerText = cardObj.suitSymbol;
-  name.innerText = cardObj.displayName;
-
-  return [name, suit];
 };
 
 const createCardImg = (cardObj) => {
@@ -115,11 +90,9 @@ const createCards = () => {
     cardBackImg.src='./resources/cardFace/deck_4_large.png';
     cardBack.appendChild(cardBackImg);
     
-
     const cardOpenImg = createCardImg(refCard);
     cardFront.appendChild(cardOpenImg);
 
-    
     const holder = document.createElement('div');
     cardFront.appendChild(holder);
     cardFront.addEventListener('click', () => {
@@ -138,7 +111,10 @@ const createCards = () => {
   }
   return domCards;
 };
-
+/**
+ * replaces unheld cards in array of card elem
+ * @param {*} cardsDom 
+ */
 const replaceUnheldCards = (cardsDom) => {
   for (let i = 0; i < playerHand.length; i++)
   {
@@ -147,7 +123,6 @@ const replaceUnheldCards = (cardsDom) => {
      console.log(cardsDom);
     if (refCard.isHeld === false)
     {
-
        refDom.classList.add('cardAnimateDiscard');
         //remove card
        setTimeout(()=>{
@@ -155,17 +130,14 @@ const replaceUnheldCards = (cardsDom) => {
          refDom.removeChild(refDom.lastChild);
          
         }
-
         },500)
       
-     
       setTimeout(()=>{
         const cardImg = replaceCard(playerHand, i);
         refDom.appendChild(cardImg);
         refDom.classList.remove('cardAnimateDiscard');
         refDom.classList.add('cardAnimateOpenNew');
       },1000);
-   
     }
   }
 };

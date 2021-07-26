@@ -1,3 +1,15 @@
+const jackOrBetterScore={
+  'royal flush': 800,
+  'straight flush':50,
+  'four of a kind': 25,
+  'full house': 9,
+  'flush': 6,
+  'straight':4, 
+  'three of a kind':3,
+  'two pairs':2,
+  'jack or better':1,
+  'all others':0
+}
 
 isRoyalFlush=(rankTally,suitTally)=>{
   if (isRoyalStraight(rankTally) && isFlush(suitTally))
@@ -114,7 +126,7 @@ isTwoPair=(rankTally)=>{
 }
 
 isJackOrBetter=(rankTally)=>{
-  if(rankTally['11']==2){
+  if(rankTally['11']==2 || rankTally['12']==2 || rankTally['13']==2 || rankTally['13']==2 ){
     return true;
   }
   return false;
@@ -127,60 +139,49 @@ isJackOrBetter=(rankTally)=>{
  */
 const calHandScore=(rankTally, suitTally)=>{
   let multiplier=0;
-  let output='';
-  console.log(`rankTally `);
-  console.log(rankTally);
-  console.log(`suitTally `);
-   console.log(suitTally);
+  let hand='';
+
   if(isRoyalFlush(rankTally, suitTally))
   {
-    multiplier=800;
-    output='royal flush';
+    hand='royal flush';
   }
   else if(isStraightFlush(rankTally, suitTally))
   {
-    multiplier=50;
-    output='straight flush';
+    hand='straight flush';
   }
   else if(isFourOfKind(rankTally))
   {
-    multiplier=25;
-    output='four of a kind';
+    hand='four of a kind';
   }
   else if(isFullHouse(rankTally))
   {
-    multiplier=9;
-    output='full house';
+    hand='full house';
   }
   else if(isFlush(suitTally))
   {
-    multiplier=6;
-    output='flush';
+    hand='flush';
   }
   else if(isStraight(rankTally)||isRoyalStraight(rankTally) )
   {
-    multiplier=4;
-    output='straight';
+    hand='straight';
   }
   else if(isThreeKind(rankTally))
   {
-    multiplier=3;
-    output='three of a kind';
+    hand='three of a kind';
 
   }
   else if(isTwoPair(rankTally))
   {
-    multiplier=2;
-    output='two pair';
+    hand='two pairs';
   }
   else if(isJackOrBetter(rankTally))
   {
-    multiplier=1;
-    output= 'jack or better';
+    hand= 'jack or better';
   }
   else
   {
-    output= 'all others';
+    hand= 'all others';
   }
-  return [multiplier*bet, output];
+  multiplier = jackOrBetterScore[hand];
+  return [multiplier*bet, hand];
 }
