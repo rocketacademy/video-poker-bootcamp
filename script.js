@@ -1168,8 +1168,3 @@ const initCoins = () => {
   // set UI
   toggleUI();
 };
-
-initCoins();
-// initBet();
-// initGame();
-// initFinalHand();
