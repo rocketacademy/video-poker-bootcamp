@@ -3,6 +3,8 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable prefer-const */
 // https://www.codeproject.com/Articles/1187548/Video-Poker
+
+// for winning hands and calculating scores
 const isJacksOrBetter = (cardRankTally) => {
   if (cardRankTally[11] === 2
     || cardRankTally[12] === 2
@@ -106,6 +108,7 @@ const isSuitAllSpade = (cardSuitTally) => {
   }
   return false;
 };
+
 let calcHandScore = () => {
   let pointsWon;
   let hand;

@@ -6,9 +6,11 @@
 #header {
   width: 550px;
   margin: auto;
+  padding: 48px;
+  color: white;
 }
 body {
-  background-color: pink;
+  background-color: rgb(99, 99, 212);
   text-align: center;
   width: 100vw;
   height: 100vh;
@@ -36,7 +38,7 @@ th {
   text-align: left;
   height: 420px;
   width: 47%;
-  padding: 0px 28px 8px 16px;
+  padding: 0px 8px 8px 16px;
   box-shadow: 0 0 5px 5px grey;
   background-color: white;
 }
@@ -90,8 +92,8 @@ li {
   border-style: solid;
   text-align: center;
   width: 550px;
-  height: 200px;
-  padding-top: 16px 0px 0px 0px;
+  height: 240px;
+  padding-top: 40px 0px 0px 0px;
   vertical-align: top;
 }
 .card {
@@ -108,13 +110,14 @@ li {
 .gameMessage {
   padding-top: 16px;
   font-size: 25px;
+  color: white;
   margin: 20px auto;
   display: block;
 }
 
 .handMessage {
   font-family: Tahoma, sans-serif;
-  color: blue;
+  color: darkblue;
   padding-bottom: 5px;
 }
 
@@ -149,10 +152,11 @@ input {
   display: inline-block;
   width: 550px;
   font-size: 25px;
+  color: white;
 }
 
 .blink {
-  animation: blinker 2s step-start infinite;
+  animation: blinker 2s step-start 3;
 }
 
 @keyframes blinker {

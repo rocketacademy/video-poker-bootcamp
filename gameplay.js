@@ -1,3 +1,5 @@
+// for gameplay functions
+
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
@@ -78,7 +80,6 @@ const makeDeck = () => {
   // Return the completed card deck
   return newDeck;
 };
-
 // create a shuffled deck
 let deck = shuffleCards(makeDeck());
 
@@ -115,56 +116,41 @@ const dealCards = () => {
 
 // swap cards based on cards that are highlighted red
 // push new card data into player hand array
-const swapCard = () => {
-  // get cards selected to be swapped and swap it with new cards in player array
-  const cardToBeSwapped = document.getElementsByClassName('selected');
-  for (let i = 0; i < cardToBeSwapped.length; i += 1) {
-    const cardDisplayName = cardToBeSwapped[i].firstChild.innerText;
-    const cardSuitSymbol = cardToBeSwapped[i].lastChild.innerText;
-
-    const cardIndex = playerArr.findIndex(
-      (ele) => (ele.displayName === cardDisplayName) && (ele.suitSymbol === cardSuitSymbol),
-    );
-    playerCard = deck.pop();
-    cardElement = createCard(playerCard);
-    cardContainer.appendChild(cardElement);
-    playerArr.splice(cardIndex, 1, playerCard);
-  }
-
-  // get cards selected to be swapped and display it with new cards in card panel
-  // remove card to be swapped from card container
-  while (cardToBeSwapped[0]) {
-    cardToBeSwapped[0].parentNode.removeChild(cardToBeSwapped[0]);
-  }
-  cardContainer.innerHTML = '';
-
-  for (let i = 0; i < playerArr.length; i += 1) {
-    const name = document.createElement('div');
-    name.classList.add('name', playerArr[i].color);
-    name.innerHTML = playerArr[i].displayName;
-
-    const suit = document.createElement('div');
-    suit.classList.add('suit');
-    suit.innerHTML = playerArr[i].suitSymbol;
-
-    const card = document.createElement('div');
-    card.classList.add('card', 'highlight');
-
-    card.appendChild(name);
-    card.appendChild(suit);
-    cardContainer.appendChild(card);
-  }
+const endRound = () => {
+  // test hand
   // playerArr = [
-  //   { rank: 11, suit: 'spades', name: 'j' },
-  //   { rank: 10, suit: 'spades', name: '5' },
-  //   { rank: 8, suit: 'spades', name: '5' },
-  //   { rank: 7, suit: 'spades', name: '7' },
-  //   { rank: 3, suit: 'spades', name: '9' },
+  //   {
+  //     rank: 10, suitSymbol: '♠️', displayName: '10', suit: 'spades',
+  //   },
+  //   {
+  //     rank: 11, suitSymbol: '♠️', displayName: 'J', suit: 'spades',
+  //   },
+  //   {
+  //     rank: 12, suitSymbol: '♠️', displayName: 'Q', suit: 'spades',
+  //   },
+  //   {
+  //     rank: 13, suitSymbol: '♠️', displayName: 'K', suit: 'spades',
+  //   },
+  //   {
+  //     rank: 1, suitSymbol: '♠️', displayName: 'A', suit: 'spades',
+  //   },
   // ];
-  swapCardSetup();
-  processResults();
+  // cardContainer.innerHTML = '';
+  // createBlankCards();
+
+  setTimeout(() => {
+    swapCard();
+    swapCardSetup();
+    processResults();
+  }, 600);
+
+  setTimeout(() => {
+    zeroPointAlert();
+  }, 500);
 };
 
+// create 5 empty cards at game start
+createBlankCards();
 swapButton.disabled = true;
 dealButton.addEventListener('click', dealCards);
-swapButton.addEventListener('click', swapCard);
+swapButton.addEventListener('click', endRound);
