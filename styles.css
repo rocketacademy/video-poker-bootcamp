@@ -67,6 +67,14 @@ body {
   visibility: hidden;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
+.font-variant-small-caps {
+  font-variant: small-caps;
+}
+
 .text-danger {
   color: #e57373;
 }
@@ -149,18 +157,27 @@ body {
 }
 
 .coins-input-paragraph,
-.current-bet-paragraph {
+.current-bet-paragraph,
+.raise-input-paragraph {
   font-family: "Rubik", sans-serif;
   color: #fff;
   text-align: center;
   font-size: 1.25em;
   text-shadow: 1px 1px 1px #000;
+  margin-bottom: 10px;
+}
+
+.raise-input-paragraph {
+  margin-top: 0;
 }
 
 .coins-input-paragraph .coin,
 .coins-input-feedback .coin,
 .current-bet-paragraph .coin,
-.bet-input-feedback .coin {
+.bet-input-feedback .coin,
+.raise-input-paragraph .coin,
+.raise-input-feedback .coin,
+.total-coins-feedback-paragraph .coin {
   font-size: 1em;
   vertical-align: -0.125em;
   border-radius: 50%;
@@ -171,7 +188,8 @@ body {
 }
 
 .coins-input,
-.current-bet-input {
+.current-bet-input,
+.raise-input {
   font-size: 1.125em;
   font-family: "Rubik", sans-serif;
   background: transparent;
@@ -186,7 +204,8 @@ body {
 }
 
 .coins-input-button,
-.current-bet-input-button {
+.current-bet-input-button,
+.raise-and-replace-button {
   font-size: 1.25em;
   display: block;
   width: 80%;
@@ -194,11 +213,17 @@ body {
 }
 
 .coins-input-feedback,
-.bet-input-feedback {
+.bet-input-feedback,
+.raise-input-feedback {
   text-align: center;
   margin: 0 0 20px 0;
   padding: 0 20px;
   text-shadow: 1px 1px 1px #000;
+}
+
+.score-feedback-paragraph,
+.total-coins-feedback-paragraph {
+  margin-top: 0;
 }
 
 .set-bet-wrapper,
@@ -272,6 +297,22 @@ body {
   margin-right: 10px;
 }
 
+.current-hand-header {
+  color: #9e9e9e;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.current-hand-subheader {
+  margin-top: 0;
+  margin-bottom: 50px;
+}
+
+.current-hand-header,
+.current-hand-subheader {
+  font-size: 1.25em;
+}
+
 /* red */
 /*0 0 2px rgb(255, 127, 127), 0 0 4px rgb(255, 127, 127),
     0 0 6px rgb(255, 127, 127), 0 0 8px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0),
@@ -305,6 +346,7 @@ body {
 .card-container {
   display: flex;
   justify-content: space-around;
+  margin-bottom: 30px;
 }
 
 .card {
@@ -366,12 +408,14 @@ body {
   }
 
   .coins-input-paragraph,
-  .current-bet-paragraph {
+  .current-bet-paragraph,
+  .raise-input-paragraph {
     font-size: 1.5em;
   }
 
   .coins-input-button,
-  .current-bet-input-button {
+  .current-bet-input-button,
+  .raise-and-replace-button {
     width: 50%;
   }
 
@@ -406,6 +450,11 @@ body {
     margin-right: -8px;
     margin-bottom: -25px;
   }
+
+  .current-hand-header,
+  .current-hand-subheader {
+    font-size: 2em;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -421,7 +470,8 @@ body {
   }
 
   .coins-input-button,
-  .current-bet-input-button {
+  .current-bet-input-button,
+  .raise-and-replace-button {
     width: 40%;
   }
 
@@ -441,11 +491,17 @@ body {
     margin-right: -11px;
     margin-bottom: -33px;
   }
+
+  .current-hand-header,
+  .current-hand-subheader {
+    font-size: 3em;
+  }
 }
 
 @media screen and (min-width: 1024px) {
   .coins-input-button,
-  .current-bet-input-button {
+  .current-bet-input-button,
+  .raise-and-replace-button {
     width: 35%;
   }
 
@@ -455,14 +511,14 @@ body {
   }
 
   .card {
-    font-size: 17.5em;
-    border-radius: 4px;
+    font-size: 15em;
+    border-radius: 5px;
   }
 
   .card .card-image {
-    margin-left: -14px;
-    margin-top: -76px;
-    margin-right: -14px;
-    margin-bottom: -44px;
+    margin-left: -12px;
+    margin-top: -65px;
+    margin-right: -12px;
+    margin-bottom: -37px;
   }
 }

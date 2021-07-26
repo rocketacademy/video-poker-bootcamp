@@ -417,7 +417,7 @@ const newRoundOrGameClick = () => {
 };
 
 const raiseAndReplaceClick = () => {
-  const RAISE_INPUTS = document.querySelectorAll('.raiseInput');
+  const RAISE_INPUTS = document.querySelectorAll('.raiseInputInput');
   let raise = 0;
   let isRaiseNumber = false;
 
@@ -433,12 +433,9 @@ const raiseAndReplaceClick = () => {
     initFinalHand();
   } else if (RAISE_INPUTS.length > 0 && RAISE_INPUTS[0].value.trim() !== '' && isRaiseNumber && raise > 0) {
     const RAISE_INPUT_FEEDBACK_PARAGRAPHS = document.querySelectorAll('.raiseInputFeedback');
-    if (RAISE_INPUT_FEEDBACK_PARAGRAPHS.length === 0) {
-      const RAISE_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
-      RAISE_INPUT_FEEDBACK_PARAGRAPH.classList.add('raiseInputFeedback');
-      RAISE_INPUT_FEEDBACK_PARAGRAPH.classList.add('showInitialHand');
-      RAISE_INPUT_FEEDBACK_PARAGRAPH.innerText = `You can only raise a maximum of ${totalCoins} coins!`;
-      document.body.appendChild(RAISE_INPUT_FEEDBACK_PARAGRAPH);
+    if (RAISE_INPUT_FEEDBACK_PARAGRAPHS.length > 0 && RAISE_INPUT_FEEDBACK_PARAGRAPHS[0].classList.contains('invisible')) {
+      RAISE_INPUT_FEEDBACK_PARAGRAPHS[0].classList.remove('invisible');
+      RAISE_INPUT_FEEDBACK_PARAGRAPHS[0].classList.add('visible');
     }
   } else {
     replaceHand();
@@ -523,9 +520,9 @@ const drawInitialHand = () => {
   gameInfo.classList.add('gameInfo');
   gameInfo.innerHTML = `Player ${playersTurn}, your current hand: ${CURRENT_HAND_STATUS.handString}`;
   if (totalCoins > 0) {
-    gameInfo.innerHTML += ' You may choose any number of cards to replace, or raise your bet.';
+    gameInfo.innerHTML += 'You may select any number of cards to replace, or raise your bet.';
   } else {
-    gameInfo.innerHTML += ' Since you have no coins left, you cannot raise your bet any further. You may still choose any number of cards to replace.';
+    gameInfo.innerHTML += ' Since you have no coins left, you cannot raise your bet any further. You may still select any number of cards to replace.';
   }
 
   /* Add event listeners on click to all cards */
@@ -650,7 +647,7 @@ const calcHandScore = (hand) => {
   // 2 PAIRS
   else if (PAIRS.length === 2) {
     score = 2;
-    handString = `2 pairs of <span class='capitalize'>${FIRST_PAIR}s</span> and <span class='capitalize'>${PAIRS[1]}s</span>`;
+    handString = `2 Pairs of <span class='capitalize'>${FIRST_PAIR}s</span> and <span class='capitalize'>${PAIRS[1]}s</span>`;
   }
   // A HIGH PAIR (JACK AND ABOVE)
   else if (PAIRS.length > 0 && firstPairRank >= 11) {
@@ -989,19 +986,48 @@ const toggleShowInitialHand = () => {
     cardContainer = document.createElement('div');
     cardContainer.classList.add('card-container');
     cardContainer.classList.add('showInitialHand');
-    SHOW_INITIAL_HAND_CONTAINER.appendChild(cardContainer);
 
     // draw initial hand
     drawInitialHand();
 
-    gameInfo.classList.add('showInitialHand');
-    SHOW_INITIAL_HAND_CONTAINER.appendChild(gameInfo);
+    // get status of current hand
+    const CURRENT_HAND_STATUS = calcHandScore(player1Cards);
+
+    // set current hand header
+    const CURRENT_HAND_HEADER = document.createElement('h2');
+    CURRENT_HAND_HEADER.classList.add('text-align-center', 'font-variant-small-caps', 'current-hand-header', 'showInitialHand');
+    CURRENT_HAND_HEADER.innerText = 'Your Hand:';
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(CURRENT_HAND_HEADER);
+    const CURRENT_HAND_SUBHEADER = document.createElement('h1');
+    CURRENT_HAND_SUBHEADER.classList.add('text-align-center', 'current-hand-subheader', 'showInitialHand');
+    CURRENT_HAND_SUBHEADER.innerHTML = `${CURRENT_HAND_STATUS.handString}`;
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(CURRENT_HAND_SUBHEADER);
+
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(cardContainer);
 
     if (totalCoins > 0) {
+      const RAISE_INPUT_PARAGRAPH = document.createElement('p');
+      RAISE_INPUT_PARAGRAPH.className = 'raiseInput raiseInputParagraph raise-input-paragraph showInitialHand';
+      const RAISE_SPAN = document.createElement('span');
+      RAISE_SPAN.classList.add('raiseInput');
+      RAISE_SPAN.style.marginRight = '10px';
+      RAISE_SPAN.innerText = 'Raise';
+      RAISE_INPUT_PARAGRAPH.appendChild(RAISE_SPAN);
       raiseInput = document.createElement('input');
-      raiseInput.classList.add('raiseInput');
-      raiseInput.classList.add('showInitialHand');
-      SHOW_INITIAL_HAND_CONTAINER.appendChild(raiseInput);
+      raiseInput.setAttribute('type', 'number');
+      raiseInput.classList.add('raiseInput', 'raiseInputInput', 'raise-input', 'showInitialHand');
+      RAISE_INPUT_PARAGRAPH.appendChild(raiseInput);
+      const COINS_SPAN = document.createElement('span');
+      COINS_SPAN.classList.add('raiseInput', 'showInitialHand');
+      COINS_SPAN.innerHTML = '<i class="lni lni-coin coin"></i>';
+      COINS_SPAN.style.marginLeft = '10px';
+      RAISE_INPUT_PARAGRAPH.appendChild(COINS_SPAN);
+      SHOW_INITIAL_HAND_CONTAINER.appendChild(RAISE_INPUT_PARAGRAPH);
+      // initialize raise input feedback
+      const RAISE_INPUT_FEEDBACK_PARAGRAPH = document.createElement('p');
+      RAISE_INPUT_FEEDBACK_PARAGRAPH.className = 'raiseInputFeedback raiseInput showInitialHand raise-input-feedback text-danger invisible';
+      RAISE_INPUT_FEEDBACK_PARAGRAPH.innerHTML = `You can only raise a maximum of ${totalCoins} <i class="lni lni-coin coin"></i>!`;
+      SHOW_INITIAL_HAND_CONTAINER.appendChild(RAISE_INPUT_FEEDBACK_PARAGRAPH);
     } else {
       const RAISE_INPUTS = document.querySelectorAll('.raiseInput');
       for (let i = 0; i < RAISE_INPUTS.length; i += 1) {
@@ -1009,10 +1035,26 @@ const toggleShowInitialHand = () => {
       }
     }
 
+    const SCORE_FEEDBACK_PARAGRAPH = document.createElement('p');
+    SCORE_FEEDBACK_PARAGRAPH.classList.add('showInitialHand', 'text-align-center', 'score-feedback-paragraph');
+    SCORE_FEEDBACK_PARAGRAPH.innerHTML = `${CURRENT_HAND_STATUS.scoreFeedback}`;
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(SCORE_FEEDBACK_PARAGRAPH);
+
+    const TOTAL_COINS_FEEDBACK_PARAGRAPH = document.createElement('p');
+    TOTAL_COINS_FEEDBACK_PARAGRAPH.classList.add('showInitialHand', 'text-align-center', 'total-coins-feedback-paragraph');
+
+    if (totalCoins > 0) {
+      TOTAL_COINS_FEEDBACK_PARAGRAPH.innerHTML = 'You may (or may not) select any number of cards to replace, or raise your bet.';
+    } else {
+      TOTAL_COINS_FEEDBACK_PARAGRAPH.innerHTML = 'Since you have no <i class="lni lni-coin coin"></i> left, you cannot raise your bet any further. You may (or may not) still select any number of cards to replace.';
+    }
+
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(TOTAL_COINS_FEEDBACK_PARAGRAPH);
+
     // create raise and replace cards button
     raiseAndReplaceButton = document.createElement('button');
     raiseAndReplaceButton.innerText = 'Continue';
-    raiseAndReplaceButton.classList.add('showInitialHand');
+    raiseAndReplaceButton.classList.add('showInitialHand', 'button', 'cta', 'raise-and-replace-button');
     raiseAndReplaceButton.addEventListener('click', raiseAndReplaceClick);
     SHOW_INITIAL_HAND_CONTAINER.appendChild(raiseAndReplaceButton);
   } else {
@@ -1115,6 +1157,6 @@ const initCoins = () => {
   toggleUI();
 };
 
-// initCoins();
+initCoins();
 // initBet();
-initGame();
+// initGame();
