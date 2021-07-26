@@ -37,6 +37,7 @@ const makeDeck = () => {
     // CX: Setting of suit symbol as well as card colors
     let suitSymbol = '';
     let colour = '';
+    let cardImage = '';
 
     switch (currentSuit) {
       case 'hearts':
@@ -82,6 +83,167 @@ const makeDeck = () => {
         displayName = 'K';
       }
 
+      // set card image
+      switch (cardName) {
+        case 'ace':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂱';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃁';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃑';
+          } else {
+            // spades
+            cardImage = '🂡';
+          }
+          break;
+        case 'king':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂾';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃎';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃞';
+          } else {
+            // spades
+            cardImage = '🂮';
+          }
+          break;
+        case 'queen':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂽';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃍';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃝';
+          } else {
+            // spades
+            cardImage = '🂭';
+          }
+          break;
+        case 'jack':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂻';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃋';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃛';
+          } else {
+            // spades
+            cardImage = '🂫';
+          }
+          break;
+        case '10':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂺';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃊';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃚';
+          } else {
+            // spades
+            cardImage = '🂪';
+          }
+          break;
+        case '9':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂹';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃉';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃙';
+          } else {
+            // spades
+            cardImage = '🂩';
+          }
+          break;
+        case '8':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂸';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃈';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃘';
+          } else {
+            // spades
+            cardImage = '🂨';
+          }
+          break;
+        case '7':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂷';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃇';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃗';
+          } else {
+            // spades
+            cardImage = '🂧';
+          }
+          break;
+        case '6':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂶';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃆';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃖';
+          } else {
+            // spades
+            cardImage = '🂦';
+          }
+          break;
+        case '5':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂵';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃅';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃕';
+          } else {
+            // spades
+            cardImage = '🂥';
+          }
+          break;
+        case '4':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂴';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃄';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃔';
+          } else {
+            // spades
+            cardImage = '🂤';
+          }
+          break;
+        case '3':
+          if (currentSuit === 'hearts') {
+            cardImage = '🂳';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃃';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃓';
+          } else {
+            // spades
+            cardImage = '🂣';
+          }
+          break;
+        case '2':
+        default:
+          if (currentSuit === 'hearts') {
+            cardImage = '🂲';
+          } else if (currentSuit === 'diamonds') {
+            cardImage = '🃂';
+          } else if (currentSuit === 'clubs') {
+            cardImage = '🃒';
+          } else {
+            // spades
+            cardImage = '🂢';
+          }
+          break;
+      }
+
       // Create a new card with the current name, suit, and rank
       // CX fix: set aces to 14, as highest rank (above king)
       const card = {
@@ -90,6 +252,7 @@ const makeDeck = () => {
         rank: (rankCounter === 1) ? 14 : rankCounter,
         suitSymbol,
         displayName,
+        cardImage,
         colour,
       };
 
@@ -108,16 +271,23 @@ const createCard = (cardInfo) => {
   // CX: Add color to the suit
   suit.classList.add('suit', cardInfo.colour);
   suit.innerText = cardInfo.suitSymbol;
+  suit.style.display = 'none';
 
   const name = document.createElement('div');
   name.classList.add(cardInfo.displayName, cardInfo.colour);
   // CX: Replace 3 with the display name of the card
   name.innerText = cardInfo.displayName;
+  name.style.display = 'none';
+
+  const image = document.createElement('div');
+  image.classList.add('card-image', cardInfo.colour);
+  image.innerText = cardInfo.cardImage;
 
   const card = document.createElement('div');
   card.classList.add('card');
 
   card.appendChild(name);
+  card.appendChild(image);
   card.appendChild(suit);
 
   return card;
@@ -1023,6 +1193,6 @@ const initCoins = () => {
   toggleUI();
 };
 
-initCoins();
+// initCoins();
 // initBet();
-// initGame();
+initGame();
