@@ -298,12 +298,6 @@ const createCard = (cardInfo) => {
  * Global variables that store game-wide data or DOM elements
  */
 
-// GAME STATE STRING CONSTANTS
-const INIT_COINS = 'INIT_COINS';
-const SET_BET = 'SET_BET';
-const SHOW_INITIAL_HAND = 'SHOW_INITIAL_HAND';
-const SHOW_FINAL_HAND = 'SHOW_FINAL_HAND';
-
 // Initialize unshuffled deck
 const unshuffledDeck = makeDeck();
 // Shuffled deck as a copy of unshuffled deck
