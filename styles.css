@@ -25,10 +25,10 @@ th {
   margin: auto;
   font-family: Tahoma, sans-serif;
   padding: 8px;
-  width: 500px;
+  width: 550px;
   border-radius: 16px;
   display: inline-block;
-  padding: 20px 20px;
+  /* padding: 20px 20px; */
 }
 
 .game-play {
@@ -73,8 +73,8 @@ li {
   height: 350px;
   width: 100%;
   vertical-align: top;
-  padding-top: 16px;
-  padding-left: 16px;
+  padding-top: 0px;
+  padding-left: 34px;
 }
 .cardPanel {
   padding-top: 16px;
@@ -107,7 +107,7 @@ li {
 
 .gameMessage {
   padding-top: 16px;
-  font-size: 20px;
+  font-size: 25px;
   margin: 20px auto;
   display: block;
 }
@@ -118,14 +118,11 @@ li {
   padding-bottom: 5px;
 }
 
-.scoreDiv {
-  font-size: 20px;
-}
 .controlPanel {
   width: 550px;
   margin: auto;
   padding-top: 16px;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .button {
@@ -151,7 +148,7 @@ input {
   margin: 20px auto;
   display: inline-block;
   width: 550px;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .blink {
