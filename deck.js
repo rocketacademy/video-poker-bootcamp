@@ -1,11 +1,21 @@
+/** *
+ ** * DECK AND CARD CREATION FUNCTIONS
+ ** * Helper functions for creating deck
+ ** */
+
 /**
- * DECK AND CARD CREATION FUNCTIONS
- * Helper functions for creating deck
+ * Get a random index ranging from 0 (inclusive) to max (exclusive).
+ * @function
+ * @param {number} max - Maximum (exclusive) random number
  */
-// Get a random index ranging from 0 (inclusive) to max (exclusive).
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
-// Shuffle an array of cards
+/**
+ * Shuffle an array of cards.
+ * Generates usable information like suit, name, images
+ * @function
+ * @param {Array} cards - Cards in a hard or deck
+ */
 const shuffleCards = (cards) => {
   // Loop over the card deck array once
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
@@ -23,6 +33,11 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
+/**
+ * Create a deck of 52 cards
+ * @function
+ * @param {null}
+ */
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
@@ -264,7 +279,11 @@ const makeDeck = () => {
   return newDeck;
 };
 
-// Make a card in the DOM
+/**
+ * Make a card in the DOM
+ * @function
+ * @param {object} cardInfo - object containing info of card (eg. name, suit etc.)
+ */
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
   // CX: Add color to the suit
