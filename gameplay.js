@@ -146,7 +146,7 @@ const endRound = () => {
 
   setTimeout(() => {
     zeroPointAlert();
-  }, 500);
+  }, 600);
 };
 
 // create 5 empty cards at game start
