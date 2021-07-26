@@ -11,7 +11,7 @@ const addTokens = (num=1) => {
   const colors = ['biege', 'black', 'blue', 'gray', 'green', 'lightblue', 'pink', 'purple', 'red', 'white', 'yellow'];
   for(let i=0; i<num;i+=1){
     const addition = colors[getRandomInt(colors.length)];
-     const translation = `${getRandomInt(12)/10}vw , ${-0.8*tokens.length+2 }vw`;
+     const translation = `${getRandomInt(12)/10}vw , ${-0.8*tokens.length+4 }vw`;
 
     bet += 1;
     tokens.push(addition);
@@ -93,7 +93,8 @@ const createTable=(variation, wonHand='')=>{
          console.log(hand)
          if(hand==wonHand && i==maxNum)
          {
-           tableRow.classList.add('highlight-text');
+           rowData.classList.add('highlight-text');
+           rowHeader.classList.add('highlight-text');
          }
        }
        if(hand==wonHand)
@@ -104,6 +105,47 @@ const createTable=(variation, wonHand='')=>{
     }
     return table;
   }
+ const refillTokens=()=>{
+    const refillModal=document.createElement('div');
+    const refillWindow = document.createElement('div');
+    const refillPrompt = document.createElement('div');
+    const refillInputs=document.createElement('div');
+    const refillCreditCard = document.createElement('input');
+    const refillCvc = document.createElement('input');
+    const refillNum= document.createElement('input');
+    const refillSubmit=document.createElement('button');
+
+    refillCvc.type='text';
+    refillCreditCard.type='text';
+    refillNum.type='text';
+    refillSubmit.innerText='top-up';
+
+    refillCvc.size=3;
+    refillCreditCard.size=20;
+    refillNum.size=10;
+
+    refillCvc.placeholder='cvc'
+    refillCreditCard.placeholder='5105-1051-0510-5100'
+    refillNum.placeholder=1000;
+
+
+    refillPrompt.innerText='hey! not enough credits. top-up to continue winning';
+    refillModal.classList.add('refill-overlay');
+    refillWindow.classList.add('refill-window');
+
+
+    refillInputs.appendChild(refillCreditCard);
+    refillInputs.appendChild(refillCvc);
+    refillInputs.appendChild(refillNum);
+    refillInputs.appendChild(refillSubmit);
+
+    refillWindow.appendChild(refillPrompt);
+    refillWindow.appendChild(refillInputs);
+
+    refillModal.appendChild(refillWindow);
+    return [refillModal, refillNum, refillSubmit];
+  }
+
 
 
 let firstDeal = true;
@@ -188,8 +230,24 @@ const gameinit = () => {
 
   faceDownImg.src = './resources/cardFace/deck_4_large.png';
 
-  //create table for scoreboard
-  //highlight the type of hand when player wins
+  let refillModal, refillNum, refillSubmit;
+  [refillModal, refillNum, refillSubmit]=refillTokens();
+  gameContainer.appendChild(refillModal);
+
+  refillSubmit.addEventListener('click', ()=>{
+    let numInput = Number(refillNum.value);
+
+    if(Number.isNaN(numInput)){ 
+      refillNum.value='';
+      refillNum.placeholder='Key in a number'
+      refillModal.appendChild(errorMsg);
+    }
+    else{ 
+      points +=numInput;
+      refillModal.style.display='none';
+      totalPoints.innerText = `${points} credits`;
+    }
+  })
 
   //more instructions to player on how to play the game
   //joke responses
@@ -259,6 +317,11 @@ const gameinit = () => {
     if(!betCanClick){
       return;
     }
+    if(bet>points)
+    {
+      refillModal.style.display='block'
+      return;
+    }
     results.innerText ='';
     handContainer.innerHTML = '';
 
@@ -268,7 +331,7 @@ const gameinit = () => {
     creditEffects.innerText='-';
     creditEffects.classList.add('sign-float');
     creditEffects.style.animationIterationCount=bet;
-
+    creditEffects.style.animationDuration=1500/bet;
     let pointCount=0;
     const pointInterval=setInterval(() => {
       if(pointCount===bet)
@@ -281,7 +344,7 @@ const gameinit = () => {
       points-=1;
       pointCount+=1;
       totalPoints.innerText = `${points} credits`;
-    }, 500);
+    }, 1500/bet);
     
     deckContainer.classList.remove('cardAnimateDiscard');
     playerHand = dealCards(maxHandSize);
@@ -354,10 +417,12 @@ const gameinit = () => {
     [prize, outputString] = calHandScore(rankTally, suitTally);
     // points += prize;
     totalPoints.innerText =`${points} credits`;
-  
+    
+    if(!isTableHidden){
     tableContainer.removeChild(table);
     table = createTable(jackOrBetterScore,outputString);
     tableContainer.appendChild(table);
+    }
     if(prize>0)
     {
       results.innerText = `${outputString}, you win ${prize} points`;
@@ -365,6 +430,7 @@ const gameinit = () => {
       creditEffects.innerText='+';
       creditEffects.classList.add('sign-float');
       creditEffects.style.animationIterationCount=prize;
+      creditEffects.style.animationDuration=1500/prize;
       
       let pointCount=0;
       const pointPosInterval=setInterval(() => {
@@ -379,7 +445,7 @@ const gameinit = () => {
         points+=1;
         totalPoints.innerText = `${points} credits`;
         pointCount+=1;
-    }, 500);
+    }, 1500/prize);
     }
     else{
       results.innerText = `${outputString}`;
@@ -413,6 +479,15 @@ const gameinit = () => {
         resetMsg.innerText = 'Place your bet';
       }
     }, 1500);
+
+    setTimeout(()=>{
+      results.innerText='';
+      if(!isTableHidden){
+      tableContainer.removeChild(table);
+      table = createTable(jackOrBetterScore);
+      tableContainer.appendChild(table);
+      }
+    },2500)
 
       console.log(`deck count: ${deck.length}`);
       betCanClick = true;

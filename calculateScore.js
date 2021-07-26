@@ -126,7 +126,7 @@ isTwoPair=(rankTally)=>{
 }
 
 isJackOrBetter=(rankTally)=>{
-  if(rankTally['11']==2 || rankTally['12']==2 || rankTally['13']==2 || rankTally['13']==2 ){
+  if(rankTally['11']==2 || rankTally['12']==2 || rankTally['13']==2 || rankTally['13']==2 || rankTally['1']==2 ){
     return true;
   }
   return false;
