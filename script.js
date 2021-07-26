@@ -306,16 +306,7 @@ let deck = shuffleCards([...unshuffledDeck]);
 // UI VARIABLES
 // Add the cardContainer DOM element as a global variable.
 let cardContainer;
-let coinsInput;
-let coinsInputButton;
-let currentBetInput;
-let currentBetSubmitButton;
-let raiseInput;
-let raiseAndReplaceButton;
-let gameInfo;
 
-// Player 1 starts first
-const playersTurn = 1; // matches with starting instructions
 // Player 1 cards
 let player1Cards = [];
 
@@ -509,15 +500,6 @@ const drawInitialHand = () => {
   }
 
   const CURRENT_HAND_STATUS = calcHandScore(player1Cards);
-
-  gameInfo = document.createElement('div');
-  gameInfo.classList.add('gameInfo');
-  gameInfo.innerHTML = `Player ${playersTurn}, your current hand: ${CURRENT_HAND_STATUS.handString}`;
-  if (totalCoins > 0) {
-    gameInfo.innerHTML += 'You may select any number of cards to replace, or raise your bet.';
-  } else {
-    gameInfo.innerHTML += ' Since you have no coins left, you cannot raise your bet any further. You may still select any number of cards to replace.';
-  }
 
   /* Add event listeners on click to all cards */
   const CARDS = cardContainer.querySelectorAll('.card');
@@ -873,11 +855,11 @@ const toggleInsertCoins = () => {
     INSERT_SPAN.style.marginRight = '10px';
     INSERT_SPAN.innerText = 'Insert';
     COINS_INPUT_PARAGRAPH.appendChild(INSERT_SPAN);
-    coinsInput = document.createElement('input');
-    coinsInput.setAttribute('type', 'number');
-    coinsInput.className = 'coinsInput initCoins coins-input';
-    coinsInput.addEventListener('keypress', coinsInputKeypress);
-    COINS_INPUT_PARAGRAPH.appendChild(coinsInput);
+    const COINS_INPUT = document.createElement('input');
+    COINS_INPUT.setAttribute('type', 'number');
+    COINS_INPUT.className = 'coinsInput initCoins coins-input';
+    COINS_INPUT.addEventListener('keypress', coinsInputKeypress);
+    COINS_INPUT_PARAGRAPH.appendChild(COINS_INPUT);
     const COINS_SPAN = document.createElement('span');
     COINS_SPAN.innerHTML = '<i class="lni lni-coin coin"></i>';
     COINS_SPAN.style.marginLeft = '10px';
@@ -891,11 +873,11 @@ const toggleInsertCoins = () => {
     INSERT_COINS_CONTAINER.appendChild(COINS_INPUT_FEEDBACK_PARAGRAPH);
 
     // initialize coins input button
-    coinsInputButton = document.createElement('button');
-    coinsInputButton.className = 'initCoins coins-input-button button cta big';
-    coinsInputButton.innerText = 'Start';
-    coinsInputButton.addEventListener('click', insertCoinsSubmit);
-    INSERT_COINS_CONTAINER.appendChild(coinsInputButton);
+    const COINS_INPUT_BUTTON = document.createElement('button');
+    COINS_INPUT_BUTTON.className = 'initCoins coins-input-button button cta big';
+    COINS_INPUT_BUTTON.innerText = 'Start';
+    COINS_INPUT_BUTTON.addEventListener('click', insertCoinsSubmit);
+    INSERT_COINS_CONTAINER.appendChild(COINS_INPUT_BUTTON);
   } else {
     const INIT_COINS_ELEMENTS = document.querySelectorAll('.initCoins');
     for (let i = 0; i < INIT_COINS_ELEMENTS.length; i += 1) {
@@ -928,11 +910,11 @@ const toggleSetBet = () => {
     INSERT_SPAN.style.marginRight = '10px';
     INSERT_SPAN.innerText = 'Bet';
     CURRENT_BET_INPUT_PARAGRAPH.appendChild(INSERT_SPAN);
-    currentBetInput = document.createElement('input');
-    currentBetInput.setAttribute('type', 'number');
-    currentBetInput.className = 'currentBetInput setBet current-bet-input';
-    currentBetInput.addEventListener('keypress', currentBetInputKeypress);
-    CURRENT_BET_INPUT_PARAGRAPH.appendChild(currentBetInput);
+    const CURRENT_BET_INPUT = document.createElement('input');
+    CURRENT_BET_INPUT.setAttribute('type', 'number');
+    CURRENT_BET_INPUT.className = 'currentBetInput setBet current-bet-input';
+    CURRENT_BET_INPUT.addEventListener('keypress', currentBetInputKeypress);
+    CURRENT_BET_INPUT_PARAGRAPH.appendChild(CURRENT_BET_INPUT);
     const COINS_SPAN = document.createElement('span');
     COINS_SPAN.innerHTML = '<i class="lni lni-coin coin"></i> this round';
     COINS_SPAN.style.marginLeft = '10px';
@@ -946,11 +928,11 @@ const toggleSetBet = () => {
     SET_BET_CONTAINER.appendChild(BET_INPUT_FEEDBACK_PARAGRAPH);
 
     // initialize current bet button
-    currentBetSubmitButton = document.createElement('button');
-    currentBetSubmitButton.innerText = 'Continue';
-    currentBetSubmitButton.className = 'setBet current-bet-input-button button cta big';
-    currentBetSubmitButton.addEventListener('click', placeBetsSubmit);
-    SET_BET_CONTAINER.appendChild(currentBetSubmitButton);
+    const CURRENT_BET_SUBMIT_BUTTON = document.createElement('button');
+    CURRENT_BET_SUBMIT_BUTTON.innerText = 'Continue';
+    CURRENT_BET_SUBMIT_BUTTON.className = 'setBet current-bet-input-button button cta big';
+    CURRENT_BET_SUBMIT_BUTTON.addEventListener('click', placeBetsSubmit);
+    SET_BET_CONTAINER.appendChild(CURRENT_BET_SUBMIT_BUTTON);
   } else {
     const INIT_BET_ELEMENTS = document.querySelectorAll('.setBet');
     for (let i = 0; i < INIT_BET_ELEMENTS.length; i += 1) {
@@ -1007,10 +989,10 @@ const toggleShowInitialHand = () => {
       RAISE_SPAN.style.marginRight = '10px';
       RAISE_SPAN.innerText = 'Raise';
       RAISE_INPUT_PARAGRAPH.appendChild(RAISE_SPAN);
-      raiseInput = document.createElement('input');
-      raiseInput.setAttribute('type', 'number');
-      raiseInput.classList.add('raiseInput', 'raiseInputInput', 'raise-input', 'showInitialHand');
-      RAISE_INPUT_PARAGRAPH.appendChild(raiseInput);
+      const RAISE_INPUT = document.createElement('input');
+      RAISE_INPUT.setAttribute('type', 'number');
+      RAISE_INPUT.classList.add('raiseInput', 'raiseInputInput', 'raise-input', 'showInitialHand');
+      RAISE_INPUT_PARAGRAPH.appendChild(RAISE_INPUT);
       const COINS_SPAN = document.createElement('span');
       COINS_SPAN.classList.add('raiseInput', 'showInitialHand');
       COINS_SPAN.innerHTML = '<i class="lni lni-coin coin"></i>';
@@ -1046,11 +1028,11 @@ const toggleShowInitialHand = () => {
     SHOW_INITIAL_HAND_CONTAINER.appendChild(TOTAL_COINS_FEEDBACK_PARAGRAPH);
 
     // create raise and replace cards button
-    raiseAndReplaceButton = document.createElement('button');
-    raiseAndReplaceButton.innerText = 'Continue';
-    raiseAndReplaceButton.classList.add('showInitialHand', 'button', 'cta', 'raise-and-replace-button');
-    raiseAndReplaceButton.addEventListener('click', raiseAndReplaceClick);
-    SHOW_INITIAL_HAND_CONTAINER.appendChild(raiseAndReplaceButton);
+    const RAISE_AND_REPLACE_BUTTON = document.createElement('button');
+    RAISE_AND_REPLACE_BUTTON.innerText = 'Continue';
+    RAISE_AND_REPLACE_BUTTON.classList.add('showInitialHand', 'button', 'cta', 'raise-and-replace-button');
+    RAISE_AND_REPLACE_BUTTON.addEventListener('click', raiseAndReplaceClick);
+    SHOW_INITIAL_HAND_CONTAINER.appendChild(RAISE_AND_REPLACE_BUTTON);
   } else {
     const SHOW_INITIAL_HAND_ELEMENTS = document.querySelectorAll('.showInitialHand');
     for (let i = 0; i < SHOW_INITIAL_HAND_ELEMENTS.length; i += 1) {
