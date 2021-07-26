@@ -107,6 +107,10 @@ body {
   text-shadow: 1px 1px 1px #000;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .init-coins-container,
 .set-bet-wrapper,
 .show-initial-hand-wrapper,
