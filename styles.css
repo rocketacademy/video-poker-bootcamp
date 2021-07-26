@@ -300,7 +300,7 @@ body {
 
 .card-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .card {
@@ -310,13 +310,15 @@ body {
   border: 0;
   background-color: white;
   font-size: 5em;
+  overflow: hidden;
+  border-radius: 2px;
 }
 
 .card .card-image {
-  margin-left: -5px;
-  margin-top: -23px;
-  margin-right: -5px;
-  margin-bottom: -14px;
+  margin-left: -4.5px;
+  margin-top: -22px;
+  margin-right: -4.5px;
+  margin-bottom: -13px;
 }
 
 .cursor-pointer {
@@ -324,7 +326,7 @@ body {
 }
 
 .card.selected {
-  background-color: rgb(207, 207, 207);
+  background-color: #fff59d;
 }
 
 .suit {
@@ -388,6 +390,18 @@ body {
   .coins-wrapper > div div {
     font-size: 1em;
   }
+
+  .card {
+    font-size: 10em;
+    border-radius: 3px;
+  }
+
+  .card .card-image {
+    margin-left: -8px;
+    margin-top: -44px;
+    margin-right: -8px;
+    margin-bottom: -25px;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -411,6 +425,18 @@ body {
   .coins-wrapper > div:last-child {
     flex-basis: 28%;
   }
+
+  .card {
+    font-size: 13.5em;
+    border-radius: 5px;
+  }
+
+  .card .card-image {
+    margin-left: -11px;
+    margin-top: -59px;
+    margin-right: -11px;
+    margin-bottom: -33px;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -422,5 +448,17 @@ body {
   .coins-wrapper > div,
   .coins-wrapper > div:last-child {
     flex-basis: 20%;
+  }
+
+  .card {
+    font-size: 17.5em;
+    border-radius: 4px;
+  }
+
+  .card .card-image {
+    margin-left: -14px;
+    margin-top: -76px;
+    margin-right: -14px;
+    margin-bottom: -44px;
   }
 }
