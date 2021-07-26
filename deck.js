@@ -1,5 +1,5 @@
 /**
- * DECK CREATION FUNCTIONS
+ * DECK AND CARD CREATION FUNCTIONS
  * Helper functions for creating deck
  */
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
@@ -262,4 +262,32 @@ const makeDeck = () => {
 
   // Return the completed card deck
   return newDeck;
+};
+
+// Make a card in the DOM
+const createCard = (cardInfo) => {
+  const suit = document.createElement('div');
+  // CX: Add color to the suit
+  suit.classList.add('suit', cardInfo.colour);
+  suit.innerText = cardInfo.suitSymbol;
+  suit.style.display = 'none';
+
+  const name = document.createElement('div');
+  name.classList.add(cardInfo.displayName, cardInfo.colour);
+  // CX: Replace 3 with the display name of the card
+  name.innerText = cardInfo.displayName;
+  name.style.display = 'none';
+
+  const image = document.createElement('div');
+  image.classList.add('card-image', cardInfo.colour);
+  image.innerText = cardInfo.cardImage;
+
+  const card = document.createElement('div');
+  card.classList.add('card');
+
+  card.appendChild(name);
+  card.appendChild(image);
+  card.appendChild(suit);
+
+  return card;
 };
