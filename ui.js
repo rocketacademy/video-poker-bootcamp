@@ -117,6 +117,19 @@ const showOrUpdateTotalWinnings = () => {
   }
 };
 
+const showOrUpdatePayoutButton = () => {
+  const PAYOUT_BUTTONS = document.querySelectorAll('.payoutButton');
+  const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
+  if (COINS_WRAPPERS.length > 0 && PAYOUT_BUTTONS.length <= 0) {
+    const PAYOUT_BUTTON = document.createElement('a');
+    PAYOUT_BUTTON.className = 'payoutButton payoutButton button info';
+    PAYOUT_BUTTON.setAttribute('target', '_blank');
+    PAYOUT_BUTTON.setAttribute('href', 'view_payouts.html');
+    PAYOUT_BUTTON.innerText = 'View Payout';
+    COINS_WRAPPERS[0].appendChild(PAYOUT_BUTTON);
+  }
+};
+
 /**
  * Helper function to update or create all UI elements pertaining to coins
  * @function
@@ -127,6 +140,7 @@ const showOrUpdateCoins = () => {
   showOrUpdateTotalCoins();
   showOrUpdateCurrentBet();
   showOrUpdateTotalWinnings();
+  showOrUpdatePayoutButton();
 };
 
 /**

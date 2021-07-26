@@ -96,6 +96,11 @@ body {
   box-shadow: 1px 1px 1px #000;
 }
 
+a.button,
+a.button:hover {
+  text-decoration: none;
+}
+
 .button.big {
   border-radius: 20px;
   padding: 15px 30px;
@@ -109,6 +114,15 @@ body {
 
 .button.cta:hover {
   background: #aed581;
+}
+
+.button.info {
+  background: #03a9f4;
+  color: #fff;
+}
+
+.button.info:hover {
+  background: #81d4fa;
 }
 
 .box-shadow {
@@ -253,6 +267,7 @@ body {
     rgba(255, 193, 7, 1) 100%
   );
   border-radius: 10px;
+  font-size: 0.75em;
   color: #fff;
   overflow: hidden;
   margin-bottom: 5px;
@@ -268,7 +283,8 @@ body {
 }
 
 .coins-wrapper > div:last-child {
-  flex-basis: 60%;
+  flex-basis: 50%;
+  margin-right: 5px;
 }
 
 .coins-wrapper > div div {
@@ -289,6 +305,18 @@ body {
 
 .coins-wrapper > div div:last-child {
   font-weight: bold;
+}
+
+.view-coins-wrapper .button {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  font-size: 0.5em;
+  justify-content: center;
+  flex-basis: 25%;
+  overflow: hidden;
 }
 
 .your-winnings-sub-value.text-positive {
@@ -398,6 +426,7 @@ body {
   }
 
   .coins-wrapper > div {
+    font-size: 1em;
     flex-basis: 40%;
   }
 
@@ -415,6 +444,10 @@ body {
 
   .coins-wrapper > div div {
     font-size: 1em;
+  }
+
+  .view-coins-wrapper .button {
+    font-size: 0.75em;
   }
 
   .card {
@@ -459,6 +492,11 @@ body {
     flex-basis: 28%;
   }
 
+  .view-coins-wrapper .button {
+    margin-top: 10px;
+    font-size: 1em;
+  }
+
   .card {
     font-size: 13.5em;
     border-radius: 5px;
@@ -487,7 +525,13 @@ body {
 
   .coins-wrapper > div,
   .coins-wrapper > div:last-child {
-    flex-basis: 20%;
+    flex-basis: 25%;
+  }
+
+  .view-coins-wrapper .button {
+    margin-top: 0;
+    font-size: 1em;
+    flex-basis: 21%;
   }
 
   .card {
