@@ -117,6 +117,11 @@ const showOrUpdateTotalWinnings = () => {
   }
 };
 
+/**
+ * Creates payout button in UI if .coinsWrapper exists
+ * @function
+ * @param {null}
+ */
 const showOrUpdatePayoutButton = () => {
   const PAYOUT_BUTTONS = document.querySelectorAll('.payoutButton');
   const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
@@ -192,6 +197,18 @@ const hideViewCoinsWrapper = () => {
 };
 
 /**
+ * Remove .payoutButton from DOM
+ * @function
+ * @param {null}
+ */
+const hidePayoutButton = () => {
+  const PAYOUT_BUTTONS = document.querySelectorAll('.payoutButton');
+  for (let i = 0; i < PAYOUT_BUTTONS.length; i += 1) {
+    PAYOUT_BUTTONS[i].remove();
+  }
+};
+
+/**
  * Helper function for removing all coin status related UI elements from DOM
  * @function
  * @param {null}
@@ -201,6 +218,7 @@ const hideCoins = () => {
   hideCurrentBet();
   hideYourWinnings();
   hideViewCoinsWrapper();
+  hidePayoutButton();
 };
 
 /**
