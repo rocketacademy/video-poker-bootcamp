@@ -402,7 +402,7 @@ td {
   }
   .resetMessage {
     font-size: 0.8rem;
-    text-shadow: 0 0 1px blueviolet, 0 0 2px cyan;
+    text-shadow: 0 0 1px cyan, 0 0 2px white;
   }
   .button-container {
     display: flex;

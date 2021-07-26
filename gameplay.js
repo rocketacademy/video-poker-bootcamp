@@ -97,13 +97,17 @@ const createCards = () => {
     cardFront.appendChild(holder);
     cardFront.addEventListener('click', () => {
       playerHand[i].isHeld = !playerHand[i].isHeld;
-
+      
       if (playerHand[i].isHeld)
       {
+        const heldSound= new Audio('./resources/sounds/cardPlace2.wav')
+        heldSound.play();
         holder.classList.add('holder');
         holder.innerText = 'hold';
       }
       else {
+        const unheldSound= new Audio('./resources/sounds/cardPlace2.wav')
+        unheldSound.play();
         holder.classList.remove('holder');
         holder.innerText = '';
       }
@@ -137,6 +141,8 @@ const replaceUnheldCards = (cardsDom) => {
         refDom.appendChild(cardImg);
         refDom.classList.remove('cardAnimateDiscard');
         refDom.classList.add('cardAnimateOpenNew');
+        const cardRollSound= new Audio('./resources/sounds/cardTakeOutPackage2.wav')
+        cardRollSound.play();
       },1000);
     }
   }

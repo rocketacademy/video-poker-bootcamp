@@ -127,6 +127,7 @@ const createTable=(variation, wonHand='')=>{
     refillCvc.placeholder='cvc'
     refillCreditCard.placeholder='5105-1051-0510-5100'
     refillNum.placeholder=1000;
+    refillNum.value=1000;
 
 
     refillPrompt.innerText='hey! not enough credits. top-up to continue winning';
@@ -151,6 +152,8 @@ const createTable=(variation, wonHand='')=>{
 let firstDeal = true;
 let consecutiveDeals=0;
 const gameinit = () => {
+ 
+  
   const gameContainer=document.createElement('div');
 
   const topBar= document.createElement('div');
@@ -197,10 +200,6 @@ const gameinit = () => {
   scoreButton.innerText = 'Score';
   tableButton.innerText='Scoring table';
 
- 
-
-  
-
   gameContainer.classList.add('game-container');
   topBar.classList.add('top-bar');
   deckContainer.classList.add('card','box-shadow');
@@ -232,8 +231,9 @@ const gameinit = () => {
 
   let refillModal, refillNum, refillSubmit;
   [refillModal, refillNum, refillSubmit]=refillTokens();
-  gameContainer.appendChild(refillModal);
 
+  gameContainer.appendChild(refillModal);
+ 
   refillSubmit.addEventListener('click', ()=>{
     let numInput = Number(refillNum.value);
 
@@ -243,9 +243,32 @@ const gameinit = () => {
       refillModal.appendChild(errorMsg);
     }
     else{ 
-      points +=numInput;
+      // points +=numInput;
+      creditEffects.innerText='+';
+      creditEffects.classList.add('sign-float');
+      creditEffects.style.animationIterationCount=numInput;
+      creditEffects.style.animationDuration=1500/numInput;
+      
+      const addCoinSounds= new Audio('./resources/sounds/Coins_Several_18.mp3');
+     
+      addCoinSounds.play();
+      let pointCount=0;
+      const pointTopInterval=setInterval(() => {
+        if(pointCount===numInput)
+        {
+          clearInterval(pointTopInterval);
+          creditEffects.innerText = '';
+          creditEffects.classList.remove('sign-float');
+          return;
+        }
+        points+=1;
+        totalPoints.innerText = `${points} credits`;
+        pointCount+=1;
+    }, 1500/numInput);
+    
       refillModal.style.display='none';
       totalPoints.innerText = `${points} credits`;
+      refillNum.value='';
     }
   })
 
@@ -263,6 +286,10 @@ const gameinit = () => {
   let isTableHidden=false;
 
   tableButton.addEventListener('click',()=>{
+    const tableSound= new Audio('./resources/sounds/Select_007.wav');
+    tableSound.volume=0.3;
+  
+    tableSound.play();
     if(isTableHidden){
        table.classList.remove('hide');
     }
@@ -283,7 +310,15 @@ const gameinit = () => {
     {
       return;
     }
+    if(bet + 1 > points)
+    {
+      refillModal.style.display='block'
+      return;
+    }
     addTokens();
+    const upCoinSound= new Audio('./resources/sounds/chipLay2.wav')
+    upCoinSound.play();
+    
     tokensContainer.removeChild(tokensDom);
     tokensDom = createtokens();
     tokensContainer.appendChild(tokensDom);
@@ -299,6 +334,8 @@ const gameinit = () => {
       return;
     }
     removeToken();
+    const upCoinSound= new Audio('./resources/sounds/chipLay1.wav')
+    upCoinSound.play();
 
     tokensContainer.removeChild(tokensDom);
     tokensDom = createtokens();
@@ -320,6 +357,10 @@ const gameinit = () => {
     if(bet>points)
     {
       refillModal.style.display='block'
+      const alertSound= new Audio('./resources/sounds/Jump_003.wav')
+      alertSound.volume=0.4;
+      alertSound.play();
+
       return;
     }
     results.innerText ='';
@@ -327,7 +368,8 @@ const gameinit = () => {
 
       // For testing
       //  playerHand= royalFlush;
-
+    const deckOutSound= new Audio('./resources/sounds/cardTakeOutPackage1.wav')
+    deckOutSound.play();
     creditEffects.innerText='-';
     creditEffects.classList.add('sign-float');
     creditEffects.style.animationIterationCount=bet;
@@ -371,10 +413,14 @@ const gameinit = () => {
     {
       return;
     }
+
     scoreCanClick=true;
     scoreButton.classList.add('button-bottom-border');
     deckContainer.classList.remove('cardAnimateDiscard');
     if (consecutiveDeals === 0) {
+      const flipCard= new Audio('./resources/sounds/cardPlace2.wav')
+      flipCard.play();
+
       parentNodes=[]
       consecutiveDeals+=1;
       inners = document.querySelectorAll('div.card-inner');
@@ -425,6 +471,14 @@ const gameinit = () => {
     }
     if(prize>0)
     {
+      const coinAdd= new Audio('./resources/sounds/Coins_Pouring_01.mp3')
+      coinAdd.play();
+
+      const winSound=new Audio('./resources/sounds/win.wav')
+      // const winSound=new Audio('./resources/sounds/Pickup_005.wav')
+      winSound.volume=0.2;
+      winSound.play();
+      
       results.innerText = `${outputString}, you win ${prize} points`;
 
       creditEffects.innerText='+';
@@ -467,11 +521,16 @@ const gameinit = () => {
       handContainer.appendChild(resetMsg);
       tokensDom.classList.remove('cardAnimateDiscard');
 
+      const tokenResetSound= new Audio('./resources/sounds/chipsStack6.wav')
+      tokenResetSound.play();
       tokensDom=refreshTokens();
       tokensContainer.innerHTML='';
       tokensContainer.appendChild(tokensDom);
 
       if(deck.length < maxHandSize*2 ){
+        const resetSound= new Audio('./resources/sounds/Randomize9.wav')
+        resetSound.volume=0.2;
+        resetSound.play();
         resetMsg.innerText = 'Out of cards, Bet to reset.';
         deck = shuffleCards(makeDeck());
       }
