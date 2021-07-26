@@ -3,6 +3,11 @@
  *
  */
 
+/**
+ * Creates .coins-wrapper if it does not exist
+ * @function
+ * @param {null}
+ */
 const showOrUpdateCoinsWrapper = () => {
   const VIEW_COINS_WRAPPERS = document.querySelectorAll('.viewCoinsWrapper');
   const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
@@ -13,6 +18,12 @@ const showOrUpdateCoinsWrapper = () => {
   }
 };
 
+/**
+ * Updates totalCoins in UI if .totalCoins exists
+ * Otherwise, creates the .totalCoins UI
+ * @function
+ * @param {null}
+ */
 const showOrUpdateTotalCoins = () => {
   const TOTAL_COINS_PARAGRAPHS = document.querySelectorAll('.totalCoins');
   const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
@@ -33,6 +44,12 @@ const showOrUpdateTotalCoins = () => {
   }
 };
 
+/**
+ * Updates currentBet in UI if .currentBet exists
+ * Otherwise, creates the .currentBet UI
+ * @function
+ * @param {null}
+ */
 const showOrUpdateCurrentBet = () => {
   const CURRENT_BET_PARAGRAPHS = document.querySelectorAll('.currentBet');
   const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
@@ -53,6 +70,13 @@ const showOrUpdateCurrentBet = () => {
   }
 };
 
+/**
+ * Updates totalWinnings in UI if .yourWinnings exists
+ * This includes changing the colors depending on positive or negative values
+ * Otherwise, creates the .yourWinnings UI
+ * @function
+ * @param {null}
+ */
 const showOrUpdateTotalWinnings = () => {
   const YOUR_WINNINGS_PARAGRAPHS = document.querySelectorAll('.yourWinnings');
   const COINS_WRAPPERS = document.querySelectorAll('.coinsWrapper');
@@ -93,6 +117,11 @@ const showOrUpdateTotalWinnings = () => {
   }
 };
 
+/**
+ * Helper function to update or create all UI elements pertaining to coins
+ * @function
+ * @param {null}
+ */
 const showOrUpdateCoins = () => {
   showOrUpdateCoinsWrapper();
   showOrUpdateTotalCoins();
@@ -100,6 +129,11 @@ const showOrUpdateCoins = () => {
   showOrUpdateTotalWinnings();
 };
 
+/**
+ * Remove .totalCoins UI elements from DOM
+ * @function
+ * @param {null}
+ */
 const hideTotalCoins = () => {
   const TOTAL_COINS_PARAGRAPHS = document.querySelectorAll('.totalCoins');
   for (let i = 0; i < TOTAL_COINS_PARAGRAPHS.length; i += 1) {
@@ -107,6 +141,11 @@ const hideTotalCoins = () => {
   }
 };
 
+/**
+ * Remove .currentBet UI elements from DOM
+ * @function
+ * @param {null}
+ */
 const hideCurrentBet = () => {
   const CURRENT_BET_PARAGRAPHS = document.querySelectorAll('.currentBet');
   for (let i = 0; i < CURRENT_BET_PARAGRAPHS.length; i += 1) {
@@ -114,6 +153,11 @@ const hideCurrentBet = () => {
   }
 };
 
+/**
+ * Remove .yourWinnings UI elements from DOM
+ * @function
+ * @param {null}
+ */
 const hideYourWinnings = () => {
   const YOUR_WINNINGS_PARAGRAPHS = document.querySelectorAll('.yourWinnings');
   for (let i = 0; i < YOUR_WINNINGS_PARAGRAPHS.length; i += 1) {
@@ -121,6 +165,11 @@ const hideYourWinnings = () => {
   }
 };
 
+/**
+ * Remove .viewCoinsWrapper UI elements from DOM
+ * @function
+ * @param {null}
+ */
 const hideViewCoinsWrapper = () => {
   const VIEW_COINS_WRAPPERS = document.querySelectorAll('.viewCoinsWrapper');
   for (let i = 0; i < VIEW_COINS_WRAPPERS.length; i += 1) {
@@ -128,6 +177,11 @@ const hideViewCoinsWrapper = () => {
   }
 };
 
+/**
+ * Helper function for removing all coin status related UI elements from DOM
+ * @function
+ * @param {null}
+ */
 const hideCoins = () => {
   hideTotalCoins();
   hideCurrentBet();
@@ -135,6 +189,12 @@ const hideCoins = () => {
   hideViewCoinsWrapper();
 };
 
+/**
+ * Populates DOM with UI elements from INIT_COINS
+ * If a different game state, remove all DOM elements from INIT_COINS game state
+ * @function
+ * @param {null}
+ */
 const toggleInsertCoins = () => {
   if (gameState === INIT_COINS) {
     // hide coins indicators from previous UI states
@@ -205,6 +265,12 @@ const toggleInsertCoins = () => {
   }
 };
 
+/**
+ * Populates DOM with UI elements from SET_BET
+ * If a different game state, remove all DOM elements from SET_BET game state
+ * @function
+ * @param {null}
+ */
 const toggleSetBet = () => {
   if (gameState === SET_BET) {
     // hide coins indicators from previous UI states
@@ -260,6 +326,12 @@ const toggleSetBet = () => {
   }
 };
 
+/**
+ * Populates DOM with UI elements from SHOW_INITIAL_HAND
+ * If a different game state, remove all DOM elements from SHOW_INITIAL_HAND game state
+ * @function
+ * @param {null}
+ */
 const toggleShowInitialHand = () => {
   if (gameState === SHOW_INITIAL_HAND) {
     // hide coins indicators from previous UI states
@@ -360,6 +432,12 @@ const toggleShowInitialHand = () => {
   }
 };
 
+/**
+ * Populates DOM with UI elements from SHOW_FINAL_HAND
+ * If a different game state, remove all DOM elements from SHOW_FINAL_HAND game state
+ * @function
+ * @param {null}
+ */
 const toggleShowFinalHand = () => {
   if (gameState === SHOW_FINAL_HAND) {
     // hide coins indicators from previous UI states
@@ -430,6 +508,11 @@ const toggleShowFinalHand = () => {
   }
 };
 
+/**
+ * Helper function for deleting or creating UI based on game states
+ * @function
+ * @param {null}
+ */
 const toggleUI = () => {
   toggleInsertCoins();
   toggleSetBet();
@@ -442,21 +525,41 @@ const toggleUI = () => {
  * We can now centralise our game initialisation into a single function called `initGame`.
  */
 
+/**
+ * Changes gameState to SET_BET, and toggles UI
+ * @function
+ * @param {null}
+ */
 const initBet = () => {
   gameState = SET_BET;
   toggleUI();
 };
 
+/**
+ * Changes gameState to SHOW_INITIAL_HAND, and toggles UI
+ * @function
+ * @param {null}
+ */
 const initGame = () => {
   gameState = SHOW_INITIAL_HAND;
   toggleUI();
 };
 
+/**
+ * Changes gameState to SHOW_FINAL_HAND, and toggles UI
+ * @function
+ * @param {null}
+ */
 const initFinalHand = () => {
   gameState = SHOW_FINAL_HAND;
   toggleUI();
 };
 
+/**
+ * Changes gameState to INIT_COINS, and toggles UI
+ * @function
+ * @param {null}
+ */
 const initCoins = () => {
   // set game state
   gameState = INIT_COINS;
