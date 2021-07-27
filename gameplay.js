@@ -102,16 +102,21 @@ const createCard = (cardInfo) => {
 };
 
 const dealCards = () => {
-  // make new deck
-  deck = shuffleCards(makeDeck());
-  // Empty cardContainer
-  newRoundSetUp();
+  bet = Number(betAmount.value);
 
-  document.querySelector('#card1').addEventListener('click', selectSwapCard1);
-  document.querySelector('#card2').addEventListener('click', selectSwapCard2);
-  document.querySelector('#card3').addEventListener('click', selectSwapCard3);
-  document.querySelector('#card4').addEventListener('click', selectSwapCard4);
-  document.querySelector('#card5').addEventListener('click', selectSwapCard5);
+  if (bet > points) {
+    alert('You do not have enough points!');
+  } else {
+  // make new deck
+    deck = shuffleCards(makeDeck());
+    // Empty cardContainer
+    newRoundSetUp();
+    document.querySelector('#card1').addEventListener('click', selectSwapCard1);
+    document.querySelector('#card2').addEventListener('click', selectSwapCard2);
+    document.querySelector('#card3').addEventListener('click', selectSwapCard3);
+    document.querySelector('#card4').addEventListener('click', selectSwapCard4);
+    document.querySelector('#card5').addEventListener('click', selectSwapCard5);
+  }
 };
 
 // swap cards based on cards that are highlighted red
@@ -135,8 +140,6 @@ const endRound = () => {
   //     rank: 1, suitSymbol: '♠️', displayName: 'A', suit: 'spades',
   //   },
   // ];
-  // cardContainer.innerHTML = '';
-  // createBlankCards();
 
   setTimeout(() => {
     swapCard();

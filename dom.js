@@ -21,7 +21,7 @@ cardPanel.appendChild(gameMessage);
 
 // create bet button
 const betText = document.createElement('div');
-betText.classList.add('button');
+betText.classList.add('text');
 betText.innerText = 'Bet: ';
 
 // create bet dropdown

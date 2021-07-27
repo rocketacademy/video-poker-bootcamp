@@ -8,6 +8,7 @@
   margin: auto;
   padding: 48px;
   color: white;
+  font-size: 35px;
 }
 body {
   background-color: rgb(99, 99, 212);
@@ -109,7 +110,7 @@ li {
 
 .gameMessage {
   padding-top: 16px;
-  font-size: 25px;
+  font-size: 30px;
   color: white;
   margin: 20px auto;
   display: block;
@@ -125,7 +126,7 @@ li {
   width: 550px;
   margin: auto;
   padding-top: 16px;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .button {
@@ -151,8 +152,16 @@ input {
   margin: 20px auto;
   display: inline-block;
   width: 550px;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(240, 230, 230, 0.6);
+  border-radius: 50px;
+}
+
+.text {
   font-size: 25px;
-  color: white;
+  margin-left: 10px;
+  display: inline-block;
 }
 
 .blink {
@@ -194,4 +203,10 @@ input {
 .selected {
   border: solid;
   border-color: red;
+}
+
+.wrapper {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
 }
