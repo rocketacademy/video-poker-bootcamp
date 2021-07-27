@@ -238,6 +238,7 @@ const gameinit = () => {
       })
     }
     else if(consecutiveDeals === 1){
+      results.innerText='';
       replaceUnheldCards(cardNodes);
       consecutiveDeals=0;
       dealCanClick=false;
