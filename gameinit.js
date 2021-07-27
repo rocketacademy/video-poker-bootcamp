@@ -38,7 +38,7 @@ const gameinit = () => {
 
   //dom elements innertext
   header.innerText = 'Video Poker!';
-  faceDownImg.src = './resources/cardFace/deck_4_large.png';
+  faceDownImg.src = './resources/cardFace/deck_4.png';
   tableButton.innerText='Scoring table';
   resetMsg.innerText='Bet to start';
 
