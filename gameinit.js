@@ -225,6 +225,8 @@ const gameinit = () => {
       const flipCard= new Audio('./resources/sounds/cardPlace2.wav')
       flipCard.play();
 
+      results.innerText='click on card to hold';
+
       cardNodes=[]
       consecutiveDeals+=1;
       const inners = document.querySelectorAll('div.card-inner');
