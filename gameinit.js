@@ -124,12 +124,8 @@ const gameinit = () => {
     const upCoinSound= new Audio('./resources/sounds/chipLay2.wav')
     upCoinSound.play();
     
-    tokensContainer.removeChild(tokensDom);
-    tokensDom = createtokens();
-    tokensContainer.appendChild(tokensDom);
-    tokenCount.innerText = bet;
-
-
+    updateTokenCon(tokensContainer, tokensDom, tokenCount, bet);
+    // updateTable(tableContainer, table);
     tableContainer.removeChild(table);
     table = createTable(jackOrBetterScore);
     tableContainer.appendChild(table);
@@ -145,14 +141,12 @@ const gameinit = () => {
     const upCoinSound= new Audio('./resources/sounds/chipLay1.wav')
     upCoinSound.play();
 
-    tokensContainer.removeChild(tokensDom);
-    tokensDom = createtokens();
-    tokensContainer.appendChild(tokensDom);
-    tokenCount.innerText = bet;
-
+    updateTokenCon(tokensContainer, tokensDom, tokenCount, bet);
+    // updateTable(tableContainer, table);
     tableContainer.removeChild(table);
     table = createTable(jackOrBetterScore);
     tableContainer.appendChild(table);
+
   });
 
 
@@ -174,13 +168,7 @@ const gameinit = () => {
     const deckOutSound= new Audio('./resources/sounds/cardTakeOutPackage1.wav')
     deckOutSound.play();
     
-    // For testing
-    // playerHand= royalFlush;
-
-    //redeal hands
-    playerHand = dealCards(maxHandSize);
-    cardsDom = createCards(playerHand);
-    appendChilds(handContainer, cardsDom);
+    dealHand(handContainer);
    
     upCanClick=false;
     downCanClick=false;
@@ -194,24 +182,7 @@ const gameinit = () => {
     betButton.classList.remove('button-bottom-border');
     dealButton.classList.add('button-bottom-border');
     
-
-    creditEffects.innerText='-';
-    creditEffects.classList.add('sign-float');
-    creditEffects.style.animationIterationCount=bet;
-    creditEffects.style.animationDuration=1500/bet;
-    let pointCount = 0;
-    const pointInterval = setInterval(() => {
-      if(pointCount === bet)
-      {
-        clearInterval( pointInterval );
-        creditEffects.innerText = '';
-        creditEffects.classList.remove('sign-float');
-        return;
-      }
-      points -= 1;
-      pointCount += 1;
-      totalPoints.innerText = `${points} credits`;
-    }, 1500 / bet);
+    signFloat('-', creditEffects, totalPoints, bet);
   })
 
   let cardNodes=[];
@@ -273,24 +244,8 @@ const gameinit = () => {
       
       results.innerText = `${outputString}, you win ${prize} points`;
 
-      creditEffects.innerText = '+';
-      creditEffects.classList.add('sign-float');
-      creditEffects.style.animationIterationCount = prize;
-      creditEffects.style.animationDuration = 1500/prize;
-      
-      let pointCount=0;
-      const pointPosInterval = setInterval(() => {
-        if(pointCount === prize)
-        {
-          clearInterval(pointPosInterval);
-          creditEffects.innerText = '';
-          creditEffects.classList.remove('sign-float');
-          return;
-        }
-        points += 1;
-        totalPoints.innerText = `${points} credits`;
-        pointCount += 1;
-    }, 1500/prize);
+      signFloat('+', creditEffects, totalPoints, prize);
+  
     }
     else{
       const loseSound=new Audio('./resources/sounds/Jump_004.wav')
@@ -301,6 +256,7 @@ const gameinit = () => {
     
     //highlight table hand
     if(!isTableHidden){
+      // updateTable(tableContainer, table, outputString);
     tableContainer.removeChild(table);
     table = createTable(jackOrBetterScore,outputString);
     tableContainer.appendChild(table);

@@ -300,6 +300,7 @@ td {
 }
 
 .card-flip {
+  /* might need moz */
   transform-style: preserve-3d;
   animation-name: flipCard;
   animation-duration: 0.5s;

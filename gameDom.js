@@ -35,6 +35,10 @@ const removeToken = () => {
   tokens.pop();
   tokenTranslation.pop();
 };
+/**
+ * Creates HTMLDivElement for tokens
+ * @returns HTMLDivElement tokenContainer
+ */
 const createtokens = () => {
   const tokenContainer = document.createElement('div');
   tokenContainer.id='tokens';
@@ -67,22 +71,34 @@ const refreshTokens=()=>{
 }
 
 
-//TODO: see how to get it used, gets error that node removed is not child of node
+/**
+ * Updates token container
+ * @param {HTMLDivElement} tokensContainer 
+ * @param {HTMLDivElement} tokensDom 
+ * @param {HTMLDivElement} tokenCount 
+ * @param {int} bet 
+ */
 const updateTokenCon=(tokensContainer, tokensDom, tokenCount, bet)=>{
-    tokensContainer.removeChild(tokensDom);
+    tokensContainer.innerHTML='';
     tokensDom = createtokens();
     tokensContainer.appendChild(tokensDom);
     tokenCount.innerText = bet;
 }
-const updateTable = (tableContainer, table) =>{
-    tableContainer.removeChild(table);
-    table = createTable(jackOrBetterScore);
+/**
+ * Updates scoring table
+ * @param {HTMLDivElement} tableContainer -enclosing element
+ * @param {HTMLDivElement} table -table itself
+ */
+const updateTable = (tableContainer, table, highlightCriteria='') =>{
+
+    tableContainer.innerHTML='';
+    table = createTable(jackOrBetterScore, highlightCriteria);
     tableContainer.appendChild(table);
   }
 /**
  * create score table for hand variation
  * @param {object} variation -Jack or better varaint
- * @param {*} wonHand - Hand from calculateScore
+ * @param {string} wonHand - Hand from calculateScore
  * @returns table dom
  */
 const createTable=(variation, wonHand='')=>{
@@ -175,3 +191,50 @@ const createTable=(variation, wonHand='')=>{
     refillModal.appendChild(refillWindow);
     return [refillModal, refillNum, refillSubmit];
   }
+/**
+ * deals hand 
+ * @param {HTMLDivElement} handContainer 
+ */
+  const dealHand = (handContainer)=>{
+    let cardsDom = document.createElement('div');
+    // For testing
+    // playerHand= royalFlush;
+
+    playerHand = dealCards(maxHandSize);
+    cardsDom = createCards(playerHand);
+    appendChilds(handContainer, cardsDom);
+  }
+
+  /**
+   * 
+   * @param {string} sign - '+' or '-'
+   * @param {HTMLDivElement} creditEffects 
+   * @param {HTMLDivElement} totalPoints 
+   * @param {int} iter -number of iterations
+   */
+  const signFloat=(sign, creditEffects, totalPoints, iter )=>{
+    creditEffects.innerText=sign;
+    creditEffects.classList.add('sign-float');
+    creditEffects.style.animationIterationCount=iter;
+    creditEffects.style.animationDuration=1500/iter;
+    let pointCount = 0;
+    const pointInterval = setInterval(() => {
+      if(pointCount === iter)
+      {
+        clearInterval( pointInterval );
+        creditEffects.innerText = '';
+        creditEffects.classList.remove('sign-float');
+        return;
+      }
+      if(sign ==='-'){
+        points -= 1;
+      }
+      else if(sign ==='+'){
+        points += 1;
+      }
+
+      pointCount += 1;
+      totalPoints.innerText = `${points} credits`;
+    }, 1500 / iter);
+  }
+  
