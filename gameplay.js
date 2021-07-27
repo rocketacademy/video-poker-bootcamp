@@ -10,7 +10,7 @@ let handContainer = document.createElement('div');
 
 const getFilePathCard = (suit, displayName) =>
 {
-  const filePath = `${folderPath}/card_b_${suit}${displayName}_large.png`;
+  const filePath = `${folderPath}/card_b_${suit}${displayName}.png`;
   return filePath;
 };
 
@@ -83,7 +83,7 @@ const createCards = () => {
     const cardBackImg= document.createElement('img');
     const holder = document.createElement('div');
     
-    cardBackImg.src='./resources/cardFace/deck_4_large.png';
+    cardBackImg.src='./resources/cardFace/deck_4.png';
     
     const cardOpenImg = createCardImg(refCard);
     cardFront.appendChild(cardOpenImg);
@@ -152,12 +152,13 @@ const replaceUnheldCards = (cardsDom) => {
         },500)
       
       setTimeout(()=>{
+        const cardRollSound= new Audio('./resources/sounds/cardTakeOutPackage2.wav')
+        cardRollSound.play();
+
         const cardImg = replaceCardImg(playerHand, i);
         refDom.appendChild(cardImg);
         refDom.classList.remove('cardAnimateDiscard');
         refDom.classList.add('cardAnimateOpenNew');
-        const cardRollSound= new Audio('./resources/sounds/cardTakeOutPackage2.wav')
-        cardRollSound.play();
       },1000);
     }
   }
@@ -186,9 +187,7 @@ const tallyHand = () => {
     else {
       suitTally[card.suit] = 1;
     }
-
   }
-
   return [rankTally, suitTally];
 };
 
