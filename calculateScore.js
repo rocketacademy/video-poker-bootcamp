@@ -133,8 +133,8 @@ isJackOrBetter=(rankTally)=>{
 }
 /**
  * Calculating score from pokerhands
- * @param {*} rankTally 
- * @param {*} suitTally 
+ * @param {object} rankTally - key: rank, value: number of cards with that rank
+ * @param {object} suitTally  - key: suit, value: number of cards with that suit
  * @returns score, hand type as string
  */
 const calHandScore=(rankTally, suitTally)=>{

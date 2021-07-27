@@ -7,7 +7,12 @@ let playerHand = [];
 let bet = 0;
 let maxHandSize = 5;
 let handContainer = document.createElement('div');
-
+/**
+ * Gets filepath of image from suit and display name
+ * @param {string} suit -suit of card
+ * @param {string} displayName -display name of card
+ * @returns filepath
+ */
 const getFilePathCard = (suit, displayName) =>
 {
   const filePath = `${folderPath}/card_b_${suit}${displayName}.png`;
@@ -16,8 +21,8 @@ const getFilePathCard = (suit, displayName) =>
 
 /**
  * Append multiple childs
- * @param {*} parentDom
- * @param {*} children
+ * @param {dom element} parentDom - dom to add to
+ * @param {[] dom elements} children  - multiple doms to append
  */
 const appendChilds = (parentDom, children) => {
   for (let i = 0; i < children.length; i++)
@@ -28,7 +33,7 @@ const appendChilds = (parentDom, children) => {
 
 /**
  * Represents cards dealt from the deck
- * @param {*} numCards
+ * @param {int} numCards - number of cards to deal
  * @returns cards
  */
 // used to deal all cards or one at a time
@@ -42,8 +47,8 @@ const dealCards = (numCards) => {
 
 /**
  * Pop multiple items from array
- * @param {*} array
- * @param {*} num
+ * @param {[]} array - array to pop from
+ * @param {int} num - number of items to pop
  * @returns popped items
  */
 const popMultiple = (array, num) => {
@@ -56,7 +61,7 @@ const popMultiple = (array, num) => {
 
 /**
  * Create card image dom from card object
- * @param {*} cardObj 
+ * @param {object} cardObj - cardobject to create dom from
  * @returns card image dom
  */
 const createCardImg = (cardObj) => {
@@ -68,7 +73,6 @@ const createCardImg = (cardObj) => {
 
 /**
  * create card dom elements
- * @param {*} cards
  * @returns card dom elements
  */
 const createCards = () => {
@@ -122,9 +126,9 @@ const createCards = () => {
 
 /**
  * replaces card
- * @param {*} cards
- * @param {*} i
- * @returns card contents of replacement
+ * @param {[]object} cards  - cards from hand
+ * @param {int} i - index of card replaced
+ * @returns card dom of replacement
  */
 const replaceCardImg = (cards, i) => {
   const replacement = deck.pop();
@@ -134,7 +138,7 @@ const replaceCardImg = (cards, i) => {
 
 /**
  * replaces unheld cards in array of card elem
- * @param {*} cardsDom 
+ * @param {[]dom object} cardsDom - cardDoms containing unheld and held cards
  */
 const replaceUnheldCards = (cardsDom) => {
   for (let i = 0; i < playerHand.length; i++)

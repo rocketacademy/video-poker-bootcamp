@@ -1,0 +1,70 @@
+Technical review
+1)What went well? link to code
+
+Main game logic, calcHand, hold hand...(gameplay.js)
+stacking of tokens (gameDom.js)
+Finding assets
+
+2)What are the biggest challenges? link to code
+
+Dom elements. 
+constantly remaking the hand/tables by removing children and appending them (gameinit.js)
+
+Refactoring.
+lack of ability to refactor creation and modification of dom elements outside the
+gameinit function without breaking the functionality. Hence repeated code/ very long 
+code blocks in button event listeners (gameDom.js line 57, 63 gameinit.js line 127-135, 148-155)
+
+Creating all the elements in js (gameinit.js). 
+It is a lot of elements and classes
+to add. I think if i had put more elements in the html instead, would have to use
+querySelectors which I'm not familiar with.
+
+Mainipulation of classes of child in parent nodes.
+(line 224 gameinit) fliping the cards
+after finding them from the document. They were cards that were buried in the handContainer
+
+Animations. 
+after adding them as a class, have to remove them before they can be added again. my assumption.
+(gameinit.js line 191-195)
+
+How to structure (gameinit.js)
+Many many elements
+
+Resizing game css
+to viewport units.
+Used translate for some elements in mobile mode. feels weird
+
+Difference in functionality across browsers
+card flip doesn't work in moz firefox. 
+Also mobile mode don't show like chrome but like desktop
+ 
+
+3)What would you do differently next time
+
+I think i learnt a lot through the process but wondered if there
+were best practices/ common ways/ other ways to do what i was doing.
+
+Score table wins could be better highlighted.
+addition subtraction of credits could be done more drammatically
+The instruction to get the user to hold the card was rushed in last min, 
+would be better if it was more graphical like pointers above the card
+
+I had wanted to pull out the cards from the deck precisely, opted to fake it
+with opacity 0 from the start of the draw. Still wondering how to do variable translation
+deck to hand. Have a feeling it would screw up with different browser sizing.
+
+Process review
+1)What went well?
+
+I think it was good that i rushed out the gameplay on the first day and over hari raya.
+Had lots of time to play and refine the other elements. might have spent too much time
+on the polish lol.
+
+2)What could have been better?
+I could have spent more time looking for examples of inspiration. 
+Shen nan's scroll-behavior: smooth;
+is cool
+
+3)What would you do differently next time? 
+Don't think I would change much. Maybe llok for more wackier examples to emulate.

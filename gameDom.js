@@ -1,7 +1,12 @@
 /* eslint-disable no-eval */
 let tokens = [];
 let tokenTranslation = [];
-
+/**
+ * Adds color and translation of new tokens to tokens
+ * and tokenTranslation. Adds num to bet
+ * @param {*} num - number of tokens to add
+ * @returns 
+ */
 const addTokens = (num=1) => {
   if (bet > points) {
     return;
@@ -9,7 +14,7 @@ const addTokens = (num=1) => {
   const colors = ['biege', 'black', 'blue', 'gray', 'green', 'lightblue', 'pink', 'purple', 'red', 'white', 'yellow'];
   for(let i=0; i<num;i+=1){
     const addition = colors[getRandomInt(colors.length)];
-     const translation = `${getRandomInt(12)/10}vw , ${-0.8*tokens.length+4}vw`;
+    const translation = `${getRandomInt(12)/10}vw , ${-0.8*tokens.length+4}vw`;
 
     bet += 1;
     tokens.push(addition);
@@ -17,6 +22,11 @@ const addTokens = (num=1) => {
   }
 
 };
+/**
+ * removes token from token and translation arrays.
+ * reduces bet by 1
+ * @returns 
+ */
 const removeToken = () => {
   if (bet === 1) {
     return;
@@ -41,7 +51,11 @@ const createtokens = () => {
   }
   return tokenContainer;
 };
-
+/**
+ * Remake tokens and tokenTranslation
+ * for new token stack 
+ * @returns tokenDom
+ */
 const refreshTokens=()=>{
     tokens = [];  
     tokenTranslation = [];
@@ -65,6 +79,12 @@ const updateTable = (tableContainer, table) =>{
     table = createTable(jackOrBetterScore);
     tableContainer.appendChild(table);
   }
+/**
+ * create score table for hand variation
+ * @param {object} variation -Jack or better varaint
+ * @param {*} wonHand - Hand from calculateScore
+ * @returns table dom
+ */
 const createTable=(variation, wonHand='')=>{
     const table = document.createElement('table');
     const tableRow = document.createElement('tr');
@@ -111,6 +131,10 @@ const createTable=(variation, wonHand='')=>{
     }
     return table;
   }
+  /**
+   * Create modal box to ask player to refill tokens
+   * @returns [refillModal, refillNum, refillSubmit] which are dom elements
+   */
  const refillTokens = () => {
     const refillModal = document.createElement('div');
     const refillWindow = document.createElement('div');
