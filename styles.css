@@ -10,7 +10,6 @@
 body {
   display: flex;
   height: 100vh;
-  /* align-items: center; */
   justify-content: center;
   background-color: rgb(216, 216, 216);
 }
@@ -37,6 +36,15 @@ input {
   font-size: 0.5em;
   height: 1.6em;
   text-align: center;
+}
+.absolute {
+  position: absolute;
+}
+.hide {
+  visibility: hidden;
+}
+.inline-block {
+  display: inline-block;
 }
 
 .game-container {
@@ -90,7 +98,6 @@ input {
     opacity: 0;
   }
 }
-
 .cardAnimateDiscard {
   animation-name: fadeout;
   animation-duration: 0.5s;
@@ -98,7 +105,7 @@ input {
   animation-fill-mode: forwards;
 }
 
-@keyframes fromTop {
+@keyframes fromLeft {
   0% {
     transform: translate(-60vw, -0px);
     opacity: 0;
@@ -118,7 +125,7 @@ input {
 }
 .cardAnimateOpenNew {
   z-index: -1;
-  animation-name: fromTop;
+  animation-name: fromLeft;
   animation-duration: 0.5s;
   animation-timing-function: ease-in;
   animation-fill-mode: backwards;
@@ -129,9 +136,6 @@ input {
   align-self: center;
 }
 
-.absolute {
-  position: absolute;
-}
 .holder {
   font-size: 0.7em;
   background-color: rgba(0, 0, 0, 0.19);
@@ -142,8 +146,6 @@ input {
 
 .large-button {
   font-family: "Tourney", cursive;
-  /* font-family: "Cantarell", sans-serif; */
-  /* font-family: "Orbitron", sans-serif; */
   font-weight: bold;
   font-style: italic;
   text-shadow: 0 0 3px yellow, 0 0 5px white;
@@ -180,7 +182,6 @@ table {
   font-family: "Lexend", sans-serif;
   font-style: normal;
   font-size: 0.5em;
-  /* text-shadow: 0 0 3px tomato, 0 0 5px white; */
   text-shadow: none;
   border-collapse: collapse;
 }
@@ -195,10 +196,6 @@ th {
 td {
   width: 5vw;
 }
-.hide {
-  visibility: hidden;
-  /* display: none; */
-}
 
 .hightlight-row {
   box-shadow: 0 0 10px cyan inset, 0 0 5px white inset, 0 0 10px cyan,
@@ -206,6 +203,10 @@ td {
 }
 .highlight-text {
   text-shadow: 0 0 3px cyan, 0 0 5px white;
+}
+.table-button {
+  /* text-shadow: none; */
+  /* border-bottom: 1px solid black; */
 }
 
 .top-bar {
@@ -215,10 +216,7 @@ td {
   justify-content: space-between;
   align-items: flex-end;
 }
-.table-button {
-  /* text-shadow: none; */
-  /* border-bottom: 1px solid black; */
-}
+
 .middle-bar {
   width: 90vw;
   /* border: 3px dotted blueviolet; */
@@ -241,10 +239,6 @@ td {
 
   position: relative;
 }
-.inline-block {
-  display: inline-block;
-}
-
 .arrow-up {
   display: block;
   border-left: 1vw solid rgb(216, 216, 216);
@@ -286,24 +280,12 @@ td {
   perspective: 1000px;
 }
 
-.box-shadow {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.grey-scale img {
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
-}
-.zero-opacity {
-  opacity: 0;
-}
-
 .card-inner {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   position: relative;
   width: 100%;
   height: 100%;
-  /* transition: transform 2s;
-  transform-style: preserve-3d; */
+  transform-style: preserve-3d;
 }
 
 @keyframes flipCard {
@@ -356,7 +338,6 @@ td {
   animation-fill-mode: forwards;
 }
 .credit-container {
-  /* text-align: right; */
   display: block;
 }
 
@@ -389,7 +370,6 @@ td {
     width: 100%;
     justify-content: flex-end;
     height: 0px;
-    /* align-items: baseline; */
   }
   @keyframes fromTop {
     0% {

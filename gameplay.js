@@ -25,6 +25,7 @@ const appendChilds = (parentDom, children) => {
     parentDom.appendChild(children[i]);
   }
 };
+
 /**
  * Represents cards dealt from the deck
  * @param {*} numCards
@@ -38,6 +39,7 @@ const dealCards = (numCards) => {
   }
   return popMultiple(deck, deck.length);
 };
+
 /**
  * Pop multiple items from array
  * @param {*} array
@@ -52,12 +54,18 @@ const popMultiple = (array, num) => {
   return popped;
 };
 
+/**
+ * Create card image dom from card object
+ * @param {*} cardObj 
+ * @returns card image dom
+ */
 const createCardImg = (cardObj) => {
   const cardImg = document.createElement('img');
   cardImg.src = getFilePathCard(cardObj.suit, cardObj.displayName);
   cardImg.classList.add('cardimg','card-inner');
   return cardImg;
 };
+
 /**
  * create card dom elements
  * @param {*} cards
@@ -67,47 +75,43 @@ const createCards = () => {
   const domCards = [];
   for (let i = 0; i < playerHand.length; i++)
   { const refCard = playerHand[i];
-    let name; let
-      suit;
+    //card dom creation
     const card = document.createElement('div');
     const cardInner= document.createElement('div');
     const cardFront= document.createElement('div');
     const cardBack = document.createElement('div');
     const cardBackImg= document.createElement('img');
+    const holder = document.createElement('div');
+    
+    cardBackImg.src='./resources/cardFace/deck_4_large.png';
+    
+    const cardOpenImg = createCardImg(refCard);
+    cardFront.appendChild(cardOpenImg);
+    cardFront.appendChild(holder);
 
+    cardBack.appendChild(cardBackImg);
+    cardInner.appendChild(cardFront);
+    cardInner.appendChild(cardBack);
+    
+    card.appendChild(cardInner);
     domCards.push(card);
 
     card.classList.add('card');
     cardInner.classList.add('card-inner');
     cardFront.classList.add('openCard');
     cardBack.classList.add('closeCard');
-    
-    cardInner.appendChild(cardFront);
-    cardInner.appendChild(cardBack);
 
-    card.appendChild(cardInner);
-
-    cardBackImg.src='./resources/cardFace/deck_4_large.png';
-    cardBack.appendChild(cardBackImg);
-    
-    const cardOpenImg = createCardImg(refCard);
-    cardFront.appendChild(cardOpenImg);
-
-    const holder = document.createElement('div');
-    cardFront.appendChild(holder);
     cardFront.addEventListener('click', () => {
       playerHand[i].isHeld = !playerHand[i].isHeld;
-      
+      const heldSound= new Audio('./resources/sounds/cardPlace2.wav')
+      heldSound.play();
+
       if (playerHand[i].isHeld)
       {
-        const heldSound= new Audio('./resources/sounds/cardPlace2.wav')
-        heldSound.play();
         holder.classList.add('holder');
         holder.innerText = 'hold';
       }
       else {
-        const unheldSound= new Audio('./resources/sounds/cardPlace2.wav')
-        unheldSound.play();
         holder.classList.remove('holder');
         holder.innerText = '';
       }
@@ -115,6 +119,19 @@ const createCards = () => {
   }
   return domCards;
 };
+
+/**
+ * replaces card
+ * @param {*} cards
+ * @param {*} i
+ * @returns card contents of replacement
+ */
+const replaceCardImg = (cards, i) => {
+  const replacement = deck.pop();
+  cards[i] = replacement;
+  return createCardImg(replacement);
+};
+
 /**
  * replaces unheld cards in array of card elem
  * @param {*} cardsDom 
@@ -124,20 +141,18 @@ const replaceUnheldCards = (cardsDom) => {
   {
     const refCard = playerHand[i];
     const refDom = cardsDom[i];
-     console.log(cardsDom);
     if (refCard.isHeld === false)
     {
        refDom.classList.add('cardAnimateDiscard');
-        //remove card
+        //remove card after discard animation is finished
        setTimeout(()=>{
         while (refDom.firstChild) {
          refDom.removeChild(refDom.lastChild);
-         
         }
         },500)
       
       setTimeout(()=>{
-        const cardImg = replaceCard(playerHand, i);
+        const cardImg = replaceCardImg(playerHand, i);
         refDom.appendChild(cardImg);
         refDom.classList.remove('cardAnimateDiscard');
         refDom.classList.add('cardAnimateOpenNew');
@@ -147,17 +162,7 @@ const replaceUnheldCards = (cardsDom) => {
     }
   }
 };
-/**
- * replaces card
- * @param {*} cards
- * @param {*} i
- * @returns card contents of replacement
- */
-const replaceCard = (cards, i) => {
-  const replacement = deck.pop();
-  cards[i] = replacement;
-  return createCardImg(replacement);
-};
+
 /**
  * Tally Hand
  * @returns rankTally, suitTally
