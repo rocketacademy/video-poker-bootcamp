@@ -21,8 +21,8 @@ const getFilePathCard = (suit, displayName) =>
 
 /**
  * Append multiple childs
- * @param {dom element} parentDom - dom to add to
- * @param {[] dom elements} children  - multiple doms to append
+ * @param {HTMLDivElement} parentDom - dom to add to
+ * @param {[]HTMLDivElement} children  - multiple doms to append
  */
 const appendChilds = (parentDom, children) => {
   for (let i = 0; i < children.length; i++)
@@ -138,7 +138,7 @@ const replaceCardImg = (cards, i) => {
 
 /**
  * replaces unheld cards in array of card elem
- * @param {[]dom object} cardsDom - cardDoms containing unheld and held cards
+ * @param {[]HTMLDivElement} cardsDom - cardDoms containing unheld and held cards
  */
 const replaceUnheldCards = (cardsDom) => {
   for (let i = 0; i < playerHand.length; i++)

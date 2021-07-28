@@ -300,7 +300,6 @@ td {
 }
 
 .card-flip {
-  /* might need moz */
   transform-style: preserve-3d;
   animation-name: flipCard;
   animation-duration: 0.5s;
@@ -316,6 +315,7 @@ td {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
+  transform: rotateX(0deg);
 }
 .openCard {
   transform: rotateY(180deg);

@@ -125,6 +125,9 @@ const gameinit = () => {
     upCoinSound.play();
     
     updateTokenCon(tokensContainer, tokensDom, tokenCount, bet);
+    //TODO: can't use function as table in function is somehow
+    //not linked to the table that is hidden in the
+    //scoring table button
     // updateTable(tableContainer, table);
     tableContainer.removeChild(table);
     table = createTable(jackOrBetterScore);
@@ -142,10 +145,10 @@ const gameinit = () => {
     upCoinSound.play();
 
     updateTokenCon(tokensContainer, tokensDom, tokenCount, bet);
-    // updateTable(tableContainer, table);
-    tableContainer.removeChild(table);
-    table = createTable(jackOrBetterScore);
-    tableContainer.appendChild(table);
+    updateTable(tableContainer, table);
+    // tableContainer.removeChild(table);
+    // table = createTable(jackOrBetterScore);
+    // tableContainer.appendChild(table);
 
   });
 
