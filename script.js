@@ -61,6 +61,7 @@ const makeDeck = () => {
         displayName: shortForm,
         suitSymbol: symbol,
         suitColour: color,
+        keep: false,
       };
 
       // Add the new card to the deck
@@ -112,7 +113,6 @@ document.body.appendChild(board);
 // create div for keep/release buttons
 const buttonRow = document.createElement('div');
 buttonRow.classList.add('buttonRow');
-document.body.appendChild(buttonRow);
 
 const buttonRow2 = document.createElement('div');
 buttonRow2.classList.add('buttonRow');
@@ -121,9 +121,14 @@ document.body.appendChild(buttonRow2);
 // create hold/unhold buttons for each card on board
 for (let i = 0; i < 5; i += 1) {
   const holdButton = document.createElement('button');
-  holdButton.classList.add('Button');
+  holdButton.classList.add('keep');
   holdButton.innerText = 'Keep';
-  // holdButton.addEventListener('click', holdButtonClickEvent);
+  holdButton.addEventListener('click', (event) => {
+    // we will want to pass in the card element so
+    // that we can change how it looks on screen, i.e.,
+    // "turn the card over"
+    holdButtonClickEvent(event.currentTarget, i);
+  });
   buttonRow.appendChild(holdButton);
 }
 const hand = [];
@@ -153,6 +158,7 @@ const dealButtonClickEvent = () => {
     hand.push(card);
   }
   displayCards();
+  board.appendChild(buttonRow);
 };
 
 // create deal button
@@ -165,7 +171,17 @@ buttonRow2.appendChild(dealButton);
 // functions
 
 // click event when Keep button is clicked
-const holdButtonClickEvent = () => {
-
+const holdButtonClickEvent = (cardElement, index) => {
+  cardElement = hand;
+  console.log(hand[index]);
+  console.log(hand[index].keep);
+  if (hand[index].keep === false) {
+    hand[index].keep = true;
+  } else (hand[index].keep = false);
+  console.log(hand[index], hand[index].keep);
 };
+
 // create function to deal released cards , calculate hand score, and update points
+
+// eslint-disable-next-line max-len
+// when condition is true, use splice to remove that index and replace with new card splice(index, 1, deck.pop)
