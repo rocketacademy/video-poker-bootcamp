@@ -104,11 +104,17 @@ const calcHandScore = (cardArray) => {
   return score;
 };
 
+let gameMode = 'default';
+
 // dom elements
 // create div for board to place dealt cards
 const board = document.createElement('div');
 board.classList.add('board');
 document.body.appendChild(board);
+
+// create div for cards
+const boardCard = document.createElement('div');
+board.appendChild(boardCard);
 
 // create div for keep/release buttons
 const buttonRow = document.createElement('div');
@@ -131,10 +137,12 @@ for (let i = 0; i < 5; i += 1) {
   });
   buttonRow.appendChild(holdButton);
 }
-const hand = [];
+let hand = [];
 
 // function to display dealt cards
 const displayCards = () => {
+  boardCard.innerHTML = '';
+
   for (let i = 0; i < hand.length; i += 1) {
     const cardElement = document.createElement('div');
     cardElement.id = `cardElement${i}`;
@@ -147,18 +155,25 @@ const displayCards = () => {
     cardElementSuit.innerText = hand[i].suitSymbol;
     cardElement.appendChild(cardElementSuit);
     cardElement.classList.add('card');
-    board.appendChild(cardElement);
+    boardCard.appendChild(cardElement);
   }
 };
 
 // create deal click event to display dealt cards
 const dealButtonClickEvent = () => {
-  for (let i = 0; i < 5; i += 1) {
-    const card = deck.pop();
-    hand.push(card);
+  if (gameMode === 'default') {
+    for (let i = 0; i < 5; i += 1) {
+      const card = deck.pop();
+      hand.push(card);
+    }
+    displayCards();
+    board.appendChild(buttonRow);
+    gameMode = 'secondDeal';
+  } else if (gameMode === 'secondDeal') {
+    reDeal();
+    gameMode = 'default';
+    hand = [];
   }
-  displayCards();
-  board.appendChild(buttonRow);
 };
 
 // create deal button
@@ -172,16 +187,26 @@ buttonRow2.appendChild(dealButton);
 
 // click event when Keep button is clicked
 const holdButtonClickEvent = (cardElement, index) => {
-  cardElement = hand;
-  console.log(hand[index]);
-  console.log(hand[index].keep);
-  if (hand[index].keep === false) {
-    hand[index].keep = true;
-  } else (hand[index].keep = false);
-  console.log(hand[index], hand[index].keep);
+  if (gameMode === 'secondDeal') {
+    cardElement = hand;
+    if (hand[index].keep === false) {
+      hand[index].keep = true;
+    } else (hand[index].keep = false);
+  }
 };
 
 // create function to deal released cards , calculate hand score, and update points
 
 // eslint-disable-next-line max-len
 // when condition is true, use splice to remove that index and replace with new card splice(index, 1, deck.pop)
+const reDeal = () => {
+  for (let i = 0; i < hand.length; i += 1) {
+    if (hand[i].keep === false) {
+      hand.splice(i, 1, deck.pop());
+      // const a = `cardElement${i}`;
+      // const cardElement = document.getElementById(a);
+    }
+    displayCards();
+    hand[i].keep = false;
+  }
+};

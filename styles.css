@@ -19,9 +19,9 @@ body {
 }
 
 .board {
-  background-color: #89a25b;
+  /* background-color: #89a25b; */
   width: 70%;
-  min-height: 100px;
+  min-height: 150px;
   margin: 10px auto;
   text-align: center;
 }
