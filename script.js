@@ -89,3 +89,14 @@ const shuffleCards = (cards) => {
   // Return the shuffled deck
   return cards;
 };
+
+// ========== HELPER FUNCTIONS ==========
+/**
+ * A function that returns a fixed number of points
+ * @param cardArray array of card objects
+ * @return {number} num of points in user's hand
+ */
+const calcHandScore = (cardArray) => {
+  const score = cardArray.length * 1;
+  return score;
+};
