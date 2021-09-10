@@ -99,8 +99,13 @@ const deck = shuffleCards(makeDeck());
  * @param cardArray array of card objects
  * @return {number} num of points in user's hand
  */
-const calcHandScore = (cardArray) => {
-  const score = cardArray.length * 1;
+let playerPoints = 100;
+
+const calcHandScore = () => {
+  const score = hand.length * 1;
+  gameText.innerHTML = `You won ${score} points.<br>`;
+  playerPoints += Number(score);
+  creditNumber.innerHTML = `${playerPoints}`;
   return score;
 };
 
@@ -108,6 +113,11 @@ let gameMode = 'default';
 
 // dom elements
 // create div for board to place dealt cards
+const gameText = document.createElement('div');
+gameText.classList.add('gameText');
+gameText.innerHTML = 'Click \'Deal\' to begin the poker game';
+document.body.appendChild(gameText);
+
 const board = document.createElement('div');
 board.classList.add('board');
 document.body.appendChild(board);
@@ -123,6 +133,20 @@ buttonRow.classList.add('buttonRow');
 const buttonRow2 = document.createElement('div');
 buttonRow2.classList.add('buttonRow');
 document.body.appendChild(buttonRow2);
+
+const buttonRow3 = document.createElement('div');
+buttonRow3.classList.add('buttonRow');
+document.body.appendChild(buttonRow3);
+
+// create placement for playerPoints
+const creditName = document.createElement('div');
+creditName.innerText = 'Credits';
+creditName.classList.add('creditName');
+
+// create placement to show points
+const creditNumber = document.createElement('div');
+creditNumber.innerHTML = `${playerPoints}`;
+creditNumber.classList.add('creditNumber');
 
 // create hold/unhold buttons for each card on board
 for (let i = 0; i < 5; i += 1) {
@@ -169,19 +193,24 @@ const dealButtonClickEvent = () => {
     displayCards();
     board.appendChild(buttonRow);
     gameMode = 'secondDeal';
+    gameText.innerHTML = 'Select which cards to keep (if any) and then click \'Draw\'';
   } else if (gameMode === 'secondDeal') {
     reDeal();
+    calcHandScore();
     gameMode = 'default';
     hand = [];
+    gameText.innerHTML += 'Click \'Deal\' to play another round.';
   }
 };
 
 // create deal button
 const dealButton = document.createElement('button');
 dealButton.classList.add('button');
-dealButton.innerText = 'Deal';
+dealButton.innerText = 'Deal / Draw';
 dealButton.addEventListener('click', dealButtonClickEvent);
 buttonRow2.appendChild(dealButton);
+buttonRow3.appendChild(creditName);
+buttonRow3.appendChild(creditNumber);
 
 // functions
 
@@ -196,15 +225,12 @@ const holdButtonClickEvent = (cardElement, index) => {
 };
 
 // create function to deal released cards , calculate hand score, and update points
-
 // eslint-disable-next-line max-len
 // when condition is true, use splice to remove that index and replace with new card splice(index, 1, deck.pop)
 const reDeal = () => {
   for (let i = 0; i < hand.length; i += 1) {
     if (hand[i].keep === false) {
       hand.splice(i, 1, deck.pop());
-      // const a = `cardElement${i}`;
-      // const cardElement = document.getElementById(a);
     }
     displayCards();
     hand[i].keep = false;

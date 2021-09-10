@@ -1,11 +1,7 @@
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
 body {
   text-align: center;
+  height: 80px;
+  max-width: 90vw;
 }
 
 .card {
@@ -14,16 +10,20 @@ body {
   display: inline-block;
   min-height: 80px;
   min-width: 12%;
+  max-width: 60px;
   padding: 10px;
   float: inline-start;
 }
 
 .board {
   /* background-color: #89a25b; */
-  width: 70%;
-  min-height: 150px;
+  max-width: 500px;
+  min-height: 200%;
   margin: 10px auto;
   text-align: center;
+  border-style: groove;
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
 .cardText {
@@ -34,4 +34,44 @@ body {
   margin: 10px;
   min-width: 12%;
   float: inline-start;
+  font-size: 10px;
+}
+
+.gameText {
+  height: 40px;
+  margin-top: 30px;
+}
+
+.creditName {
+  background-color: lightgray;
+  padding: 2px;
+  font-size: 13px;
+  border-style: solid;
+  min-width: 70px;
+  border-width: 0.5px;
+  display: block;
+  text-align: center;
+  border-left-style: none;
+  float: right;
+}
+
+.creditNumber {
+  padding: 2px;
+  font-size: 13px;
+  border-style: solid;
+  display: block;
+  text-align: center;
+  min-width: 70px;
+  border-width: 0.5px;
+  float: right;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.button {
+  float: unset;
 }
