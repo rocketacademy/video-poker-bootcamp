@@ -1,0 +1,27 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  text-align: center;
+}
+
+.card {
+  margin: 10px;
+  background-color: #e4d8b4;
+  display: inline-block;
+  min-height: 80px;
+  min-width: 12%;
+  padding: 10px;
+  float: inline-start;
+}
+
+.board {
+  background-color: #89a25b;
+  width: 70%;
+  min-height: 100px;
+  margin: 10px auto;
+  text-align: center;
+}
