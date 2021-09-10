@@ -90,6 +90,8 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
+const deck = shuffleCards(makeDeck());
+
 // ========== HELPER FUNCTIONS ==========
 /**
  * A function that returns a fixed number of points
@@ -100,3 +102,51 @@ const calcHandScore = (cardArray) => {
   const score = cardArray.length * 1;
   return score;
 };
+
+// dom elements
+// create div for board to place dealt cards
+const board = document.createElement('div');
+board.classList.add('board');
+document.body.appendChild(board);
+
+// create div for keep/release buttons
+const buttonRow = document.createElement('div');
+buttonRow.classList.add('buttonRow');
+document.body.appendChild(buttonRow);
+
+const buttonRow2 = document.createElement('div');
+buttonRow2.classList.add('buttonRow');
+document.body.appendChild(buttonRow2);
+
+// create hold/unhold buttons for each card on board
+for (let i = 0; i < 5; i += 1) {
+  const holdButton = document.createElement('button');
+  holdButton.classList.add('Button');
+  holdButton.innerText = 'Keep';
+  // holdButton.addEventListener('click', holdButtonClickEvent);
+  buttonRow.appendChild(holdButton);
+}
+
+// create deal button
+const dealButton = document.createElement('button');
+dealButton.classList.add('button');
+dealButton.innerText = 'Deal';
+dealButton.addEventListener('click', dealButtonClickEvent);
+buttonRow2.appendChild(dealButton);
+
+// functions
+
+const hand = [];
+// create deal click event to display dealt cards
+const dealButtonClickEvent = () => {
+  for (let i = 0; i < 5; i += 1) {
+    const card = deck.pop();
+    hand.push(card);
+  }
+};
+
+// click event when Keep button is clicked
+const holdButtonClickEvent = () => {
+
+};
+// create function to deal released cards , calculate hand score, and update points
