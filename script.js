@@ -126,6 +126,34 @@ for (let i = 0; i < 5; i += 1) {
   // holdButton.addEventListener('click', holdButtonClickEvent);
   buttonRow.appendChild(holdButton);
 }
+const hand = [];
+
+// function to display dealt cards
+const displayCards = () => {
+  for (let i = 0; i < hand.length; i += 1) {
+    const cardElement = document.createElement('div');
+    cardElement.id = `cardElement${i}`;
+    const cardElementName = document.createElement('div');
+    cardElementName.innerText = hand[i].displayName;
+    cardElementName.classList.add('cardText');
+    cardElement.appendChild(cardElementName);
+    const cardElementSuit = document.createElement('div');
+    cardElementSuit.classList.add('cardText');
+    cardElementSuit.innerText = hand[i].suitSymbol;
+    cardElement.appendChild(cardElementSuit);
+    cardElement.classList.add('card');
+    board.appendChild(cardElement);
+  }
+};
+
+// create deal click event to display dealt cards
+const dealButtonClickEvent = () => {
+  for (let i = 0; i < 5; i += 1) {
+    const card = deck.pop();
+    hand.push(card);
+  }
+  displayCards();
+};
 
 // create deal button
 const dealButton = document.createElement('button');
@@ -135,15 +163,6 @@ dealButton.addEventListener('click', dealButtonClickEvent);
 buttonRow2.appendChild(dealButton);
 
 // functions
-
-const hand = [];
-// create deal click event to display dealt cards
-const dealButtonClickEvent = () => {
-  for (let i = 0; i < 5; i += 1) {
-    const card = deck.pop();
-    hand.push(card);
-  }
-};
 
 // click event when Keep button is clicked
 const holdButtonClickEvent = () => {
