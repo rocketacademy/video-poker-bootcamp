@@ -100,6 +100,7 @@ const deck = shuffleCards(makeDeck());
  * @return {number} num of points in user's hand
  */
 let playerPoints = 100;
+let playerBet = 0;
 
 const calcHandScore = () => {
   const score = hand.length * 1;
@@ -138,6 +139,14 @@ const buttonRow3 = document.createElement('div');
 buttonRow3.classList.add('buttonRow');
 document.body.appendChild(buttonRow3);
 
+const buttonGroupCredit = document.createElement('div');
+buttonGroupCredit.classList.add('buttonGroup');
+buttonRow3.appendChild(buttonGroupCredit);
+
+const buttonGroupBet = document.createElement('div');
+buttonGroupBet.classList.add('buttonGroup');
+buttonRow3.appendChild(buttonGroupBet);
+
 // create placement for playerPoints
 const creditName = document.createElement('div');
 creditName.innerText = 'Credits';
@@ -147,6 +156,33 @@ creditName.classList.add('creditName');
 const creditNumber = document.createElement('div');
 creditNumber.innerHTML = `${playerPoints}`;
 creditNumber.classList.add('creditNumber');
+
+// create placement for playerBet
+const betName = document.createElement('div');
+betName.innerText = 'Bet';
+betName.classList.add('creditName');
+
+// creater placement to show bet
+const betAmount = document.createElement('input');
+betAmount.value = 0;
+betAmount.innerHTML = `${playerBet}`;
+betAmount.classList.add('creditNumber');
+
+// global for input + button
+const betPlusButton = document.createElement('button');
+betPlusButton.innerText = '+';
+
+// global for input - button
+const betMinusButton = document.createElement('button');
+betMinusButton.innerText = '-';
+
+betPlusButton.addEventListener('click', (event) => { plusButtonClick(betAmount); });
+betMinusButton.addEventListener('click', (event) => { minusButtonClick(betAmount); });
+
+// global for max button
+const maxButton = document.createElement('button');
+maxButton.innerText = 'max';
+maxButton.addEventListener('click', (event) => { maxButtonClick(betAmount); });
 
 // create hold/unhold buttons for each card on board
 for (let i = 0; i < 5; i += 1) {
@@ -209,8 +245,15 @@ dealButton.classList.add('button');
 dealButton.innerText = 'Deal / Draw';
 dealButton.addEventListener('click', dealButtonClickEvent);
 buttonRow2.appendChild(dealButton);
-buttonRow3.appendChild(creditName);
-buttonRow3.appendChild(creditNumber);
+
+// append buttonrow3 elements
+buttonGroupCredit.appendChild(creditNumber);
+buttonGroupCredit.appendChild(creditName);
+buttonGroupBet.appendChild(betAmount);
+buttonGroupBet.appendChild(betName);
+buttonGroupBet.appendChild(betPlusButton);
+buttonGroupBet.appendChild(betMinusButton);
+buttonGroupBet.appendChild(maxButton);
 
 // functions
 
@@ -235,4 +278,25 @@ const reDeal = () => {
     displayCards();
     hand[i].keep = false;
   }
+};
+
+// function for plus minus buttons
+const plusButtonClick = (target) => {
+  const currentValue = Number(target.value);
+  if (currentValue < playerPoints) {
+    target.value = currentValue + 1; }
+  playerBet = target.value;
+};
+
+const minusButtonClick = (target) => {
+  const currentValue = Number(target.value);
+  if (currentValue >= 1) {
+    target.value = currentValue - 1;
+  }
+  playerBet = target.value;
+};
+
+const maxButtonClick = (target) => {
+  target.value = playerPoints;
+  playerBet = target.value;
 };

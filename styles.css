@@ -49,21 +49,21 @@ body {
   border-style: solid;
   min-width: 70px;
   border-width: 0.5px;
-  display: block;
+  display: inline-block;
   text-align: center;
-  border-left-style: none;
-  float: right;
+  /* border-right-style: none; */
+  float: left;
 }
 
 .creditNumber {
   padding: 2px;
   font-size: 13px;
   border-style: solid;
-  display: block;
+  display: inline-block;
   text-align: center;
-  min-width: 70px;
+  width: 70px;
   border-width: 0.5px;
-  float: right;
+  /* float: right; */
 }
 
 *,
@@ -74,4 +74,10 @@ body {
 
 .button {
   float: unset;
+}
+
+.buttonGroup {
+  display: inline-block;
+  margin: 25px;
+  /* float: left; */
 }
