@@ -102,8 +102,33 @@ const deck = shuffleCards(makeDeck());
 let playerPoints = 100;
 let playerBet = 0;
 
+// Create Object as tally
+// const cardNameTally = {};
+
+// const cardNameTallyFunc = (hand) => {
+// Loop over hand
+//   for (let i = 0; i < hand.length; i += 1) {
+//     const cardName = hand[i].name;
+//     // If we have seen the card name before, increment its count
+//     if (cardName in cardNameTally) {
+//       cardNameTally[cardName] += 1;
+//     }
+//     // Else, initialise count of this card name to 1
+//     else {
+//       cardNameTally[cardName] = 1;
+//     }
+//   }
+// };
+
 const calcHandScore = () => {
-  const score = hand.length * 1;
+  // cardNameTallyFunc(hand);
+
+  // check four of a kind
+  // for (let i =0; i<hand.length; i+=1){
+
+  // }
+
+  const score = playerBet;
   gameText.innerHTML = `You won ${score} points.<br>`;
   playerPoints += Number(score);
   creditNumber.innerHTML = `${playerPoints}`;
@@ -116,7 +141,7 @@ let gameMode = 'default';
 // create div for board to place dealt cards
 const gameText = document.createElement('div');
 gameText.classList.add('gameText');
-gameText.innerHTML = 'Click \'Deal\' to begin the poker game';
+gameText.innerHTML = 'Enter bet and click \'Deal\' to begin the poker game';
 document.body.appendChild(gameText);
 
 const board = document.createElement('div');
@@ -221,22 +246,24 @@ const displayCards = () => {
 
 // create deal click event to display dealt cards
 const dealButtonClickEvent = () => {
-  if (gameMode === 'default') {
-    for (let i = 0; i < 5; i += 1) {
-      const card = deck.pop();
-      hand.push(card);
+  if (playerBet > 0) {
+    if (gameMode === 'default') {
+      for (let i = 0; i < 5; i += 1) {
+        const card = deck.pop();
+        hand.push(card);
+      }
+      displayCards();
+      board.appendChild(buttonRow);
+      gameMode = 'secondDeal';
+      gameText.innerHTML = 'Select which cards to keep (if any) and then click \'Draw\'';
+    } else if (gameMode === 'secondDeal') {
+      reDeal();
+      calcHandScore();
+      gameMode = 'default';
+      hand = [];
+      gameText.innerHTML += 'Click \'Deal\' to play another round.';
     }
-    displayCards();
-    board.appendChild(buttonRow);
-    gameMode = 'secondDeal';
-    gameText.innerHTML = 'Select which cards to keep (if any) and then click \'Draw\'';
-  } else if (gameMode === 'secondDeal') {
-    reDeal();
-    calcHandScore();
-    gameMode = 'default';
-    hand = [];
-    gameText.innerHTML += 'Click \'Deal\' to play another round.';
-  }
+  } else { gameText.innerHTML = 'Please enter your bet'; }
 };
 
 // create deal button
