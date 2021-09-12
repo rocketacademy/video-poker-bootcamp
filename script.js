@@ -102,37 +102,145 @@ const deck = shuffleCards(makeDeck());
 let playerPoints = 100;
 let playerBet = 0;
 
-// Create Object as tally
-// const cardNameTally = {};
+// function to populate cardNameTally object
+let cardNameTally = {};
 
-// const cardNameTallyFunc = (hand) => {
-// Loop over hand
-//   for (let i = 0; i < hand.length; i += 1) {
-//     const cardName = hand[i].name;
-//     // If we have seen the card name before, increment its count
-//     if (cardName in cardNameTally) {
-//       cardNameTally[cardName] += 1;
-//     }
-//     // Else, initialise count of this card name to 1
-//     else {
-//       cardNameTally[cardName] = 1;
-//     }
-//   }
-// };
+const populCardNameTally = () => {
+  for (let i = 0; i < hand.length; i += 1) {
+    const cardName = hand[i].displayName;
+    if (cardName in cardNameTally) {
+      cardNameTally[cardName] += 1;
+    }
+    else {
+      cardNameTally[cardName] = 1;
+    }
+  }
+};
 
-const calcHandScore = () => {
-  // cardNameTallyFunc(hand);
+let suitTally = {};
 
-  // check four of a kind
-  // for (let i =0; i<hand.length; i+=1){
+const populSuitTally = () => {
+  for (let i = 0; i < hand.length; i += 1) {
+    const cardSuit = hand[i].suit;
+    if (cardSuit in suitTally) {
+      suitTally[cardSuit] += 1;
+    }
+    else {
+      suitTally[cardSuit] = 1;
+    }
+  }
+};
 
-  // }
+// function to check x of a kind
+const xOfAKind = (x) => {
+  const keys = Object.keys(cardNameTally).filter((k) => cardNameTally[k] === x);
+  console.log(keys);
+  return keys.length;
+};
 
-  const score = playerBet;
-  gameText.innerHTML = `You won ${score} points.<br>`;
+// function to check suit tally
+const xOfSuit = (x) => {
+  const keys = Object.keys(suitTally).filter((k) => suitTally[k] === x);
+  console.log(keys);
+  return keys.length;
+};
+
+const output = (msg) => {
+  gameText.innerHTML = msg;
+};
+
+let winValue = '';
+let straightTally = [];
+
+const checkStraights = () => {
+  straightTally = [];
+  let isStraight = true;
+  for (let i = 0; i < hand.length; i += 1) {
+    const cardRank = hand[i].rank;
+    straightTally.push(cardRank);
+  }
+  straightTally.sort((a, b) => a - b);
+  // if no As
+  for (let j = 1; j < straightTally.length; j += 1) {
+    if (isStraight === true && straightTally[j] === straightTally[(j - 1)] + 1) {
+      isStraight = true;
+      console.log(isStraight);
+    } isStraight = false;
+    console.log(isStraight);
+  }
+  // if got A
+  return isStraight;
+};
+
+const calcHandScore = (hand) => {
+  populCardNameTally();
+  populSuitTally();
+  // 1 five of a kind
+  // 2 straight flush
+  if (xOfSuit(5) === 1 && checkStraights() === true) {
+    winValue = 'straight flush';
+    return getResult(50);
+  }
+  // 3 four of a kind
+  if (xOfAKind(4) === 1) {
+    // winRank = 3;
+    winValue = 'four of a kind';
+    return getResult(25);
+  }
+  // 4 full house
+  if (xOfAKind(3) === 1 && xOfAKind(2) === 1) {
+    winValue = 'full house';
+    return getResult(10);
+  }
+  // 5 flush
+  if (xOfSuit(5) === 1) {
+    winValue = 'flush';
+    return getResult(6);
+  }
+  // 6 straight
+  if (checkStraights() === true) {
+    winValue = 'straights';
+    return getResult(5);
+  }
+  // 7 three of a kind
+  if (xOfAKind(3) === 1) {
+    // winRank = 7;
+    winValue = 'three of a kind';
+    return getResult(4);
+  }
+  // 8 two pair
+  if (xOfAKind(2) === 2) {
+    // winRank = 7;
+    winValue = 'two pair';
+    return getResult(3);
+  }
+  // 9 one pair
+  if (xOfAKind(2) === 1) {
+    // winRank = 7;
+    winValue = 'one pair';
+    return getResult(2);
+  }
+  // 10 high card
+  if ('K' in cardNameTally || 'Q' in cardNameTally || 'J' in cardNameTally || 'A' in cardNameTally) {
+    winValue = 'high card';
+    return getResult(1);
+  }
+  return forLosers();
+};
+
+const getResult = (multiplier) => {
+  console.log(winValue);
+  const score = playerBet * multiplier;
+  output(`You won ${winValue} and ${score} points.<br>`);
   playerPoints += Number(score);
   creditNumber.innerHTML = `${playerPoints}`;
-  return score;
+};
+
+const forLosers = () => {
+  console.log('loser');
+  output(`You have no winning hand and lost ${playerBet} points.<br>`);
+  playerPoints -= Number(playerBet);
+  creditNumber.innerHTML = `${playerPoints}`;
 };
 
 let gameMode = 'default';
@@ -219,6 +327,7 @@ for (let i = 0; i < 5; i += 1) {
     // that we can change how it looks on screen, i.e.,
     // "turn the card over"
     holdButtonClickEvent(event.currentTarget, i);
+    console.log(event.currentTarget);
   });
   buttonRow.appendChild(holdButton);
 }
@@ -248,6 +357,9 @@ const displayCards = () => {
 const dealButtonClickEvent = () => {
   if (playerBet > 0) {
     if (gameMode === 'default') {
+      cardNameTally = {};
+      suitTally = {};
+      straightTally = {};
       for (let i = 0; i < 5; i += 1) {
         const card = deck.pop();
         hand.push(card);
@@ -287,11 +399,13 @@ buttonGroupBet.appendChild(maxButton);
 // click event when Keep button is clicked
 const holdButtonClickEvent = (cardElement, index) => {
   if (gameMode === 'secondDeal') {
+    console.log(hand[index].keep);
     cardElement = hand;
     if (hand[index].keep === false) {
       hand[index].keep = true;
-    } else (hand[index].keep = false);
+    } else { hand[index].keep = false; }
   }
+  console.log(index, hand[index], hand[index].keep);
 };
 
 // create function to deal released cards , calculate hand score, and update points
@@ -303,7 +417,7 @@ const reDeal = () => {
       hand.splice(i, 1, deck.pop());
     }
     displayCards();
-    hand[i].keep = false;
+    // hand[i].keep = false;
   }
 };
 
@@ -327,3 +441,5 @@ const maxButtonClick = (target) => {
   target.value = playerPoints;
   playerBet = target.value;
 };
+
+// add check for finished deck

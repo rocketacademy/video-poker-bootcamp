@@ -2,7 +2,7 @@ body {
   text-align: center;
   height: 80px;
   max-width: 90vw;
-  margin: 10px auto;
+  margin: 0 auto;
 }
 
 .card {
@@ -12,6 +12,7 @@ body {
   /* background-color: #e4d8b4; */
   display: inline-block;
   min-height: 80px;
+  max-height: 80px;
   min-width: 12%;
   max-width: 60px;
   padding: 10px;
@@ -64,7 +65,7 @@ body {
   border-style: solid;
   display: inline-block;
   text-align: center;
-  width: 35px;
+  width: 40px;
   border-width: 0.5px;
   /* float: right; */
 }
