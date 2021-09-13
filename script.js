@@ -64,9 +64,20 @@ const makeDeck = () => {
         keep: false,
       };
 
+      // Create a second set of card with the current name, suit, and rank
+      const card2 = {
+        name: cardName,
+        suit: currentSuit,
+        rank: rankCounter,
+        displayName: shortForm,
+        suitSymbol: symbol,
+        suitColour: color,
+        keep: false,
+      };
+
       // Add the new card to the deck
       newDeck.push(card);
-      newDeck.push(card);
+      newDeck.push(card2);
     }
   }
 
@@ -443,3 +454,5 @@ const maxButtonClick = (target) => {
 };
 
 // add check for finished deck
+
+// duplicate cards in hand giving issues in updating object keys and splicing hand array
