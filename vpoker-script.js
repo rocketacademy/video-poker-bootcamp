@@ -141,6 +141,12 @@ const player1Button = document.createElement('button');
 const gameInfo = document.createElement('div');
 gameInfo.id = 'game-info';
 
+const pointsInfo = document.createElement('div');
+pointsInfo.id = 'game-info';
+
+// instantiate points
+const points = 100;
+
 // instantiate cards
 let card1;
 let card2;
@@ -148,7 +154,19 @@ let card3;
 let card4;
 let card5;
 
-const cardList = [];
+// instantiate card list
+let cardList = [];
+
+// set delay in MS
+const delayInMseconds = 1000;
+
+function listMaker() {
+  console.log('popping card and pushing to list');
+  const card = deck.pop();
+  cardList.push(card);
+  return card;
+}
+
 /* ##########################
 ## PLAYER ACTION CALLBACKS ##
 ########################### */
@@ -157,32 +175,30 @@ const player1Click = () => {
     canClick = false;
     // arbitrary 5-second delay in dealing cards
     // getting player 1's cards
-    card1 = deck.pop();
-    cardList.push(card1);
-    // const cardElement1 = createCard(card1);
+    // wipes the card array first in case of multi clicks
+    cardList = [];
+    cardContainerPlayer1.innerHTML = '';
+    // institute a 1 second delay between each card's dealing
+    card1 = listMaker();
+    card2 = listMaker();
+    card3 = listMaker();
+    card4 = listMaker();
+    card5 = listMaker();
 
-    card2 = deck.pop();
-    cardList.push(card2);
-    // const cardElement2 = createCard(card2);
-
-    card3 = deck.pop();
-    cardList.push(card3);
-
-    card4 = deck.pop();
-    cardList.push(card4);
-
-    card5 = deck.pop();
-    cardList.push(card5);
+    console.log(`cardList is now ${cardList}`);
+    output('dealing...');
+    console.log('dealing...');
 
     // Create card element from card metadata 5 times
     for (let i = 0; i < cardList.length; i++) {
-      const cardElement = createCard(cardList[i]);
-      // Empty cardContainer in case this is not the 1st round of gameplay
-      // cardContainerPlayer1.innerHTML = '';
-      // Append the card element to the card container
-      cardContainerPlayer1.appendChild(cardElement);
+      console.log(`printing ${i}`);
+      setTimeout(() => {
+        const cardElement = createCard(cardList[i]);
+        // Append the card element to the card container
+        cardContainerPlayer1.appendChild(cardElement);
+        output('player 1 has drawn 5 cards!');
+      }, delayInMseconds);
     }
-    output('player 1 has drawn 5 cards!');
     canClick = true;
   }
 };
@@ -218,6 +234,9 @@ const initGame = () => {
   // fill game info div with starting instructions
   gameInfo.innerText = "Its player 1's turn. Click to draw 5 cards!";
   document.querySelector('h1').appendChild(gameInfo);
+
+  pointsInfo.innerText = `Points: ${points}`;
+  document.querySelector('h1').appendChild(pointsInfo);
 };
 
 // ############################################################
