@@ -167,6 +167,16 @@ function listMaker() {
   return card;
 }
 
+// to create a function that takes n cards to replace
+// will then actually replace cards n times
+function cardReplacer() {
+  console.log('replacing Cards');
+}
+
+function calcHandScore() {
+  console.log('calculating Hand Value');
+}
+
 /* ##########################
 ## PLAYER ACTION CALLBACKS ##
 ########################### */
@@ -199,6 +209,7 @@ const player1Click = () => {
         output('player 1 has drawn 5 cards!');
       }, delayInMseconds);
     }
+
     canClick = true;
   }
 };
