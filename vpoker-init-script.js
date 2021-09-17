@@ -124,7 +124,7 @@ const output = (message) => {
 /* ####################
 ## GLOBAL VARIABLES ##
 #################### */
-const deck = shuffleCards(makeDeck());
+let deck;
 
 // const canClick = true;
 let canDeal = true;
@@ -148,28 +148,16 @@ pointsInfo.id = 'game-info';
 // instantiate points
 const points = 100;
 
-// instantiate cards
-let card1;
-let card2;
-let card3;
-let card4;
-let card5;
-
 // instantiate card list
 let hand = [];
-const cardsToSwap = [];
-// set delay in MS
-const delayInMseconds = 1000;
+let cardsToSwap = [];
+const deselectedCards = [];
 
 function handBuilder() {
   console.log('popping card and pushing to list');
   const card = deck.pop();
   hand.push(card);
   return card;
-}
-
-function calcHandScore() {
-  console.log('calculating Hand Value');
 }
 
 /* ##########################
@@ -180,6 +168,7 @@ const player1Click = () => {
     // arbitrary 5-second delay in dealing cards
     // getting player 1's cards
     // wipes the card array first in case of multi clicks
+    deck = shuffleCards(makeDeck());
     hand = [];
     cardContainerPlayer1.innerHTML = '';
     // print 5 cards out into initial hand
@@ -202,7 +191,19 @@ const player1Click = () => {
         // console.log(`just clicked ${event.currentTarget}`);
         console.log(`card is ${hand[i].name} of ${hand[i].suitSymbol}`);
         console.log(`card index to swap is ${i}`);
-        cardsToSwap.push(hand[i]);
+
+        // CSS Control to Select and Deselect Cards to Swap
+        if (cardElement.getAttribute('class') === 'card') {
+          cardElement.classList.remove('card');
+          cardElement.classList.add('card-selected');
+          // push selected card onto the array of cards to swap
+          cardsToSwap.push(hand[i]);
+        }
+        else if (cardElement.getAttribute('class') === 'card-selected') {
+          cardElement.classList.remove('card-selected');
+          cardElement.classList.add('card');
+          // remove deselected cards from the cards to swap pile
+        }
       });
       // Append the card element to the card container
       cardContainerPlayer1.appendChild(cardElement);
@@ -220,12 +221,18 @@ const player1Click = () => {
     cardContainerPlayer1.innerHTML = '';
 
     // remove cards that had to be swapped
+    // adapted from https://newbedev.com/javascript-remove-array-elements-from-another-array-javascript-code-example
     hand = hand.filter((ar) => !cardsToSwap.find((rm) => (rm.suitSymbol === ar.suitSymbol && ar.suit === rm.suit && ar.name === rm.name && ar.color === rm.color && ar.rank === rm.rank)));
 
     // replace lost cards with redrawn cards
     // to do this, check how many more cards we need
     // to bring the hand length back to 5
     // then create more cards accordingly
+    let cardsToRedraw = 5 - hand.length;
+    for (let i = 0; i < cardsToRedraw; i++) {
+      handBuilder();
+      console.log(`swapped ${i} card(s)!`);
+    }
 
     // reprint modified hand
     for (let i = 0; i < hand.length; i++) {
@@ -234,23 +241,15 @@ const player1Click = () => {
       const cardsSwapped = createCard(hand[i]);
       cardContainerPlayer1.appendChild(cardsSwapped);
     }
+
+    cardsToRedraw = 0;
+    cardsToSwap = [];
+    canDeal = true;
+    calcHandScore(hand);
+
+    player1Button.innerText = 'Deal Another Hand';
   }
 };
-
-// const player1SumRank = Math.abs(player1Card.rank);
-
-// function cardSwapper() {
-//   // adds callback click events to each card built
-//   // this enables them to selected, deleted and then replaced with leftover deck cards
-//   player1Button.innerText = 'Swap Selected Cards';
-
-//   document.querySelectorAll('card').forEach((item) => {
-//     item.addEventListener('click', (event) => {
-//       // handle click
-//       console.log(`card ${event} was clicked`);
-//     });
-//   });
-// }
 
 /* #######################
 ## GAME INITIALISATION ##

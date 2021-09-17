@@ -13,6 +13,16 @@ body {
   display: inline-block;
 }
 
+.card-selected {
+  margin: 5px;
+  padding: 10px;
+  background-color: whitesmoke;
+  text-align: center;
+  border-radius: 20px;
+  display: inline-block;
+  border-style: dashed;
+}
+
 .suit {
   margin: 10px;
   font-size: 50px;
@@ -47,16 +57,6 @@ body {
   border-radius: 10px;
   display: inline-block;
 }
-
-/* .card-container-player-2 {
-  margin: 10px;
-  padding: 10px;
-  background-color: grey;
-  /* width: 250px; */
-  text-align: center;
-  border-radius: 10px;
-  display: inline-block;
-} */
 
 #game-info {
   font-family: sans-serif;
