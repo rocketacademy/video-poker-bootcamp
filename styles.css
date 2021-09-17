@@ -41,14 +41,14 @@ body {
 .card-container-player-1 {
   margin: 10px;
   padding: 10px;
-  background-color: grey;
+  background-color: pink;
   /* width: 250px; */
   text-align: center;
   border-radius: 10px;
   display: inline-block;
 }
 
-.card-container-player-2 {
+/* .card-container-player-2 {
   margin: 10px;
   padding: 10px;
   background-color: grey;
@@ -56,7 +56,7 @@ body {
   text-align: center;
   border-radius: 10px;
   display: inline-block;
-}
+} */
 
 #game-info {
   font-family: sans-serif;

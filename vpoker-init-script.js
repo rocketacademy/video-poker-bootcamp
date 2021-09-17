@@ -126,7 +126,8 @@ const output = (message) => {
 #################### */
 const deck = shuffleCards(makeDeck());
 
-let canClick = true;
+// const canClick = true;
+let canDeal = true;
 
 const playersTurn = 1; // matches with starting instructions, Player 1 begins first
 // let player1Card; // we let player1card here because it will be re-assigned
@@ -155,22 +156,16 @@ let card4;
 let card5;
 
 // instantiate card list
-let cardList = [];
-
+let hand = [];
+const cardsToSwap = [];
 // set delay in MS
 const delayInMseconds = 1000;
 
-function listMaker() {
+function handBuilder() {
   console.log('popping card and pushing to list');
   const card = deck.pop();
-  cardList.push(card);
+  hand.push(card);
   return card;
-}
-
-// to create a function that takes n cards to replace
-// will then actually replace cards n times
-function cardReplacer() {
-  console.log('replacing Cards');
 }
 
 function calcHandScore() {
@@ -181,39 +176,81 @@ function calcHandScore() {
 ## PLAYER ACTION CALLBACKS ##
 ########################### */
 const player1Click = () => {
-  if (canClick === true) {
-    canClick = false;
+  if (canDeal === true) {
     // arbitrary 5-second delay in dealing cards
     // getting player 1's cards
     // wipes the card array first in case of multi clicks
-    cardList = [];
+    hand = [];
     cardContainerPlayer1.innerHTML = '';
-    // institute a 1 second delay between each card's dealing
-    card1 = listMaker();
-    card2 = listMaker();
-    card3 = listMaker();
-    card4 = listMaker();
-    card5 = listMaker();
+    // print 5 cards out into initial hand
+    for (let i = 0; i < 5; i++) {
+      handBuilder();
+    }
 
-    console.log(`cardList is now ${cardList}`);
+    console.log(`hand is now ${hand}`);
     output('dealing...');
     console.log('dealing...');
 
     // Create card element from card metadata 5 times
-    for (let i = 0; i < cardList.length; i++) {
+    for (let i = 0; i < hand.length; i++) {
       console.log(`printing ${i}`);
-      setTimeout(() => {
-        const cardElement = createCard(cardList[i]);
-        // Append the card element to the card container
-        cardContainerPlayer1.appendChild(cardElement);
-        output('player 1 has drawn 5 cards!');
-      }, delayInMseconds);
-    }
 
-    canClick = true;
+      const cardElement = createCard(hand[i]);
+
+      // add an event Listener to each card created
+      cardElement.addEventListener('click', (event) => {
+        // console.log(`just clicked ${event.currentTarget}`);
+        console.log(`card is ${hand[i].name} of ${hand[i].suitSymbol}`);
+        console.log(`card index to swap is ${i}`);
+        cardsToSwap.push(hand[i]);
+      });
+      // Append the card element to the card container
+      cardContainerPlayer1.appendChild(cardElement);
+
+      output('player 1 has drawn 5 cards! Click on the cards you want to SWAP!');
+      player1Button.innerText = 'Swap Clicked Cards';
+      canDeal = false;
+    }
+  }
+  else if (canDeal === false) {
+  // if you can't deal, you're swapping.
+  // set up the swap function here
+
+    // wipe the hand brute force style
+    cardContainerPlayer1.innerHTML = '';
+
+    // remove cards that had to be swapped
+    hand = hand.filter((ar) => !cardsToSwap.find((rm) => (rm.suitSymbol === ar.suitSymbol && ar.suit === rm.suit && ar.name === rm.name && ar.color === rm.color && ar.rank === rm.rank)));
+
+    // replace lost cards with redrawn cards
+    // to do this, check how many more cards we need
+    // to bring the hand length back to 5
+    // then create more cards accordingly
+
+    // reprint modified hand
+    for (let i = 0; i < hand.length; i++) {
+      console.log(`printing ${i}`);
+
+      const cardsSwapped = createCard(hand[i]);
+      cardContainerPlayer1.appendChild(cardsSwapped);
+    }
   }
 };
+
 // const player1SumRank = Math.abs(player1Card.rank);
+
+// function cardSwapper() {
+//   // adds callback click events to each card built
+//   // this enables them to selected, deleted and then replaced with leftover deck cards
+//   player1Button.innerText = 'Swap Selected Cards';
+
+//   document.querySelectorAll('card').forEach((item) => {
+//     item.addEventListener('click', (event) => {
+//       // handle click
+//       console.log(`card ${event} was clicked`);
+//     });
+//   });
+// }
 
 /* #######################
 ## GAME INITIALISATION ##
