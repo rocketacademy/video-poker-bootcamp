@@ -246,7 +246,6 @@ const player1Click = () => {
     cardsToSwap = [];
     canDeal = true;
     calcHandScore(hand);
-
     player1Button.innerText = 'Deal Another Hand';
   }
 };
