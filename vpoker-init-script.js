@@ -1,8 +1,3 @@
-// Please implement exercise logic here
-/* ####################
-## HELPER FUNCTIONS ##
-#################### */
-
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
@@ -129,12 +124,6 @@ let deck;
 // const canClick = true;
 let canDeal = true;
 
-const playersTurn = 1; // matches with starting instructions, Player 1 begins first
-// let player1Card; // we let player1card here because it will be re-assigned
-// let player1CardAgain;
-// let player2Card;
-// let player1CardAgain;
-
 let cardContainerPlayer1;
 
 const player1Button = document.createElement('button');
@@ -146,7 +135,7 @@ const pointsInfo = document.createElement('div');
 pointsInfo.id = 'game-info';
 
 // instantiate points
-const points = 100;
+let points = 100;
 
 // instantiate card list
 let hand = [];
@@ -159,6 +148,7 @@ function handBuilder() {
   hand.push(card);
   return card;
 }
+let pointsModifier = 0;
 
 /* ##########################
 ## PLAYER ACTION CALLBACKS ##
@@ -170,6 +160,9 @@ const player1Click = () => {
     // wipes the card array first in case of multi clicks
     deck = shuffleCards(makeDeck());
     hand = [];
+
+    // reset states so that we don't mess up calcHandScore
+
     cardContainerPlayer1.innerHTML = '';
     // print 5 cards out into initial hand
     for (let i = 0; i < 5; i++) {
@@ -254,20 +247,27 @@ const player1Click = () => {
 
       const cardsSwapped = createCard(hand[i]);
       cardContainerPlayer1.appendChild(cardsSwapped);
-
-      output(`Swapped Out ${cardsToRedraw} Cards!
-          
-          You've Earned n Points!
-
-          Another Round?
-          
-          `);
     }
 
     cardsToRedraw = 0;
     cardsToSwap = [];
     canDeal = true;
-    calcHandScore(hand);
+
+    // calc the score!
+    pointsModifier = calcHandScore(hand);
+    points += pointsModifier;
+
+    output(`Swapped Out ${cardsToRedraw} Cards!
+          
+          You've Earned ${pointsModifier} Point(s)!
+
+          Another Round?
+          
+          `);
+
+    // update display
+    pointsInfo.innerText = `Points: ${points}`;
+
     player1Button.innerText = 'Deal Another Hand';
   }
 };

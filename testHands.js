@@ -188,7 +188,7 @@ const straightFlushHand = [
   },
 ];
 
-const fullHouseHand = [
+const fourKindHand = [
   {
     suitSymbol: '♣️',
     suit: 'clubs',
@@ -224,5 +224,121 @@ const fullHouseHand = [
     name: '8',
     color: 'black',
     rank: 8,
+  },
+];
+
+const fullHouseHand = [
+  {
+    suitSymbol: '♣️',
+    suit: 'clubs',
+    name: 'K',
+    color: 'black',
+    rank: 13,
+  },
+  {
+    suitSymbol: '♠️',
+    suit: 'spades',
+    name: 'K',
+    color: 'black',
+    rank: 13,
+  },
+  {
+    suitSymbol: '♦️',
+    suit: 'diamonds',
+    name: 'K',
+    color: 'red',
+    rank: 13,
+  },
+
+  {
+    suitSymbol: '♥️',
+    suit: 'hearts',
+    name: '8',
+    color: 'red',
+    rank: 8,
+  },
+  {
+    suitSymbol: '♠️',
+    suit: 'spades',
+    name: '8',
+    color: 'black',
+    rank: 8,
+  },
+];
+
+const triplesHand = [
+  {
+    suitSymbol: '♣️',
+    suit: 'clubs',
+    name: 'K',
+    color: 'black',
+    rank: 13,
+  },
+  {
+    suitSymbol: '♠️',
+    suit: 'spades',
+    name: 'K',
+    color: 'black',
+    rank: 13,
+  },
+  {
+    suitSymbol: '♦️',
+    suit: 'diamonds',
+    name: 'K',
+    color: 'red',
+    rank: 13,
+  },
+
+  {
+    suitSymbol: '♥️',
+    suit: 'hearts',
+    name: '3',
+    color: 'red',
+    rank: 3,
+  },
+  {
+    suitSymbol: '♠️',
+    suit: 'spades',
+    name: '8',
+    color: 'black',
+    rank: 8,
+  },
+];
+
+const twoPairs = [
+  {
+    suitSymbol: '♥️',
+    suit: 'hearts',
+    name: 'J',
+    color: 'red',
+    rank: 11,
+  },
+  {
+    suitSymbol: '♥️',
+    suit: 'hearts',
+    name: '2',
+    color: 'red',
+    rank: 2,
+  },
+  {
+    suitSymbol: '♠️',
+    suit: 'spades',
+    name: 'J',
+    color: 'black',
+    rank: 11,
+  },
+  {
+    suitSymbol: '♦️',
+    suit: 'diamonds',
+    name: '5',
+    color: 'red',
+    rank: 5,
+  },
+  {
+    suitSymbol: '♠️',
+    suit: 'spades',
+    name: '5',
+    color: 'black',
+    rank: 5,
   },
 ];
