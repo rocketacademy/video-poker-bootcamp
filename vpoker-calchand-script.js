@@ -123,9 +123,9 @@ function calcHandScore(livehand) {
 
   // detect normal straight
   else if (flushState === false && royalState === false && straightState === true) {
-    console.log('NORMAL FLUSH detected');
+    console.log('NORMAL STRAIGHT detected');
     royalState = true;
-    newPoints = 6;
+    newPoints = 4;
   }
 
   // check for 4 of a kind
@@ -167,8 +167,8 @@ function calcHandScore(livehand) {
 
   // otherwise, for everything else, no points.
   else {
-    console.log('NOTHING detected');
-    newPoints = 0;
+    console.log('NOTHING detected, losing 1 point!');
+    newPoints = -1;
   }
   // return newPoints;
   console.log(`new Points are ${newPoints} points`);
