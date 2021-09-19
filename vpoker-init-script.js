@@ -189,8 +189,7 @@ const player1Click = () => {
       // add an event Listener to each card created
       cardElement.addEventListener('click', (event) => {
         // console.log(`just clicked ${event.currentTarget}`);
-        console.log(`card is ${hand[i].name} of ${hand[i].suitSymbol}`);
-        console.log(`card index to swap is ${i}`);
+        console.log(`card to swap is ${hand[i].name} of ${hand[i].suitSymbol}, index ${i}`);
 
         // CSS Control to Select and Deselect Cards to Swap
         if (cardElement.getAttribute('class') === 'card') {
@@ -198,17 +197,28 @@ const player1Click = () => {
           cardElement.classList.add('card-selected');
           // push selected card onto the array of cards to swap
           cardsToSwap.push(hand[i]);
+          output(`A Decision Has Been Set In Stone!
+          
+          Player 1 has selected the ${hand[i].name} of ${hand[i].suitSymbol} to swap! 
+          
+          `);
         }
-        else if (cardElement.getAttribute('class') === 'card-selected') {
-          cardElement.classList.remove('card-selected');
-          cardElement.classList.add('card');
-          // remove deselected cards from the cards to swap pile
-        }
+        // couldn't get this to work so I commented it out
+        // else if (cardElement.getAttribute('class') === 'card-selected') {
+        //   cardElement.classList.remove('card-selected');
+        //   cardElement.classList.add('card');
+        //   console.log(`undoing card to swap is ${hand[i].name} of ${hand[i].suitSymbol}, index ${i}`);
+        //   deselectedCards.push(hand[i]);
+        // remove deselected cards from the cards to swap pile
       });
       // Append the card element to the card container
       cardContainerPlayer1.appendChild(cardElement);
 
-      output('player 1 has drawn 5 cards! Click on the cards you want to SWAP!');
+      output(`Player 1 has drawn 5 cards! 
+      
+      Click on the cards you want to SWAP, NO DE-SELECTING allowed!!!
+      
+      `);
       player1Button.innerText = 'Swap Clicked Cards';
       canDeal = false;
     }
@@ -219,6 +229,10 @@ const player1Click = () => {
 
     // wipe the hand brute force style
     cardContainerPlayer1.innerHTML = '';
+
+    // remove deselected cards from the cardsToSwap object
+    // adapted from https://newbedev.com/javascript-remove-array-elements-from-another-array-javascript-code-example
+    // cardsToSwap = cardsToSwap.filter((ar) => !deselectedCards.find((rm) => (rm.suitSymbol === ar.suitSymbol && ar.suit === rm.suit && ar.name === rm.name && ar.color === rm.color && ar.rank === rm.rank)));
 
     // remove cards that had to be swapped
     // adapted from https://newbedev.com/javascript-remove-array-elements-from-another-array-javascript-code-example
@@ -240,6 +254,14 @@ const player1Click = () => {
 
       const cardsSwapped = createCard(hand[i]);
       cardContainerPlayer1.appendChild(cardsSwapped);
+
+      output(`Swapped Out ${cardsToRedraw} Cards!
+          
+          You've Earned n Points!
+
+          Another Round?
+          
+          `);
     }
 
     cardsToRedraw = 0;
@@ -278,7 +300,9 @@ const initGame = () => {
   document.body.appendChild(cardContainer);
 
   // fill game info div with starting instructions
-  gameInfo.innerText = "Its player 1's turn. Click to draw 5 cards!";
+  gameInfo.innerText = `Its player 1's turn. Click to draw 5 cards!
+  
+  `;
   document.querySelector('h1').appendChild(gameInfo);
 
   pointsInfo.innerText = `Points: ${points}`;

@@ -10,6 +10,44 @@ const nameList = [];
 // we need this to check for flushes
 const allEqual = (arr) => arr.every((v) => v === arr[0]);
 
+const sampleHand = [
+  {
+    suitSymbol: '♦️',
+    suit: 'diamonds',
+    name: '8',
+    color: 'red',
+    rank: 8,
+  },
+  {
+    suitSymbol: '♠️',
+    suit: 'spades',
+    name: '9',
+    color: 'black',
+    rank: 9,
+  },
+  {
+    suitSymbol: '♥️',
+    suit: 'hearts',
+    name: '4',
+    color: 'red',
+    rank: 4,
+  },
+  {
+    suitSymbol: '♦️',
+    suit: 'diamonds',
+    name: 'A',
+    color: 'red',
+    rank: 1,
+  },
+  {
+    suitSymbol: '♠️',
+    suit: 'spades',
+    name: 'A',
+    color: 'black',
+    rank: 1,
+  },
+];
+
 /**
  * A function that takes a swapped-out Video Poker Hand
  * Then Computes What Their Value at a Casino "Paytable" will be
