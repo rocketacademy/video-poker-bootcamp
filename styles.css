@@ -56,3 +56,19 @@ button {
 .center {
   text-align: center;
 }
+
+.msgBoardDiv {
+  text-align: center;
+  background-color: lightpink;
+  border: 2px dotted lightslategrey;
+  border-radius: 5px;
+  width: 500px;
+}
+
+.promptMsg {
+  font-size: 20px;
+}
+
+.disappear {
+  display: none;
+}

@@ -5,8 +5,41 @@ let playerCards = [];
 let playerHoldCards = [];
 let betPoints = 0;
 let results = "";
+
 //boards that display the cards
 let board;
+
+//game mode variables
+let isBet = false;
+let isDeal = false;
+let isSwap = false;
+let isCalcHand = false;
+let isNewRound = true;
+
+/*DOM ELEMENTS*/
+//bet input and button
+const betInput = document.createElement("input");
+betInput.placeholder = "Enter your bet here";
+
+const betButton = document.createElement("button");
+betButton.innerHTML = "BET";
+
+//deal button
+const dealButton = document.createElement("button");
+dealButton.innerHTML = "DEAL";
+
+//swap button
+const swapButton = document.createElement("button");
+swapButton.innerHTML = "SWAP";
+
+//calculate score button
+const calScore = document.createElement("button");
+calScore.innerHTML = "GET SCORE";
+
+//reset game button
+const resetButton = document.createElement("button");
+resetButton.innerHTML = "NEXT ROUND";
+resetButton.classList.add("disappear");
 
 //container for the entire results board
 const resultsContainer = document.createElement("div");
@@ -31,6 +64,18 @@ resultDiv.appendChild(pointsbet);
 resultDiv.appendChild(roundResults);
 
 resultsContainer.appendChild(resultDiv);
+
+//message board the shows prompt message to player
+const messageContainer = document.createElement("div");
+messageContainer.classList.add("container");
+const messageBoard = document.createElement("div");
+messageBoard.classList.add("msgBoardDiv");
+const promptMessage = document.createElement("p");
+promptMessage.innerHTML =
+  "Welcome to the SUPER FUN Poker Game!! Please start by placing a bet.";
+promptMessage.classList.add("promptMsg");
+messageBoard.appendChild(promptMessage);
+messageContainer.appendChild(messageBoard);
 
 /*HELPER FUNCTIONS*/
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
@@ -114,88 +159,180 @@ const makeDeck = () => {
 
 /*GAME LOGIC*/
 
+//input the bet points
+const placeBet = () => {
+  //can only bet if it is a new round
+  if (isNewRound) {
+    //check if the player input a correct number
+    const input = betInput.value;
+    if (
+      isNaN(parseInt(input)) ||
+      Number(input) > playerPoints ||
+      Number(input) < 0
+    ) {
+      promptMessage.innerHTML = `Please enter a number that this within your available points: ${playerPoints}`;
+    } else {
+      betPoints = betInput.value;
+      pointsbet.innerHTML = `Bet for current round:<br> ${betPoints}`;
+      isBet = true;
+      isNewRound = false;
+    }
+  } else {
+    promptMessage.innerHTML = "You have already placed your bet.";
+  }
+};
+
+//deal the cards when user click the deal button
+const dealCards = () => {
+  //can only deal if player have placed bet and player have not dealed cards yet
+  if (isBet && playerCards.length != 5) {
+    //deal the 5 cards
+    for (let i = 0; i < 5; i += 1) {
+      playerCards.push(deck.pop());
+    }
+
+    /*HARD CODE HAND*/
+    /*playerCards = [
+      {
+        name: "5",
+        rank: 5,
+        suit: "hearts",
+        suitIcon: "♥️",
+      },
+      {
+        name: "5",
+        rank: 5,
+        suit: "diamonds",
+        suitIcon: "♦",
+      },
+      {
+        name: "2",
+        rank: 2,
+        suit: "diamonds",
+        suitIcon: "♦",
+      },
+      {
+        name: "2",
+        rank: 2,
+        suit: "hearts",
+        suitIcon: "♥️",
+      },
+      {
+        name: "5",
+        rank: 5,
+        suit: "spades",
+        suitIcon: "♠️",
+      },
+    ];
+    */
+
+    //display all the deal cards on the screen
+    board = buildCardElements(playerCards);
+
+    document.body.appendChild(board);
+
+    isDeal = true;
+    isNewRound = false;
+  } else {
+    checkGameMode();
+  }
+};
+
 /**
- * A function that returns a fixed number of points
+ * A function that returns the multiplier points
  * @param  arr {array} player's cards
  * @return {number}  number of points that the user scored for the cards in their hand
  */
 
 const calcHandScore = () => {
-  //tally objects and arrays
-  const cardRankTally = {};
-  const cardSuitTally = {};
-  let rankArrString = {};
-  let rankArr = {};
-  let suitArrString = {};
+  //can only calculate score if player have dealed
+  if (isDeal) {
+    //tally objects and arrays
+    const cardRankTally = {};
+    const cardSuitTally = {};
+    let rankArrString = {};
+    let rankArr = {};
+    let suitArrString = {};
 
-  //perform tally of the players cards
+    //perform tally of the players cards
 
-  for (let i = 0; i < playerCards.length; i += 1) {
-    let cardRank = playerCards[i].rank;
-    if (cardRank in cardRankTally) {
-      cardRankTally[cardRank] += 1;
-    } else {
-      cardRankTally[cardRank] = 1;
+    for (let i = 0; i < playerCards.length; i += 1) {
+      let cardRank = playerCards[i].rank;
+      if (cardRank in cardRankTally) {
+        cardRankTally[cardRank] += 1;
+      } else {
+        cardRankTally[cardRank] = 1;
+      }
+
+      let cardSuit = playerCards[i].suit;
+      if (cardSuit in cardSuitTally) {
+        cardSuitTally[cardSuit] += 1;
+      } else {
+        cardSuitTally[cardSuit] = 1;
+      }
     }
 
-    let cardSuit = playerCards[i].suit;
-    if (cardSuit in cardSuitTally) {
-      cardSuitTally[cardSuit] += 1;
-    } else {
-      cardSuitTally[cardSuit] = 1;
+    //convert the keys in the cardRankTally object to be array
+    rankArrString = Object.keys(cardRankTally);
+    //convert rankArrString array values from string to number
+    rankArr = rankArrString.map((key) => Number(key));
+
+    //convert the keys in the cardSuitTally object to be array
+    suitArrString = Object.keys(cardSuitTally);
+
+    let multiplier = 0;
+    let currentMultiplier = checkJackPairsOrBetter(cardRankTally);
+    if (currentMultiplier > multiplier) {
+      multiplier = currentMultiplier;
     }
-  }
+    currentMultiplier = checkTwoPairs(cardRankTally, rankArr);
+    if (currentMultiplier > multiplier) {
+      multiplier = currentMultiplier;
+    }
 
-  //convert the keys in the cardRankTally object to be array
-  rankArrString = Object.keys(cardRankTally);
-  //convert rankArrString array values from string to number
-  rankArr = rankArrString.map((key) => Number(key));
+    currentMultiplier = checkThreeOfAKind(cardRankTally, rankArr);
+    if (currentMultiplier > multiplier) {
+      multiplier = currentMultiplier;
+    }
+    currentMultiplier = checkStraight(rankArr);
+    if (currentMultiplier > multiplier) {
+      multiplier = currentMultiplier;
+    }
+    currentMultiplier = checkFlush(cardSuitTally, suitArrString);
+    if (currentMultiplier > multiplier) {
+      multiplier = currentMultiplier;
+    }
+    currentMultiplier = checkFullHouse(cardRankTally, rankArr);
+    if (currentMultiplier > multiplier) {
+      multiplier = currentMultiplier;
+    }
 
-  //convert the keys in the cardSuitTally object to be array
-  suitArrString = Object.keys(cardSuitTally);
+    currentMultiplier = checkFourOfAKind(cardRankTally, rankArr);
+    if (currentMultiplier > multiplier) {
+      multiplier = currentMultiplier;
+    }
 
-  let multiplier = 0;
-  let currentMultiplier = checkJackPairsOrBetter(cardRankTally);
-  if (currentMultiplier > multiplier) {
-    multiplier = currentMultiplier;
-  }
-  currentMultiplier = checkTwoPairs(cardRankTally, rankArr);
-  if (currentMultiplier > multiplier) {
-    multiplier = currentMultiplier;
-  }
+    currentMultiplier = checkStraightFlush(
+      rankArr,
+      cardSuitTally,
+      suitArrString
+    );
+    if (currentMultiplier > multiplier) {
+      multiplier = currentMultiplier;
+    }
 
-  currentMultiplier = checkThreeOfAKind(cardRankTally, rankArr);
-  if (currentMultiplier > multiplier) {
-    multiplier = currentMultiplier;
-  }
-  currentMultiplier = checkStraight(rankArr);
-  if (currentMultiplier > multiplier) {
-    multiplier = currentMultiplier;
-  }
-  currentMultiplier = checkFlush(cardSuitTally, suitArrString);
-  if (currentMultiplier > multiplier) {
-    multiplier = currentMultiplier;
-  }
-  currentMultiplier = checkFullHouse(cardRankTally, rankArr);
-  if (currentMultiplier > multiplier) {
-    multiplier = currentMultiplier;
-  }
+    if (multiplier === 0) {
+      results = "there is no winning combination";
+    }
 
-  currentMultiplier = checkFourOfAKind(cardRankTally, rankArr);
-  if (currentMultiplier > multiplier) {
-    multiplier = currentMultiplier;
-  }
+    isCalcHand = true;
+    isNewRound = true;
+    resetButton.classList.remove("disappear");
 
-  currentMultiplier = checkStraightFlush(rankArr, cardSuitTally, suitArrString);
-  if (currentMultiplier > multiplier) {
-    multiplier = currentMultiplier;
+    return multiplier;
+  } else {
+    checkGameMode();
   }
-
-  if (multiplier === 0) {
-    results = "there is no winning combination";
-  }
-
-  return multiplier;
 };
 
 /* Scoring System
@@ -210,7 +347,7 @@ Four of a Kind                200
 Straight Flush                300
 */
 
-//check the number of pairs , tobe used in checking full house and two pairs
+//check the number of pairs , to be used in checking full house and two pairs
 const checkPairs = (cardRankTally, rankArr) => {
   let numOfPairs = 0;
   for (let i = 0; i < rankArr.length; i += 1) {
@@ -325,8 +462,39 @@ const checkStraightFlush = (rankArr, cardSuitTally, suitArrString) => {
  */
 
 const cardHold = (cardElement, cardArrNum) => {
-  playerHoldCards.push(playerCards[cardArrNum]);
-  cardElement.innerHTML = `Hold <br> ${playerCards[cardArrNum].name} <br> ${playerCards[cardArrNum].suitIcon}`;
+  //check if player have swapped before
+  if (isSwap) {
+    promptMessage.innerHTML =
+      "Tsk tsk... You have already swapped your cards, you cannot hold any more cards";
+  } else {
+    let isCardClicked = false;
+    let toUnclickCardArrNum;
+
+    //check for all the cards in the playerHoldCards array
+    for (let i = 0; i < playerHoldCards.length; i += 1) {
+      const currentRank = playerHoldCards[i].rank;
+      const currentSuit = playerHoldCards[i].suit;
+
+      if (
+        currentRank === playerCards[cardArrNum].rank &&
+        currentSuit === playerCards[cardArrNum].suit
+      ) {
+        isCardClicked = true;
+        toUnclickCardArrNum = i;
+      }
+    }
+
+    //if the card have not been clicked before
+    if (isCardClicked === false) {
+      playerHoldCards.push(playerCards[cardArrNum]);
+      cardElement.innerHTML = `Hold <br> ${playerCards[cardArrNum].name} <br> ${playerCards[cardArrNum].suitIcon}`;
+    }
+    //if the card have been clicked before
+    else if (isCardClicked === true) {
+      playerHoldCards.splice(toUnclickCardArrNum, 1);
+      cardElement.innerHTML = `${playerCards[cardArrNum].name} <br> ${playerCards[cardArrNum].suitIcon}`;
+    }
+  }
 };
 
 /**
@@ -334,23 +502,34 @@ const cardHold = (cardElement, cardArrNum) => {
  */
 
 const swapCards = () => {
-  //empty the board
-  board.innerHTML = "";
+  //can only swap cards after player have decided the cards to hold and player have not swapped before
+  if (playerHoldCards.length > 0 && !isSwap) {
+    //empty the board
+    board.innerHTML = "";
 
-  let numOfCardsSwap = playerHoldCards.length;
+    let numOfCardsSwap = playerHoldCards.length;
 
-  //deal the number cards player want to swap
-  for (let i = 0; i < 5 - numOfCardsSwap; i += 1) {
-    playerHoldCards.push(deck.pop());
+    //deal the number cards player want to swap
+    for (let i = 0; i < 5 - numOfCardsSwap; i += 1) {
+      playerHoldCards.push(deck.pop());
+    }
+    //copy the final cards and replace all the cards in the playerCards array while emptying the playerHoldCards
+    playerCards = [...playerHoldCards];
+    playerHoldCards = [];
+
+    //display all the deal cards on the screen
+    board = buildCardElements(playerCards);
+
+    document.body.appendChild(board);
+    isSwap = true;
+  } else {
+    if (isSwap) {
+      promptMessage.innerHTML =
+        "Tsk tsk... You have already swapped your cards.";
+    } else {
+      promptMessage.innerHTML = "You have not chosen any cards to hold.";
+    }
   }
-  //copy the final cards and replace all the cards in the playerCards array while emptying the playerHoldCards
-  playerCards = [...playerHoldCards];
-  playerHoldCards = [];
-
-  //display all the deal cards on the screen
-  board = buildCardElements(playerCards);
-
-  document.body.appendChild(board);
 };
 
 /**
@@ -368,7 +547,7 @@ const buildCardElements = (cards) => {
     cardElement.classList.add("card");
     cardElement.innerHTML = `${cards[i].name} <br> ${cards[i].suitIcon}`;
 
-    //add event listener to each card to enable it to be swaped
+    //add event listener to each card to enable holding of card
     cardElement.addEventListener("click", (event) => {
       cardHold(event.currentTarget, i);
     });
@@ -384,7 +563,7 @@ const buildCardElements = (cards) => {
  * @return containerElement {element} the container element with the players' cards
  */
 const resetRound = () => {
-  deck = [];
+  deck = shuffleCards(makeDeck());
   playerCards = [];
   playerHoldCards = [];
   betPoints = 0;
@@ -393,38 +572,19 @@ const resetRound = () => {
   pointsbet.innerHTML = `Bet for current round: <br>`;
   roundResults.innerHTML = `Results:<br>`;
   currentPoints.innerHTML = `Current points: <br>${playerPoints}`;
+  isBet = false;
+  isDeal = false;
+  isSwap = false;
+  isCalcHand = false;
+  //remove the NEW ROUND button
+  resetButton.classList.add("disappear");
+  promptMessage.innerHTML = "Woohoo another round, all the best!";
 };
 
-/*GAME INITIALISATION*/
-const initGame = () => {
-  //bet input and button
-  const betInput = document.createElement("input");
-  betInput.placeholder = "Enter your bet here";
-  document.body.appendChild(betInput);
-  const betButton = document.createElement("button");
-  betButton.innerHTML = "BET";
-  document.body.appendChild(betButton);
-  betButton.addEventListener("click", () => {
-    betPoints = betInput.value;
-    pointsbet.innerHTML = `Bet for current round:<br> ${betPoints}`;
-  });
-
-  //deal button
-  const dealButton = document.createElement("button");
-  dealButton.innerHTML = "DEAL";
-  document.body.appendChild(dealButton);
-
-  //swap button
-  const swapButton = document.createElement("button");
-  swapButton.innerHTML = "SWAP";
-  document.body.appendChild(swapButton);
-  swapButton.addEventListener("click", swapCards);
-
-  //calculate score button
-  const calScore = document.createElement("button");
-  calScore.innerHTML = "GET SCORE";
-  document.body.appendChild(calScore);
-  calScore.addEventListener("click", () => {
+//display the score of this round
+const getScore = () => {
+  //only display the score after the player dealed cards, and player have swapped card after holding cards
+  if (isDeal || (playerHoldCards.length > 0 && isSwap)) {
     let multiplier = calcHandScore();
 
     if (multiplier > 0) {
@@ -436,67 +596,55 @@ const initGame = () => {
     }
 
     currentPoints.innerHTML = `Current points: <br>${playerPoints}`;
-  });
+    promptMessage.innerHTML =
+      "This round have ended, please click the NEXT ROUND button.";
+  } else {
+    checkGameMode();
+  }
+};
 
-  //reset game button
-  const resetButton = document.createElement("button");
-  resetButton.innerHTML = "NEXT ROUND";
+/**
+ * A function that checks the state of the game
+ * @param  cards {array} player's cards
+ * @return containerElement {element} the container element with the players' cards
+ */
+
+const checkGameMode = () => {
+  if (!isBet) {
+    promptMessage.innerHTML = "You have not placed your bet, how dare you?!";
+  } else if (!isDeal) {
+    promptMessage.innerHTML =
+      "You have not dealed your cards, please get your lucky cards 🤭";
+  } else if (!isCalcHand) {
+    promptMessage.innerHTML =
+      "You have not calculated your score, looking suspicious... 😒";
+  }
+};
+
+/*GAME INITIALISATION*/
+const initGame = () => {
+  //display all the buttons
+  document.body.appendChild(betInput);
+  document.body.appendChild(betButton);
+  document.body.appendChild(dealButton);
+  document.body.appendChild(swapButton);
+  document.body.appendChild(calScore);
   document.body.appendChild(resetButton);
+
+  betButton.addEventListener("click", placeBet);
+  dealButton.addEventListener("click", dealCards);
+  swapButton.addEventListener("click", swapCards);
+  calScore.addEventListener("click", getScore);
   resetButton.addEventListener("click", resetRound);
 
   //display the results board
   document.body.appendChild(resultsContainer);
 
-  //deal the cards when user click the deal button
-  dealButton.addEventListener("click", () => {
-    //create the shuffled deck
-    deck = shuffleCards(makeDeck());
+  //display the message board;
+  document.body.appendChild(messageContainer);
 
-    //deal the 5 cards
-    for (let i = 0; i < 5; i += 1) {
-      playerCards.push(deck.pop());
-    }
-
-    /*HARD CODE HAND*/
-    /*playerCards = [
-      {
-        name: "5",
-        rank: 5,
-        suit: "hearts",
-        suitIcon: "♥️",
-      },
-      {
-        name: "5",
-        rank: 5,
-        suit: "diamonds",
-        suitIcon: "♦",
-      },
-      {
-        name: "2",
-        rank: 2,
-        suit: "diamonds",
-        suitIcon: "♦",
-      },
-      {
-        name: "2",
-        rank: 2,
-        suit: "hearts",
-        suitIcon: "♥️",
-      },
-      {
-        name: "5",
-        rank: 5,
-        suit: "spades",
-        suitIcon: "♠️",
-      },
-    ];
-    */
-
-    //display all the deal cards on the screen
-    board = buildCardElements(playerCards);
-
-    document.body.appendChild(board);
-  });
+  //create the shuffled deck
+  deck = shuffleCards(makeDeck());
 };
 
 initGame();
