@@ -1,0 +1,58 @@
+#header {
+  display: flex;
+  justify-content: center;
+}
+#intro {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.resultsBoard {
+  background-color: lightgrey;
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 500px;
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+}
+
+.currentPts {
+  background-color: lightyellow;
+  margin: 5px;
+}
+
+.betPts {
+  background-color: lightyellow;
+  margin: 5px;
+}
+
+.roundResults {
+  background-color: lightyellow;
+  margin: 5px;
+}
+
+button {
+  margin: 5px;
+}
+
+.card {
+  padding: 10px;
+  margin: 10px;
+  background-color: lightgray;
+  display: inline-block;
+  height: 30px;
+  width: 20px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
