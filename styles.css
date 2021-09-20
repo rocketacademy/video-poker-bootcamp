@@ -1,0 +1,157 @@
+body {
+  background-color: rgb(11, 165, 54);
+  font-family: "Oxygen", sans-serif;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+  font-family: "Zen Tokyo Zoo", cursive;
+  font-size: 70px;
+  color: rgb(10, 10, 159);
+  margin: 30px 10px 20px 10px;
+}
+
+#music {
+  display: flex;
+  max-width: 30px;
+  padding: 15px 10px 10px 10px;
+}
+
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+}
+
+.card {
+  margin: 5px;
+  padding: 8px;
+  background-color: rgb(240, 240, 240);
+  width: 60px;
+  min-width: 40px;
+  height: 80px;
+  text-align: center;
+  border-radius: 10px;
+  border-width: 3px;
+  border-style: solid;
+  border-color: transparent;
+  display: inline-block;
+}
+
+.cardSelected {
+  border-color: tomato;
+}
+
+.cardLocked {
+  border-color: rgb(0, 0, 0);
+}
+
+.suit {
+  margin: 6px;
+  font-size: 25px;
+  height: 25px;
+}
+
+.name {
+  margin: 6px;
+  height: 25px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.red {
+  color: rgb(208, 9, 9);
+}
+
+#header {
+  display: flex;
+  justify-content: center;
+}
+
+.info {
+  font-weight: bold;
+  font-size: 18px;
+  height: 130px;
+  padding: 10px;
+}
+
+.button-81 {
+  background-color: #fff;
+  border: 0 solid #e2e8f0;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+  color: #0d172a;
+  cursor: pointer;
+  font-family: "Basier circle", -apple-system, system-ui, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 1rem 1.6rem;
+  text-align: center;
+  text-decoration: none #0d172a solid;
+  text-decoration-thickness: auto;
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0px 1px 2px rgba(166, 175, 195, 0.25);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 0px 10px 0px 10px;
+}
+
+.button-81:hover {
+  background-color: #1e293b;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .button-81 {
+    font-size: 1.125rem;
+    padding: 1rem 2rem;
+  }
+}
+
+h2 {
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.rwd-table {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.rwd-table td,
+.rwd-table th {
+  border: 1px solid #ddd;
+}
+
+.rwd-table th {
+  text-align: left;
+  background-color: #1c2763;
+  color: white;
+  font-size: 15px;
+  padding: 5px 15px 5px 15px;
+}
+
+.rwd-table td {
+  background-color: #f2f2f2;
+  text-align: left;
+  color: rgb(0, 0, 0);
+  font-size: 15px;
+  padding: 3px 15px 3px 15px;
+}
+
+.rwd-table td:hover {
+  background-color: #ddd;
+}
+
+.rwd-table data Payout {
+  text-align: center;
+}
