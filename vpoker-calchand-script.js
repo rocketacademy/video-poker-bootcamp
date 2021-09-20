@@ -59,7 +59,6 @@ function calcHandScore(livehand) {
   let flushState = false;
   let straightState = false;
   let royalState = false;
-  const royalFlushState = false;
   let fullHouseState = false;
   let fourKindState = false;
   let threeKindState = false;
@@ -100,12 +99,10 @@ function calcHandScore(livehand) {
   if (consecutiveChecker(rankList) === true) {
     console.log('STRAIGHT state detected');
     straightState = true;
-    newPoints = 4;
   }
   // check for royal flush
   if (flushState === true && royalState === true) {
     console.log('ROYAL FLUSH detected');
-    royalState = true;
     newPoints = 250;
   }
 

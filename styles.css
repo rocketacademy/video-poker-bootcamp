@@ -9,7 +9,7 @@ body {
   padding: 10px;
   background-color: whitesmoke;
   text-align: center;
-  border-radius: 20px;
+  border-radius: 10px;
   display: inline-block;
 }
 
@@ -25,7 +25,7 @@ body {
 
 .suit {
   margin: 10px;
-  font-size: 50px;
+  font-size: 20px;
 }
 
 .name {
@@ -50,7 +50,7 @@ body {
 
 .card-container-player-1 {
   margin: 10px;
-  padding: 10px;
+  padding: 20px;
   background-color: pink;
   /* width: 250px; */
   text-align: center;
@@ -60,7 +60,7 @@ body {
 
 #game-info {
   font-family: sans-serif;
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .button {
