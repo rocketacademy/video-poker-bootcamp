@@ -1,13 +1,78 @@
 body {
   background-color: black;
   font-family: "VT323", monospace;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
 }
 
 h1 {
   color: white;
   text-align: center;
   font-size: 7.5vh;
-  margin: 3vh;
+  margin: 3vh 0;
+  text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+}
+
+.glitch {
+  animation: glitch 2000ms infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  }
+
+  10% {
+    text-shadow: -0.08em 0 0 blue, 0.04em 0 0 yellow, 0.08em 0 0 red;
+  }
+
+  20% {
+    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  }
+
+  30% {
+    text-shadow: -0.08em 0 0 blue, -0.04em 0 0 yellow, 0.08em 0 0 red;
+  }
+
+  40% {
+    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  }
+
+  50% {
+    text-shadow: -0.08em 0 0 blue, 0.04em 0 0 yellow, 0.08em 0 0 red;
+  }
+
+  60% {
+    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  }
+
+  70% {
+    text-shadow: -0.08em 0 0 blue, -0.04em 0 0 yellow, 0.08em 0 0 red;
+  }
+
+  80% {
+    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  }
+
+  90% {
+    text-shadow: -0.08em 0 0 blue, 0.04em 0 0 yellow, 0.08em 0 0 red;
+  }
+
+  100% {
+    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  }
 }
 
 /* +++++++++++++++++++++ TABLE +++++++++++++++++++++++++ */
@@ -39,6 +104,10 @@ td {
   min-width: 12vw;
   border: 0.15vh solid white;
   padding: 0 2.7vw;
+}
+
+.yellow-text {
+  color: yellow;
 }
 
 /* +++++++++++++++++++++ RESULT +++++++++++++++++++++++++ */
@@ -103,10 +172,6 @@ td {
 }
 
 .hold-text {
-  display: none;
-}
-
-.show-hold-text {
   display: block;
   position: absolute;
   top: 41%;
@@ -122,6 +187,12 @@ td {
 .button-div {
   display: flex;
   justify-content: space-evenly;
+}
+
+.bet-head {
+  color: white;
+  text-align: center;
+  font-size: 3.5vh;
 }
 
 .bet-div {
@@ -149,7 +220,7 @@ td {
   padding: 0.5vh 1vw;
 }
 
-.deal-button {
+.game-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -192,6 +263,25 @@ td {
 
 .animate__animated.animate__flash {
   --animate-duration: 2.5s;
+}
+
+.animate__animated.animate__shakeY {
+  --animate-duration: 5s;
+}
+
+/* +++++++++++++++++++++ MOUSE ON / HIDE +++++++++++++++++++++++++ */
+
+.mouse-on {
+  position: relative;
+  bottom: 0.5vh;
+}
+
+.hide {
+  display: none;
+}
+
+.hide-text {
+  color: black;
 }
 
 *,

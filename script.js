@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%% GLOBAL VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -5,96 +7,27 @@
 let points = 100;
 let deck = [];
 let hand = [];
-let canClickCard = true;
-let canBet = true;
+let canClickCard = false;
+let canClickButton = true;
 let currentBet = 1;
-let result = 'BUMMER';
-let aceHigh = false;
 
 const multipliers = ['800', '50', '25', '9', '6', '4', '3', '2', '1'];
-
-const tableDiv = document.createElement('div');
-const resultsDiv = document.createElement('div');
-const handDiv = document.createElement('div');
-const buttonDiv = document.createElement('div');
-const betInput = document.createElement('div');
-const dealBtn = document.createElement('div');
-const scoreDiv = document.createElement('div');
+let probabilities = ['0.003%', '0.011%', '0.236%', '1.151%', '1.102%', '1.123%', '7.445%', '12.928%', '21.459%'];
 
 /* ############################################################
 ###############EE#### HELPER FUNCTIONS ########################
 ########################################################### */
 
 /**
- * Function that creates 52 distinct cards, i.e. a poker deck
- * @return newDeck {array}
- */
-const makeDeck = () => {
-  const newDeck = [];
-  const suits = ['❤️', '♦️', '♣️', '♠️'];
-  const suitImgs = ['heart.png', 'diamond.png', 'club.png', 'spade.png'];
-
-  for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
-    const currentSuit = suits[suitIndex];
-    const currentImg = suitImgs[suitIndex];
-
-    for (let rankCounter = 1; rankCounter <= 13; rankCounter += 1) {
-      let cardName = `${rankCounter}`;
-
-      if (cardName === '1') {
-        cardName = 'A';
-      } else if (cardName === '11') {
-        cardName = 'J';
-      } else if (cardName === '12') {
-        cardName = 'Q';
-      } else if (cardName === '13') {
-        cardName = 'K';
-      }
-
-      const card = {
-        name: cardName,
-        suit: currentSuit,
-        rank: rankCounter,
-        img: currentImg,
-      };
-
-      newDeck.push(card);
-    }
-  }
-  return newDeck;
-};
-
-/**
- * Function that gives random number x, where 0 <= x < max
- * @param max {number} for the upper bound
- * @return {number} between 0 (inclusive) and max
- */
-const getRandomIndex = (max) => Math.floor(Math.random() * max);
-
-/**
- * Function that shuffles cards
- * @param cardDeck {array} to be shuffled
- * @return cardDeck {array} that has been shuffled
- */
-const shuffleCards = (cardDeck) => {
-  for (let currentIndex = 0; currentIndex < cardDeck.length; currentIndex += 1) {
-    const randomIndex = getRandomIndex(cardDeck.length);
-    const randomCard = cardDeck[randomIndex];
-    const currentCard = cardDeck[currentIndex];
-    cardDeck[currentIndex] = randomCard;
-    cardDeck[randomIndex] = currentCard;
-  }
-  return cardDeck;
-};
-
-/**
- * Function that resets deck (shuffled) and clears handDiv
+ * Function that resets and shuffles deck, clears handDiv, and defaults result
  */
 const resetGame = () => {
   deck = makeDeck();
   shuffleCards(deck);
-  handDiv.innerHTML = '';
-  result = 'BUMMER';
+  document.querySelector('.hand').innerHTML = ''; // empty hand array
+  result = 'BUMMER :('; // result is lose by default
+  probabilities = ['0.003%', '0.011%', '0.236%', '1.151%', '1.102%', '1.123%', '7.445%', '12.928%', '21.459%'];
+  updateChanceInTable();
 };
 
 /**
@@ -105,6 +38,26 @@ const updateWinInTable = () => {
   for (let i = 0; i < 9; i += 1) {
     const winCell = rows[i].querySelectorAll('td')[2];
     winCell.childNodes[0].data = currentBet * multipliers[i];
+
+    winCell.classList.add('yellow-text');
+    // eslint-disable-next-line
+    const removeYellow = setTimeout( () => {
+      winCell.classList.remove('yellow-text');
+    }, 500);
+  }
+};
+
+const updateChanceInTable = () => {
+  const rows = document.querySelector('#table-body').querySelectorAll('tr');
+  for (let i = 0; i < 9; i += 1) {
+    const winCell = rows[i].querySelectorAll('td')[3];
+    winCell.childNodes[0].data = probabilities[i];
+
+    winCell.classList.add('yellow-text');
+    // eslint-disable-next-line
+    const removeYellow = setTimeout( () => {
+      winCell.classList.remove('yellow-text');
+    }, 500);
   }
 };
 
@@ -121,12 +74,13 @@ const onCardClick = (cardEl) => {
     if (cardEl.classList.contains('unclicked-card')) {
       cardEl.classList.remove('unclicked-card');
       cardEl.classList.add('clicked-card');
-      cardEl.querySelector('.hold-text').classList.add('show-hold-text');
+      cardEl.querySelector('.hold-text').classList.remove('hide');
     } else {
       cardEl.classList.remove('clicked-card');
       cardEl.classList.add('unclicked-card');
-      cardEl.querySelector('.show-hold-text').classList.remove('show-hold-text');
+      cardEl.querySelector('.hold-text').classList.add('hide');
     }
+    calcProb();
   }
 };
 
@@ -134,22 +88,32 @@ const onCardClick = (cardEl) => {
  * Function that switches function of deal/draw button
  */
 const onButtonClick = () => {
-  dealBtn.classList.add('press-button');
-  // eslint-disable-next-line
-  const buttonPress = setTimeout(() => {
-    dealBtn.classList.remove('press-button');
-  }, 100);
-  if (resultsDiv.classList.contains('animate__animated')) {
-    resultsDiv.classList.remove('animate__animated');
-    resultsDiv.classList.remove('animate__flash');
-    resultsDiv.classList.remove('animate__infinite');
+  if (document.querySelector('.results').classList.contains('animate__animated')) {
+    document.querySelector('.results').classList.remove('animate__animated');
+    document.querySelector('.results').classList.remove('animate__flash');
+    document.querySelector('.results').classList.remove('animate__infinite');
   }
-  if (canClickCard && !canBet) {
+
+  if (canClickButton) {
+    canClickButton = false;
+    document.querySelector('.game-button').classList.add('press-button');
+    // eslint-disable-next-line
+    const buttonPress = setTimeout(() => {
+      document.querySelector('.game-button').classList.remove('press-button');
+    }, 100);
+
+    if (canClickCard) {
     // eslint-disable-next-line
     drawCards();
-  } else {
+    } else {
     // eslint-disable-next-line
     dealCards();
+    }
+
+    // eslint-disable-next-line
+    const resetButton = setTimeout(() => {
+      canClickButton = true;
+    }, 1000);
   }
 };
 
@@ -159,10 +123,11 @@ const onButtonClick = () => {
  */
 const drawCards = () => {
   canClickCard = false;
-  canBet = true;
+  document.querySelectorAll('.bet-buttons')[0].classList.remove('hide-text');
+  document.querySelectorAll('.bet-buttons')[1].classList.remove('hide-text');
 
   // change UNselected cards
-  const cardsToChange = handDiv.querySelectorAll('.unclicked-card');
+  const cardsToChange = document.querySelector('.hand').querySelectorAll('.unclicked-card');
   for (let i = 0; i < cardsToChange.length; i += 1) {
     cardsToChange[i].classList.remove('animate__flipInY');
     cardsToChange[i].classList.add('animate__flipOutY');
@@ -183,11 +148,11 @@ const drawCards = () => {
   }
 
   // remove selection on cards
-  const cardsClicked = handDiv.querySelectorAll('.clicked-card');
+  const cardsClicked = document.querySelector('.hand').querySelectorAll('.clicked-card');
   for (let j = 0; j < cardsClicked.length; j += 1) {
     cardsClicked[j].classList.remove('clicked-card');
     cardsClicked[j].classList.add('unclicked-card');
-    cardsClicked[j].querySelector('.show-hold-text').classList.remove('show-hold-text');
+    cardsClicked[j].querySelector('.hold-text').classList.add('hide');
   }
 
   // tally
@@ -217,11 +182,15 @@ const drawCards = () => {
 
   // eslint-disable-next-line
   const delayResults = setTimeout(() => {
-    scoreDiv.innerText = `CREDITS ${points}`;
-    resultsDiv.innerHTML = `${result} <br> BET AND PRESS 'DEAL' TO PLAY AGAIN`;
+    document.querySelector('.score').innerText = `CREDITS ${points}`;
+    document.querySelector('.results').innerHTML = `${result} <br> BET AND PRESS 'DEAL' TO PLAY AGAIN`;
+
+    document.querySelector('.hand').classList.add('animate__animated');
+    document.querySelector('.hand').classList.add('animate__shakeY');
+    document.querySelector('.hand').classList.add('animate__infinite');
   }, 500);
 
-  dealBtn.innerText = 'DEAL';
+  document.querySelector('.game-button').innerText = 'DEAL';
 };
 
 /**
@@ -232,26 +201,12 @@ const dealCards = () => {
   resetGame();
 
   canClickCard = true;
-  canBet = false;
+  document.querySelectorAll('.bet-buttons')[0].classList.add('hide-text');
+  document.querySelectorAll('.bet-buttons')[1].classList.add('hide-text');
 
-  resultsDiv.innerText = 'CLICK ON CARDS YOU WISH TO HOLD';
+  document.querySelector('.results').innerText = 'CLICK ON CARDS YOU WISH TO HOLD';
 
   hand = deck.splice(0, 5);
-  /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  !!!!!!!!!!!!!!!!!!!!!!!! HARD CODE HAND !!!!!!!!!!!!!!!!!!!!!!!
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-  // ♠️ ♣️ ❤️ ♦️
-  // hand = [{
-  //   name: '9', suit: '❤️', rank: 9, img: 'heart.png',
-  // }, {
-  //   name: 'J', suit: '♦️', rank: 11, img: 'heart.png',
-  // }, {
-  //   name: '7', suit: '♣️', rank: 7, img: 'heart.png',
-  // }, {
-  //   name: '8', suit: '♦️', rank: 8, img: 'heart.png',
-  // }, {
-  //   name: '10', suit: '❤️', rank: 10, img: 'heart.png',
-  // }];
 
   // create div for each card
   for (let i = 0; i < 5; i += 1) {
@@ -261,7 +216,9 @@ const dealCards = () => {
     cardDiv.classList.add('animate__flipInY');
     cardDiv.setAttribute('id', `card${i}`);
     cardDiv.addEventListener('click', (event) => { onCardClick(event.currentTarget); });
-    handDiv.appendChild(cardDiv);
+    cardDiv.addEventListener('mouseenter', (event) => { onCardEnter(event.currentTarget); });
+    cardDiv.addEventListener('mouseleave', (event) => { onCardLeave(event.currentTarget); });
+    document.querySelector('.hand').appendChild(cardDiv);
 
     const cardName = document.createElement('p');
     cardName.classList.add('card-name');
@@ -278,133 +235,21 @@ const dealCards = () => {
 
     const holdDiv = document.createElement('div');
     holdDiv.classList.add('hold-text');
+    holdDiv.classList.add('hide');
     holdDiv.innerText = 'HOLD';
     cardDiv.appendChild(holdDiv);
   }
 
   // store bet
   points -= currentBet;
-  scoreDiv.innerText = `CREDITS ${points}`;
+  document.querySelector('.score').innerText = `CREDITS ${points}`;
 
   // remove deal button and creates draw button
-  dealBtn.innerText = 'DRAW';
-};
+  document.querySelector('.game-button').innerText = 'DRAW';
 
-// check how many pairs
-const checkPairs = (rankTally, rankKeys) => {
-  let numPairs = 0;
-  for (let i = 0; i < rankKeys.length; i += 1) {
-    if (rankTally[rankKeys[i]] === 2) {
-      numPairs += 1;
-    }
-  }
-  return numPairs;
-};
-
-// check one pair
-const checkJacksOrBetter = (rankTally, rankKeys) => {
-  if (checkPairs(rankTally, rankKeys) === 1) {
-    if (rankTally[1] === 2
-      || rankTally[11] === 2
-      || rankTally[12] === 2
-      || rankTally[13] === 2) {
-      result = 'JACKS OR BETTER';
-      return 1;
-    }
-  }
-  return 0;
-};
-
-// check two pair
-const checkTwoPair = (rankTally, rankKeys) => {
-  if (checkPairs(rankTally, rankKeys) === 2) {
-    result = 'TWO PAIRS';
-    return 2;
-  }
-  return 0;
-};
-
-// check three of a kind
-const checkThreeOfAKind = (rankTally, rankKeys) => {
-  for (let i = 0; i < rankKeys.length; i += 1) {
-    if (rankTally[rankKeys[i]] === 3) {
-      result = 'THREE OF A KIND';
-      return 3;
-    }
-  }
-  return 0;
-};
-
-// check straight
-const checkStraight = (rankTally, rankKeys) => {
-  let straightCounter = 0;
-  aceHigh = false;
-  for (let i = 1; i < rankKeys.length; i += 1) {
-    const currentRank = Number(rankKeys[i]);
-    const previousRank = Number(rankKeys[i - 1]);
-    if (currentRank === (previousRank + 1)) {
-      straightCounter += 1;
-    }
-  }
-
-  if (straightCounter === 4) {
-    result = 'STRAIGHT';
-    return 4;
-  }
-
-  // for ace-high straight
-  if (straightCounter === 3 && rankKeys[0] === 1 && rankKeys[1] === 10) {
-    result = 'STRAIGHT (ACE-HIGH)';
-    aceHigh = true;
-    return 4;
-  }
-
-  return 0;
-};
-
-// check flush
-const checkFlush = (suitTally, suitKeys) => {
-  for (let i = 0; i < suitKeys.length; i += 1) {
-    if (suitTally[suitKeys[i]] === 5) {
-      result = 'FLUSH';
-      return 6;
-    }
-  }
-  return 0;
-};
-
-// check full house
-const checkFullHouse = (rankTally, rankKeys) => {
-  if (checkThreeOfAKind(rankTally, rankKeys) !== 0
-  && checkPairs(rankTally, rankKeys) === 1) {
-    result = 'FULL HOUSE';
-    return 9;
-  }
-  return 0;
-};
-
-// check four of a kind
-const checkFourOfAKind = (rankTally, rankKeys) => {
-  for (let i = 0; i < rankKeys.length; i += 1) {
-    if (rankTally[rankKeys[i]] === 4) {
-      result = 'FOUR OF A KIND';
-      return 25;
-    }
-  }
-  return 0;
-};
-
-// check straight flush
-const checkStraightFlush = (rankTally, rankKeys, suitTally, suitKeys) => {
-  if (checkStraight(rankTally, rankKeys) !== 0 && checkFlush(suitTally, suitKeys) !== 0) {
-    if (aceHigh === true) {
-      result = 'ROYAL FLUSH';
-      return 800;
-    }
-    result = 'STRAIGHT FLUSH';
-    return 50;
-  }
-  return 0;
+  document.querySelector('.hand').classList.remove('animate__animated');
+  document.querySelector('.hand').classList.remove('animate__shakeY');
+  document.querySelector('.hand').classList.remove('animate__infinite');
 };
 
 /**
@@ -419,6 +264,9 @@ const calcHandScore = (tallyRanks, tallySuits) => {
   const keyRanks = keyRanksStr.map((key) => Number(key));
   keyRanks.sort((a, b) => a - b);
 
+  console.log(tallyRanks);
+  console.log(tallySuits);
+
   const multiplierArray = [];
   multiplierArray.push(checkJacksOrBetter(tallyRanks, keyRanks));
   multiplierArray.push(checkTwoPair(tallyRanks, keyRanks));
@@ -428,6 +276,7 @@ const calcHandScore = (tallyRanks, tallySuits) => {
   multiplierArray.push(checkFullHouse(tallyRanks, keyRanks));
   multiplierArray.push(checkFourOfAKind(tallyRanks, keyRanks));
   multiplierArray.push(checkStraightFlush(tallyRanks, keyRanks, tallySuits, keySuits));
+  multiplierArray.push(checkRoyalFlush(tallyRanks, keyRanks, tallySuits, keySuits));
 
   let multiplier = 0;
   for (let i = 0; i < multiplierArray.length; i += 1) {
@@ -448,9 +297,9 @@ const calcHandScore = (tallyRanks, tallySuits) => {
  * Function that INCREASES currentBet by 1 and updates betInput
  */
 const increaseBet = () => {
-  if (canBet) {
+  if (!canClickCard) {
     currentBet += 1;
-    betInput.innerText = currentBet;
+    document.querySelector('#bet').innerText = currentBet;
     updateWinInTable();
   }
 };
@@ -459,9 +308,9 @@ const increaseBet = () => {
  * Function that DECREASES currentBet by 1 and updates betInput
  */
 const decreaseBet = () => {
-  if (currentBet > 1 && canBet) {
+  if (currentBet > 1 && !canClickCard) {
     currentBet -= 1;
-    betInput.innerText = currentBet;
+    document.querySelector('#bet').innerText = currentBet;
     updateWinInTable();
   }
 };
@@ -470,8 +319,24 @@ const decreaseBet = () => {
 ###################### INITIALISATION ########################
 ########################################################### */
 
+// create header
+const createHeader = () => {
+  const header = document.createElement('header');
+  header.classList.add('animate__animated');
+  header.classList.add('animate__fadeIn');
+
+  const mainTitle = document.createElement('h1');
+  mainTitle.addEventListener('mouseenter', () => { onTitleEnter(mainTitle); });
+  mainTitle.addEventListener('mouseleave', () => { onTitleLeave(mainTitle); });
+  mainTitle.innerText = 'VIDEO POKER';
+  header.appendChild(mainTitle);
+
+  document.body.appendChild(header);
+};
+
 // create table
 const createTable = () => {
+  const tableDiv = document.createElement('div');
   tableDiv.classList.add('table-div');
   tableDiv.classList.add('animate__animated');
   tableDiv.classList.add('animate__fadeIn');
@@ -506,12 +371,13 @@ const createTable = () => {
         const currentHand = winningHands[i];
         const cellText = document.createTextNode(currentHand);
         cell.appendChild(cellText);
-      } else if (j === 1) {
+      } else if (j < 3) {
         const currentMultiplier = multipliers[i];
         const cellText = document.createTextNode(currentMultiplier);
         cell.appendChild(cellText);
       } else {
-        const cellText = document.createTextNode('');
+        const currentProb = probabilities[i];
+        const cellText = document.createTextNode(currentProb);
         cell.appendChild(cellText);
       }
       row.appendChild(cell);
@@ -525,14 +391,23 @@ const createTable = () => {
  * Function to initialise game
  */
 const initialiseGame = () => {
+  createHeader();
   createTable();
   updateWinInTable();
 
+  const buttonDiv = document.createElement('div');
   buttonDiv.classList.add('button-div');
 
   const betDiv = document.createElement('div');
   buttonDiv.appendChild(betDiv);
-  betDiv.classList.add('bet-div');
+
+  const betDivHead = document.createElement('div');
+  betDivHead.innerText = 'BET';
+  betDivHead.classList.add('bet-head');
+  betDiv.appendChild(betDivHead);
+  const betDivBody = document.createElement('div');
+  betDivBody.classList.add('bet-div');
+  betDiv.appendChild(betDivBody);
 
   const betMinus = document.createElement('div');
   const betPlus = document.createElement('div');
@@ -541,19 +416,28 @@ const initialiseGame = () => {
   betMinus.classList.add('bet-buttons');
   betPlus.classList.add('bet-buttons');
   betMinus.addEventListener('click', decreaseBet);
+  betMinus.addEventListener('mouseenter', () => { onButtonEnter(betMinus); });
+  betMinus.addEventListener('mouseleave', () => { onButtonLeave(betMinus); });
   betPlus.addEventListener('click', increaseBet);
+  betPlus.addEventListener('mouseenter', () => { onButtonEnter(betPlus); });
+  betPlus.addEventListener('mouseleave', () => { onButtonLeave(betPlus); });
 
+  const betInput = document.createElement('div');
   betInput.setAttribute('id', 'bet');
   betInput.innerText = currentBet;
-  betDiv.appendChild(betMinus);
-  betDiv.appendChild(betInput);
-  betDiv.appendChild(betPlus);
+  betDivBody.appendChild(betMinus);
+  betDivBody.appendChild(betInput);
+  betDivBody.appendChild(betPlus);
 
-  dealBtn.classList.add('deal-button');
-  dealBtn.innerText = 'DEAL';
-  dealBtn.addEventListener('click', onButtonClick);
-  buttonDiv.appendChild(dealBtn);
+  const gameBtn = document.createElement('div');
+  gameBtn.classList.add('game-button');
+  gameBtn.innerText = 'DEAL';
+  gameBtn.addEventListener('click', onButtonClick);
+  gameBtn.addEventListener('mouseenter', () => { onButtonEnter(gameBtn); });
+  gameBtn.addEventListener('mouseleave', () => { onButtonLeave(gameBtn); });
+  buttonDiv.appendChild(gameBtn);
 
+  const resultsDiv = document.createElement('div');
   resultsDiv.classList.add('results');
   resultsDiv.classList.add('animate__animated');
   resultsDiv.classList.add('animate__fadeIn');
@@ -565,9 +449,11 @@ const initialiseGame = () => {
   }, 1500);
   resultsDiv.innerText = "INPUT YOUR BET AND PRESS 'DEAL' TO BEGIN";
 
+  const scoreDiv = document.createElement('div');
   scoreDiv.innerText = `CREDITS ${points}`;
 
   document.body.appendChild(resultsDiv);
+  const handDiv = document.createElement('div');
   handDiv.classList.add('hand');
   document.body.appendChild(handDiv);
   document.body.appendChild(buttonDiv);
