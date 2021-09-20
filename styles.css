@@ -1,3 +1,201 @@
+body {
+  background-color: black;
+  font-family: "VT323", monospace;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  font-size: 7.5vh;
+  margin: 3vh;
+}
+
+/* +++++++++++++++++++++ TABLE +++++++++++++++++++++++++ */
+
+.table-div {
+  padding: 2vh 5vw;
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  color: white;
+  font-size: 3vh;
+  border: 0.15vh solid white;
+  text-align: center;
+}
+
+thead {
+  background-color: white;
+  color: black;
+}
+
+th {
+  border: 0.15vh solid white;
+  padding: 0 2.7vw;
+}
+
+td {
+  min-width: 12vw;
+  border: 0.15vh solid white;
+  padding: 0 2.7vw;
+}
+
+/* +++++++++++++++++++++ RESULT +++++++++++++++++++++++++ */
+.results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  font-size: 3vh;
+  margin-top: 2vh;
+  height: 8vh;
+}
+
+/* +++++++++++++++++++++ HAND +++++++++++++++++++++++++ */
+
+.hand {
+  display: flex;
+  height: 20vh;
+  justify-content: space-evenly;
+  align-items: center;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.unclicked-card {
+  max-width: 15%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1vh;
+}
+
 .clicked-card {
-  background-color: aquamarine;
+  position: relative;
+  top: 1.5vh;
+  background-color: silver;
+
+  max-width: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1vh;
+}
+
+.suit-img {
+  width: 40%;
+  height: auto;
+  margin-bottom: 1vh;
+}
+
+.red {
+  filter: invert(13%) sepia(75%) saturate(7436%) hue-rotate(359deg)
+    brightness(99%) contrast(109%);
+}
+
+.card-name {
+  font-size: 5.5vh;
+  text-align: center;
+  margin: 1vh;
+}
+
+.hold-text {
+  display: none;
+}
+
+.show-hold-text {
+  display: block;
+  position: absolute;
+  top: 41%;
+  background-color: black;
+  color: white;
+  width: 100%;
+  font-size: 3vh;
+  text-align: center;
+}
+
+/* +++++++++++++++++++++ BUTTONS +++++++++++++++++++++++++ */
+
+.button-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.bet-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.bet-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 7.5vh;
+  padding: 0.5vh 1vw;
+}
+
+#bet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 6vh;
+  text-align: center;
+  padding: 0.5vh 1vw;
+}
+
+.deal-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 6vh;
+  background-color: yellow;
+  border-radius: 1.5vh;
+  text-align: center;
+  padding: 0.5vh 2vw;
+}
+
+.press-button {
+  position: relative;
+  top: 0.25vh;
+  background-color: rgb(201, 201, 1);
+}
+
+/* +++++++++++++++++++++ SCORE +++++++++++++++++++++++++ */
+.score {
+  color: white;
+  text-align: right;
+  font-size: 3.6vh;
+  padding-top: 3vh;
+  padding-right: 2vw;
+}
+
+/* +++++++++++++++++++++ ANIMATIONS +++++++++++++++++++++++++ */
+
+.animate__animated.animate__flipInY {
+  --animate-duration: 0.5s;
+}
+
+.animate__animated.animate__flipOutY {
+  --animate-duration: 0.5s;
+}
+
+.animate__animated.animate__fadeIn {
+  --animate-duration: 3s;
+}
+
+.animate__animated.animate__flash {
+  --animate-duration: 2.5s;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
 }
