@@ -1,8 +1,16 @@
 // ========== DECK STUFF ============
-// Get a random index ranging from 0 (inclusive) to max (exclusive).
+
+/**
+ * Get a random index ranging from 0 (inclusive) to max (exclusive)
+ * @param {*} max
+ * @returns random index
+ */
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
-// make card deck
+/**
+ * make card deck
+ * @returns 52 card deck array object
+ */
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
@@ -65,26 +73,31 @@ const makeDeck = () => {
       };
 
       // Create a second set of card with the current name, suit, and rank
-      const card2 = {
-        name: cardName,
-        suit: currentSuit,
-        rank: rankCounter,
-        displayName: shortForm,
-        suitSymbol: symbol,
-        suitColour: color,
-        keep: false,
-      };
+      // const card2 = {
+      //   name: cardName,
+      //   suit: currentSuit,
+      //   rank: rankCounter,
+      //   displayName: shortForm,
+      //   suitSymbol: symbol,
+      //   suitColour: color,
+      //   keep: false,
+      // };
 
       // Add the new card to the deck
       newDeck.push(card);
-      newDeck.push(card2);
+      // newDeck.push(card2);
     }
   }
 
   // Return the completed card deck
   return newDeck;
 };
-// Shuffle an array of cards
+
+/**
+ * Shuffle an array of cards
+ * @param {*} cards
+ * @returns shuffled deck array object
+ */
 const shuffleCards = (cards) => {
   // Loop over the card deck array once
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
@@ -104,18 +117,24 @@ const shuffleCards = (cards) => {
 
 let deck = shuffleCards(makeDeck());
 
-// ========== HELPER FUNCTIONS ==========
-/**
- * A function that returns a fixed number of points
- * @param cardArray array of card objects
- * @return {number} num of points in user's hand
- */
+// ========== GLOBAL VARIABLES ==========
+
 let playerPoints = 100;
 let playerBet = 0;
-
-// function to populate cardNameTally object
 let cardNameTally = {};
+let suitTally = {};
+let winValue = '';
+let straightTally = [];
+let isStraightRoyal = false;
+let gameMode = 'default';
+let hand = [];
 
+// ========== HELPER FUNCTIONS ==========
+
+/**
+ * function to populate the tally of each card name in hand
+ * @returns object tally of hand by card name
+ */
 const populCardNameTally = () => {
   for (let i = 0; i < hand.length; i += 1) {
     const cardName = hand[i].displayName;
@@ -128,8 +147,10 @@ const populCardNameTally = () => {
   }
 };
 
-let suitTally = {};
-
+/**
+ * function to populate the tally of each card suit in hand
+ * @returns object tally of suit by card name
+ */
 const populSuitTally = () => {
   for (let i = 0; i < hand.length; i += 1) {
     const cardSuit = hand[i].suit;
@@ -142,31 +163,44 @@ const populSuitTally = () => {
   }
 };
 
-// function to check x of a kind
+/**
+ * function to check x of a kind
+ * @param {*} x which is the tally you are looking for
+ * @returns length of keys (card name) with value that matches the tally
+ */
 const xOfAKind = (x) => {
   const keys = Object.keys(cardNameTally).filter((k) => cardNameTally[k] === x);
-  console.log(keys);
   return keys.length;
 };
 
-// function to check x of a kind and royal suit
+/**
+ * function to check x of a kind and royal suit
+ * @param {*} x which is the tally you are looking for
+ * @returns length of keys (card name) with value that matches the tally
+ */
 const xOfAKindRoyal = (x) => {
   const keys = Object.keys(cardNameTally).filter((k) => cardNameTally[k] === x);
   if (keys[0] === 'J' || keys[0] === 'Q' || keys[0] === 'K' || keys[0] === 'A') {
     return keys.length;
   }
   return 0;
-  // console.log(keys);
 };
 
-// function to check suit tally
+/**
+ * function to check x of a suit
+ * @param {*} x is the tally you are looking for
+ * @returns length of keys (suit) with value that matches the tally
+ */
 const xOfSuit = (x) => {
   const keys = Object.keys(suitTally).filter((k) => suitTally[k] === x);
   console.log(keys);
   return keys.length;
 };
 
-// function to display text in msg box
+/**
+ * function to display text in game msg box
+ * @param {*} msg
+ */
 const output = (msg) => {
   gameText.innerHTML = msg;
 };
@@ -190,11 +224,10 @@ const hardCodeHand = [
   },
 ];
 
-let winValue = '';
-let straightTally = [];
-let isStraightRoyal = false;
-
-// function to check for straights in hand
+/**
+ * function to check for straights in hand
+ * @returns true if straight condition is met
+ */
 const checkStraights = () => {
   // create empty array to use for checking straights
   straightTally = [];
@@ -275,6 +308,11 @@ const checkStraights = () => {
   return isStraight;
 };
 
+/**
+ * function to calculate hand score and return game message
+ * @param {*} hand
+ * @returns game message with hand score
+ */
 const calcHandScore = (hand) => {
   // populate tally object for card name in hand
   populCardNameTally();
@@ -338,6 +376,10 @@ const calcHandScore = (hand) => {
   return forLosers();
 };
 
+/**
+ * function to calculate player points and generate game msg based on bet and hand score
+ * @param {*} multiplier hand score
+ */
 const getResult = (multiplier) => {
   console.log(winValue);
   const score = Number(playerBet) * multiplier;
@@ -346,6 +388,9 @@ const getResult = (multiplier) => {
   creditNumber.innerHTML = `${playerPoints}`;
 };
 
+/**
+ * function to display game message when no winning hand
+ */
 const forLosers = () => {
   console.log('loser');
   output(`You have no winning hand and lost ${playerBet} points.<br>`);
@@ -353,9 +398,190 @@ const forLosers = () => {
   creditNumber.innerHTML = `${playerPoints}`;
 };
 
-let gameMode = 'default';
+/**
+ * function to run when hold button is clicked
+ * @param {*} cardElement
+ * @param {*} index
+ */
+const holdButtonClickEvent = (cardElement, index) => {
+  if (gameMode === 'secondDeal') {
+    console.log(hand[index].keep);
+    cardElement = hand;
+    if (hand[index].keep === false) {
+      hand[index].keep = true;
+    } else { hand[index].keep = false; }
+  }
+  else {
+    output('Round over.<br>Enter bet and click "Deal" to play again.');
+  }
+};
 
-// dom elements
+/**
+ * function to deal released cards
+ */
+const reDeal = () => {
+  checkDeck();
+  for (let i = 0; i < hand.length; i += 1) {
+    // when keep condition is false, splice hand array index and deal new card from deck
+    if (hand[i].keep === false) {
+      hand.splice(i, 1, deck.pop());
+    }
+    displayCards();
+  }
+};
+
+/**
+ * function to run when plus button is clicked
+ * @param {*} target
+ */
+const plusButtonClick = (target) => {
+  const currentValue = Number(target.value);
+  if (gameMode === 'default') {
+    if (currentValue < 5) {
+      target.value = currentValue + 1; }
+    playerBet = target.value;
+  } else {
+    output('Game in progress.<br>Bet cannot be changed at this time.');
+  }
+};
+
+/**
+ * function to run when minus button is clicked
+ * @param {*} target
+ */
+const minusButtonClick = (target) => {
+  const currentValue = Number(target.value);
+  if (gameMode === 'default') {
+    if (currentValue >= 1) {
+      target.value = currentValue - 1;
+    } else {
+      playerBet = Number(target.value);
+    }
+  } else {
+    output('Game in progress.<br>Bet cannot be changed at this time.');
+  }
+};
+
+/**
+ * function to run when max button is clicked
+ * @param {*} target
+ */
+const maxButtonClick = (target) => {
+  if (gameMode === 'default') {
+    target.value = 5;
+    playerBet = Number(target.value);
+  } else {
+    output('Game in progress.<br>Bet cannot be changed at this time.');
+  }
+};
+
+/**
+ * function to display dealt cards
+ */
+const displayCards = () => {
+  boardCard.innerHTML = '';
+
+  for (let i = 0; i < hand.length; i += 1) {
+    const cardElement = document.createElement('div');
+    cardElement.id = `cardElement${i}`;
+    const cardElementName = document.createElement('div');
+    cardElementName.innerText = hand[i].displayName;
+    cardElementName.classList.add('cardText');
+    cardElement.appendChild(cardElementName);
+    const cardElementSuit = document.createElement('div');
+    cardElementSuit.classList.add('cardText');
+    cardElementSuit.innerText = hand[i].suitSymbol;
+    cardElement.appendChild(cardElementSuit);
+    cardElement.classList.add('card');
+    boardCard.appendChild(cardElement);
+  }
+
+  // create hold/unhold buttons for each card on board
+
+  buttonRow.innerHTML = '';
+
+  for (let i = 0; i < 5; i += 1) {
+    const holdButton = document.createElement('button');
+    holdButton.classList.add('keep');
+    holdButton.innerText = 'Keep';
+    holdButton.addEventListener('click', (event) => {
+    // we will want to pass in the card element so
+    // that we can change how it looks on screen, i.e.,
+    // "turn the card over"
+      holdButtonClickEvent(event.currentTarget, i);
+      console.log(event.currentTarget);
+    });
+    buttonRow.appendChild(holdButton);
+  }
+};
+
+/**
+ * function to check and regenerate deck if finished
+ */
+const checkDeck = () => {
+  if (deck.length < 5) {
+    deck = [];
+    deck = shuffleCards(makeDeck());
+    console.log('NEWDECK');
+  }
+};
+
+/**
+ * function to run when deal button is clicked
+ */
+const dealButtonClickEvent = () => {
+  // check playerBet in case bet amount entered manually
+  playerBet = Number(betAmount.value);
+  if (playerBet > 0 && playerBet < 6 && playerPoints > 0) {
+    if (gameMode === 'default') {
+      cardNameTally = {};
+      suitTally = {};
+      straightTally = {};
+      checkDeck();
+      for (let i = 0; i < 5; i += 1) {
+        const card = deck.pop();
+        hand.push(card);
+      }
+      // hand = hardCodeHand;
+      displayCards();
+      board.appendChild(buttonRow);
+      gameMode = 'secondDeal';
+      gameText.innerHTML = 'Select which cards to keep (if any) and then click \'Draw\'';
+    } else if (gameMode === 'secondDeal') {
+      reDeal();
+      calcHandScore();
+      gameMode = 'default';
+      hand = [];
+      gameText.innerHTML += 'Enter bet and click \'Deal\' to play another round.';
+      betAmount.value = 0;
+      playerBet = Number(0);
+    }
+  }
+  else if (playerPoints <= 0) {
+    output('You have no more credits<br>Buy more credits to continue playing');
+  }
+  else { gameText.innerHTML = 'Please enter your bet between 1 and 5'; }
+};
+
+/**
+ * function to run when reset button is click
+ */
+const resetButtonClickEvent = () => {
+  deck = [];
+  deck = shuffleCards(makeDeck());
+  playerPoints = 100;
+  creditNumber.innerHTML = `${playerPoints}`;
+  playerBet = Number(0);
+  betAmount.value = `${playerBet}`;
+  hand = [];
+  gameMode = 'default';
+  boardCard.innerHTML = '';
+  buttonRow.innerHTML = '';
+  gameText.innerHTML = 'Enter bet and click \'Deal\' to begin the poker game';
+};
+
+// ========== DOM ELEMENTS ==========
+
 // create div for board to place dealt cards
 const gameText = document.createElement('div');
 gameText.classList.add('gameText');
@@ -427,103 +653,6 @@ const maxButton = document.createElement('button');
 maxButton.innerText = 'max';
 maxButton.addEventListener('click', (event) => { maxButtonClick(betAmount); });
 
-let hand = [];
-
-// function to display dealt cards
-const displayCards = () => {
-  boardCard.innerHTML = '';
-
-  for (let i = 0; i < hand.length; i += 1) {
-    const cardElement = document.createElement('div');
-    cardElement.id = `cardElement${i}`;
-    const cardElementName = document.createElement('div');
-    cardElementName.innerText = hand[i].displayName;
-    cardElementName.classList.add('cardText');
-    cardElement.appendChild(cardElementName);
-    const cardElementSuit = document.createElement('div');
-    cardElementSuit.classList.add('cardText');
-    cardElementSuit.innerText = hand[i].suitSymbol;
-    cardElement.appendChild(cardElementSuit);
-    cardElement.classList.add('card');
-    boardCard.appendChild(cardElement);
-  }
-
-  // create hold/unhold buttons for each card on board
-
-  buttonRow.innerHTML = '';
-
-  for (let i = 0; i < 5; i += 1) {
-    const holdButton = document.createElement('button');
-    holdButton.classList.add('keep');
-    holdButton.innerText = 'Keep';
-    holdButton.addEventListener('click', (event) => {
-    // we will want to pass in the card element so
-    // that we can change how it looks on screen, i.e.,
-    // "turn the card over"
-      holdButtonClickEvent(event.currentTarget, i);
-      console.log(event.currentTarget);
-    });
-    buttonRow.appendChild(holdButton);
-  }
-};
-
-const checkDeck = () => {
-  if (deck.length < 5) {
-    deck = [];
-    deck = shuffleCards(makeDeck());
-    console.log('NEWDECK');
-  }
-};
-
-// create deal click event to display dealt cards
-const dealButtonClickEvent = () => {
-  // check playerBet in case bet amount entered manually
-  playerBet = Number(betAmount.value);
-  if (playerBet > 0 && playerPoints > 0) {
-    if (gameMode === 'default') {
-      cardNameTally = {};
-      suitTally = {};
-      straightTally = {};
-      checkDeck();
-      for (let i = 0; i < 5; i += 1) {
-        const card = deck.pop();
-        hand.push(card);
-      }
-      // hand = hardCodeHand;
-      displayCards();
-      board.appendChild(buttonRow);
-      gameMode = 'secondDeal';
-      gameText.innerHTML = 'Select which cards to keep (if any) and then click \'Draw\'';
-    } else if (gameMode === 'secondDeal') {
-      reDeal();
-      calcHandScore();
-      gameMode = 'default';
-      hand = [];
-      gameText.innerHTML += 'Enter bet and click \'Deal\' to play another round.';
-      betAmount.value = 0;
-      playerBet = Number(0);
-    }
-  }
-  else if (playerPoints <= 0) {
-    output('You have no more credits. Game Over.<br>Click "Reset" to start new game');
-  }
-  else { gameText.innerHTML = 'Please enter your bet'; }
-};
-
-const resetButtonClickEvent = () => {
-  deck = [];
-  deck = shuffleCards(makeDeck());
-  playerPoints = 100;
-  creditNumber.innerHTML = `${playerPoints}`;
-  playerBet = Number(0);
-  betAmount.value = `${playerBet}`;
-  hand = [];
-  gameMode = 'default';
-  boardCard.innerHTML = '';
-  buttonRow.innerHTML = '';
-  gameText.innerHTML = 'Enter bet and click \'Deal\' to begin the poker game';
-};
-
 // create deal button
 const dealButton = document.createElement('button');
 dealButton.classList.add('button');
@@ -547,79 +676,14 @@ buttonGroupBet.appendChild(betPlusButton);
 buttonGroupBet.appendChild(betMinusButton);
 buttonGroupBet.appendChild(maxButton);
 
-// functions
+// jsdoc --- done
+// organise code -- done
+// check bet value, return error msg if input is more than 5 --- done
 
-// click event when Keep button is clicked
-const holdButtonClickEvent = (cardElement, index) => {
-  if (gameMode === 'secondDeal') {
-    console.log(hand[index].keep);
-    cardElement = hand;
-    if (hand[index].keep === false) {
-      hand[index].keep = true;
-    } else { hand[index].keep = false; }
-  }
-  else {
-    output('Round over.<br>Enter bet and click "Deal" to play again.');
-  }
-};
-
-// create function to deal released cards , calculate hand score, and update points
-// eslint-disable-next-line max-len
-// when condition is true, use splice to remove that index and replace with new card splice(index, 1, deck.pop)
-const reDeal = () => {
-  checkDeck();
-  for (let i = 0; i < hand.length; i += 1) {
-    if (hand[i].keep === false) {
-      hand.splice(i, 1, deck.pop());
-    }
-    displayCards();
-    // hand[i].keep = false;
-  }
-};
-
-// function for plus minus buttons
-const plusButtonClick = (target) => {
-  const currentValue = Number(target.value);
-  if (gameMode === 'default') {
-    if (currentValue < 5) {
-      target.value = currentValue + 1; }
-    playerBet = target.value;
-  } else {
-    output('Game in progress.<br>Bet cannot be changed at this time.');
-  }
-};
-
-const minusButtonClick = (target) => {
-  const currentValue = Number(target.value);
-  if (gameMode === 'default') {
-    if (currentValue >= 1) {
-      target.value = currentValue - 1;
-    } else {
-      playerBet = Number(target.value);
-    }
-  } else {
-    output('Game in progress.<br>Bet cannot be changed at this time.');
-  }
-};
-
-const maxButtonClick = (target) => {
-  if (gameMode === 'default') {
-    target.value = 5;
-    playerBet = Number(target.value);
-  } else {
-    output('Game in progress.<br>Bet cannot be changed at this time.');
-  }
-};
-
-// update winning points for max bet for royal flush --- done
-// update winning conditions - royal flush --- done
-// update winning conditions - jacks or better --- done
-
-// organise code
-// jsdoc
-// if points run out, pop up window buy credits
+// if points run out, pop up window buy credits --- done
 // clicked card is highlighted -- no keep buttons
 // add click delay when bet buttons are clicked to revert back to initial game text
+// refactor to include fixed dom elements in html
 
 // css improvements
 // sound on/off?
@@ -633,3 +697,8 @@ const maxButtonClick = (target) => {
 // ability to hide/show pay schedule
 // player name
 // leaderboard
+
+// JS DOC
+// first line is a description of the function
+// @param describes the input of the function
+// @return describes the output
