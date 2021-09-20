@@ -406,10 +406,13 @@ const forLosers = () => {
 const holdButtonClickEvent = (cardElement, index) => {
   if (gameMode === 'secondDeal') {
     console.log(hand[index].keep);
-    cardElement = hand;
     if (hand[index].keep === false) {
       hand[index].keep = true;
-    } else { hand[index].keep = false; }
+      cardElement.classList.add('border-card');
+    } else {
+      hand[index].keep = false;
+      cardElement.classList.remove('border-card');
+    }
   }
   else {
     output('Round over.<br>Enter bet and click "Deal" to play again.');
@@ -493,25 +496,14 @@ const displayCards = () => {
     cardElementSuit.innerText = hand[i].suitSymbol;
     cardElement.appendChild(cardElementSuit);
     cardElement.classList.add('card');
-    boardCard.appendChild(cardElement);
-  }
-
-  // create hold/unhold buttons for each card on board
-
-  buttonRow.innerHTML = '';
-
-  for (let i = 0; i < 5; i += 1) {
-    const holdButton = document.createElement('button');
-    holdButton.classList.add('keep');
-    holdButton.innerText = 'Keep';
-    holdButton.addEventListener('click', (event) => {
+    cardElement.addEventListener('click', (event) => {
     // we will want to pass in the card element so
     // that we can change how it looks on screen, i.e.,
     // "turn the card over"
       holdButtonClickEvent(event.currentTarget, i);
       console.log(event.currentTarget);
     });
-    buttonRow.appendChild(holdButton);
+    boardCard.appendChild(cardElement);
   }
 };
 
@@ -681,7 +673,7 @@ buttonGroupBet.appendChild(maxButton);
 // check bet value, return error msg if input is more than 5 --- done
 
 // if points run out, pop up window buy credits --- done
-// clicked card is highlighted -- no keep buttons
+// clicked card is highlighted -- no keep buttons --- done
 // add click delay when bet buttons are clicked to revert back to initial game text
 // refactor to include fixed dom elements in html
 

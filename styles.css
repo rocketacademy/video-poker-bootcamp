@@ -27,6 +27,9 @@ body {
   border-style: groove;
   padding: 10px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cardText {
@@ -142,4 +145,9 @@ body {
 
 .image-second {
   padding-top: 20px;
+}
+
+.border-card {
+  border-color: #132f63;
+  border-width: 3px;
 }

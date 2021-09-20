@@ -47,10 +47,12 @@ contentBoxTwo.appendChild(secondCoinText);
 
 // function when buy credit button is clicked
 const purchaseCreditEvent = (x) => {
-  playerPoints += Number(x);
-  creditNumber.innerHTML = playerPoints;
-  buyCreditsBox.style.display = 'none';
-  output(`Your purchase for ${x} coins is successful!<br>Enter your bet and click deal to play game`);
+  if (confirm(`Confirm purchase of ${x} coins?`)) {
+    playerPoints += Number(x);
+    creditNumber.innerHTML = playerPoints;
+    buyCreditsBox.style.display = 'none';
+    output(`Your purchase for ${x} coins is successful!<br>Enter your bet and click deal to play game`);
+  }
 };
 
 // buttons for each image element
