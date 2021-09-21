@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+/* eslint-disable no-loop-func */
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%% GLOBAL VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%
@@ -12,11 +13,44 @@ let canClickButton = true;
 let currentBet = 1;
 
 const multipliers = ['800', '50', '25', '9', '6', '4', '3', '2', '1'];
-let probabilities = ['0.003%', '0.011%', '0.236%', '1.151%', '1.102%', '1.123%', '7.445%', '12.928%', '21.459%'];
+let probabilities = ['...', '...', '...', '...', '...', '...', '...', '...', '...'];
 
 /* ############################################################
 ###############EE#### HELPER FUNCTIONS ########################
 ########################################################### */
+
+const makeTally = (array, prop) => {
+  const tally = {};
+  for (let i = 0; i < array.length; i += 1) {
+    if (array[i][prop] in tally) {
+      tally[array[i][prop]] += 1;
+    } else {
+      tally[array[i][prop]] = 1;
+    }
+  }
+  return tally;
+};
+
+/**
+ * Function that updates 'WIN' column in table
+ */
+const updateTable = (column, array) => {
+  const rows = document.querySelector('#table-body').querySelectorAll('tr');
+  for (let i = 0; i < 9; i += 1) {
+    const winCell = rows[i].querySelectorAll('td')[column];
+    if (column === 2) {
+      winCell.childNodes[0].data = currentBet * array[i];
+    } else {
+      winCell.childNodes[0].data = array[i];
+    }
+
+    winCell.classList.add('yellow-text');
+    // eslint-disable-next-line
+    const removeYellow = setTimeout( () => {
+      winCell.classList.remove('yellow-text');
+    }, 500);
+  }
+};
 
 /**
  * Function that resets and shuffles deck, clears handDiv, and defaults result
@@ -26,40 +60,25 @@ const resetGame = () => {
   shuffleCards(deck);
   document.querySelector('.hand').innerHTML = ''; // empty hand array
   result = 'BUMMER :('; // result is lose by default
-  probabilities = ['0.003%', '0.011%', '0.236%', '1.151%', '1.102%', '1.123%', '7.445%', '12.928%', '21.459%'];
-  updateChanceInTable();
+  probabilities = ['...', '...', '...', '...', '...', '...', '...', '...', '...'];
+  updateTable(3, probabilities);
 };
 
-/**
- * Function that updates 'WIN' column in table
- */
-const updateWinInTable = () => {
-  const rows = document.querySelector('#table-body').querySelectorAll('tr');
-  for (let i = 0; i < 9; i += 1) {
-    const winCell = rows[i].querySelectorAll('td')[2];
-    winCell.childNodes[0].data = currentBet * multipliers[i];
+// eslint-disable-next-line
+const animateCSS = (element, animation, prefix = 'animate__') => new Promise((resolve, reject) => {
+  const animationName = `${prefix}${animation}`;
 
-    winCell.classList.add('yellow-text');
-    // eslint-disable-next-line
-    const removeYellow = setTimeout( () => {
-      winCell.classList.remove('yellow-text');
-    }, 500);
+  element.classList.add(`${prefix}animated`, animationName);
+
+  // When the animation ends, we clean the classes and resolve the Promise
+  function handleAnimationEnd(event) {
+    event.stopPropagation();
+    element.classList.remove(`${prefix}animated`, animationName);
+    resolve('Animation ended');
   }
-};
 
-const updateChanceInTable = () => {
-  const rows = document.querySelector('#table-body').querySelectorAll('tr');
-  for (let i = 0; i < 9; i += 1) {
-    const winCell = rows[i].querySelectorAll('td')[3];
-    winCell.childNodes[0].data = probabilities[i];
-
-    winCell.classList.add('yellow-text');
-    // eslint-disable-next-line
-    const removeYellow = setTimeout( () => {
-      winCell.classList.remove('yellow-text');
-    }, 500);
-  }
-};
+  element.addEventListener('animationend', handleAnimationEnd, { once: true });
+});
 
 /* ############################################################
 ################### PLAYER ACTION LOGIC ########################
@@ -111,7 +130,7 @@ const onButtonClick = () => {
     }
 
     // eslint-disable-next-line
-    const resetButton = setTimeout(() => {
+    const preventMultipleClicks = setTimeout(() => {
       canClickButton = true;
     }, 1000);
   }
@@ -123,28 +142,24 @@ const onButtonClick = () => {
  */
 const drawCards = () => {
   canClickCard = false;
+
   document.querySelectorAll('.bet-buttons')[0].classList.remove('hide-text');
   document.querySelectorAll('.bet-buttons')[1].classList.remove('hide-text');
 
   // change UNselected cards
   const cardsToChange = document.querySelector('.hand').querySelectorAll('.unclicked-card');
   for (let i = 0; i < cardsToChange.length; i += 1) {
-    cardsToChange[i].classList.remove('animate__flipInY');
-    cardsToChange[i].classList.add('animate__flipOutY');
-
     const indexInHand = Number(cardsToChange[i].id[4]);
     hand[indexInHand] = deck.pop();
 
-    // eslint-disable-next-line
-    const delayChangeCards = setTimeout(() => {
+    animateCSS(cardsToChange[i], 'flipOutY').then(() => {
       cardsToChange[i].querySelector('.card-name').innerText = `${hand[indexInHand].name}`;
       cardsToChange[i].querySelector('.suit-img').src = `vp-img/${hand[indexInHand].img}`;
       if (hand[i].img === 'heart.png' || hand[i].img === 'diamond.png') {
         cardsToChange[i].querySelector('.suit-img').classList.add('red');
       }
-      cardsToChange[i].classList.remove('animate__flipOutY');
-      cardsToChange[i].classList.add('animate__flipInY');
-    }, 500);
+      animateCSS(cardsToChange[i], 'flipInY');
+    });
   }
 
   // remove selection on cards
@@ -156,35 +171,22 @@ const drawCards = () => {
   }
 
   // tally
-  const cardRankTally = {};
-  const cardSuitTally = {};
-
-  for (let k = 0; k < hand.length; k += 1) {
-    const currentRank = hand[k].rank;
-    const currentSuit = hand[k].suit;
-
-    if (currentRank in cardRankTally) {
-      cardRankTally[currentRank] += 1;
-    } else {
-      cardRankTally[currentRank] = 1;
-    }
-
-    if (currentSuit in cardSuitTally) {
-      cardSuitTally[currentSuit] += 1;
-    } else {
-      cardSuitTally[currentSuit] = 1;
-    }
-  }
+  const cardRankTally = makeTally(hand, 'rank');
+  const cardSuitTally = makeTally(hand, 'suit');
 
   // calculate and update points
   // eslint-disable-next-line
-  points += calcHandScore(cardRankTally, cardSuitTally);
+  const multiplier = calcHandScore(cardRankTally, cardSuitTally);
+  let winnings = currentBet * multiplier;
+  if (multiplier > 0) {
+    winnings += currentBet;
+  }
+  points += winnings;
 
   // eslint-disable-next-line
   const delayResults = setTimeout(() => {
     document.querySelector('.score').innerText = `CREDITS ${points}`;
     document.querySelector('.results').innerHTML = `${result} <br> BET AND PRESS 'DEAL' TO PLAY AGAIN`;
-
     document.querySelector('.hand').classList.add('animate__animated');
     document.querySelector('.hand').classList.add('animate__shakeY');
     document.querySelector('.hand').classList.add('animate__infinite');
@@ -212,13 +214,13 @@ const dealCards = () => {
   for (let i = 0; i < 5; i += 1) {
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('unclicked-card');
-    cardDiv.classList.add('animate__animated');
-    cardDiv.classList.add('animate__flipInY');
+    animateCSS(cardDiv, 'flipInY');
     cardDiv.setAttribute('id', `card${i}`);
+    document.querySelector('.hand').appendChild(cardDiv);
+
     cardDiv.addEventListener('click', (event) => { onCardClick(event.currentTarget); });
     cardDiv.addEventListener('mouseenter', (event) => { onCardEnter(event.currentTarget); });
     cardDiv.addEventListener('mouseleave', (event) => { onCardLeave(event.currentTarget); });
-    document.querySelector('.hand').appendChild(cardDiv);
 
     const cardName = document.createElement('p');
     cardName.classList.add('card-name');
@@ -244,7 +246,7 @@ const dealCards = () => {
   points -= currentBet;
   document.querySelector('.score').innerText = `CREDITS ${points}`;
 
-  // remove deal button and creates draw button
+  // change deal to draw button
   document.querySelector('.game-button').innerText = 'DRAW';
 
   document.querySelector('.hand').classList.remove('animate__animated');
@@ -259,24 +261,17 @@ const dealCards = () => {
  */
 // eslint-disable-next-line
 const calcHandScore = (tallyRanks, tallySuits) => {
-  const keyRanksStr = Object.keys(tallyRanks);
-  const keySuits = Object.keys(tallySuits);
-  const keyRanks = keyRanksStr.map((key) => Number(key));
-  keyRanks.sort((a, b) => a - b);
-
-  console.log(tallyRanks);
-  console.log(tallySuits);
 
   const multiplierArray = [];
-  multiplierArray.push(checkJacksOrBetter(tallyRanks, keyRanks));
-  multiplierArray.push(checkTwoPair(tallyRanks, keyRanks));
-  multiplierArray.push(checkThreeOfAKind(tallyRanks, keyRanks));
-  multiplierArray.push(checkStraight(tallyRanks, keyRanks));
-  multiplierArray.push(checkFlush(tallySuits, keySuits));
-  multiplierArray.push(checkFullHouse(tallyRanks, keyRanks));
-  multiplierArray.push(checkFourOfAKind(tallyRanks, keyRanks));
-  multiplierArray.push(checkStraightFlush(tallyRanks, keyRanks, tallySuits, keySuits));
-  multiplierArray.push(checkRoyalFlush(tallyRanks, keyRanks, tallySuits, keySuits));
+  multiplierArray.push(checkJacksOrBetter(tallyRanks));
+  multiplierArray.push(checkTwoPair(tallyRanks));
+  multiplierArray.push(checkThreeOfAKind(tallyRanks));
+  multiplierArray.push(checkStraight(tallyRanks));
+  multiplierArray.push(checkFlush(tallySuits));
+  multiplierArray.push(checkFullHouse(tallyRanks));
+  multiplierArray.push(checkFourOfAKind(tallyRanks));
+  multiplierArray.push(checkStraightFlush(tallyRanks, tallySuits));
+  multiplierArray.push(checkRoyalFlush(tallyRanks, tallySuits));
 
   let multiplier = 0;
   for (let i = 0; i < multiplierArray.length; i += 1) {
@@ -285,12 +280,7 @@ const calcHandScore = (tallyRanks, tallySuits) => {
     }
   }
 
-  let winnings = currentBet * multiplier;
-  if (multiplier > 0) {
-    winnings += currentBet;
-  }
-
-  return winnings;
+  return multiplier;
 };
 
 /**
@@ -300,7 +290,7 @@ const increaseBet = () => {
   if (!canClickCard) {
     currentBet += 1;
     document.querySelector('#bet').innerText = currentBet;
-    updateWinInTable();
+    updateTable(2, multipliers);
   }
 };
 
@@ -311,7 +301,7 @@ const decreaseBet = () => {
   if (currentBet > 1 && !canClickCard) {
     currentBet -= 1;
     document.querySelector('#bet').innerText = currentBet;
-    updateWinInTable();
+    updateTable(2, multipliers);
   }
 };
 
@@ -322,25 +312,22 @@ const decreaseBet = () => {
 // create header
 const createHeader = () => {
   const header = document.createElement('header');
-  header.classList.add('animate__animated');
-  header.classList.add('animate__fadeIn');
+  document.querySelector('.container').appendChild(header);
 
   const mainTitle = document.createElement('h1');
-  mainTitle.addEventListener('mouseenter', () => { onTitleEnter(mainTitle); });
-  mainTitle.addEventListener('mouseleave', () => { onTitleLeave(mainTitle); });
   mainTitle.innerText = 'VIDEO POKER';
   header.appendChild(mainTitle);
 
-  document.body.appendChild(header);
+  mainTitle.addEventListener('mouseenter', () => { onTitleEnter(mainTitle); });
+  mainTitle.addEventListener('mouseleave', () => { onTitleLeave(mainTitle); });
 };
 
 // create table
 const createTable = () => {
   const tableDiv = document.createElement('div');
   tableDiv.classList.add('table-div');
-  tableDiv.classList.add('animate__animated');
-  tableDiv.classList.add('animate__fadeIn');
-  document.body.appendChild(tableDiv);
+  document.querySelector('.container').appendChild(tableDiv);
+
   const tableEl = document.createElement('table');
   const tableHead = document.createElement('thead');
   const tableBody = document.createElement('tbody');
@@ -364,7 +351,6 @@ const createTable = () => {
 
   for (let i = 0; i < 9; i += 1) {
     const row = document.createElement('tr');
-
     for (let j = 0; j < 4; j += 1) {
       const cell = document.createElement('td');
       if (j === 0) {
@@ -382,39 +368,39 @@ const createTable = () => {
       }
       row.appendChild(cell);
     }
-
     tableBody.appendChild(row);
   }
 };
 
-/**
- * Function to initialise game
- */
-const initialiseGame = () => {
-  createHeader();
-  createTable();
-  updateWinInTable();
-
+const createButtons = () => {
   const buttonDiv = document.createElement('div');
   buttonDiv.classList.add('button-div');
+  document.querySelector('.container').appendChild(buttonDiv);
 
   const betDiv = document.createElement('div');
   buttonDiv.appendChild(betDiv);
 
   const betDivHead = document.createElement('div');
-  betDivHead.innerText = 'BET';
-  betDivHead.classList.add('bet-head');
-  betDiv.appendChild(betDivHead);
   const betDivBody = document.createElement('div');
+  betDivHead.classList.add('bet-head');
   betDivBody.classList.add('bet-div');
+  betDivHead.innerText = 'BET';
+  betDiv.appendChild(betDivHead);
   betDiv.appendChild(betDivBody);
 
   const betMinus = document.createElement('div');
   const betPlus = document.createElement('div');
+  const betInput = document.createElement('div');
   betMinus.innerText = '-';
   betPlus.innerText = '+';
+  betInput.innerText = currentBet;
   betMinus.classList.add('bet-buttons');
   betPlus.classList.add('bet-buttons');
+  betInput.setAttribute('id', 'bet');
+  betDivBody.appendChild(betMinus);
+  betDivBody.appendChild(betInput);
+  betDivBody.appendChild(betPlus);
+
   betMinus.addEventListener('click', decreaseBet);
   betMinus.addEventListener('mouseenter', () => { onButtonEnter(betMinus); });
   betMinus.addEventListener('mouseleave', () => { onButtonLeave(betMinus); });
@@ -422,43 +408,49 @@ const initialiseGame = () => {
   betPlus.addEventListener('mouseenter', () => { onButtonEnter(betPlus); });
   betPlus.addEventListener('mouseleave', () => { onButtonLeave(betPlus); });
 
-  const betInput = document.createElement('div');
-  betInput.setAttribute('id', 'bet');
-  betInput.innerText = currentBet;
-  betDivBody.appendChild(betMinus);
-  betDivBody.appendChild(betInput);
-  betDivBody.appendChild(betPlus);
-
   const gameBtn = document.createElement('div');
   gameBtn.classList.add('game-button');
   gameBtn.innerText = 'DEAL';
+  buttonDiv.appendChild(gameBtn);
+
   gameBtn.addEventListener('click', onButtonClick);
   gameBtn.addEventListener('mouseenter', () => { onButtonEnter(gameBtn); });
   gameBtn.addEventListener('mouseleave', () => { onButtonLeave(gameBtn); });
-  buttonDiv.appendChild(gameBtn);
+};
+
+/**
+ * Function to initialise game
+ */
+const initialiseGame = () => {
+  const mainDiv = document.createElement('div');
+  mainDiv.classList.add('container');
+  document.body.appendChild(mainDiv);
+
+  createHeader();
+  createTable();
 
   const resultsDiv = document.createElement('div');
   resultsDiv.classList.add('results');
-  resultsDiv.classList.add('animate__animated');
-  resultsDiv.classList.add('animate__fadeIn');
-  // eslint-disable-next-line
-  const delayResultsAnimation = setTimeout(() => {
-    resultsDiv.classList.remove('animate__fadeIn');
-    resultsDiv.classList.add('animate__flash');
-    resultsDiv.classList.add('animate__infinite');
-  }, 1500);
   resultsDiv.innerText = "INPUT YOUR BET AND PRESS 'DEAL' TO BEGIN";
+  mainDiv.appendChild(resultsDiv);
 
-  const scoreDiv = document.createElement('div');
-  scoreDiv.innerText = `CREDITS ${points}`;
-
-  document.body.appendChild(resultsDiv);
   const handDiv = document.createElement('div');
   handDiv.classList.add('hand');
-  document.body.appendChild(handDiv);
-  document.body.appendChild(buttonDiv);
-  document.body.appendChild(scoreDiv);
+  mainDiv.appendChild(handDiv);
+
+  createButtons();
+
+  const scoreDiv = document.createElement('div');
   scoreDiv.classList.add('score');
+  scoreDiv.innerText = `CREDITS ${points}`;
+  mainDiv.appendChild(scoreDiv);
+
+  animateCSS(mainDiv, 'fadeIn').then(() => {
+    resultsDiv.classList.add('animate__animated');
+    resultsDiv.classList.add('animate__flash');
+    resultsDiv.classList.add('animate__infinite');
+  });
+
   resetGame();
 };
 
