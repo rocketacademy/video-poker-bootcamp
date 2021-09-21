@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 
 /**
- * Function that creates 52 distinct cards, i.e. a poker deck
- * @return newDeck {array}
+ * Function that creates a poker deck of 52 cards
+ * @return {array} deck of cards
  */
 const makeDeck = () => {
   const newDeck = [];
@@ -40,16 +40,16 @@ const makeDeck = () => {
 };
 
 /**
- * Function that gives random number x, where 0 <= x < max
- * @param max {number} for the upper bound
- * @return {number} between 0 (inclusive) and max
+ * Function that gives random integer x, where 0 <= x < max
+ * @param {number} max upper bound
+ * @return {number} random integer between 0 (inclusive) and max
  */
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
 /**
- * Function that shuffles cards
- * @param cardDeck {array} to be shuffled
- * @return cardDeck {array} that has been shuffled
+ * Function that shuffles an array
+ * @param {array} cardDeck to be shuffled
+ * @return {array} shuffled array
  */
 const shuffleCards = (cardDeck) => {
   for (let currentIndex = 0; currentIndex < cardDeck.length; currentIndex += 1) {

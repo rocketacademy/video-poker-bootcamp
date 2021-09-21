@@ -1,9 +1,13 @@
 /* eslint-disable no-unused-vars */
 
-let result = 'BUMMER :(';
-let aceHigh = false;
+let result = 'BUMMER :('; // result is lose by default
+let aceHigh = false; // to differentiate ROYAL FLUSH from STRAIGHT FLUSH
 
-// check how many pairs
+/**
+ * Function that checks how many pairs are present
+ * @param {object} rankTally tally of card ranks
+ * @return {number} number of pairs
+ */
 const checkPairs = (rankTally) => {
   let numPairs = 0;
   Object.values(rankTally).forEach((value) => { if (value === 2) {
@@ -12,7 +16,12 @@ const checkPairs = (rankTally) => {
   return numPairs;
 };
 
-// check one pair
+/**
+ * Function that checks for single pair of Jacks, Queens, Kings, or Aces
+ * (also amends 'result' variable accordingly)
+ * @param {object} rankTally tally of card ranks
+ * @return {number} 1 if true, else 0 if false
+ */
 const checkJacksOrBetter = (rankTally) => {
   if (checkPairs(rankTally) === 1) {
     if (rankTally[1] === 2) {
@@ -32,7 +41,12 @@ const checkJacksOrBetter = (rankTally) => {
   return 0;
 };
 
-// check two pair
+/**
+ * Function that checks for two pairs
+ * (also amends 'result' variable accordingly)
+ * @param {object} rankTally tally of card ranks
+ * @return {number} 2 if true, else 0 if false
+ */
 const checkTwoPair = (rankTally) => {
   if (checkPairs(rankTally) === 2) {
     result = 'TWO PAIRS';
@@ -41,7 +55,12 @@ const checkTwoPair = (rankTally) => {
   return 0;
 };
 
-// check three of a kind
+/**
+ * Function that checks for three of a kind
+ * (also amends 'result' variable accordingly)
+ * @param {object} rankTally tally of card ranks
+ * @return {number} 3 if true, else 0 if false
+ */
 const checkThreeOfAKind = (rankTally) => {
   if (Object.values(rankTally).includes(3)) {
     result = 'THREE OF A KIND';
@@ -50,14 +69,21 @@ const checkThreeOfAKind = (rankTally) => {
   return 0;
 };
 
-// check straight
+/**
+ * Function that checks for straight, sets aceHigh to true if applicable
+ * (also amends 'result' variable accordingly)
+ * @param {object} rankTally tally of card ranks
+ * @return {number} 4 if true, else 0 if false
+ */
 const checkStraight = (rankTally) => {
   let straightCounter = 0;
   aceHigh = false;
 
+  // create sorted array of ranks in rankTally
   const rankKeys = Object.keys(rankTally).map((key) => Number(key));
   rankKeys.sort((a, b) => a - b);
 
+  // check if adjacent ranks have difference of 1
   for (let i = 1; i < rankKeys.length; i += 1) {
     const currentRank = Number(rankKeys[i]);
     const previousRank = Number(rankKeys[i - 1]);
@@ -71,7 +97,7 @@ const checkStraight = (rankTally) => {
     return 4;
   }
 
-  // for ace-high straight
+  // check ace-high straight
   if (straightCounter === 3 && rankKeys[0] === 1 && rankKeys[1] === 10) {
     result = 'STRAIGHT (ACE-HIGH)';
     aceHigh = true;
@@ -81,7 +107,12 @@ const checkStraight = (rankTally) => {
   return 0;
 };
 
-// check flush
+/**
+ * Function that checks for flush
+ * (also amends 'result' variable accordingly)
+ * @param {object} suitTally tally of card suits
+ * @return {number} 6 if true, else 0 if false
+ */
 const checkFlush = (suitTally) => {
   if (Object.values(suitTally).includes(5)) {
     result = 'FLUSH';
@@ -90,7 +121,12 @@ const checkFlush = (suitTally) => {
   return 0;
 };
 
-// check full house
+/**
+ * Function that checks for ful house
+ * (also amends 'result' variable accordingly)
+ * @param {object} rankTally tally of card ranks
+ * @return {number} 9 if true, else 0 if false
+ */
 const checkFullHouse = (rankTally) => {
   if (checkThreeOfAKind(rankTally) !== 0
   && checkPairs(rankTally) === 1) {
@@ -100,7 +136,12 @@ const checkFullHouse = (rankTally) => {
   return 0;
 };
 
-// check four of a kind
+/**
+ * Function that checks for four of a kind
+ * (also amends 'result' variable accordingly)
+ * @param {object} rankTally tally of card ranks
+ * @return {number} 25 if true, else 0 if false
+ */
 const checkFourOfAKind = (rankTally) => {
   if (Object.values(rankTally).includes(4)) {
     result = 'FOUR OF A KIND';
@@ -109,7 +150,13 @@ const checkFourOfAKind = (rankTally) => {
   return 0;
 };
 
-// check straight flush
+/**
+ * Function that checks for straight flush
+ * (also amends 'result' variable accordingly)
+ * @param {object} rankTally tally of card ranks
+ * @param {object} suitTally tally of card suits
+ * @return {number} 50 if true, else 0 if false
+ */
 const checkStraightFlush = (rankTally, suitTally) => {
   if (checkStraight(rankTally) !== 0 && checkFlush(suitTally) !== 0) {
     result = 'STRAIGHT FLUSH';
@@ -118,11 +165,18 @@ const checkStraightFlush = (rankTally, suitTally) => {
   return 0;
 };
 
+/**
+ * Function that checks for royal flush
+ * (also amends 'result' variable accordingly)
+ * @param {object} rankTally tally of card ranks
+ * @param {object} suitTally tally of card suits
+ * @return {number} 250 if true, else 0 if false
+ */
 const checkRoyalFlush = (rankTally, suitTally) => {
   // eslint-disable-next-line
   if (checkStraight(rankTally) !== 0 && checkFlush(suitTally) !== 0 && aceHigh === true) {
     result = 'ROYAL FLUSH';
-    return 800;
+    return 250;
   }
   return 0;
 };

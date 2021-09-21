@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable no-loop-func */
 
@@ -9,16 +11,55 @@ let points = 100;
 let deck = [];
 let hand = [];
 let canClickCard = false;
-let canClickButton = true;
+let canClickButton = true; // used to prevent multiple clicks on deal/draw button
 let currentBet = 1;
 
-const multipliers = ['800', '50', '25', '9', '6', '4', '3', '2', '1'];
+const multipliers = ['250', '50', '25', '9', '6', '4', '3', '2', '1'];
 let probabilities = ['...', '...', '...', '...', '...', '...', '...', '...', '...'];
 
 /* ############################################################
-###############EE#### HELPER FUNCTIONS ########################
+################### HELPER FUNCTIONS ########################
 ########################################################### */
+/**
+ * Function that creates card div with event listener, name, suit and hidden hold div
+*/
+const createCardEl = () => {
+  const cardDiv = document.createElement('div');
+  cardDiv.classList.add('unclicked-card');
+  animateCSS(cardDiv, 'flipInY');
+  cardDiv.setAttribute('id', `card${i}`);
+  document.querySelector('.hand').appendChild(cardDiv);
 
+  cardDiv.addEventListener('click', (event) => { onCardClick(event.currentTarget); });
+  cardDiv.addEventListener('mouseenter', (event) => { onCardEnter(event.currentTarget); });
+  cardDiv.addEventListener('mouseleave', (event) => { onCardLeave(event.currentTarget); });
+
+  const cardName = document.createElement('p');
+  cardName.classList.add('card-name');
+  cardName.innerText = `${hand[i].name}`;
+  cardDiv.appendChild(cardName);
+
+  const cardSuitImg = document.createElement('img');
+  cardSuitImg.src = `vp-img/${hand[i].img}`;
+  cardSuitImg.classList.add('suit-img');
+  cardDiv.appendChild(cardSuitImg);
+  if (hand[i].img === 'heart.png' || hand[i].img === 'diamond.png') {
+    cardSuitImg.classList.add('red');
+  }
+
+  const holdDiv = document.createElement('div');
+  holdDiv.classList.add('hold-text');
+  holdDiv.classList.add('hide');
+  holdDiv.innerText = 'HOLD';
+  cardDiv.appendChild(holdDiv);
+};
+
+/**
+ * Function that counts number of occurences of each element in array
+ * @param {array} array array of cards to tally
+ * @param {string} prop property of card to access
+ * @return {object} tally from elements in array
+ */
 const makeTally = (array, prop) => {
   const tally = {};
   for (let i = 0; i < array.length; i += 1) {
@@ -32,28 +73,33 @@ const makeTally = (array, prop) => {
 };
 
 /**
- * Function that updates 'WIN' column in table
+ * Function that updates column in table
+ * @param {number} column index of column to update
+ * @param {array} array to replace data from
+ *
  */
 const updateTable = (column, array) => {
   const rows = document.querySelector('#table-body').querySelectorAll('tr');
   for (let i = 0; i < 9; i += 1) {
     const winCell = rows[i].querySelectorAll('td')[column];
     if (column === 2) {
-      winCell.childNodes[0].data = currentBet * array[i];
+      winCell.childNodes[0].data = currentBet * Number(array[i]);
+      if (currentBet >= 5 && Number(array[i]) === 250) {
+        winCell.childNodes[0].data = currentBet * 800;
+      }
     } else {
       winCell.childNodes[0].data = array[i];
     }
 
     winCell.classList.add('yellow-text');
-    // eslint-disable-next-line
-    const removeYellow = setTimeout( () => {
+    const removeYellow = setTimeout(() => {
       winCell.classList.remove('yellow-text');
     }, 500);
   }
 };
 
 /**
- * Function that resets and shuffles deck, clears handDiv, and defaults result
+ * Function that resets and shuffles deck, clears handDiv, and defaults result and probability array
  */
 const resetGame = () => {
   deck = makeDeck();
@@ -64,29 +110,13 @@ const resetGame = () => {
   updateTable(3, probabilities);
 };
 
-// eslint-disable-next-line
-const animateCSS = (element, animation, prefix = 'animate__') => new Promise((resolve, reject) => {
-  const animationName = `${prefix}${animation}`;
-
-  element.classList.add(`${prefix}animated`, animationName);
-
-  // When the animation ends, we clean the classes and resolve the Promise
-  function handleAnimationEnd(event) {
-    event.stopPropagation();
-    element.classList.remove(`${prefix}animated`, animationName);
-    resolve('Animation ended');
-  }
-
-  element.addEventListener('animationend', handleAnimationEnd, { once: true });
-});
-
 /* ############################################################
 ################### PLAYER ACTION LOGIC ########################
 ########################################################### */
 
 /**
- * Function that toggles element's class between 'unclicked-card' and 'clicked-card'
- * @param {element} of which to toggle class
+ * Function that holds/unholds cards, and calculates probabilty of hands
+ * @param {element} cardEl element of which to toggle class
  */
 const onCardClick = (cardEl) => {
   if (canClickCard === true) {
@@ -104,9 +134,10 @@ const onCardClick = (cardEl) => {
 };
 
 /**
- * Function that switches function of deal/draw button
+ * Function that triggers dealing or drawing of cards accordingly
  */
 const onButtonClick = () => {
+  // remove flashing animation on results div (starting page)
   if (document.querySelector('.results').classList.contains('animate__animated')) {
     document.querySelector('.results').classList.remove('animate__animated');
     document.querySelector('.results').classList.remove('animate__flash');
@@ -114,22 +145,21 @@ const onButtonClick = () => {
   }
 
   if (canClickButton) {
-    canClickButton = false;
+    canClickButton = false; // prevent multiple clicks
+
+    // animate button press
     document.querySelector('.game-button').classList.add('press-button');
-    // eslint-disable-next-line
     const buttonPress = setTimeout(() => {
       document.querySelector('.game-button').classList.remove('press-button');
     }, 100);
 
+    // trigger drawCards or dealCards function accordingly
     if (canClickCard) {
-    // eslint-disable-next-line
-    drawCards();
+      drawCards();
     } else {
-    // eslint-disable-next-line
-    dealCards();
+      dealCards();
     }
 
-    // eslint-disable-next-line
     const preventMultipleClicks = setTimeout(() => {
       canClickButton = true;
     }, 1000);
@@ -138,11 +168,11 @@ const onButtonClick = () => {
 
 /**
  * Function that swaps out unselected cards for new cards, then calculate and updates points
- * Changes draw button to new game button
  */
 const drawCards = () => {
   canClickCard = false;
 
+  // show buttons for betting
   document.querySelectorAll('.bet-buttons')[0].classList.remove('hide-text');
   document.querySelectorAll('.bet-buttons')[1].classList.remove('hide-text');
 
@@ -152,6 +182,7 @@ const drawCards = () => {
     const indexInHand = Number(cardsToChange[i].id[4]);
     hand[indexInHand] = deck.pop();
 
+    // animate swapping of cards
     animateCSS(cardsToChange[i], 'flipOutY').then(() => {
       cardsToChange[i].querySelector('.card-name').innerText = `${hand[indexInHand].name}`;
       cardsToChange[i].querySelector('.suit-img').src = `vp-img/${hand[indexInHand].img}`;
@@ -170,39 +201,45 @@ const drawCards = () => {
     cardsClicked[j].querySelector('.hold-text').classList.add('hide');
   }
 
-  // tally
+  // tally ranks and suits
   const cardRankTally = makeTally(hand, 'rank');
   const cardSuitTally = makeTally(hand, 'suit');
 
   // calculate and update points
-  // eslint-disable-next-line
   const multiplier = calcHandScore(cardRankTally, cardSuitTally);
   let winnings = currentBet * multiplier;
+  // royal flush multiplier = 800 if bet is more than 5
+  if (currentBet >= 5 && multiplier === 250) {
+    winnings = currentBet * 800;
+  }
   if (multiplier > 0) {
     winnings += currentBet;
   }
   points += winnings;
 
-  // eslint-disable-next-line
   const delayResults = setTimeout(() => {
     document.querySelector('.score').innerText = `CREDITS ${points}`;
     document.querySelector('.results').innerHTML = `${result} <br> BET AND PRESS 'DEAL' TO PLAY AGAIN`;
+
+    // add card moving animation
     document.querySelector('.hand').classList.add('animate__animated');
     document.querySelector('.hand').classList.add('animate__shakeY');
     document.querySelector('.hand').classList.add('animate__infinite');
   }, 500);
 
+  // change draw to deal button
   document.querySelector('.game-button').innerText = 'DEAL';
 };
 
 /**
- * Function to deal 5 cards from deck to hand, create span for each card with event listener
- * Changes deal button to draw button
+ * Function to deal 5 cards from deck to hand, create div for each card with event listener
  */
 const dealCards = () => {
   resetGame();
 
   canClickCard = true;
+
+  // remove buttons for betting
   document.querySelectorAll('.bet-buttons')[0].classList.add('hide-text');
   document.querySelectorAll('.bet-buttons')[1].classList.add('hide-text');
 
@@ -212,56 +249,29 @@ const dealCards = () => {
 
   // create div for each card
   for (let i = 0; i < 5; i += 1) {
-    const cardDiv = document.createElement('div');
-    cardDiv.classList.add('unclicked-card');
-    animateCSS(cardDiv, 'flipInY');
-    cardDiv.setAttribute('id', `card${i}`);
-    document.querySelector('.hand').appendChild(cardDiv);
-
-    cardDiv.addEventListener('click', (event) => { onCardClick(event.currentTarget); });
-    cardDiv.addEventListener('mouseenter', (event) => { onCardEnter(event.currentTarget); });
-    cardDiv.addEventListener('mouseleave', (event) => { onCardLeave(event.currentTarget); });
-
-    const cardName = document.createElement('p');
-    cardName.classList.add('card-name');
-    cardName.innerText = `${hand[i].name}`;
-    cardDiv.appendChild(cardName);
-
-    const cardSuitImg = document.createElement('img');
-    cardSuitImg.src = `vp-img/${hand[i].img}`;
-    cardSuitImg.classList.add('suit-img');
-    cardDiv.appendChild(cardSuitImg);
-    if (hand[i].img === 'heart.png' || hand[i].img === 'diamond.png') {
-      cardSuitImg.classList.add('red');
-    }
-
-    const holdDiv = document.createElement('div');
-    holdDiv.classList.add('hold-text');
-    holdDiv.classList.add('hide');
-    holdDiv.innerText = 'HOLD';
-    cardDiv.appendChild(holdDiv);
+    createCardEl();
   }
 
   // store bet
   points -= currentBet;
   document.querySelector('.score').innerText = `CREDITS ${points}`;
 
-  // change deal to draw button
-  document.querySelector('.game-button').innerText = 'DRAW';
-
+  // remove card moving animation
   document.querySelector('.hand').classList.remove('animate__animated');
   document.querySelector('.hand').classList.remove('animate__shakeY');
   document.querySelector('.hand').classList.remove('animate__infinite');
+
+  // change deal to draw button
+  document.querySelector('.game-button').innerText = 'DRAW';
 };
 
 /**
- * Function that calculates score of a given hand
- * @param  an {array} hand containing cards to calculate score with
- * @return {number} score of hand (fixed as 1 temporariliy)
+ * Function that calculates multiplier of a given hand
+ * @param {object} tallyRanks tally of card ranks in hand
+ * @param {object} tallySuits tally of card suits in hand
+ * @return {number} multiplier of hand, 0 if no winning hand
  */
-// eslint-disable-next-line
 const calcHandScore = (tallyRanks, tallySuits) => {
-
   const multiplierArray = [];
   multiplierArray.push(checkJacksOrBetter(tallyRanks));
   multiplierArray.push(checkTwoPair(tallyRanks));
@@ -273,6 +283,7 @@ const calcHandScore = (tallyRanks, tallySuits) => {
   multiplierArray.push(checkStraightFlush(tallyRanks, tallySuits));
   multiplierArray.push(checkRoyalFlush(tallyRanks, tallySuits));
 
+  // find maximum multiplier
   let multiplier = 0;
   for (let i = 0; i < multiplierArray.length; i += 1) {
     if (multiplierArray[i] > multiplier) {
@@ -284,7 +295,7 @@ const calcHandScore = (tallyRanks, tallySuits) => {
 };
 
 /**
- * Function that INCREASES currentBet by 1 and updates betInput
+ * Function that INCREASES currentBet by 1 and updates 'WIN' column in table
  */
 const increaseBet = () => {
   if (!canClickCard) {
@@ -295,7 +306,7 @@ const increaseBet = () => {
 };
 
 /**
- * Function that DECREASES currentBet by 1 and updates betInput
+ * Function that DECREASES currentBet by 1 and updates 'WIN' column in table
  */
 const decreaseBet = () => {
   if (currentBet > 1 && !canClickCard) {
@@ -309,7 +320,9 @@ const decreaseBet = () => {
 ###################### INITIALISATION ########################
 ########################################################### */
 
-// create header
+/**
+ * Function that creates HEADER element
+ */
 const createHeader = () => {
   const header = document.createElement('header');
   document.querySelector('.container').appendChild(header);
@@ -322,7 +335,9 @@ const createHeader = () => {
   mainTitle.addEventListener('mouseleave', () => { onTitleLeave(mainTitle); });
 };
 
-// create table
+/**
+ * Function that creates TABLE element
+ */
 const createTable = () => {
   const tableDiv = document.createElement('div');
   tableDiv.classList.add('table-div');
@@ -372,6 +387,9 @@ const createTable = () => {
   }
 };
 
+/**
+ * Function that creates BUTTON element
+ */
 const createButtons = () => {
   const buttonDiv = document.createElement('div');
   buttonDiv.classList.add('button-div');
@@ -419,9 +437,10 @@ const createButtons = () => {
 };
 
 /**
- * Function to initialise game
+ * Function to initialise game, creates all DOM elements necessary
  */
 const initialiseGame = () => {
+  // main container
   const mainDiv = document.createElement('div');
   mainDiv.classList.add('container');
   document.body.appendChild(mainDiv);
