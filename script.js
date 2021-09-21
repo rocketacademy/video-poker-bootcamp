@@ -22,12 +22,13 @@ let probabilities = ['...', '...', '...', '...', '...', '...', '...', '...', '..
 ########################################################### */
 /**
  * Function that creates card div with event listener, name, suit and hidden hold div
+ * @param {number} index index of card in hand
 */
-const createCardEl = () => {
+const createCardEl = (index) => {
   const cardDiv = document.createElement('div');
   cardDiv.classList.add('unclicked-card');
   animateCSS(cardDiv, 'flipInY');
-  cardDiv.setAttribute('id', `card${i}`);
+  cardDiv.setAttribute('id', `card${index}`);
   document.querySelector('.hand').appendChild(cardDiv);
 
   cardDiv.addEventListener('click', (event) => { onCardClick(event.currentTarget); });
@@ -36,14 +37,14 @@ const createCardEl = () => {
 
   const cardName = document.createElement('p');
   cardName.classList.add('card-name');
-  cardName.innerText = `${hand[i].name}`;
+  cardName.innerText = `${hand[index].name}`;
   cardDiv.appendChild(cardName);
 
   const cardSuitImg = document.createElement('img');
-  cardSuitImg.src = `vp-img/${hand[i].img}`;
+  cardSuitImg.src = `vp-img/${hand[index].img}`;
   cardSuitImg.classList.add('suit-img');
   cardDiv.appendChild(cardSuitImg);
-  if (hand[i].img === 'heart.png' || hand[i].img === 'diamond.png') {
+  if (hand[index].img === 'heart.png' || hand[index].img === 'diamond.png') {
     cardSuitImg.classList.add('red');
   }
 
@@ -188,6 +189,8 @@ const drawCards = () => {
       cardsToChange[i].querySelector('.suit-img').src = `vp-img/${hand[indexInHand].img}`;
       if (hand[i].img === 'heart.png' || hand[i].img === 'diamond.png') {
         cardsToChange[i].querySelector('.suit-img').classList.add('red');
+      } else if (cardsToChange[i].querySelector('.suit-img').classList.contains('red')) {
+        cardsToChange[i].querySelector('.suit-img').classList.remove('red');
       }
       animateCSS(cardsToChange[i], 'flipInY');
     });
@@ -221,6 +224,13 @@ const drawCards = () => {
     document.querySelector('.score').innerText = `CREDITS ${points}`;
     document.querySelector('.results').innerHTML = `${result} <br> BET AND PRESS 'DEAL' TO PLAY AGAIN`;
 
+    // highlight row in table if winning hand
+    if (multiplier > 0) {
+      const index = multipliers.indexOf(String(multiplier));
+      const winRow = document.querySelector('#table-body').querySelectorAll('tr')[index];
+      winRow.classList.add('highlight');
+    }
+
     // add card moving animation
     document.querySelector('.hand').classList.add('animate__animated');
     document.querySelector('.hand').classList.add('animate__shakeY');
@@ -243,13 +253,20 @@ const dealCards = () => {
   document.querySelectorAll('.bet-buttons')[0].classList.add('hide-text');
   document.querySelectorAll('.bet-buttons')[1].classList.add('hide-text');
 
+  // remove highlight in table
+  const tableRows = document.querySelectorAll('tr');
+  tableRows.forEach((row) => {
+    if (row.classList.contains('highlight')) { row.classList.remove('highlight');
+    }
+  });
+
   document.querySelector('.results').innerText = 'CLICK ON CARDS YOU WISH TO HOLD';
 
   hand = deck.splice(0, 5);
 
   // create div for each card
   for (let i = 0; i < 5; i += 1) {
-    createCardEl();
+    createCardEl(i);
   }
 
   // store bet

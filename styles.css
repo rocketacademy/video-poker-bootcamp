@@ -110,6 +110,10 @@ td {
   color: yellow;
 }
 
+.highlight {
+  color: yellow;
+}
+
 /* +++++++++++++++++++++ RESULT +++++++++++++++++++++++++ */
 .results {
   display: flex;
