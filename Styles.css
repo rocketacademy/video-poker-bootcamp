@@ -1,7 +1,14 @@
 body {
-  background-color: white;
+  margin-top: 100px;
   text-align: center;
+  background-image: url("—Pngtree—gaming black gold playing cards_1176654.png");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
 }
+
+html {
+}
+
 .square {
   padding: 10px;
   margin: 10px;
@@ -58,4 +65,48 @@ button {
 .scoreDiv {
   display: flex;
   justify-content: center;
+}
+
+.gamediv {
+  min-width: 60vw;
+  max-width: 600vh; /* or whatever width you want. */
+  min-height: 500px;
+  max-height: 500px; /* or whatever height you want. */
+  display: inline-block;
+}
+
+.disabledCards {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+h1 {
+  color: white;
+}
+.scoreDiv {
+  color: white;
+}
+.textContentDiv {
+  color: white;
+}
+
+@media (max-width: 850px) {
+  body {
+    margin-top: 100px;
+    text-align: center;
+    background-color: white;
+    background-image: url("");
+  }
+
+  h1 {
+    color: black;
+  }
+  .scoreDiv {
+    color: black;
+  }
+  .textContentDiv {
+    color: black;
+  }
+
+  /* CSS Rules */
 }
