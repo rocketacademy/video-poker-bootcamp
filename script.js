@@ -1,5 +1,4 @@
-﻿/* eslint-disable prefer-destructuring */
-// ######### Global Variable ##############
+﻿// ######### Global Variable ##############
 // ##########################
 
 let deck;
@@ -7,22 +6,23 @@ let playerHand = [];
 let selectedHand = [0, 0, 0, 0, 0];
 let arrangedHand = [];
 let points = 100;
+const GAME_INFO_MODE = 'Game Info Mode';
 const DEAL_CARD_MODE = 'Deal Card Mode';
 const SWAP_CARD_MODE = 'Swap Card Mode';
-let currentGameMode = DEAL_CARD_MODE;
+let currentGameMode = GAME_INFO_MODE;
 let cardNameTally = {};
 let musicOn = false;
 const payTable = [
-  { combo: 'Royal Flush', points: 250 },
-  { combo: 'Straight Flush', points: 50 },
-  { combo: 'Four of a Kind', points: 25 },
-  { combo: 'Full House', points: 9 },
-  { combo: 'Flush', points: 6 },
-  { combo: 'Straight', points: 4 },
-  { combo: 'Three of a Kind', points: 3 },
-  { combo: 'Two Pairs', points: 2 },
-  { combo: 'One Pair', points: 1 },
-  { combo: 'Empty', points: -1 },
+  { combo: 'Royal Flush', image: './images/ROYAL_FLUSH.png', points: 250 },
+  { combo: 'Straight Flush', image: './images/STRAIGHT_FLUSH.png', points: 50 },
+  { combo: 'Four of a Kind', image: './images/FOUR_OF_A_KIND.png', points: 25 },
+  { combo: 'Full House', image: './images/FULL_HOUSE.png', points: 9 },
+  { combo: 'Flush', image: './images/FLUSH.png', points: 6 },
+  { combo: 'Straight', image: './images/STRAIGHT.png', points: 4 },
+  { combo: 'Three of a Kind', image: './images/THREE_OF_A_KIND.png', points: 3 },
+  { combo: 'Two Pairs', image: './images/TWO_PAIR.png', points: 2 },
+  { combo: 'One Pair', image: './images/ONE_PAIR.png', points: 1 },
+  { combo: 'Empty', image: './images/EMPTY.png', points: -1 },
 ];
 
 // ########### Defining Sounds ################
@@ -33,17 +33,18 @@ const selectCardSound = new Audio('./sounds/cardPlace1.wav');
 const rejectSound = new Audio('./sounds/reject.wav');
 const backgroundSound = new Audio('./sounds/Harmonies.mp3');
 backgroundSound.volume = 0.2;
+backgroundSound.loop = true;
 
 const playMusic = () => {
   if (musicOn === false) {
     backgroundSound.play();
     musicOn = true;
-    getElement('music').src = './images/music.svg';
+    getElement('music').src = './images/music.png';
   }
   else if (musicOn === true) {
     backgroundSound.pause();
     musicOn = false;
-    getElement('music').src = './images/musicOff.svg';
+    getElement('music').src = './images/musicOff.png';
   }
 };
 
@@ -152,10 +153,24 @@ const getElement = (a) => document.getElementById(`${a}`);
 const createCard = (array) => {
   for (let i = 0; i < 5; i += 1) {
     getElement(`card${i}name`).innerHTML = array[i].displayName;
-    getElement(`card${i}suit`).innerHTML = array[i].suitSymbol;
+    if (array[i].suit === 'clubs') {
+      getElement(`card${i}suit`).src = './images/1clubs.png';
+    }
+    if (array[i].suit === 'hearts') {
+      getElement(`card${i}suit`).src = './images/1hearts.png';
+    }
+    if (array[i].suit === 'spades') {
+      getElement(`card${i}suit`).src = './images/1spades.png';
+    }
+    if (array[i].suit === 'diamonds') {
+      getElement(`card${i}suit`).src = './images/1diamonds.png';
+    }
     if (array[i].colour === 'red') {
+      getElement(`card${i}name`).classList.remove('black');
       getElement(`card${i}name`).classList.add('red');
-    } else { getElement(`card${i}name`).classList.remove('red'); }
+    } else {
+      getElement(`card${i}name`).classList.remove('red');
+      getElement(`card${i}name`).classList.add('black'); }
   } };
 
 const squareClick = (cardElement, i) => {
@@ -177,17 +192,6 @@ const squareClick = (cardElement, i) => {
     return clickedCard;
   }
 };
-
-const buildBoard = () => {
-  // start with an empty container
-  for (let i = 0; i < 5; i += 1) {
-    getElement(`card${i}`).addEventListener('click', (event) => {
-      squareClick(event.currentTarget, i);
-    });
-  }
-};
-buildBoard();
-getElement('music').addEventListener('click', playMusic);
 
 /**
  * A function that sums numbers
@@ -279,12 +283,10 @@ const swap = () => {
     tallyCards(playerHand);
     const winnings = calcHandScore();
     points += winnings.points;
-    getElement('info').innerHTML = `Your Hand : ${winnings.combo} <br><br> Points : ${winnings.points}<br><br> Current total wallet : ${points} `;
+    getElement('info').innerHTML = `Your Hand : ${winnings.combo} <br><br> Points : ${winnings.points}`;
+    getElement('yourPoints').innerHTML = `Your Wallet: ${points}`;
   }
 };
-
-getElement('dealButton').addEventListener('click', deal);
-getElement('swapButton').addEventListener('click', swap);
 
 const tallyCards = (hand) => {
   for (let i = 0; i < hand.length; i += 1) {
@@ -377,3 +379,171 @@ const isStraight = () => {
     return true;
   } return false;
 };
+
+const buildBoard = () => {
+  // start with an empty container
+  const main = document.createElement('div');
+  main.classList.add('main');
+  main.setAttribute('id', 'main');
+  document.body.appendChild(main);
+
+  const header1 = document.createElement('h1');
+  header1.innerHTML = 'Video Poker';
+  main.appendChild(header1);
+
+  const cardContainer = document.createElement('div');
+  cardContainer.classList.add('board');
+  main.appendChild(cardContainer);
+
+  for (let i = 0; i < 5; i += 1) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.setAttribute('id', `card${i}`);
+
+    const name = document.createElement('div');
+    name.classList.add('name');
+    name.setAttribute('id', `card${i}name`);
+
+    const suit = document.createElement('img');
+    suit.classList.add('suit');
+    suit.setAttribute('id', `card${i}suit`);
+
+    card.appendChild(name);
+    card.appendChild(suit);
+    cardContainer.appendChild(card);
+
+    card.addEventListener('click', (event) => {
+      squareClick(event.currentTarget, i);
+    });
+  }
+
+  const controlsContainer = document.createElement('div');
+  controlsContainer.classList.add('board');
+  main.appendChild(controlsContainer);
+
+  const dealButton = document.createElement('button');
+  dealButton.classList.add('button-81');
+  dealButton.innerHTML = 'Deal';
+  controlsContainer.appendChild(dealButton);
+
+  const swapButton = document.createElement('button');
+  swapButton.classList.add('button-81');
+  swapButton.innerHTML = 'Swap/Done';
+  controlsContainer.appendChild(swapButton);
+
+  const musicButton = document.createElement('img');
+  musicButton.setAttribute('id', 'music');
+  musicButton.src = './images/musicOff.png';
+  controlsContainer.appendChild(musicButton);
+
+  dealButton.addEventListener('click', deal);
+  swapButton.addEventListener('click', swap);
+  musicButton.addEventListener('click', playMusic);
+
+  const gameMessage = document.createElement('div');
+  gameMessage.classList.add('info');
+  gameMessage.classList.add('board');
+  gameMessage.setAttribute('id', 'info');
+  gameMessage.innerHTML = 'Your starting wallet is 100';
+  main.appendChild(gameMessage);
+
+  const pointsTracker = document.createElement('div');
+  pointsTracker.classList.add('pointsContainer');
+  main.appendChild(pointsTracker);
+
+  const yourPoints = document.createElement('div');
+  yourPoints.setAttribute('id', 'yourPoints');
+  yourPoints.innerHTML = 'Your Wallet:    100';
+  pointsTracker.appendChild(yourPoints);
+
+  const header2 = document.createElement('h2');
+  header2.innerHTML = 'Payout Table';
+  main.appendChild(header2);
+
+  const table = document.createElement('table');
+  table.classList.add('rwd-table');
+  main.appendChild(table);
+
+  const tableBody = document.createElement('tbody');
+  table.appendChild(tableBody);
+
+  const row1 = document.createElement('tr');
+  tableBody.appendChild(row1);
+
+  const item1 = document.createElement('th');
+  row1.appendChild(item1);
+  item1.innerHTML = 'Name';
+
+  const item2 = document.createElement('th');
+  row1.appendChild(item2);
+  item2.innerHTML = 'Example';
+
+  const item3 = document.createElement('th');
+  row1.appendChild(item3);
+  item3.innerHTML = 'Payout';
+
+  for (let i = 0; i < payTable.length; i += 1) {
+    const row = document.createElement('tr');
+    tableBody.appendChild(row);
+
+    const col1 = document.createElement('td');
+    row.appendChild(col1);
+    col1.innerHTML = `${payTable[i].combo}`;
+
+    const col2 = document.createElement('td');
+    row.appendChild(col2);
+    const img = document.createElement('img');
+    img.classList.add('payoutExampleImg');
+    img.src = `${payTable[i].image}`;
+    col2.appendChild(img);
+
+    const col3 = document.createElement('td');
+    row.appendChild(col3);
+    col3.innerHTML = `${payTable[i].points}`;
+    col3.setAttribute('style', 'text-align: center');
+  }
+};
+
+const initGame = () => {
+  startGame.innerHTML = '';
+  buildBoard();
+  currentGameMode = DEAL_CARD_MODE;
+  playMusic();
+};
+
+const buildIntro = () => {
+  const startGame = document.createElement('div');
+  startGame.setAttribute('id', 'startGame');
+  document.body.appendChild(startGame);
+
+  const header1 = document.createElement('h1');
+  header1.innerHTML = 'Video Poker';
+  startGame.appendChild(header1);
+
+  const hello = document.createElement('div');
+  hello.classList.add('welcome');
+  hello.innerHTML = "Welcome to Eric's Video Poker";
+  startGame.appendChild(hello);
+
+  const housegif = document.createElement('div');
+  housegif.setAttribute('style', 'text-align: center');
+  startGame.appendChild(housegif);
+
+  const gif = document.createElement('img');
+  gif.setAttribute('id', 'whale');
+  gif.src = './images/whale.gif';
+  housegif.appendChild(gif);
+  gif.addEventListener('click', initGame);
+
+  const container = document.createElement('div');
+  container.setAttribute('style', 'text-align: center');
+  startGame.appendChild(container);
+
+  const gamePlay = document.createElement('div');
+  gamePlay.classList.add('gamePlay');
+  gamePlay.innerHTML = `♤ You start with 100 points. <br><br>
+♤ When you click the "Deal" button, you will be dealt a hand of 5 cards. <br><br>♤ You can choose any number of your cards to replace with new, random cards.<br><br>♤ Once the cards are swapped, you will be assigned a payout based on the resulting hand. <br><br>♤  Click on the Whale to start the game!`;
+  container.appendChild(gamePlay);
+};
+
+buildIntro();

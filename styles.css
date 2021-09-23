@@ -1,21 +1,34 @@
 body {
-  background-color: rgb(11, 165, 54);
+  background-color: rgb(8, 54, 94);
   font-family: "Oxygen", sans-serif;
+  color: #f2f2f2;
+  cursor: url("./images/cursor2.png"), auto;
 }
 
 h1 {
   display: flex;
   justify-content: center;
   font-family: "Zen Tokyo Zoo", cursive;
-  font-size: 70px;
-  color: rgb(10, 10, 159);
+  font-size: 4rem;
+  color: rgb(101, 228, 10);
   margin: 30px 10px 20px 10px;
+  animation: fading 3s infinite alternate;
+}
+
+@keyframes fading {
+  from {
+    color: rgb(101, 228, 10);
+  }
+  to {
+    color: rgb(255, 119, 0);
+  }
 }
 
 #music {
   display: flex;
-  max-width: 30px;
-  padding: 15px 10px 10px 10px;
+  max-width: 40px;
+  padding: 10px 10px 10px 10px;
+  cursor: pointer;
 }
 
 .board {
@@ -38,6 +51,7 @@ h1 {
   border-style: solid;
   border-color: transparent;
   display: inline-block;
+  cursor: pointer;
 }
 
 .cardSelected {
@@ -59,22 +73,103 @@ h1 {
   height: 25px;
   font-size: 25px;
   font-weight: bold;
+  font-family: "Skranji", cursive;
 }
 
 .red {
-  color: rgb(208, 9, 9);
+  color: #c74244;
 }
 
-#header {
-  display: flex;
-  justify-content: center;
+.black {
+  color: #31313c;
 }
 
 .info {
   font-weight: bold;
   font-size: 18px;
-  height: 130px;
+  height: 90px;
   padding: 10px;
+}
+
+.pointsContainer {
+  margin: 20px 20px 50px 20px;
+  width: auto;
+  display: flex;
+  justify-content: center;
+}
+
+#yourPoints {
+  display: flex;
+  font-size: 20px;
+  width: 250px;
+  border-color: rgb(242, 168, 9);
+  border-width: 0px 5px 5px 5px;
+  border-style: dotted;
+  padding: 5px 5px 10px 5px;
+  justify-content: center;
+  color: rgb(232, 220, 95);
+  font-family: "Basier circle", -apple-system, system-ui, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  animation: blinking 0.3s infinite;
+}
+
+@keyframes blinking {
+  0% {
+    border-color: rgb(242, 168, 9);
+  }
+
+  50% {
+    border-color: rgb(255, 247, 0);
+  }
+
+  100% {
+    border-color: rgb(242, 168, 9);
+  }
+}
+
+.welcome {
+  font-weight: bold;
+  font-size: 28px;
+  padding: 10px;
+  text-align: center;
+  animation: moving 0.5s infinite;
+  font-family: "Codystar", cursive;
+}
+
+@keyframes moving {
+  from {
+    color: red;
+  }
+  to {
+    color: yellow;
+  }
+}
+
+#whale {
+  max-width: 18rem;
+  cursor: pointer;
+}
+
+.gamePlay {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 10px;
+  width: 90%;
+  margin: 15px;
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .gamePlay {
+    width: 500px;
+  }
+  .button-81 {
+    font-size: 1.8rem;
+    margin: 0px 8px 0px 8px;
+    padding: 1rem 2rem;
+  }
 }
 
 .button-81 {
@@ -87,19 +182,18 @@ h1 {
   font-family: "Basier circle", -apple-system, system-ui, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  line-height: 1;
-  padding: 1rem 1.6rem;
+  line-height: 0.5;
+  padding: 20px;
   text-align: center;
   text-decoration: none #0d172a solid;
-  text-decoration-thickness: auto;
   transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0px 1px 2px rgba(166, 175, 195, 0.25);
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin: 0px 10px 0px 10px;
+  margin: 0px 3px 0px 3px;
 }
 
 .button-81:hover {
@@ -107,18 +201,13 @@ h1 {
   color: #fff;
 }
 
-@media (min-width: 768px) {
-  .button-81 {
-    font-size: 1.125rem;
-    padding: 1rem 2rem;
-  }
-}
-
 h2 {
-  font-size: 25px;
+  font-size: 35px;
   display: flex;
   justify-content: center;
   margin: 10px;
+  color: rgb(176, 191, 5);
+  font-family: "Stick No Bills", sans-serif;
 }
 
 .rwd-table {
@@ -148,10 +237,6 @@ h2 {
   padding: 3px 15px 3px 15px;
 }
 
-.rwd-table td:hover {
-  background-color: #ddd;
-}
-
-.rwd-table data Payout {
-  text-align: center;
+.payoutExampleImg {
+  width: 150px;
 }
