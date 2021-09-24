@@ -14,8 +14,9 @@ creditsBoxClose.innerHTML = '&times';
 creditsBoxClose.classList.add('close');
 creditsBoxContent.appendChild(creditsBoxClose);
 
-const boxHeader = document.createElement('div');
-boxHeader.innerHTML = 'BUY CREDITS';
+const boxHeader = document.createElement('h2');
+boxHeader.classList.add('credit-header');
+boxHeader.innerHTML = 'TOP UP YOUR CREDITS';
 creditsBoxContent.appendChild(boxHeader);
 
 // separate div for each element group in content box
@@ -42,12 +43,15 @@ const firstCoinText = document.createElement('div');
 const secondCoinText = document.createElement('div');
 firstCoinText.innerHTML = '100 COINS';
 secondCoinText.innerHTML = '500 COINS';
+firstCoinText.classList.add('coin-text');
+secondCoinText.classList.add('coin-text');
 contentBoxOne.appendChild(firstCoinText);
 contentBoxTwo.appendChild(secondCoinText);
 
 // function when buy credit button is clicked
 const purchaseCreditEvent = (x) => {
   if (confirm(`Confirm purchase of ${x} coins?`)) {
+    pointsCreditSound.play();
     playerPoints += Number(x);
     creditNumber.innerHTML = playerPoints;
     buyCreditsBox.style.display = 'none';
@@ -60,28 +64,44 @@ const buy100Button = document.createElement('button');
 const buy500Button = document.createElement('button');
 buy100Button.innerText = '$1.99';
 buy500Button.innerText = '$4.99';
-buy100Button.classList.add('button-buy');
-buy500Button.classList.add('button-buy');
+buy100Button.classList.add('credit-buyButton');
+buy500Button.classList.add('credit-buyButton');
 buy100Button.addEventListener('click', (event) => {
+  defaultButtonSound.play();
   purchaseCreditEvent(100);
+  creditNumber.classList.add('flash');
+  pointsCredited.innerHTML = '+ 100';
+  pointsCredited.style.visibility = 'visible';
+  setTimeout(() => {
+    pointsCredited.style.visibility = 'hidden';
+  }, 3000);
 });
 buy500Button.addEventListener('click', (event) => {
+  defaultButtonSound.play();
   purchaseCreditEvent(500);
+  creditNumber.classList.add('flash');
+  pointsCredited.innerHTML = '+ 500';
+  pointsCredited.style.visibility = 'visible';
+  setTimeout(() => {
+    pointsCredited.style.visibility = 'hidden';
+  }, 3000);
 });
 contentBoxOne.appendChild(buy100Button);
 contentBoxTwo.appendChild(buy500Button);
 
 // buy credit button
 const buyCreditButton = document.createElement('button');
-buyCreditButton.classList.add('creditNumber');
-buyCreditButton.innerText = 'Buy';
+buyCreditButton.classList.add('button-buy');
+buyCreditButton.innerText = '+';
 
 // event listeners for credit window
 buyCreditButton.onclick = function () {
+  defaultButtonSound.play();
   buyCreditsBox.style.display = 'block';
 };
 
 creditsBoxClose.onclick = function () {
+  defaultButtonSound.play();
   buyCreditsBox.style.display = 'none';
 };
 
@@ -92,3 +112,4 @@ window.onclick = function (event) {
 };
 
 buttonGroupCredit.appendChild(buyCreditButton);
+buttonGroupCredit.appendChild(pointsCredited);
