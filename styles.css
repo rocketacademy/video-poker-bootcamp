@@ -1,5 +1,9 @@
+/* @media (min-width: 500px) {
+
+} */
+
 body {
-  max-width: 500px;
+  /* max-width: 500px; */
   background-color: cadetblue;
   position: relative;
   height: 100vh;
@@ -64,8 +68,9 @@ td {
 
 .credits-bet {
   width: 100%;
+  max-width: 500px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-content: center;
   padding: 8px;
 }
