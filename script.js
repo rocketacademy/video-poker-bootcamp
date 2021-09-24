@@ -563,9 +563,7 @@ const initialiseGame = () => {
   instrBtnDiv.innerText = '?';
   mainDiv.appendChild(instrBtnDiv);
 
-  instrBtnDiv.addEventListener('click', openOrCloseInstr);
-  instrBtnDiv.addEventListener('mouseenter', openInstr);
-  instrBtnDiv.addEventListener('mouseleave', closeInstr);
+  instrBtnDiv.addEventListener('click', openInstr);
 
   createLoseMsg();
   createInstr();
