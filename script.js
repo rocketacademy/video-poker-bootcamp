@@ -176,6 +176,7 @@ const drawCards = () => {
   // show buttons for betting
   document.querySelectorAll('.bet-buttons')[0].classList.remove('hide-text');
   document.querySelectorAll('.bet-buttons')[1].classList.remove('hide-text');
+  document.querySelector('.bet-foot').classList.remove('hide-text');
 
   // change UNselected cards
   const cardsToChange = document.querySelector('.hand').querySelectorAll('.unclicked-card');
@@ -235,6 +236,11 @@ const drawCards = () => {
     document.querySelector('.hand').classList.add('animate__animated');
     document.querySelector('.hand').classList.add('animate__shakeY');
     document.querySelector('.hand').classList.add('animate__infinite');
+
+    // if left 0 credits, pop-up
+    if (points === 0) {
+      document.querySelector('.lose-div').classList.remove('hide');
+    }
   }, 500);
 
   // change draw to deal button
@@ -252,6 +258,7 @@ const dealCards = () => {
   // remove buttons for betting
   document.querySelectorAll('.bet-buttons')[0].classList.add('hide-text');
   document.querySelectorAll('.bet-buttons')[1].classList.add('hide-text');
+  document.querySelector('.bet-foot').classList.add('hide-text');
 
   // remove highlight in table
   const tableRows = document.querySelectorAll('tr');
@@ -315,8 +322,11 @@ const calcHandScore = (tallyRanks, tallySuits) => {
  * Function that INCREASES currentBet by 1 and updates 'WIN' column in table
  */
 const increaseBet = () => {
-  if (!canClickCard) {
+  if (currentBet < points && !canClickCard) {
     currentBet += 1;
+    if (currentBet === points) {
+      document.querySelector('.bet-foot').innerText = '◼︎ ALL IN';
+    }
     document.querySelector('#bet').innerText = currentBet;
     updateTable(2, multipliers);
   }
@@ -328,6 +338,24 @@ const increaseBet = () => {
 const decreaseBet = () => {
   if (currentBet > 1 && !canClickCard) {
     currentBet -= 1;
+    document.querySelector('.bet-foot').innerText = '◻︎ ALL IN';
+    document.querySelector('#bet').innerText = currentBet;
+    updateTable(2, multipliers);
+  }
+};
+
+/**
+ * Function that bets ALL IN and updates 'WIN' column in table
+ */
+const allInBet = () => {
+  if (!canClickCard) {
+    if (currentBet === points) {
+      currentBet = 1;
+      document.querySelector('.bet-foot').innerText = '◻︎ ALL IN';
+    } else {
+      currentBet = points;
+      document.querySelector('.bet-foot').innerText = '◼︎ ALL IN';
+    }
     document.querySelector('#bet').innerText = currentBet;
     updateTable(2, multipliers);
   }
@@ -417,11 +445,15 @@ const createButtons = () => {
 
   const betDivHead = document.createElement('div');
   const betDivBody = document.createElement('div');
+  const betDivFoot = document.createElement('div');
   betDivHead.classList.add('bet-head');
   betDivBody.classList.add('bet-div');
+  betDivFoot.classList.add('bet-foot');
   betDivHead.innerText = 'BET';
+  betDivFoot.innerText = '◻︎ ALL IN';
   betDiv.appendChild(betDivHead);
   betDiv.appendChild(betDivBody);
+  betDiv.appendChild(betDivFoot);
 
   const betMinus = document.createElement('div');
   const betPlus = document.createElement('div');
@@ -442,6 +474,9 @@ const createButtons = () => {
   betPlus.addEventListener('click', increaseBet);
   betPlus.addEventListener('mouseenter', () => { onButtonEnter(betPlus); });
   betPlus.addEventListener('mouseleave', () => { onButtonLeave(betPlus); });
+  betDivFoot.addEventListener('click', allInBet);
+  betDivFoot.addEventListener('mouseenter', () => { onButtonEnter(betDivFoot); });
+  betDivFoot.addEventListener('mouseleave', () => { onButtonLeave(betDivFoot); });
 
   const gameBtn = document.createElement('div');
   gameBtn.classList.add('game-button');
@@ -451,6 +486,36 @@ const createButtons = () => {
   gameBtn.addEventListener('click', onButtonClick);
   gameBtn.addEventListener('mouseenter', () => { onButtonEnter(gameBtn); });
   gameBtn.addEventListener('mouseleave', () => { onButtonLeave(gameBtn); });
+};
+
+/**
+ * Function that creates LOSE MESSAGE element (hidden by default)
+ */
+const createLoseMsg = () => {
+  const loseDiv = document.createElement('div');
+  loseDiv.classList.add('lose-div');
+  loseDiv.classList.add('hide');
+  loseDiv.innerText = 'YOU LOSE!';
+  document.body.appendChild(loseDiv);
+
+  const loseBtn = document.createElement('div');
+  loseBtn.classList.add('lose-btn');
+  loseBtn.innerText = 'NEW GAME';
+  loseDiv.appendChild(loseBtn);
+
+  loseBtn.addEventListener('click', () => {
+    loseDiv.classList.add('hide');
+    points = 100;
+    document.querySelector('.score').innerText = `CREDITS ${points}`;
+    resetGame();
+    document.querySelector('.results').innerText = "INPUT YOUR BET AND PRESS 'DEAL' TO BEGIN";
+    document.querySelector('.results').classList.add('animate__animated');
+    document.querySelector('.results').classList.add('animate__flash');
+    document.querySelector('.results').classList.add('animate__infinite');
+    currentBet = 1;
+    document.querySelector('#bet').innerText = currentBet;
+    updateTable(2, multipliers);
+  });
 };
 
 /**
@@ -480,6 +545,20 @@ const initialiseGame = () => {
   scoreDiv.classList.add('score');
   scoreDiv.innerText = `CREDITS ${points}`;
   mainDiv.appendChild(scoreDiv);
+
+  // instructions
+  const instrBtnDiv = document.createElement('div');
+  instrBtnDiv.classList.add('instr-btn');
+  instrBtnDiv.innerText = '?';
+  mainDiv.appendChild(instrBtnDiv);
+
+  instrBtnDiv.addEventListener('mouseenter', openInstr);
+  instrBtnDiv.addEventListener('mouseleave', closeInstr);
+
+  createInstr();
+
+  // lose message
+  createLoseMsg();
 
   animateCSS(mainDiv, 'fadeIn').then(() => {
     resultsDiv.classList.add('animate__animated');

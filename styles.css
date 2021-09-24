@@ -10,6 +10,8 @@ body {
   user-select: none;
 }
 
+/* +++++++++++++++++++++ TITLE +++++++++++++++++++++++++ */
+
 header {
   display: flex;
   flex-direction: row;
@@ -20,8 +22,8 @@ header {
 h1 {
   color: white;
   text-align: center;
-  font-size: 7.5vh;
-  margin: 3vh 0;
+  font-size: 8.5vh;
+  margin: 2vh 0;
   text-shadow: -0.05em -0.02em 0 blue, 0.05em 0.02em 0 red;
 }
 
@@ -122,15 +124,15 @@ td {
   color: white;
   text-align: center;
   font-size: 3vh;
-  margin-top: 2vh;
-  height: 8vh;
+  margin-top: 1vh;
+  height: 6vh;
 }
 
 /* +++++++++++++++++++++ HAND +++++++++++++++++++++++++ */
 
 .hand {
   display: flex;
-  height: 20vh;
+  height: 19vh;
   justify-content: space-evenly;
   align-items: center;
   max-width: 550px;
@@ -191,9 +193,16 @@ td {
 .button-div {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 }
 
 .bet-head {
+  color: white;
+  text-align: center;
+  font-size: 3.5vh;
+}
+
+.bet-foot {
   color: white;
   text-align: center;
   font-size: 3.5vh;
@@ -225,6 +234,7 @@ td {
 }
 
 .game-button {
+  height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -233,7 +243,7 @@ td {
   background-color: yellow;
   border-radius: 1.5vh;
   text-align: center;
-  padding: 0.5vh 2vw;
+  padding: 1vh 2vw;
 }
 
 .press-button {
@@ -247,8 +257,83 @@ td {
   color: white;
   text-align: right;
   font-size: 3.6vh;
-  padding-top: 3vh;
-  padding-right: 2vw;
+  position: absolute;
+  top: 94vh;
+  right: 5vw;
+}
+
+/* +++++++++++++++++++++ INSTRUCTIONS +++++++++++++++++++++++++ */
+.instr-btn {
+  color: black;
+  background-color: white;
+  font-size: 3vh;
+  width: 3vh;
+  height: 3vh;
+  border-radius: 50%;
+  position: absolute;
+  top: 94.5vh;
+  left: 5vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.instructions {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 70vw;
+  max-height: 60vh;
+  left: 15vw;
+  bottom: 25vh;
+  border: 3px solid white;
+  background-color: black;
+  padding: 2vh 3vh;
+  color: white;
+}
+
+.instr-head {
+  font-size: 3vh;
+  text-align: center;
+  margin: 1.5vh 0;
+}
+
+.instr-body {
+  font-size: 2.5vh;
+  text-align: left;
+  margin: 1.5vh 0;
+}
+
+.instr-click-to-exit {
+  font-size: 2vh;
+  text-align: center;
+  margin: 0.5vh 0 1vh 0;
+}
+/* +++++++++++++++++++++ LOSE +++++++++++++++++++++++++ */
+.lose-div {
+  width: 60vw;
+  height: 26vh;
+  position: absolute;
+  bottom: 37vh;
+  left: 20vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  background-color: black;
+  border: 3px solid white;
+  font-size: 7vh;
+  padding: 2vh;
+}
+
+.lose-btn {
+  background-color: yellow;
+  color: black;
+  font-size: 5vh;
+  padding: 1vh 2vw;
+  border-radius: 1vh;
 }
 
 /* +++++++++++++++++++++ ANIMATIONS +++++++++++++++++++++++++ */
