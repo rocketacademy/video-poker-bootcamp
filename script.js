@@ -132,25 +132,25 @@ let canClick = true;
 let score = 0;
 
 // deifning sound events
-const backgroundSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/Patakas World.wav');
+const backgroundSound = new Audio('images/Patakas-World.wav');
 backgroundSound.volume = 0.2;
 
-const dealSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/shuffling-cards-1.wav');
+const dealSound = new Audio('images/shuffling-cards-1.wav');
 
-const successPurchaseSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/Success-sound-effect.wav');
+const successPurchaseSound = new Audio('images/Success-sound-effect.wav');
 
-const defaultButtonSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/button-3.wav');
+const defaultButtonSound = new Audio('images/button-3.wav');
 defaultButtonSound.volume = 0.1;
 
-const winSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/mixkit-slot-machine-win-1928.wav');
+const winSound = new Audio('images/mixkit-slot-machine-win-1928.wav');
 winSound.volume = 0.2;
 
-const loseSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/mixkit-retro-arcade-game-over-470.wav');
+const loseSound = new Audio('images/mixkit-retro-arcade-game-over-470.wav');
 // loseSound.volume = 0.2;
 
-const pointsCreditSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/mixkit-clinking-coins-1993.wav');
+const pointsCreditSound = new Audio('images/mixkit-clinking-coins-1993.wav');
 
-const flipCardsSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/Card-flip-sound-effect.wav');
+const flipCardsSound = new Audio('images/Card-flip-sound-effect.wav');
 
 // ========== HELPER FUNCTIONS ==========
 
@@ -952,14 +952,11 @@ for (let i = 0; i < coll.length; i += 1) {
 // check reset button outcome --- done
 // instead of how much they won in text, have a dom element appear beside credits box -- done
 // celebration animation when won with highlight on which pay schedule won and how many credits done
+// debug error on highlight row when lost
+// add cursor for buttons -- done
 
 // still pending
-
-// consider flashing pay schedule
-// debug error on highlight row when lost
-
-// instead of reset, dom element pops up when playerPoints is 0. get user to buy more coins
-
+// game instructions
 // add click delay when bet buttons are clicked to revert back to initial game text -- maybe no need
 
 // JS DOC
