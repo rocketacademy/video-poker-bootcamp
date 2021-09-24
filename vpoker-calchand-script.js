@@ -23,9 +23,10 @@ function nameListChecker(string) {
 function consecutiveChecker(array) {
   const a = array[4] - array[3];
   const b = array[3] - array[2];
-  const c = array[1] - array[0];
+  const c = array[2]  - array[1]
+  const d = array[1] - array[0];
 
-  if (a == 1 && b == 1 && c == 1) {
+  if (a == 1 && b == 1 && c == 1 && d == 1) {
     return true;
   }
 
@@ -55,7 +56,8 @@ function calcHandScore(livehand) {
   rankList = [];
   nameCounts = {};
 
-  let newPoints;
+  let newPoints = 0;
+  let cardCombo = "";
   let flushState = false;
   let straightState = false;
   let royalState = false;
@@ -88,7 +90,9 @@ function calcHandScore(livehand) {
 
   // check royalState
   if (nameListChecker('A') && nameListChecker('K')
-  && nameListChecker('Q') && nameListChecker('J') && nameListChecker('10')) royalState = true;
+  && nameListChecker('Q') && nameListChecker('J') && nameListChecker('10')) {
+    royalState = true;
+  } 
 
   // same suit means flush
   if (allEqual(suitList) === true) {
@@ -103,25 +107,27 @@ function calcHandScore(livehand) {
   // check for royal flush
   if (flushState === true && royalState === true) {
     console.log('ROYAL FLUSH detected');
+    cardCombo = 'ROYAL FLUSH detected!!!!!'
     newPoints = 250;
   }
 
   // check for straight flush
   else if (straightState === true && flushState === true) {
     console.log('STRAIGHT FLUSH detected!');
+    cardCombo = 'STRAIGHT FLUSH detected!'
     newPoints = 50;
   }
   // detect normal flush
   else if (flushState === true && royalState === false && straightState === false) {
     console.log('NORMAL FLUSH detected');
-    royalState = true;
+    cardCombo = 'FLUSH detected!'
     newPoints = 6;
   }
 
   // detect normal straight
   else if (flushState === false && royalState === false && straightState === true) {
     console.log('NORMAL STRAIGHT detected');
-    royalState = true;
+    cardCombo = 'STRAIGHT detected!'
     newPoints = 4;
   }
 
@@ -129,12 +135,14 @@ function calcHandScore(livehand) {
   else if (Object.values(nameCounts).includes(4)) {
     console.log('FOUR OF A KIND detected');
     fourKindState = true;
+    cardCombo = 'FOUR OF A KIND detected!'
     newPoints = 25;
   }
 
   // check for full house
   else if (Object.values(nameCounts).includes(3) && Object.values(nameCounts).includes(2)) {
     console.log('FULL HOUSE detected');
+    cardCombo = 'FULL HOUSE detected!'
     fullHouseState = true;
     newPoints = 9;
   }
@@ -143,6 +151,7 @@ function calcHandScore(livehand) {
   else if (Object.values(nameCounts).includes(3)) {
     console.log('3 OF A KIND detected');
     threeKindState = true;
+    cardCombo = 'THREE OF A KIND detected!'
     newPoints = 3;
   }
 
@@ -151,23 +160,27 @@ function calcHandScore(livehand) {
     // this means check if array of tallies is length 3, and contains a pair, a single card, and a third tally
     console.log('TWO PAIRS detected');
     twoPairState = true;
+    cardCombo = 'TWO PAIRS detected!'
     newPoints = 2;
   }
 
-  // check if hand has jacks or better - ace is considered higher than Jack
-  // better also means a single pair
+  // check if hand has jacks or better - so Jack High Card minimum
+  // Ace is considered higher than Jack
+  // Better also means a single pair
   // so hence also check if unique card nameCounts = 4
   else if ((nameListChecker('A') || nameListChecker('K') || nameListChecker('Q') || nameListChecker('J') || Object.values(nameCounts).length === 4) && (royalState === false && straightState === false && fourKindState === false && fullHouseState === false && flushState === false && threeKindState === false && twoPairState === false)) {
     console.log('JACKS OR BETTER detected');
+    cardCombo = 'JACK HIGH and/or SINGLE PAIR Detected!'
     newPoints = 1;
   }
 
   // otherwise, for everything else, no points.
   else {
-    console.log('NOTHING detected, losing 1 point!');
-    newPoints = -1;
+    console.log('NOTHING detected!');
+    cardCombo = 'NO CARD COMBOS detected, sorry!'
+    newPoints = 0;
   }
-  // return newPoints;
+  // return newPoints and the combo won in that hand;
   console.log(`new Points are ${newPoints} points`);
-  return newPoints;
+  return [newPoints, cardCombo];
 }
