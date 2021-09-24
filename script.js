@@ -563,6 +563,10 @@ const initialiseGame = () => {
   instrBtnDiv.innerText = '?';
   mainDiv.appendChild(instrBtnDiv);
 
+  instrBtnDiv.addEventListener('click', openOrCloseInstr);
+  instrBtnDiv.addEventListener('mouseenter', openInstr);
+  instrBtnDiv.addEventListener('mouseleave', closeInstr);
+
   createLoseMsg();
   createInstr();
 
@@ -573,8 +577,6 @@ const initialiseGame = () => {
     document.querySelector('.game-button').addEventListener('click', onButtonClick);
     document.querySelector('.game-button').addEventListener('mouseenter', () => { onButtonEnter(document.querySelector('.game-button')); });
     document.querySelector('.game-button').addEventListener('mouseleave', () => { onButtonLeave(document.querySelector('.game-button')); });
-    instrBtnDiv.addEventListener('mouseenter', openInstr);
-    instrBtnDiv.addEventListener('mouseleave', closeInstr);
   });
 
   resetGame();

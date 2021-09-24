@@ -9,20 +9,20 @@ const createInstr = () => {
   const instrHead = document.createElement('p');
   const instrBody = document.createElement('p');
   const instrFoot = document.createElement('p');
-  const instrClickToExit = document.createElement('p');
+  const instrSource = document.createElement('p');
   instrHead.classList.add('instr-head');
   instrBody.classList.add('instr-body');
   instrFoot.classList.add('instr-head');
-  instrClickToExit.classList.add('instr-click-to-exit');
+  instrSource.classList.add('instr-sources');
   instrDiv.appendChild(instrHead);
   instrDiv.appendChild(instrBody);
   instrDiv.appendChild(instrFoot);
-  instrDiv.appendChild(instrClickToExit);
+  instrDiv.appendChild(instrSource);
 
   instrHead.innerHTML = '- INSTRUCTIONS -';
   instrBody.innerHTML = "1. INPUT A BET AND PRESS 'DEAL'. <br> 2. YOU ARE DEALT 5 CARDS. CHOOSE THE CARDS YOU WISH TO HOLD AND PRESS 'DRAW'. <br> 3. THE UNHELD CARDS WILL BE REPLACED AND YOU WIN CREDITS AS PER THE PAYOUT TABLE IF YOU HAVE A WINNING HAND. <br> 4. INPUT A NEW BET AND PRESS 'DEAL' TO START A NEW ROUND. THE GAME ENDS WHEN YOU RUN OUT OF CREDITS.";
   instrFoot.innerText = 'BONAM FORTUNA!';
-  instrClickToExit.innerText = '(TAP ANYWHERE TO CLOSE THIS WINDOW)';
+  instrSource.innerHTML = '[Icons and overlay image from Freepik]';
 };
 
 const openInstr = () => {
@@ -31,4 +31,12 @@ const openInstr = () => {
 
 const closeInstr = () => {
   document.querySelector('.instructions').classList.add('hide');
+};
+
+const openOrCloseInstr = () => {
+  if (document.querySelector('.instructions').classList.contains('hide')) {
+    document.querySelector('.instructions').classList.remove('hide');
+  } else {
+    document.querySelector('.instructions').classList.add('hide');
+  }
 };
