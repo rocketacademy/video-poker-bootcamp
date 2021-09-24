@@ -47,7 +47,7 @@ const calcProb = () => {
   const mockDeck = JSON.parse(JSON.stringify(deck)); // deep copy of deck
   const allResults = []; // to store results of all possible permutations
   const pointTally = {
-    0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 6: 0, 9: 0, 25: 0, 50: 0, 800: 0,
+    0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 6: 0, 9: 0, 25: 0, 50: 0, 250: 0,
   }; // tally of allResults
   let totalCount = 0; // total number of combinations
 
@@ -59,16 +59,22 @@ const calcProb = () => {
 
   // limit min. 2 held cards to prevent lag
   if (mockHand.length > 1) {
+    if (mockHand.length < 5) {
     // get all possible combinations for remaining cards
-    const mockDraw = chooseNFromArray(mockDeck, 5 - mockHand.length);
+      const mockDraw = chooseNFromArray(mockDeck, 5 - mockHand.length);
 
-    // for each combination, push result into allResults array
-    for (let i = 0; i < mockDraw.length; i += 1) {
-      const newHand = mockHand.concat(mockDraw[i]);
-      const mockRankTally = makeTally(newHand, 'rank');
-      const mockSuitTally = makeTally(newHand, 'suit');
-      const mockResult = calcHandScore(mockRankTally, mockSuitTally);
-      allResults.push(mockResult);
+      // for each combination, push result into allResults array
+      for (let i = 0; i < mockDraw.length; i += 1) {
+        const newHand = mockHand.concat(mockDraw[i]);
+        const mockRankTally = makeTally(newHand, 'rank');
+        const mockSuitTally = makeTally(newHand, 'suit');
+        const mockResult = calcHandScore(mockRankTally, mockSuitTally);
+        allResults.push(mockResult);
+      }
+    } else {
+      const mockRankTally = makeTally(mockHand, 'rank');
+      const mockSuitTally = makeTally(mockHand, 'suit');
+      allResults.push(calcHandScore(mockRankTally, mockSuitTally));
     }
 
     // tally allResults
@@ -89,4 +95,5 @@ const calcProb = () => {
 
   result = 'BUMMER :('; // reset result to default
   updateTable(3, probabilities);
+  console.log(`${totalCount} possible hands counted`);
 };
