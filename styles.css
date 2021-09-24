@@ -87,12 +87,14 @@ td {
 /* @keyframes turn-card {
   from {
     background-color: grey;
-    color: grey;
+    margin-bottom: 30px;
   }
   to {
     background-color: white;
+    margin-bottom: 0px;
   }
 } */
+
 .card {
   margin: 5px;
   padding: 10px;
@@ -104,7 +106,7 @@ td {
   justify-content: center;
   justify-items: center;
   /* animation-name: turn-card;
-  animation-duration: 6s; */
+  animation-duration: 3s; */
 }
 
 .hold-card {
@@ -139,4 +141,20 @@ td {
 
 .black {
   color: black;
+}
+
+@keyframes slide-in {
+  from {
+    margin-left: 70%;
+    width: 100%;
+  }
+  to {
+    margin-left: 0%;
+    width: 50%;
+  }
+}
+
+.dealing-slide {
+  animation-duration: 2s;
+  animation-name: slide-in;
 }

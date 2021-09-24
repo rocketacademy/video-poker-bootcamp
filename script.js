@@ -41,6 +41,10 @@ const cardDisplay = document.createElement('div');
 cardDisplay.classList.add('card-display');
 
 // =========================== DECK RELATED FUNCTIONS ===========================
+/**
+ * Create a deck of 52 cards
+ * @returns Object of cards
+ */
 const makeDeck = () => {
   // create the empty deck at the beginning
   const newDeck = [];
@@ -121,7 +125,11 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
-// Create DOM element with card visual
+/**
+ * Create DOM element with card visual
+ * @param {object} cardInfo Object containing card details such as suit and rank etc
+ * @returns DOM element of each card
+ */
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
   suit.classList.add('suit');
@@ -152,20 +160,27 @@ const createCard = (cardInfo) => {
 };
 
 // =========================== HELPER FUNCTIONS ===========================
-// Function to reset game parameters. 1) Empty user hand 2) Shuffle and make avaiable a full deck
+/**
+ * Function to reset game parameters. 1) Empty user hand 2) Shuffle and make avaiable a full deck
+ */
 const resetParameters = () => {
   userHands = [];
   shuffledDeck = shuffleCards(makeDeck());
 };
 
-// Function to deal cards into user hands
+/**
+ * Function to deal cards into user hands. Updates the variable userHands
+ */
 const dealCards = (inputDeck) => {
   for (let i = 0; i < 5; i += 1) {
     userHands.push(inputDeck.pop());
   }
 };
 
-// Display cards
+/**
+ * Display card graphics in browser
+ * @param {object} inputHand Array of objects containing the cards
+ */
 const displayCards = (inputHand) => {
   for (let i = 0; i < inputHand.length; i += 1) {
     cardDisplay.appendChild(createCard(inputHand[i]));
@@ -190,7 +205,10 @@ const message = (input) => {
   creditDisplay.innerText = `CREDITS: ${handPoints}`;
 };
 
-// Function to toggle hold or remove for the card
+/**
+ * Function to toggle hold or remove for the card
+ * @param {object} inputCard Single card details
+ */
 const toggleHold = (inputCard) => {
   if (inputCard.holdStatus === 'remove') {
     inputCard.holdStatus = 'hold';
@@ -199,7 +217,11 @@ const toggleHold = (inputCard) => {
   }
 };
 
-// Function to check if hand consists of an Ace
+/**
+ * Function to check if hand consists of an Ace
+ * @param {object} inputHand Array of objects containing the cards
+ * @returns True if user hand consists of an Ace
+ */
 const haveAce = (inputHand) => {
   for (let i = 0; i < inputHand.length; i += 1) {
     console.log(`checking through ${i}`);
@@ -211,7 +233,11 @@ const haveAce = (inputHand) => {
   return false;
 };
 
-// Function to check if hand is straight cards.
+/**
+ * Function to check if hand is straight cards.
+ * @param {object} inputHand Array of objects containing the cards
+ * @returns True if cards in hand are straight
+ */
 const checkStraight = (inputHand) => {
   const cardRankSorted = [];
 
@@ -232,7 +258,24 @@ const checkStraight = (inputHand) => {
   return true;
 };
 
-// Returns total number of points on hand
+/**
+ * Check if hand has jacks or better cards
+ * @param {object} inputHand Array of objects containing the cards
+ * @returns True if cards in hand have jacks or better
+ */
+const checkJacksBetter = (inputHand) => {
+  for (let i = 0; i < inputHand.length; i += 1) {
+    if (inputHand[i].rank >= 11) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * Checks hand and manipulate DOM to show winning category, as well as update credits accordingly
+ * @param {object} inputHand Array of objects containing the cards
+ */
 const calcHandScore = (inputHand) => {
   const cardNameTally = {};
   const cardSuitTally = {};
@@ -257,9 +300,6 @@ const calcHandScore = (inputHand) => {
       cardSuitTally[cardSuit] = 1;
     }
   }
-
-  console.log(cardNameTally);
-  console.log(cardSuitTally);
 
   const numCardsName = Object.values(cardNameTally);
   const numCardsSuit = Object.values(cardSuitTally);
@@ -345,20 +385,26 @@ const calcHandScore = (inputHand) => {
     resetParameters();
   }
 
+  // Jacks or better
+  else if (checkJacksBetter(inputHand)) {
+    gameGuide.innerText = 'No loss to your capital! Place your next bet.';
+    message('Jacks or Better');
+    resetParameters();
+  }
+
   else {
     handPoints -= betAmount;
     message('Lose');
     gameGuide.innerText = 'Better luck next time! Place your next bet.';
     resetParameters();
   }
-
-  // High card
 };
 
 // =========================== GAME LOGIC ===========================
 
 /**
  * Function that gets user input for the amount to bet
+ * @param {array} inputShuffledDeck Shuffled deck of cards
  * @return Updates bet amount to user input
  */
 const getBetAmountAndDeal = (inputShuffledDeck) => {
@@ -421,7 +467,16 @@ const getBetAmountAndDeal = (inputShuffledDeck) => {
       betAmount = betInput.value;
       dealCards(inputShuffledDeck);
       cardDisplay.innerHTML = '';
-      displayCards(userHands);
+      cardDisplay.classList.add('dealing-slide');
+      cardDisplay.innerText = 'Dealing cards...';
+      setTimeout(() => {
+        cardDisplay.innerHTML = '';
+        cardDisplay.classList.remove('dealing-slide');
+      }, 1500);
+      setTimeout(() => {
+        displayCards(userHands);
+      }, 2000);
+
       gameGuide.innerText = 'Select the cards that you want to hold.';
       gameInfo.innerText = '';
       gameMode = 'select';
@@ -448,6 +503,9 @@ const getBetAmountAndDeal = (inputShuffledDeck) => {
 };
 
 // =========================== GAME INITIALISATION ===========================
+/**
+ * Initialises and run game
+ */
 const gameInit = () => {
   shuffledDeck = shuffleCards(makeDeck());
   getBetAmountAndDeal(shuffledDeck);
