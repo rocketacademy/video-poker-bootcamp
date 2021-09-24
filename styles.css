@@ -1,11 +1,36 @@
 /* can import font libraries this way in an external css */
-@import url("https://fonts.googleapis.com/css?family=Lobster");
+@import url("http://fonts.cdnfonts.com/css/casino");
+
+#header {
+  font-family: "Casino", sans-serif;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  color: gold;
+}
+
+#win-condition {
+  font-family: "Casino", sans-serif;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  color: blue;
+}
 
 body {
-  background-color: pink;
+  background-color: green;
+  /* display: flex; */
 }
-.card{
-  margin: 5px;
+
+#paytable {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+
+.card {
+  margin: 3px;
   padding: 10px;
   background-color: whitesmoke;
   text-align: center;
@@ -13,10 +38,14 @@ body {
   display: flex;
   height: 50px;
   width: 35px;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .card-selected {
-  margin: 5px;
+  margin: 3px;
   padding: 10px;
   background-color: whitesmoke;
   text-align: center;
@@ -25,6 +54,11 @@ body {
   height: 50px;
   width: 35px;
   border-style: dashed;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
 }
 
 .suit {
@@ -43,31 +77,67 @@ body {
   colour: red;
 }
 
-#header {
-  font-family: Lobster, monospace;
-  font-size: 5em;
+.card-container-player-1 {
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
-.row {
-  font-family: Lobster, monospace;
-}
-
-/* .card-container-player-1 {
+#points-info {
+  font-family: "Casino", sans-serif;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 50px;
   margin: 10px;
-  padding: 20px;
-  background-color: pink;
-  /* width: 250px; */
-  text-align: center;
-  border-radius: 10px;
-  display: inline-block;
-} */
+}
 
 #game-info {
   font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  margin: 10px;
+}
+
+.button-row {
+  font-family: sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: space-around;
+  align-items: center;
   font-size: 20px;
 }
 
-.button {
-  font-size: 25px;
-  margin: 5px;
+.deal-button {
+  background-color: white;
+  border: none;
+  color: red;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  border: 2px solid blue;
+}
+
+#bet-buttons {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: stretch;
+  font-family: sans-serif;
+  font-size: 20px;
+  color: white;
+}
+
+#bet-amount {
+  background-color: white;
+  color: red;
+  border: 1px solid blue;
+  font-size: 15px;
+
 }

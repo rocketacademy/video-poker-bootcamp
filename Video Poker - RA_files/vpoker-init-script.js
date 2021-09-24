@@ -135,7 +135,7 @@ const gameInfo = document.createElement('div');
 gameInfo.id = 'game-info';
 
 const pointsInfo = document.createElement('div');
-pointsInfo.id = 'points-info';
+pointsInfo.id = 'game-info';
 
 // instantiate points
 let points = 100;
@@ -209,7 +209,11 @@ const player1Click = () => {
           cardElement.classList.add('card');
           cardsToSwap.splice(hand[i], 1)
           console.log(`undoing card to swap is ${hand[i].name} of ${hand[i].suitSymbol}, index ${i}`);
-          output(`You've de-selected the ${hand[i].name} of ${hand[i].suitSymbol}!`);
+          output(`
+          
+          You've de-selected the ${hand[i].name} of ${hand[i].suitSymbol}!
+          
+          `);
           };
 
         // // cardsToSwap = cardElement.querySelectorAll("[class = 'card-selected']")
@@ -223,7 +227,11 @@ const player1Click = () => {
       // Append the card element to the card container
       cardContainerPlayer1.appendChild(cardElement);
 
-      output(`You've drawn 5 cards! Click on the cards you want to SWAP!`);
+      output(`You've drawn 5 cards! 
+      
+      Click on the cards you want to SWAP!
+      
+      `);
       player1Button.innerText = 'Swap Clicked Card(s)';
       canDeal = false;
     }
@@ -257,6 +265,8 @@ const player1Click = () => {
       cardContainerPlayer1.appendChild(cardsSwapped);
     }
 
+
+
     // calc the score with the amount betted!
     let [pointsModifier, combo] = calcHandScore(hand);
     
@@ -266,33 +276,25 @@ const player1Click = () => {
 
     // change win/loss message
     
-    // what happens when you win or lose?
-
-    // generic losing message
+    //what happens when you win or lose?
     if (points <= 0){
-      gameInfo.innerHTML = `Sorry, YOU LOSE! Restarting...`
+      gameInfo.innerHTML = `Sorry, YOU LOSE...`
       player1Button.innerText = "Restarting Game in 3 Seconds!";
       setTimeout(() => {
         location.reload();
       }, 3000)
     }
-    // gameplay still ongoing, no win/loss
     else if (points >0 && points < 350){
-      output(`${combo} Earned ${pointsModifier} Point(s). Bet & Deal Again?`);
+      output(`Swapped Out ${cardsToRedraw} Cards, ${combo} You've Earned ${pointsModifier} Point(s). Bet & Deal Again?`);
       player1Button.innerText = "I've Bet, Deal Again";
     }
-    // be rewarded with a glorious doge upon winning for 7777 milliseconds
     else if (points >= 350){
       gameInfo.innerHTML = "YOU WIN! Wow"
-      let paytable = document.getElementById("paytable")
-      paytable.remove();
-      let h2 = document.getElementById("win-condition")
-
-      h2.innerHTML = '<img src="/Users/grahamlim/Documents/bootcamp/week-02/day-003/pre-class/match-game-bootcamp/doge_card.gif" width="250" height="280" />'
-      player1Button.innerText = "Restarting Game in 7.77 Seconds!";
+      cardContainerPlayer1.innerHTML = '<img src="/Users/grahamlim/Documents/bootcamp/week-02/day-003/pre-class/match-game-bootcamp/doge_card.gif" width="100" height="100" />'
+      player1Button.innerText = "Restarting Game in 3 Seconds!";
       setTimeout(() => {
         location.reload();
-      }, 7777)
+      }, 3000)
     }
     // update & refresh display
     pointsInfo.innerText = `Points: ${points}`;
@@ -374,7 +376,7 @@ const initGame = () => {
 
   // initialize deal button functionality and append with listener
   player1Button.innerText = 'Deal Cards';
-  player1Button.setAttribute('class', 'deal-button');
+  player1Button.setAttribute('class', 'button');
   player1Button.addEventListener('click', player1Click);
   row2.appendChild(player1Button);
 
@@ -395,7 +397,6 @@ const initGame = () => {
   betButtons.appendChild(betUp);
   betButtons.appendChild(currentBet);
   betButtons.appendChild(betDown);
-  betButtons.setAttribute('id', 'bet-buttons');
 
   row2.appendChild(betButtons);
   document.body.appendChild(row2);
