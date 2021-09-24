@@ -174,7 +174,7 @@ const checkStraightFlush = (rankTally, suitTally) => {
  */
 const checkRoyalFlush = (rankTally, suitTally) => {
   // eslint-disable-next-line
-  if (checkStraight(rankTally) !== 0 && checkFlush(suitTally) !== 0 && aceHigh === true) {
+  if (checkStraightFlush(rankTally, suitTally) !== 0 && aceHigh === true) {
     result = 'ROYAL FLUSH';
     return 250;
   }
