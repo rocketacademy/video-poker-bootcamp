@@ -132,7 +132,7 @@ let canClick = true;
 let score = 0;
 
 // deifning sound events
-const backgroundSound = new Audio('images/Patakas-World.wav');
+const backgroundSound = new Audio('images/Patakas World.wav');
 backgroundSound.volume = 0.2;
 
 const dealSound = new Audio('images/shuffling-cards-1.wav');
