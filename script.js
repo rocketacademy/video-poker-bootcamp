@@ -375,6 +375,7 @@ const createHeader = () => {
   document.querySelector('.container').appendChild(header);
 
   const mainTitle = document.createElement('h1');
+  mainTitle.classList.add('glitch');
   mainTitle.innerText = 'VIDEO POKER';
   header.appendChild(mainTitle);
 
@@ -528,6 +529,11 @@ const initialiseGame = () => {
   mainDiv.classList.add('container');
   document.body.appendChild(mainDiv);
 
+  const overlayImg = document.createElement('img');
+  overlayImg.classList.add('overlay');
+  overlayImg.src = 'vp-img/background.jpg';
+  mainDiv.appendChild(overlayImg);
+
   createHeader();
   createTable();
 
@@ -535,6 +541,10 @@ const initialiseGame = () => {
   resultsDiv.classList.add('results');
   resultsDiv.innerText = "INPUT YOUR BET AND PRESS 'DEAL' TO BEGIN";
   mainDiv.appendChild(resultsDiv);
+
+  resultsDiv.classList.add('animate__animated');
+  resultsDiv.classList.add('animate__flash');
+  resultsDiv.classList.add('animate__infinite');
 
   const handDiv = document.createElement('div');
   handDiv.classList.add('hand');
@@ -557,16 +567,14 @@ const initialiseGame = () => {
   createInstr();
 
   animateCSS(mainDiv, 'fadeIn').then(() => {
+    document.querySelector('h1').classList.remove('glitch');
+
     // add these event listeners only after fadeIn ends so that transitions do not overflow
     document.querySelector('.game-button').addEventListener('click', onButtonClick);
-    document.querySelector('.game-button').addEventListener('mouseenter', () => { onButtonEnter(gameBtn); });
-    document.querySelector('.game-button').addEventListener('mouseleave', () => { onButtonLeave(gameBtn); });
+    document.querySelector('.game-button').addEventListener('mouseenter', () => { onButtonEnter(document.querySelector('.game-button')); });
+    document.querySelector('.game-button').addEventListener('mouseleave', () => { onButtonLeave(document.querySelector('.game-button')); });
     instrBtnDiv.addEventListener('mouseenter', openInstr);
     instrBtnDiv.addEventListener('mouseleave', closeInstr);
-
-    resultsDiv.classList.add('animate__animated');
-    resultsDiv.classList.add('animate__flash');
-    resultsDiv.classList.add('animate__infinite');
   });
 
   resetGame();

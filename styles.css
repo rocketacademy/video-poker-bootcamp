@@ -10,6 +10,17 @@ body {
   user-select: none;
 }
 
+.overlay {
+  pointer-events: none;
+  position: fixed;
+  z-index: 1;
+  width: 200%;
+  height: 200%;
+  opacity: 0.15;
+  left: -10%;
+  top: -10%;
+}
+
 /* +++++++++++++++++++++ TITLE +++++++++++++++++++++++++ */
 
 header {
@@ -20,6 +31,7 @@ header {
 }
 
 h1 {
+  position: relative;
   color: white;
   text-align: center;
   font-size: 8.5vh;
@@ -32,48 +44,21 @@ h1 {
 }
 
 @keyframes glitch {
-  0% {
-    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  0%,
+  100% {
+    text-shadow: -0.05em -0.02em 0 blue, 0.05em 0.02em 0 red;
   }
 
-  10% {
-    text-shadow: -0.08em 0 0 blue, 0.04em 0 0 yellow, 0.08em 0 0 red;
-  }
-
-  20% {
-    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
-  }
-
-  30% {
-    text-shadow: -0.08em 0 0 blue, -0.04em 0 0 yellow, 0.08em 0 0 red;
-  }
-
-  40% {
-    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  25% {
+    text-shadow: -0.06em -0.02em 0 blue, 0.01em 0 0 yellow, 0.04em 0.02em 0 red;
   }
 
   50% {
-    text-shadow: -0.08em 0 0 blue, 0.04em 0 0 yellow, 0.08em 0 0 red;
+    text-shadow: -0.05em -0.03em 0 blue, 0.05em 0.01em 0 red;
   }
 
-  60% {
-    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
-  }
-
-  70% {
-    text-shadow: -0.08em 0 0 blue, -0.04em 0 0 yellow, 0.08em 0 0 red;
-  }
-
-  80% {
-    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
-  }
-
-  90% {
-    text-shadow: -0.08em 0 0 blue, 0.04em 0 0 yellow, 0.08em 0 0 red;
-  }
-
-  100% {
-    text-shadow: -0.05em 0 0 blue, 0.05em 0 0 red;
+  75% {
+    text-shadow: -0.06em -0.02em 0 blue, -0.01em 0 0 yellow, 0.04em 0.02em 0 red;
   }
 }
 
