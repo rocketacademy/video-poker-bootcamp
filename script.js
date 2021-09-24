@@ -130,31 +130,58 @@ let gameMode = 'default';
 let hand = [];
 let canClick = true;
 let score = 0;
+let winID = '';
+let musicOn = false;
 
-// deifning sound events
+// ========== SOUND ELEMENTS ==========
 const backgroundSound = new Audio('images/Patakas World.wav');
 backgroundSound.volume = 0.2;
-
 const dealSound = new Audio('images/shuffling-cards-1.wav');
-
-const successPurchaseSound = new Audio('images/Success-sound-effect.wav');
-
+// const successPurchaseSound = new Audio('images/Success-sound-effect.wav');
 const defaultButtonSound = new Audio('images/button-3.wav');
 defaultButtonSound.volume = 0.1;
-
 const winSound = new Audio('images/mixkit-slot-machine-win-1928.wav');
 winSound.volume = 0.2;
-
 const loseSound = new Audio('images/mixkit-retro-arcade-game-over-470.wav');
-// loseSound.volume = 0.2;
-
 const pointsCreditSound = new Audio('images/mixkit-clinking-coins-1993.wav');
-
 const flipCardsSound = new Audio('images/Card-flip-sound-effect.wav');
 
 // ========== HELPER FUNCTIONS ==========
 
-// loop background music
+/**
+ * function to play background music based on toggle switch
+ */
+const backgroundPlay = () => {
+  if (musicOn === false) {
+    backgroundSound.play();
+    musicOn = true;
+  } else {
+    backgroundSound.pause();
+    musicOn = false;
+  }
+};
+
+// create toggle on/off button for background music
+/**
+ * ability to collapse and expand payout table
+ */
+const coll = document.getElementsByClassName('collapsible');
+for (let i = 0; i < coll.length; i += 1) {
+  coll[i].addEventListener('click', function () {
+    defaultButtonSound.play();
+    this.classList.toggle('active');
+    const content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+    } else {
+      content.style.display = 'block';
+    }
+  });
+}
+
+/**
+ * loop background music
+ */
 backgroundSound.addEventListener('ended', () => {
   backgroundSound.currentTime = 0;
   backgroundSound.play();
@@ -337,7 +364,6 @@ const checkStraights = () => {
   return isStraight;
 };
 
-let winID = '';
 /**
  * function to calculate hand score and return game message
  * @param {*} hand
@@ -727,7 +753,9 @@ const resetButtonClickEvent = () => {
   }, 2000);
 };
 
-// function to highlight pay table columns
+/**
+ * function to highlight pay table columns or rows
+ */
 const highlightColumn = () => {
   document.querySelectorAll('[id^="bet"]').forEach((el) => {
     el.classList.remove('highlight-column');
@@ -767,16 +795,20 @@ pointsCredited.innerHTML = '+ 5';
 const buttonRow = document.createElement('div');
 // buttonRow.classList.add('buttonRow');
 
+// create container divs for buttons
 const buttonRow2 = document.createElement('div');
 buttonRow2.classList.add('buttonRow');
 
+// create container divs for buttons
 const buttonRow3 = document.createElement('div');
 buttonRow3.classList.add('buttonRow');
 
+// create container for grouping of elements together
 const buttonGroupCredit = document.createElement('div');
 buttonGroupCredit.classList.add('buttonGroup');
 topRow.appendChild(buttonGroupCredit);
 
+// create container for grouping of elements together
 const buttonGroupTop = document.createElement('div');
 buttonGroupTop.classList.add('buttonGroup');
 topRow.appendChild(buttonGroupTop);
@@ -812,13 +844,12 @@ betAmount.addEventListener('animationend', () => {
 const betPlusButton = document.createElement('button');
 betPlusButton.innerText = '+';
 betPlusButton.classList.add('button-bet');
+betPlusButton.addEventListener('click', (event) => { plusButtonClick(betAmount); });
 
 // global for input - button
 const betMinusButton = document.createElement('button');
 betMinusButton.innerText = '-';
 betMinusButton.classList.add('button-bet');
-
-betPlusButton.addEventListener('click', (event) => { plusButtonClick(betAmount); });
 betMinusButton.addEventListener('click', (event) => { minusButtonClick(betAmount); });
 
 // global for max button
@@ -845,6 +876,7 @@ winMsgBanner.classList.add('winMsg');
 winMsgBanner.innerHTML = '';
 board.appendChild(winMsgBanner);
 
+// function to easily append messages for output
 const winMsg = (msg) => {
   winMsgBanner.innerHTML = '';
   winMsgBanner.innerHTML = msg;
@@ -867,6 +899,7 @@ buttonRow2.appendChild(dealButton);
 buttonRow2.appendChild(betPlusButton);
 buttonRow2.appendChild(maxButton);
 
+// show cards as face down first
 const initDeck = () => {
   // board.innerHTML = '';
   for (let i = 0; i < 5; i += 1) {
@@ -894,6 +927,9 @@ const initDeck = () => {
   }
 };
 
+/**
+ * function to iniliase game
+ */
 const initGame = () => {
   document.body.appendChild(gameText);
   document.body.appendChild(board);
@@ -902,62 +938,12 @@ const initGame = () => {
   document.body.appendChild(buttonRow3);
 };
 
+// call functions to display first output
 initDeck();
 initGame();
 
-let musicOn = false;
-
-const backgroundPlay = () => {
-  if (musicOn === false) {
-    backgroundSound.play();
-    musicOn = true;
-  } else {
-    backgroundSound.pause();
-    musicOn = false;
-  }
-};
-
-// create music toggle button
-const coll = document.getElementsByClassName('collapsible');
-for (let i = 0; i < coll.length; i += 1) {
-  coll[i].addEventListener('click', function () {
-    defaultButtonSound.play();
-    this.classList.toggle('active');
-    const content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-    } else {
-      content.style.display = 'block';
-    }
-  });
-}
-
-// jsdoc --- done
-// organise code -- done
-// check bet value, return error msg if input is more than 5 --- done
-// if points run out, pop up window buy credits --- done
-// clicked card is highlighted -- no keep buttons --- done
-// confirm prompt when player buys coins -- done
-// sound on/off? --- done
-// clicked card is highlighted -- no keep buttons --- done
-// maybe push bet amount and credit to the top? buttons below. --- done
-// ability to hide/show pay schedule --- done
-// css modal window for buy coins --- done
-// rework the color scheme --- done
-// transition effects when cards are dealt --- done
-// animation for dealt cards --- done
-// sound effect for each button --- done
-// modern attractive colors --- okok
-// canclick check for cards --- done
-// check reset button outcome --- done
-// instead of how much they won in text, have a dom element appear beside credits box -- done
-// celebration animation when won with highlight on which pay schedule won and how many credits done
-// debug error on highlight row when lost
-// add cursor for buttons -- done
-
 // still pending
 // game instructions
-// add click delay when bet buttons are clicked to revert back to initial game text -- maybe no need
 
 // JS DOC
 // first line is a description of the function

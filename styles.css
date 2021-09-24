@@ -29,7 +29,7 @@ body {
   background-color: antiquewhite;
   max-width: 390px;
   min-height: 160%;
-  margin: 17px auto;
+  margin: 13px auto;
   text-align: center;
   /* border-style: groove; */
   padding: 10px;
@@ -58,7 +58,7 @@ body {
   justify-content: center;
   align-items: center; */
   max-width: 320px;
-  margin: 19px auto 0px auto;
+  margin: 8px auto 0px auto;
   font-size: 13px;
   color: antiquewhite;
   display: flex;
@@ -431,9 +431,9 @@ input:checked + .slider:before {
 
 footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: -5px auto;
 }
 
 .music-setting {
@@ -463,6 +463,7 @@ footer {
 
 h1 {
   color: #ff7582;
+  margin: 15px;
 }
 
 .credit-header {

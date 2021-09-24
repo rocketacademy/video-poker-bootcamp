@@ -14,6 +14,7 @@ creditsBoxClose.innerHTML = '&times';
 creditsBoxClose.classList.add('close');
 creditsBoxContent.appendChild(creditsBoxClose);
 
+// element for header title of modal
 const boxHeader = document.createElement('h2');
 boxHeader.classList.add('credit-header');
 boxHeader.innerHTML = 'TOP UP YOUR CREDITS';
@@ -29,12 +30,12 @@ creditsBoxContent.appendChild(contentBoxTwo);
 
 // element for first image of 100 coins
 const creditsBoxImgOne = document.createElement('img');
-creditsBoxImgOne.src = '/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/2set-golden-coins-piles-stacks-colorful-glossy-money-realistic-game-assets-row-from-one-coin-big-pile-stock-illustration-isolated-white-background_44769-1728 copy.jpg';
+creditsBoxImgOne.src = 'images/2set-golden-coins-piles-stacks-colorful-glossy-money-realistic-game-assets-row-from-one-coin-big-pile-stock-illustration-isolated-white-background_44769-1728 copy.jpg';
 contentBoxOne.appendChild(creditsBoxImgOne);
 
 // element for second image of 500 coins
 const creditsBoxImgTwo = document.createElement('img');
-creditsBoxImgTwo.src = '/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/set-golden-coins-piles-stacks-colorful-glossy-money-realistic-game-assets-row-from-one-coin-big-pile-stock-illustration-isolated-white-background_44769-1728.jpeg';
+creditsBoxImgTwo.src = 'images/set-golden-coins-piles-stacks-colorful-glossy-money-realistic-game-assets-row-from-one-coin-big-pile-stock-illustration-isolated-white-background_44769-1728.jpeg';
 creditsBoxImgTwo.classList.add('image-second');
 contentBoxTwo.appendChild(creditsBoxImgTwo);
 
@@ -48,7 +49,11 @@ secondCoinText.classList.add('coin-text');
 contentBoxOne.appendChild(firstCoinText);
 contentBoxTwo.appendChild(secondCoinText);
 
-// function when buy credit button is clicked
+/**
+ *
+ * @param {*} x that refers to number of coins
+ * function when buy credit button is clicked
+ */
 const purchaseCreditEvent = (x) => {
   if (confirm(`Confirm purchase of ${x} coins?`)) {
     pointsCreditSound.play();
@@ -66,6 +71,7 @@ buy100Button.innerText = '$1.99';
 buy500Button.innerText = '$4.99';
 buy100Button.classList.add('credit-buyButton');
 buy500Button.classList.add('credit-buyButton');
+
 buy100Button.addEventListener('click', (event) => {
   defaultButtonSound.play();
   purchaseCreditEvent(100);
@@ -76,6 +82,7 @@ buy100Button.addEventListener('click', (event) => {
     pointsCredited.style.visibility = 'hidden';
   }, 3000);
 });
+
 buy500Button.addEventListener('click', (event) => {
   defaultButtonSound.play();
   purchaseCreditEvent(500);
@@ -86,6 +93,7 @@ buy500Button.addEventListener('click', (event) => {
     pointsCredited.style.visibility = 'hidden';
   }, 3000);
 });
+
 contentBoxOne.appendChild(buy100Button);
 contentBoxTwo.appendChild(buy500Button);
 
@@ -94,7 +102,9 @@ const buyCreditButton = document.createElement('button');
 buyCreditButton.classList.add('button-buy');
 buyCreditButton.innerText = '+';
 
-// event listeners for credit window
+/**
+ * click events for each button wihtin the modal window
+ */
 buyCreditButton.onclick = function () {
   defaultButtonSound.play();
   buyCreditsBox.style.display = 'block';
