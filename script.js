@@ -132,7 +132,7 @@ let canClick = true;
 let score = 0;
 
 // deifning sound events
-const backgroundSound = new Audio('video-poker-bootcamp/images/Patakas World.wav');
+const backgroundSound = new Audio('https://diyanarmln.github.io/video-poker-bootcamp/images/Patakas World.wav');
 backgroundSound.volume = 0.2;
 
 const dealSound = new Audio('/Users/diyanaramlan/Documents/bootcamp/projects/poker/images/shuffling-cards-1.wav');
