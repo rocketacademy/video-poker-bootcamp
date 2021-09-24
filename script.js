@@ -12,6 +12,7 @@ let deck = [];
 let hand = [];
 let canClickCard = false;
 let canClickButton = true; // used to prevent multiple clicks on deal/draw button
+let inLoseMsg = false;
 let currentBet = 1;
 
 const multipliers = ['250', '50', '25', '9', '6', '4', '3', '2', '1'];
@@ -120,7 +121,7 @@ const resetGame = () => {
  * @param {element} cardEl element of which to toggle class
  */
 const onCardClick = (cardEl) => {
-  if (canClickCard === true) {
+  if (canClickCard) {
     if (cardEl.classList.contains('unclicked-card')) {
       cardEl.classList.remove('unclicked-card');
       cardEl.classList.add('clicked-card');
@@ -145,7 +146,7 @@ const onButtonClick = () => {
     document.querySelector('.results').classList.remove('animate__infinite');
   }
 
-  if (canClickButton) {
+  if (canClickButton && !inLoseMsg) {
     canClickButton = false; // prevent multiple clicks
 
     // animate button press
@@ -240,6 +241,7 @@ const drawCards = () => {
     // if left 0 credits, pop-up
     if (points === 0) {
       document.querySelector('.lose-div').classList.remove('hide');
+      inLoseMsg = true;
     }
   }, 500);
 
@@ -322,7 +324,7 @@ const calcHandScore = (tallyRanks, tallySuits) => {
  * Function that INCREASES currentBet by 1 and updates 'WIN' column in table
  */
 const increaseBet = () => {
-  if (currentBet < points && !canClickCard) {
+  if (currentBet < points && !canClickCard && !inLoseMsg) {
     currentBet += 1;
     if (currentBet === points) {
       document.querySelector('.bet-foot').innerText = '◼︎ ALL IN';
@@ -336,7 +338,7 @@ const increaseBet = () => {
  * Function that DECREASES currentBet by 1 and updates 'WIN' column in table
  */
 const decreaseBet = () => {
-  if (currentBet > 1 && !canClickCard) {
+  if (currentBet > 1 && !canClickCard && !inLoseMsg) {
     currentBet -= 1;
     document.querySelector('.bet-foot').innerText = '◻︎ ALL IN';
     document.querySelector('#bet').innerText = currentBet;
@@ -348,7 +350,7 @@ const decreaseBet = () => {
  * Function that bets ALL IN and updates 'WIN' column in table
  */
 const allInBet = () => {
-  if (!canClickCard) {
+  if (!canClickCard && !inLoseMsg) {
     if (currentBet === points) {
       currentBet = 1;
       document.querySelector('.bet-foot').innerText = '◻︎ ALL IN';
@@ -482,10 +484,6 @@ const createButtons = () => {
   gameBtn.classList.add('game-button');
   gameBtn.innerText = 'DEAL';
   buttonDiv.appendChild(gameBtn);
-
-  gameBtn.addEventListener('click', onButtonClick);
-  gameBtn.addEventListener('mouseenter', () => { onButtonEnter(gameBtn); });
-  gameBtn.addEventListener('mouseleave', () => { onButtonLeave(gameBtn); });
 };
 
 /**
@@ -503,6 +501,8 @@ const createLoseMsg = () => {
   loseBtn.innerText = 'NEW GAME';
   loseDiv.appendChild(loseBtn);
 
+  loseBtn.addEventListener('mouseenter', () => { onButtonEnter(loseBtn); });
+  loseBtn.addEventListener('mouseleave', () => { onButtonLeave(loseBtn); });
   loseBtn.addEventListener('click', () => {
     loseDiv.classList.add('hide');
     points = 100;
@@ -515,6 +515,7 @@ const createLoseMsg = () => {
     currentBet = 1;
     document.querySelector('#bet').innerText = currentBet;
     updateTable(2, multipliers);
+    inLoseMsg = false;
   });
 };
 
@@ -552,15 +553,17 @@ const initialiseGame = () => {
   instrBtnDiv.innerText = '?';
   mainDiv.appendChild(instrBtnDiv);
 
-  instrBtnDiv.addEventListener('mouseenter', openInstr);
-  instrBtnDiv.addEventListener('mouseleave', closeInstr);
-
+  createLoseMsg();
   createInstr();
 
-  // lose message
-  createLoseMsg();
-
   animateCSS(mainDiv, 'fadeIn').then(() => {
+    // add these event listeners only after fadeIn ends so that transitions do not overflow
+    document.querySelector('.game-button').addEventListener('click', onButtonClick);
+    document.querySelector('.game-button').addEventListener('mouseenter', () => { onButtonEnter(gameBtn); });
+    document.querySelector('.game-button').addEventListener('mouseleave', () => { onButtonLeave(gameBtn); });
+    instrBtnDiv.addEventListener('mouseenter', openInstr);
+    instrBtnDiv.addEventListener('mouseleave', closeInstr);
+
     resultsDiv.classList.add('animate__animated');
     resultsDiv.classList.add('animate__flash');
     resultsDiv.classList.add('animate__infinite');

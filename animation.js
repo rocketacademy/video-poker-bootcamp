@@ -21,23 +21,27 @@ const animateCSS = (element, animation, prefix = 'animate__') => new Promise((re
 });
 
 const onCardEnter = (cardEl) => {
-  if (canClickCard === true) {
+  if (canClickCard && !inLoseMsg) {
     cardEl.classList.add('mouse-on');
   }
 };
 
 const onCardLeave = (cardEl) => {
-  if (canClickCard === true) {
+  if (canClickCard && !inLoseMsg) {
     cardEl.classList.remove('mouse-on');
   }
 };
 
 const onButtonEnter = (buttonEl) => {
-  buttonEl.classList.add('mouse-on');
+  if (buttonEl.classList.contains('lose-btn') || (!inLoseMsg)) {
+    buttonEl.classList.add('mouse-on');
+  }
 };
 
 const onButtonLeave = (buttonEl) => {
-  buttonEl.classList.remove('mouse-on');
+  if (buttonEl.classList.contains('lose-btn') || (!inLoseMsg)) {
+    buttonEl.classList.remove('mouse-on');
+  }
 };
 
 const onTitleEnter = (titleEl) => {
