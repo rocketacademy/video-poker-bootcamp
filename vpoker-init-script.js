@@ -110,11 +110,9 @@ const createCard = (cardInfo) => {
   return card;
 };
 
-// Create a helper function for output to abstract complexity
-// of DOM manipulation away from game logic
-const output = (message) => {
-  gameInfo.innerHTML = message;
-};
+
+
+
 
 /* ####################
 ## GLOBAL VARIABLES ##
@@ -145,22 +143,44 @@ let hand = [];
 let cardsToSwap = [];
 const deselectedCards = [];
 
-function handBuilder() {
-  console.log('popping card and pushing to list');
-  const card = deck.pop();
-  hand.push(card);
-  return card;
-}
+
 let pointsModifier = 0;
 let combo = "";
 
 let betAmount = 1;
 let resetState = false;
 
+//sound effects
+const dealSound = new Audio();
+dealSound.src = "/Users/grahamlim/Documents/bootcamp/projects/video-poker-bootcamp/playing card sound Effect.mp3"
+
+const winSound = new Audio();
+winSound.src = "/Users/grahamlim/Documents/bootcamp/projects/video-poker-bootcamp/Slot Machine Jackpot - Sound Effect for Editing.mp3"
+
+// Create a helper function for output to abstract complexity
+// of DOM manipulation away from game logic
+const output = (message) => {
+  gameInfo.innerHTML = message;
+};
+
+// creating another helper function to push cards from deck into hand
+function handBuilder() {
+  console.log('popping card and pushing to list');
+  const card = deck.pop();
+  hand.push(card);
+  return card;
+}
+
+
 /* ##########################
 ## PLAYER ACTION CALLBACKS ##
 ########################### */
+
 const player1Click = () => {
+
+  //play dealing sound
+  dealSound.play()
+
   if (canDeal === true) {
     // arbitrary 5-second delay in dealing cards
     // getting player 1's cards
@@ -212,13 +232,6 @@ const player1Click = () => {
           output(`You've de-selected the ${hand[i].name} of ${hand[i].suitSymbol}!`);
           };
 
-        // // cardsToSwap = cardElement.querySelectorAll("[class = 'card-selected']")
-        
-        // if (cardElement.classList.contains('card-selected')){
-        //   console.log(`${hand[i].name} of ${hand[i].suitSymbol} should be pushed to cardsToSwap`)
-
-        // else if (cardElement.classList.contains)
-   
       });
       // Append the card element to the card container
       cardContainerPlayer1.appendChild(cardElement);
@@ -226,6 +239,7 @@ const player1Click = () => {
       output(`You've drawn 5 cards! Click on the cards you want to SWAP!`);
       player1Button.innerText = 'Swap Clicked Card(s)';
       canDeal = false;
+   
     }
   }
   else if (canDeal === false) {
@@ -256,7 +270,7 @@ const player1Click = () => {
       const cardsSwapped = createCard(hand[i]);
       cardContainerPlayer1.appendChild(cardsSwapped);
     }
-
+    
     // calc the score with the amount betted!
     let [pointsModifier, combo] = calcHandScore(hand);
     
@@ -284,6 +298,9 @@ const player1Click = () => {
     // be rewarded with a glorious doge upon winning for 7777 milliseconds
     else if (points >= 350){
       gameInfo.innerHTML = "YOU WIN! Wow"
+
+      winSound.play()
+
       let paytable = document.getElementById("paytable")
       paytable.remove();
       let h2 = document.getElementById("win-condition")

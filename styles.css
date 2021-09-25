@@ -20,6 +20,7 @@
 body {
   background-color: green;
   max-width: 600px;
+  margin: auto
   /* display: flex; */
 }
 
