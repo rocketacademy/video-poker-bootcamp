@@ -444,7 +444,7 @@ const calcHandScore = (hand) => {
     winValue = 'JACKS OR BETTER';
     winID = 'win9';
 
-    return getResult(2);
+    return getResult(1);
   }
   return forLosers();
 };
@@ -456,15 +456,15 @@ const calcHandScore = (hand) => {
 const getResult = (multiplier) => {
   console.log(winValue);
   score = Number(playerBet) * multiplier;
-  pointsCredited.innerHTML = `+ ${score}`;
+  pointsCredited.innerHTML = `+ ${score - playerBet}`;
   pointsCredited.classList.remove('pointsDebited');
   pointsCredited.classList.add('pointsCredited');
-  output(`You bet ${playerBet} credit(s) and won ${score} points<br>`);
+  output(`You bet ${playerBet} credit(s) and scored ${score} points<br>`);
   winMsg(`${winValue}`);
   winSound.play();
   winMsgBanner.style.visibility = 'visible';
-  playerPoints += Number(score);
-  creditNumber.innerHTML = `${playerPoints}`;
+  playerPoints += Number(score - playerBet);
+  // creditNumber.innerHTML = `${playerPoints}`;
 };
 
 /**
@@ -472,12 +472,12 @@ const getResult = (multiplier) => {
  */
 const forLosers = () => {
   console.log('loser');
-  output(`You have no winning hand and lost ${playerBet} points<br>`);
+  output(`You have no winning hand and lost ${playerBet} point(s)<br>`);
   pointsCredited.innerHTML = `- ${playerBet}`;
   pointsCredited.classList.add('pointsDebited');
   pointsCredited.classList.remove('pointsCredited');
   playerPoints -= Number(playerBet);
-  creditNumber.innerHTML = `${playerPoints}`;
+  // creditNumber.innerHTML = `${playerPoints}`;
   loseMsgBanner.innerHTML = 'YOU LOST';
   loseSound.play();
   loseMsgBanner.style.visibility = 'visible';
@@ -647,7 +647,7 @@ const checkDeck = () => {
 
 /**
  * function to run when deal button is clicked
- */
+*/
 const dealButtonClickEvent = () => {
   if (canClick === true) {
     pointsCredited.innerHTML = '';
@@ -696,9 +696,14 @@ const dealButtonClickEvent = () => {
           } }, 2000);
 
         setTimeout(() => {
-          pointsCreditSound.play();
-          creditNumber.classList.add('flash');
-          pointsCredited.style.visibility = 'visible';
+          if (score === 5) {
+            pointsCredited.style.visibility = 'hidden';
+          } else {
+            creditNumber.innerHTML = `${playerPoints}`;
+            pointsCreditSound.play();
+            creditNumber.classList.add('flash');
+            pointsCredited.style.visibility = 'visible';
+          }
         }, 5000);
 
         setTimeout(() => {
@@ -730,27 +735,29 @@ const dealButtonClickEvent = () => {
  * function to run when reset button is click
  */
 const resetButtonClickEvent = () => {
-  defaultButtonSound.play();
-  gameText.innerHTML = 'reset in progress ...';
-  setTimeout(() => {
-    flipCardsSound.play();
-    deck = [];
-    deck = shuffleCards(makeDeck());
-    playerPoints = 100;
-    creditNumber.innerHTML = `${playerPoints}`;
-    playerBet = Number(0);
-    betAmount.value = `${playerBet}`;
-    hand = [];
-    gameMode = 'default';
-    boardCard.innerHTML = '';
-    buttonRow.innerHTML = '';
-    gameText.innerHTML = 'Use [ MAX ] [ + ] [ - ] buttons to enter your bet<br>Then, click [ DEAL ] to begin the poker game';
-    score = 0;
-    initDeck();
-    document.querySelectorAll('[id^="bet"]').forEach((el) => {
-      el.classList.remove('highlight-column');
-    });
-  }, 2000);
+  if (confirm('Confirm complete reset of game including player credits?')) {
+    defaultButtonSound.play();
+    gameText.innerHTML = 'reset in progress ...';
+    setTimeout(() => {
+      flipCardsSound.play();
+      deck = [];
+      deck = shuffleCards(makeDeck());
+      playerPoints = 100;
+      creditNumber.innerHTML = `${playerPoints}`;
+      playerBet = Number(0);
+      betAmount.value = `${playerBet}`;
+      hand = [];
+      gameMode = 'default';
+      boardCard.innerHTML = '';
+      buttonRow.innerHTML = '';
+      gameText.innerHTML = 'Use [ MAX ] [ + ] [ - ] buttons to enter your bet<br>Then, click [ DEAL ] to begin the poker game';
+      score = 0;
+      initDeck();
+      document.querySelectorAll('[id^="bet"]').forEach((el) => {
+        el.classList.remove('highlight-column');
+      });
+    }, 2000);
+  }
 };
 
 /**

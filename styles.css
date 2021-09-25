@@ -4,6 +4,7 @@ body {
   max-width: 570px;
   margin: 0 auto;
   background-color: #353e5c;
+  padding: 0 10px 0 10px;
   /* display: flex; */
   /* justify-content: center; */
 }
@@ -83,7 +84,7 @@ body {
   border-color: #c29ba3;
   font-size: 12px;
   text-align: center;
-  width: 60px;
+  width: 57px;
   background-color: antiquewhite;
   padding: 5px 3px;
   color: #353e5c;
@@ -327,7 +328,7 @@ body {
 
 td {
   border: 0.5px dotted;
-  padding: 5px 3px;
+  padding: 5px 6px;
   text-align: center;
   font-size: 13px;
   color: antiquewhite;
@@ -443,6 +444,11 @@ footer {
   color: antiquewhite;
 }
 
+h1 {
+  color: #ff7582;
+  margin: 40px 0 15px 0;
+}
+
 @media screen and (min-width: 570px) {
   .board {
     max-width: 570px;
@@ -459,11 +465,9 @@ footer {
   .collapsible {
     width: 520px;
   }
-}
-
-h1 {
-  color: #ff7582;
-  margin: 15px;
+  h1 {
+    margin: 100px 0 15px 0;
+  }
 }
 
 .credit-header {
@@ -494,7 +498,7 @@ h1 {
 }
 
 .extra-bet {
-  border-inline-width: 20px;
+  border-inline-width: 16px;
   border-color: #725a7a;
 }
 
@@ -522,6 +526,7 @@ h1 {
   color: #fee715ff;
   /* animation: blinkingText 1s infinite; */
   margin-left: 10px;
+  font-size: 11px;
 }
 
 .pointsDebited {
@@ -529,6 +534,7 @@ h1 {
   color: #fee715ff;
   /* animation: blinkingTextLose 1s infinite; */
   margin-left: 10px;
+  font-size: 11px;
 }
 
 @keyframes blinkingTextLose {
