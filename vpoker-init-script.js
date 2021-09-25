@@ -152,10 +152,10 @@ let resetState = false;
 
 //sound effects
 const dealSound = new Audio();
-dealSound.src = "/Users/grahamlim/Documents/bootcamp/projects/video-poker-bootcamp/playing card sound Effect.mp3"
+dealSound.src = "./playing card sound Effect.mp3"
 
 const winSound = new Audio();
-winSound.src = "/Users/grahamlim/Documents/bootcamp/projects/video-poker-bootcamp/Slot Machine Jackpot - Sound Effect for Editing.mp3"
+winSound.src = "./Slot Machine Jackpot - Sound Effect for Editing.mp3"
 
 // Create a helper function for output to abstract complexity
 // of DOM manipulation away from game logic
