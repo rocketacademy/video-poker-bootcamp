@@ -1,5 +1,5 @@
-﻿// ######### Global Variable ##############
-// ##########################
+﻿// ##### Global Variable ##### //
+// ########################### //
 
 let deck;
 let playerHand = [];
@@ -25,8 +25,9 @@ const payTable = [
   { combo: 'Empty', image: './images/EMPTY.png', points: -1 },
 ];
 
-// ########### Defining Sounds ################
-// ################
+// ##### Defining Sounds ##### //
+// ########################### //
+
 const openCardSound = new Audio('./sounds/cardPlace4.wav');
 const swapCardSound = new Audio('./sounds/cardSlide7.wav');
 const selectCardSound = new Audio('./sounds/cardPlace1.wav');
@@ -35,6 +36,10 @@ const backgroundSound = new Audio('./sounds/Harmonies.mp3');
 backgroundSound.volume = 0.2;
 backgroundSound.loop = true;
 
+// ##### Helper Functions ##### //
+// ########################### //
+
+// function to turn on and off the music
 const playMusic = () => {
   if (musicOn === false) {
     backgroundSound.play();
@@ -128,6 +133,7 @@ const makeDeck = () => {
 
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
+// function to shuffle the cards in the deck
 const shuffleCards = (cards) => {
   // Loop over the card deck array once
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
@@ -145,11 +151,10 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
-deck = shuffleCards(makeDeck());
-
 // function to get DOM element by ID
 const getElement = (a) => document.getElementById(`${a}`);
 
+// function to run through the player's hand and display in UI
 const createCard = (array) => {
   for (let i = 0; i < 5; i += 1) {
     getElement(`card${i}name`).innerHTML = array[i].displayName;
@@ -173,6 +178,7 @@ const createCard = (array) => {
       getElement(`card${i}name`).classList.add('black'); }
   } };
 
+// function that to embed in the card display to enable select / un-select
 const squareClick = (cardElement, i) => {
   if (currentGameMode === DEAL_CARD_MODE) {
     getElement('info').innerHTML = 'Deal your cards first';
@@ -199,6 +205,7 @@ const squareClick = (cardElement, i) => {
  * @param  b {number} number to add together
  * @return {number}   a and b added together
  */
+// function to calculate the "combo" of player's hand based various payout conditions
 calcHandScore = () => {
   let wonCondition = payTable[9];
   if (isOnePair()) {
@@ -240,28 +247,37 @@ calcHandScore = () => {
   return wonCondition;
 };
 
+// function to carry out when user clicks on deal button
 const deal = () => {
-  deck = shuffleCards(makeDeck());
-  playerHand = [];
-  for (let i = 0; i < 5; i += 1) {
-    playerHand.push(deck.pop());
+  if (currentGameMode === SWAP_CARD_MODE) {
+    getElement('info').innerHTML = 'Select the cards to swap';
+    rejectSound.play();
   }
-  for (let i = 0; i < 5; i += 1) {
-    getElement(`card${i}`).classList.remove('cardLocked');
-  }
-  // playerHand = FOUR_OF_A_KIND;
-  playerHand.sort((a, b) => a.rank - b.rank);
-  createCard(playerHand);
-  selectedHand = [0, 0, 0, 0, 0];
-  cardNameTally = {};
-  currentGameMode = SWAP_CARD_MODE;
-  openCardSound.play();
-  getElement('info').innerHTML = 'Select the cards to swap';
-  for (let i = 0; i < 5; i += 1) {
-    getElement(`card${i}`).classList.remove('cardSelected');
+  if (currentGameMode === DEAL_CARD_MODE) {
+    deck = shuffleCards(makeDeck());
+    playerHand = [];
+    for (let i = 0; i < 5; i += 1) {
+      playerHand.push(deck.pop());
+    }
+    for (let i = 0; i < 5; i += 1) {
+      getElement(`card${i}`).classList.remove('cardLocked');
+    }
+    // playerHand = FOUR_OF_A_KIND;
+    playerHand.sort((a, b) => a.rank - b.rank);
+    createCard(playerHand);
+    selectedHand = [0, 0, 0, 0, 0];
+    cardNameTally = {};
+    currentGameMode = SWAP_CARD_MODE;
+    openCardSound.play();
+    getElement('info').innerHTML = 'Select the cards to swap';
+    for (let i = 0; i < 5; i += 1) {
+      getElement(`card${i}`).classList.remove('cardSelected');
+    }
   }
 };
 
+// function that carries out the backend when user swaps cards
+// includes the calculation of payout
 const swap = () => {
   if (currentGameMode === DEAL_CARD_MODE) {
     getElement('info').innerHTML = 'Deal your cards first';
@@ -288,6 +304,7 @@ const swap = () => {
   }
 };
 
+// function to help tally the player's hand in order to help check payout conditions
 const tallyCards = (hand) => {
   for (let i = 0; i < hand.length; i += 1) {
     const cardName = hand[i].rank;
@@ -302,6 +319,7 @@ const tallyCards = (hand) => {
   }
 };
 
+// #### booleans to check the various card combinations ####
 const isflush = () => {
   // eslint-disable-next-line max-len
   if (playerHand[0].suit === playerHand[1].suit && playerHand[1].suit === playerHand[2].suit && playerHand[2].suit === playerHand[3].suit && playerHand[3].suit === playerHand[4].suit) {
@@ -440,12 +458,17 @@ const buildBoard = () => {
   swapButton.addEventListener('click', swap);
   musicButton.addEventListener('click', playMusic);
 
+  const messageContainer = document.createElement('div');
+  messageContainer.classList.add('board');
+  messageContainer.setAttribute('id', 'infoContainer');
+  main.appendChild(messageContainer);
+
   const gameMessage = document.createElement('div');
   gameMessage.classList.add('info');
   gameMessage.classList.add('board');
   gameMessage.setAttribute('id', 'info');
   gameMessage.innerHTML = 'Your starting wallet is 100';
-  main.appendChild(gameMessage);
+  messageContainer.appendChild(gameMessage);
 
   const pointsTracker = document.createElement('div');
   pointsTracker.classList.add('pointsContainer');
@@ -503,6 +526,9 @@ const buildBoard = () => {
     col3.setAttribute('style', 'text-align: center');
   }
 };
+
+// ######### DOM functions ######### //
+// #################################//
 
 const initGame = () => {
   startGame.innerHTML = '';

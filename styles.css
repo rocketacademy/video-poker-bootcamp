@@ -85,10 +85,19 @@ h1 {
 }
 
 .info {
-  font-weight: bold;
-  font-size: 18px;
+  font-weight: bolder;
+  font-size: 20px;
   height: 90px;
   padding: 10px;
+  width: 400px;
+  border-color: rgb(242, 168, 9);
+  border-width: 5px;
+  border-style: dotted;
+}
+
+#infoContainer {
+  display: flex;
+  justify-content: center;
 }
 
 .pointsContainer {
@@ -129,9 +138,9 @@ h1 {
 }
 
 .welcome {
-  font-weight: bold;
+  font-weight: bolder;
   font-size: 28px;
-  padding: 10px;
+  padding: 10px 10px 15px 10px;
   text-align: center;
   animation: moving 0.5s infinite;
   font-family: "Codystar", cursive;
