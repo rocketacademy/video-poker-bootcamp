@@ -3,6 +3,10 @@
 
 let deck;
 let playerHand = [];
+
+// to identify which cards user select
+// 0 = not selected
+// 1 = selected
 let selectedHand = [0, 0, 0, 0, 0];
 let arrangedHand = [];
 let points = 100;
@@ -38,6 +42,9 @@ backgroundSound.loop = true;
 
 // ##### Helper Functions ##### //
 // ########################### //
+
+// function to get DOM element by ID
+const getElement = (a) => document.getElementById(`${a}`);
 
 // function to turn on and off the music
 const playMusic = () => {
@@ -151,10 +158,11 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
-// function to get DOM element by ID
-const getElement = (a) => document.getElementById(`${a}`);
-
-// function to run through the player's hand and display in UI
+/**
+ * function to run through the player's hand and display in UI
+ * loop through the player hand array to find the suit and name.
+ * @return display the Name and Suit image with for each of the card in Player's Hand
+ */
 const createCard = (array) => {
   for (let i = 0; i < 5; i += 1) {
     getElement(`card${i}name`).innerHTML = array[i].displayName;
@@ -179,17 +187,20 @@ const createCard = (array) => {
   } };
 
 // function that to embed in the card display to enable select / un-select
-const squareClick = (cardElement, i) => {
+const squareClick = (card, i) => {
+  // validation check, if not play error sound and message
   if (currentGameMode === DEAL_CARD_MODE) {
     getElement('info').innerHTML = 'Deal your cards first';
     rejectSound.play();
   }
   else if (currentGameMode === SWAP_CARD_MODE) {
+    // if to select, change the corresponding value in selectedHand array to 1(selected)
     const clickedCard = playerHand[i];
     if (selectedHand[i] === 0) {
       selectedHand[i] = 1;
       getElement(`card${i}`).classList.add('cardSelected');
     }
+    // if un-select, change the corresponding value in selectedHand array to 0(not selected)
     else if (selectedHand[i] === 1) {
       selectedHand[i] = 0;
       getElement(`card${i}`).classList.remove('cardSelected');
@@ -200,14 +211,15 @@ const squareClick = (cardElement, i) => {
 };
 
 /**
- * A function that sums numbers
- * @param  a {number} number to add together
- * @param  b {number} number to add together
- * @return {number}   a and b added together
+ * function to calculate the "combo" of player's hand based various payout conditions
+ * @param  wonCondition is the combo / object as per the payout table
+ * check all the boolean logics to lock the WonCondition var
+ * @return wonCondition as an object in payout table array
  */
-// function to calculate the "combo" of player's hand based various payout conditions
 calcHandScore = () => {
+  // set wonCondition to empty hand by default
   let wonCondition = payTable[9];
+  // if functions to check if each boolean is true
   if (isOnePair()) {
     console.log('One Pair');
     wonCondition = payTable[8];
@@ -236,6 +248,7 @@ calcHandScore = () => {
     console.log('Four of a Kind');
     wonCondition = payTable[2];
   }
+  // to differentiate if it royal flush, check that last card is not a Ace
   if (isStraight() && isflush() && arrangedHand[4].rank !== 14) {
     console.log('Straight Flush');
     wonCondition = payTable[1];
@@ -247,25 +260,36 @@ calcHandScore = () => {
   return wonCondition;
 };
 
-// function to carry out when user clicks on deal button
+/**
+ * function to carry out when user clicks on deal button
+ * @return the correct DOM elements are changed
+ */
 const deal = () => {
+  // validation check, if not play error sound and message
   if (currentGameMode === SWAP_CARD_MODE) {
     getElement('info').innerHTML = 'Select the cards to swap';
     rejectSound.play();
   }
   if (currentGameMode === DEAL_CARD_MODE) {
     deck = shuffleCards(makeDeck());
+    // reset players hand
     playerHand = [];
+    // pick 5 cards
     for (let i = 0; i < 5; i += 1) {
       playerHand.push(deck.pop());
     }
+    // remove border in UI
     for (let i = 0; i < 5; i += 1) {
       getElement(`card${i}`).classList.remove('cardLocked');
     }
     // playerHand = FOUR_OF_A_KIND;
+    // arrange cards from small to big
     playerHand.sort((a, b) => a.rank - b.rank);
+    // display cards in UI with createCard function
     createCard(playerHand);
+    // reset the selectedHand array
     selectedHand = [0, 0, 0, 0, 0];
+    // reset cardNametally
     cardNameTally = {};
     currentGameMode = SWAP_CARD_MODE;
     openCardSound.play();
@@ -276,16 +300,22 @@ const deal = () => {
   }
 };
 
-// function that carries out the backend when user swaps cards
-// includes the calculation of payout
+/**
+ * // function that carries out the backend when user swaps cards
+ * @param winnings is the combo (object in payout array)
+ * includes the calculation of payout
+ */
 const swap = () => {
+  // validation check, if not play error sound and message
   if (currentGameMode === DEAL_CARD_MODE) {
     getElement('info').innerHTML = 'Deal your cards first';
     rejectSound.play();
   }
+  // iterate through the selectedHand array and change playerHand accordingly
   else if (currentGameMode === SWAP_CARD_MODE) {
     for (let i = 0; i < 5; i += 1) {
       if (selectedHand[i] === 1) {
+        // splice out the card and insert in card from deck
         playerHand.splice(i, 1, deck.pop());
         getElement(`card${i}`).classList.remove('cardSelected');
       }
@@ -296,8 +326,11 @@ const swap = () => {
     }
     swapCardSound.play();
     createCard(playerHand);
+    // tallyCards to faciliate calcHandScore
     tallyCards(playerHand);
+    // create new variable winnings
     const winnings = calcHandScore();
+    // pull combo points from key value
     points += winnings.points;
     getElement('info').innerHTML = `Your Hand : ${winnings.combo} <br><br> Points : ${winnings.points}`;
     getElement('yourPoints').innerHTML = `Your Wallet: ${points}`;
@@ -320,6 +353,11 @@ const tallyCards = (hand) => {
 };
 
 // #### booleans to check the various card combinations ####
+
+/**
+ * // function to check if flush
+ * @returns boolean true if all suit key are the same
+ */
 const isflush = () => {
   // eslint-disable-next-line max-len
   if (playerHand[0].suit === playerHand[1].suit && playerHand[1].suit === playerHand[2].suit && playerHand[2].suit === playerHand[3].suit && playerHand[3].suit === playerHand[4].suit) {
@@ -327,6 +365,11 @@ const isflush = () => {
   } return false;
 };
 
+/**
+ * // function to check if pair
+ * @param pair counts how many pairs are in players hand
+ * @returns boolean true is there is 1 pair
+ */
 const isOnePair = () => {
   let pair = 0;
   for (let i = 0; i < 15; i += 1) {
@@ -340,6 +383,11 @@ const isOnePair = () => {
   return false;
 };
 
+/**
+ * // function to check if pair
+ * @param pair counts how many pairs are in players hand
+ * @returns boolean true is there are 2 pairs
+ */
 const isTwoPair = () => {
   let pair = 0;
   for (let i = 0; i < 15; i += 1) {
@@ -353,6 +401,11 @@ const isTwoPair = () => {
   return false;
 };
 
+/**
+ * // function to check if pair
+ * @param triple counts how many triples are in players hand
+ * @returns boolean true is there is 1 triple
+ */
 const isThreeOfAKind = () => {
   let triple = 0;
   for (let i = 0; i < 15; i += 1) {
@@ -366,6 +419,11 @@ const isThreeOfAKind = () => {
   return false;
 };
 
+/**
+ * // function to check if pair
+ * @param four counts how many four of a kind are in players hand
+ * @returns boolean true is there is four same card
+ */
 const isFourOfAKind = () => {
   let four = 0;
   for (let i = 0; i < 15; i += 1) {
@@ -379,17 +437,26 @@ const isFourOfAKind = () => {
   return false;
 };
 
+/**
+ * // function to check if pair
+ * @param arrangedHand to sort players hand from small to big
+ * separate array as to not disturb main playerHand array
+ * @param consecutive counts how many consecutive cards are increasing in value by 1 each time
+ * @returns boolean true if there are 5 consecutive cards
+ */
 const isStraight = () => {
   arrangedHand = playerHand;
   arrangedHand.sort((a, b) => a.rank - b.rank);
   let testCard = arrangedHand[0];
   let consecutive = 1;
   for (let i = 1; i < 5; i += 1) {
+    // works for all cases + big straight [10, J , Q , K, A]
     if ((arrangedHand[i].rank - testCard.rank) === 1) {
       consecutive += 1;
       testCard = arrangedHand[i];
     }
   }
+  // check if it is small straight [2, 3, 4, 5, A]
   if (arrangedHand[0].rank === 2 && consecutive === 4 && arrangedHand[4].rank === 14) {
     consecutive += 1;
   }
@@ -397,6 +464,16 @@ const isStraight = () => {
     return true;
   } return false;
 };
+
+const initGame = () => {
+  startGame.innerHTML = '';
+  buildBoard();
+  currentGameMode = DEAL_CARD_MODE;
+  playMusic();
+};
+
+// ######### DOM functions ######### //
+// #################################//
 
 const buildBoard = () => {
   // start with an empty container
@@ -525,16 +602,6 @@ const buildBoard = () => {
     col3.innerHTML = `${payTable[i].points}`;
     col3.setAttribute('style', 'text-align: center');
   }
-};
-
-// ######### DOM functions ######### //
-// #################################//
-
-const initGame = () => {
-  startGame.innerHTML = '';
-  buildBoard();
-  currentGameMode = DEAL_CARD_MODE;
-  playMusic();
 };
 
 const buildIntro = () => {
