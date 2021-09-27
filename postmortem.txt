@@ -1,0 +1,27 @@
+[TECHNICAL REVIEW]
+
+1. What went well? 
+- Was able to replace cards in the same position as they were drawn by using IDs (code: script.js l.92-96)
+- Was able to add transitions from animate.css and using event listeners/css classes (code: styles.css l.227-231, l.341-344)
+
+2. What were the biggest challenges you faced? 
+- Calculating probability (code: probability.js)
+Took some time to think of how to get all possible hands regardless of the number of held cards (ended up using recursive function which I referred to from online). Also, was unable to implement for <2 held cards due to too many possibilities - not sure if there's is a more efficient way?
+- Creating and accessing HTML table (code: createElements.js l.39-79, script.js l.200-218)
+
+3. What would you do differently next time? 
+- Use 'game modes' to separate the deal/draw function (whether waiting for user to input bet, or to hold cards)
+- More differentiated use of classes vs. IDs (used class for almost every element for this project)
+
+----------------------------------------------------------------
+
+[PROCESS REVIEW]
+
+1. What went well? 
+- Was able to refactor into multiple files based on the function of functions. 
+
+2. What could have been better?
+- Could have committed more often, occasionally forgot to commit after implementing a new function.
+
+3. What would you do differently next time?
+- Plan out the whole HTML structure before diving in to create all the DOM elements, so as to better understand the parent/child divs (easier to adjust flexbox) etc.

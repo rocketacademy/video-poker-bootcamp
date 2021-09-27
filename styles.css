@@ -1,0 +1,411 @@
+body {
+  background-color: black;
+  font-family: "VT323", monospace;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* +++++++++++++++++++++ OVERLAY +++++++++++++++++++++++++ */
+
+.overlay {
+  pointer-events: none;
+  width: 200%;
+  height: 200%;
+  position: fixed;
+  left: -10%;
+  top: -10%;
+  z-index: 1;
+  opacity: 0.15;
+}
+
+/* +++++++++++++++++++++ TITLE +++++++++++++++++++++++++ */
+
+h1 {
+  margin: 2vh 0;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  color: white;
+  text-align: center;
+  font-size: 8.5vh;
+  text-shadow: -0.05em -0.02em 0 blue, 0.05em 0.02em 0 red;
+}
+
+.glitch {
+  animation: glitch 2000ms infinite;
+}
+
+@keyframes glitch {
+  0%,
+  100% {
+    text-shadow: -0.05em -0.02em 0 blue, 0.05em 0.02em 0 red;
+  }
+
+  25% {
+    text-shadow: -0.06em -0.02em 0 blue, 0.01em 0 0 yellow, 0.04em 0.02em 0 red;
+  }
+
+  50% {
+    text-shadow: -0.05em -0.03em 0 blue, 0.05em 0.01em 0 red;
+  }
+
+  75% {
+    text-shadow: -0.06em -0.02em 0 blue, -0.01em 0 0 yellow, 0.04em 0.02em 0 red;
+  }
+}
+
+/* +++++++++++++++++++++ TABLE +++++++++++++++++++++++++ */
+
+table {
+  margin: 3vh auto;
+  border: 0.15vh solid white;
+  border-collapse: collapse;
+  color: white;
+  font-size: 3vh;
+  text-align: center;
+}
+
+thead {
+  background-color: white;
+  color: black;
+}
+
+th {
+  border: 0.15vh solid white;
+  padding: 0 2.7vw;
+}
+
+td {
+  min-width: 14.5vw;
+  border: 0.15vh solid white;
+  padding: 0 1.65vw;
+}
+
+.yellow-text {
+  color: yellow;
+}
+
+.highlight {
+  color: yellow;
+}
+
+/* +++++++++++++++++++++ RESULT +++++++++++++++++++++++++ */
+.results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  font-size: 3vh;
+  margin-top: 1vh;
+  height: 6vh;
+}
+
+/* +++++++++++++++++++++ HAND +++++++++++++++++++++++++ */
+
+.hand {
+  display: flex;
+  height: 19vh;
+  justify-content: space-evenly;
+  align-items: center;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.unclicked-card {
+  max-width: 15%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1vh;
+}
+
+.clicked-card {
+  position: relative;
+  top: 1.5vh;
+  background-color: silver;
+
+  max-width: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1vh;
+}
+
+.suit-img {
+  width: 40%;
+  height: auto;
+  margin-bottom: 1.5vh;
+}
+
+.red {
+  filter: invert(13%) sepia(75%) saturate(7436%) hue-rotate(359deg)
+    brightness(99%) contrast(109%);
+}
+
+.card-name {
+  font-size: 5.5vh;
+  text-align: center;
+  margin: 1vh;
+}
+
+.hold-text {
+  display: block;
+  position: absolute;
+  top: 41%;
+  background-color: black;
+  color: white;
+  width: 100%;
+  font-size: 3vh;
+  text-align: center;
+}
+
+/* +++++++++++++++++++++ BUTTONS +++++++++++++++++++++++++ */
+
+.button-div {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.bet-head {
+  color: white;
+  text-align: center;
+  font-size: 3.5vh;
+}
+
+.bet-foot {
+  color: white;
+  text-align: center;
+  font-size: 3.5vh;
+}
+
+.bet-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.bet-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 7.5vh;
+  padding: 0.5vh 1vw;
+}
+
+#bet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 6vh;
+  text-align: center;
+  padding: 0.5vh 1vw;
+}
+
+.game-button {
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 6vh;
+  background-color: yellow;
+  border-radius: 1.5vh;
+  text-align: center;
+  padding: 1vh 2vw;
+}
+
+.press-button {
+  position: relative;
+  top: 0.25vh;
+  background-color: rgb(201, 201, 1);
+}
+
+/* +++++++++++++++++++++ SCORE +++++++++++++++++++++++++ */
+.score {
+  color: white;
+  text-align: right;
+  font-size: 3.6vh;
+  position: absolute;
+  top: 94vh;
+  right: 5vw;
+}
+
+/* +++++++++++++++++++++ INSTRUCTIONS +++++++++++++++++++++++++ */
+.instr-btn {
+  color: black;
+  background-color: white;
+  font-size: 3vh;
+  width: 3vh;
+  height: 3vh;
+  border-radius: 50%;
+  position: absolute;
+  top: 94.5vh;
+  left: 5vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.instructions {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 70vw;
+  max-height: 60vh;
+  left: 15vw;
+  bottom: 25vh;
+  border: 3px solid white;
+  background-color: black;
+  padding: 2vh 3vh;
+  color: white;
+}
+
+.instr-head {
+  font-size: 3vh;
+  text-align: center;
+  margin: 1.5vh 0;
+}
+
+.instr-body {
+  font-size: 2.5vh;
+  text-align: left;
+  margin: 1.5vh 0;
+}
+
+.instr-sources {
+  font-size: 2vh;
+  text-align: center;
+  margin: 0.5vh 0 1vh 0;
+}
+/* +++++++++++++++++++++ LOSE +++++++++++++++++++++++++ */
+.lose-div {
+  width: 60vw;
+  height: 26vh;
+  position: absolute;
+  bottom: 39vh;
+  left: 20vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  background-color: black;
+  border: 3px solid white;
+  font-size: 7vh;
+  padding: 2vh;
+}
+
+.lose-btn {
+  background-color: yellow;
+  color: black;
+  font-size: 5vh;
+  padding: 1vh 2vw;
+  border-radius: 1vh;
+}
+
+/* +++++++++++++++++++++ ANIMATIONS +++++++++++++++++++++++++ */
+
+.animate__animated.animate__flipInY {
+  --animate-duration: 0.5s;
+}
+
+.animate__animated.animate__flipOutY {
+  --animate-duration: 0.5s;
+}
+
+.animate__animated.animate__fadeIn {
+  --animate-duration: 2.5s;
+}
+
+.animate__animated.animate__flash {
+  --animate-duration: 2.5s;
+}
+
+.animate__animated.animate__shakeY {
+  --animate-duration: 5s;
+}
+
+/* +++++++++++++++++++++ MOUSE ON / HIDE +++++++++++++++++++++++++ */
+
+.mouse-on {
+  position: relative;
+  bottom: 0.5vh;
+}
+
+.hide {
+  display: none;
+}
+
+.hide-text {
+  color: black;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  td {
+    min-width: 17.5vw;
+    padding: 0 2.7vw;
+  }
+
+  .instructions {
+    left: 15vw;
+    bottom: 29vh;
+  }
+}
+
+@media (min-width: 1080px) {
+  h1 {
+    font-size: 10vh;
+    margin-bottom: 0.5vh;
+  }
+
+  td {
+    min-width: 13vw;
+    padding: 0 2.7vw;
+  }
+
+  .results {
+    font-size: 3.8vh;
+    margin-bottom: 2vh;
+  }
+
+  .button-div {
+    margin-top: 2vh;
+  }
+
+  .hand {
+    height: 19vh;
+    max-width: 800px;
+  }
+
+  .card-name {
+    font-size: 7vh;
+    text-align: center;
+    margin: 1vh;
+  }
+
+  .instructions {
+    left: 16.5vw;
+    bottom: 35vh;
+  }
+
+  .instr-click-to-exit {
+    display: none;
+  }
+}
