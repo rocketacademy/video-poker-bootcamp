@@ -305,7 +305,7 @@ const player1Click = () => {
       paytable.remove();
       let h2 = document.getElementById("win-condition")
 
-      h2.innerHTML = '<img src="/Users/grahamlim/Documents/bootcamp/week-02/day-003/pre-class/match-game-bootcamp/doge_card.gif" width="250" height="280" />'
+      h2.innerHTML = '<img src="https://lh3.googleusercontent.com/WUywkoyAoBQOEaszuq2bV8STg_N0eOWUOQyWNtsbyiRKhawlfkWY81GUhlV-chFzKV6H-JSN1lZ-EZQD_C6EqeORCOT7Ci3-GHw4=w600" width="250" height="280" />'
       player1Button.innerText = "Restarting Game in 7.77 Seconds!";
       setTimeout(() => {
         location.reload();
