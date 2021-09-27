@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+    </style>
+    <title>Video Poker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <h1 class="header" id="header">Video Poker</h1>
+  <body>
+    <button type="button" class="collapsible">Pay Table</button>
+    <div class="content">
+      <div class="score-table" id="score-table">
+        <table class="centered-table">
+          <tr id="win1">
+            <td class="td-head">ROYAL FLUSH</td>
+            <td id="bet1">250</td>
+            <td id="bet2">500</td>
+            <td id="bet3">750</td>
+            <td id="bet4">1000</td>
+            <td id="bet5">4000</td>
+          </tr>
+
+          <tr id="win2">
+            <td class="td-head">STRAIGHT FLUSH</td>
+            <td id="bet1">50</td>
+            <td id="bet2">100</td>
+            <td id="bet3">150</td>
+            <td id="bet4">200</td>
+            <td id="bet5">250</td>
+          </tr>
+
+          <tr id="win3">
+            <td class="td-head">FOUR OF A KIND</td>
+            <td id="bet1">25</td>
+            <td id="bet2">50</td>
+            <td id="bet3">75</td>
+            <td id="bet4">100</td>
+            <td id="bet5">125</td>
+          </tr>
+
+          <tr id="win4">
+            <td class="td-head">FULL HOUSE</td>
+            <td id="bet1">9</td>
+            <td id="bet2">18</td>
+            <td id="bet3">27</td>
+            <td id="bet4">36</td>
+            <td id="bet5">45</td>
+          </tr>
+
+          <tr id="win5">
+            <td class="td-head">FLUSH</td>
+            <td id="bet1">6</td>
+            <td id="bet2">12</td>
+            <td id="bet3">18</td>
+            <td id="bet4">24</td>
+            <td id="bet5">30</td>
+          </tr>
+
+          <tr id="win6">
+            <td class="td-head">STRAIGHT</td>
+            <td id="bet1">4</td>
+            <td id="bet2">8</td>
+            <td id="bet3">12</td>
+            <td id="bet4">16</td>
+            <td id="bet5">20</td>
+          </tr>
+
+          <tr id="win7">
+            <td class="td-head">THREE OF A KIND</td>
+            <td id="bet1">3</td>
+            <td id="bet2">6</td>
+            <td id="bet3">9</td>
+            <td id="bet4">12</td>
+            <td id="bet5">15</td>
+          </tr>
+
+          <tr id="win8">
+            <td class="td-head">TWO PAIR</td>
+            <td id="bet1">2</td>
+            <td id="bet2">4</td>
+            <td id="bet3">6</td>
+            <td id="bet4">8</td>
+            <td id="bet5">10</td>
+          </tr>
+
+          <tr id="win9">
+            <td class="td-head">JACKS OR BETTER</td>
+            <td id="bet1">1</td>
+            <td id="bet2">2</td>
+            <td id="bet3">3</td>
+            <td id="bet4">4</td>
+            <td id="bet5">5</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- Import program logic -->
+    <script src="script.js"></script>
+    <script src="script2.js"></script>
+    <footer>
+      <p class="music-setting">Music</p>
+      <label class="switch">
+        <input type="checkbox" onchange="backgroundPlay()" />
+        <span class="slider round"></span>
+      </label>
+    </footer>
+  </body>
+</html>
