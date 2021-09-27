@@ -95,5 +95,4 @@ const calcProb = () => {
 
   result = 'BUMMER :('; // reset result to default
   updateTable(3, probabilities);
-  console.log(`${totalCount} possible hands counted`);
 };
