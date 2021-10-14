@@ -1,6 +1,46 @@
 body {
-  background-color: white;
+  background-color: green;
 }
 h1 {
   color: black;
+}
+
+.card {
+  margin: 10px;
+  padding: 10px;
+  background-color: grey;
+  width: 50px;
+  text-align: center;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.suit {
+  margin: 5px;
+  font-size: 20px;
+}
+
+.name {
+  margin: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.card-container {
+  background-color: darksalmon;
+  width: 500px;
+}
+
+.game-message {
+  font-weight: bold;
+  margin: 10px;
 }
