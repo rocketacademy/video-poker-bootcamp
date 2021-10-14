@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Video Poker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="wrapper" style="background-image: url('images/background.jpg')">
+    <h1 id="header">♠️ ❤️ Video 💎💎 Poker ♣️ ♦️</h1>
+    <div class="info-board">
+      <div class="game-play">
+        <h4>Game Play Instructions</h4>
+        <ol class="instructions">
+          <li>Enter Bet Amount</li>
+          <li>Click Deal for Hand</li>
+          <li>Decide which card(s) to be swapped</li>
+          <li>Cards with red border will be swapped</li>
+          <li>Click Swap to get final hand</li>
+          <li>Get your rewards according to Payout Table</li>
+        </ol>
+      </div>
+      <div class="payout-board">
+        <h4>Payout Table</h4>
+        <table class="payout-table">
+          <tbody>
+            <tr>
+              <th>Hand</th>
+              <th>Payout</th>
+            </tr>
+            <tr>
+              <td>Royal Flush</td>
+              <td>800</td>
+            </tr>
+            <tr>
+              <td>Straight Flush</td>
+              <td>50</td>
+            </tr>
+            <tr>
+              <td>Four of a kind</td>
+              <td>25</td>
+            </tr>
+            <tr>
+              <td>Full House</td>
+              <td>9</td>
+            </tr>
+            <tr>
+              <td>Flush</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <td>Straight</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Three of a kind</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>Two Pair</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>Jacks or Better</td>
+              <td>1</td>
+            </tr>
+            <tr></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script src="global.js"></script>
+    <script src="calcHandScore.js"></script>
+    <script src="dom.js"></script>
+    <script src="gameplay.js"></script>
+  </body>
+</html>

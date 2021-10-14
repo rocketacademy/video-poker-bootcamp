@@ -1,0 +1,212 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+#header {
+  width: 550px;
+  margin: auto;
+  padding: 48px;
+  color: white;
+  font-size: 35px;
+}
+body {
+  background-color: rgb(99, 99, 212);
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  display: inline-block;
+  margin: auto;
+}
+
+h4,
+th {
+  text-align: center;
+  padding-bottom: 0px;
+}
+.info-board {
+  margin: auto;
+  font-family: Tahoma, sans-serif;
+  padding: 8px;
+  width: 550px;
+  border-radius: 16px;
+  display: inline-block;
+  /* padding: 20px 20px; */
+}
+
+.game-play {
+  display: inline-block;
+  text-align: left;
+  height: 420px;
+  width: 47%;
+  padding: 0px 8px 8px 16px;
+  box-shadow: 0 0 5px 5px grey;
+  background-color: white;
+}
+.instructions {
+  padding: 0px 16px;
+}
+table {
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid black;
+  padding: 4px 4px;
+}
+
+li {
+  padding-left: 8px;
+  padding-top: 8px;
+}
+
+.payout-board {
+  display: inline-block;
+  text-align: justify;
+  height: 420px;
+  width: 47%;
+  vertical-align: top;
+  box-shadow: 0 0 5px 5px grey;
+  background-color: white;
+}
+
+.payout-table {
+  display: inline-block;
+  text-align: justify;
+  height: 350px;
+  width: 100%;
+  vertical-align: top;
+  padding-top: 0px;
+  padding-left: 34px;
+}
+.cardPanel {
+  padding-top: 16px;
+  font-size: 20px;
+  min-width: 550px;
+}
+.cardContainer {
+  margin: auto;
+  display: inline-block;
+  background: rgb(13, 139, 61);
+  border-radius: 8px;
+  border-color: black;
+  border-style: solid;
+  text-align: center;
+  width: 550px;
+  height: 240px;
+  padding-top: 40px 0px 0px 0px;
+  vertical-align: top;
+}
+.card {
+  margin: 48px 24px 20px 24px;
+  padding: 8px;
+  background-color: white;
+  height: 90px;
+  width: 60px;
+  border-radius: 8px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.gameMessage {
+  padding-top: 16px;
+  font-size: 30px;
+  color: turquoise;
+  margin: 20px auto;
+  display: block;
+}
+
+.handMessage {
+  font-family: Tahoma, sans-serif;
+  color: darkblue;
+  padding-bottom: 5px;
+}
+
+.controlPanel {
+  width: 550px;
+  margin: auto;
+  padding-top: 16px;
+  font-size: 20px;
+}
+
+.button {
+  margin-left: 10px;
+  display: inline-block;
+  font-size: 20px;
+}
+
+input {
+  font-size: 20px;
+}
+.betDisplay {
+  margin: 20px auto;
+  display: inline-block;
+}
+
+.points {
+  margin: 20px auto;
+  display: inline-block;
+}
+
+.scoreDiv {
+  margin: 20px auto;
+  display: inline-block;
+  width: 550px;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(240, 230, 230, 0.6);
+  border-radius: 50px;
+}
+
+.text {
+  font-size: 25px;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.blink {
+  animation: blinker 2s step-start 3;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* for card display */
+.suit {
+  margin: 5px;
+  font-size: 18px;
+}
+
+.name {
+  margin: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.highlight {
+  border: solid;
+  border-color: greenyellow;
+}
+
+.selected {
+  border: solid;
+  border-color: red;
+}
+
+.wrapper {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
