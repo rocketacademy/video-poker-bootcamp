@@ -28,7 +28,7 @@
   border-style: solid;
   position: absolute;
   top: 159px;
-  left: 239px;
+  left: 237px;
 }
 
 .card-outline2 {
@@ -45,7 +45,7 @@
   border-style: solid;
   position: absolute;
   top: 159px;
-  left: 369px;
+  left: 367px;
 }
 
 .card-outline3 {
@@ -290,6 +290,54 @@ body {
   top: 70px;
 }
 
+.instructions {
+  font-family: "Press Start 2P";
+  font-size: 12px;
+  position: absolute;
+  color: white;
+  left: 690px;
+  top: 50px;
+}
+
+.instructions-button {
+  position: relative;
+  left: 832px;
+  bottom: 601px;
+  background-color: rgb(12, 129, 11);
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  border: 4px dashed white;
+  transition: all 1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Press Start 2P";
+  font-size: 9px;
+  margin: 0px 8px;
+  z-index: 1;
+}
+
+.instructions-button:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.list {
+  margin: 21px;
+  position: relative;
+  left: 100px;
+}
+
+.hand-outcome {
+  font-family: "Press Start 2P";
+  font-size: 20px;
+  position: absolute;
+  color: white;
+  left: 290px;
+  top: 110px;
+}
+
 .chip1 {
   background-color: red;
   height: 55px;
@@ -406,4 +454,13 @@ body {
   height: 301.65px;
   position: relative;
   left: 175px;
+}
+
+.black-box {
+  background-color: black;
+  position: relative;
+  left: 962px;
+  bottom: 851px;
+  width: 292px;
+  height: 376px;
 }

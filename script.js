@@ -1,9 +1,3 @@
-// User starts with 100 points
-// Player clicks Deal button
-// Dealt 5 cards
-// User can choose to change any num of cards
-// Game assigns points based on hand
-
 // Global variables
 let cardDeck = [];
 let playerPoints = 1000;
@@ -12,6 +6,8 @@ let cardsToChangeIndex = [];
 const cardDisplay = document.createElement('div');
 cardDisplay.classList.add("card-container")
 const pointsDisplay = document.createElement('div');
+const handDisplay = document.createElement('div');
+handDisplay.classList.add('hand-outcome')
 const endGameDiv = document.createElement('div');
 pointsDisplay.classList.add('points')
 let playerHand = [];
@@ -20,6 +16,30 @@ let arrayNumOfEachSuit = [];
 let arrayCardNames = [];
 let arrayNumOfEachCard = [];
 let gameOutcome = '';
+let isInstrucDisplayed = false;
+
+const scoreboardContainer = document.querySelector('.score-board-container');
+const instructionsBtn = document.createElement('button');
+instructionsBtn.classList.add('instructions-button');
+instructionsBtn.innerHTML = 'Instructions';
+document.body.appendChild(instructionsBtn);
+const blackBox = document.createElement('div');
+blackBox.classList.add('black-box');
+  document.body.appendChild(blackBox);
+
+const showInstructions = () => {
+  console.log('working???');
+if (isInstrucDisplayed === false){
+  isInstrucDisplayed = true;
+  document.body.removeChild(blackBox);
+} else {
+  isInstrucDisplayed = false;
+  document.body.appendChild(blackBox);
+}
+};
+instructionsBtn.addEventListener('click', showInstructions);
+
+
 
 // Create a deck
 const makeDeck = () => {
@@ -170,6 +190,7 @@ const convertHandToDisplay = () => {
 };
 
 const displayCard = () => {
+  handDisplay.innerHTML = '';
   cardDisplay.innerHTML = '';
   endGameDiv.innerHTML = '';
   playerHand = [];
@@ -248,7 +269,8 @@ const evaluateWin = () => {
   checkForTwoPair();
   checkForOnePair();
   checkForHighCard();
-  pointsDisplay.innerHTML = `Points: ${playerPoints}`;
+  pointsDisplay.innerHTML = `Points: ${playerPoints}`
+  handDisplay.innerHTML =  `Your Best Hand: ${gameOutcome}! `
   
   
   endGameDiv.classList.add('next-round-container')
@@ -317,7 +339,6 @@ const createDisplay = () => {
   // buttonDiv.classList.add('deal-swap-container');
   // const buttonDiv2 = document.createElement('div');
   // buttonDiv2.classList.add('bet-container');
-  
 
   const dealButton = document.createElement('button');
   dealButton.innerText = 'Deal';
@@ -373,6 +394,7 @@ const createDisplay = () => {
   // pokerTable.appendChild(buttonDiv2);
   // pokerTable.appendChild(buttonDiv);
   pokerTable.appendChild(pointsDisplay);
+  pokerTable.appendChild(handDisplay);
   pokerTable.appendChild(cardDisplay);
 
   dealButton.addEventListener('click', displayCard);
