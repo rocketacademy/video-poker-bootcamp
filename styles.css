@@ -1,0 +1,409 @@
+.card {
+  margin: 20px;
+  padding-top: 35px;
+  padding-bottom: 35px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: whitesmoke;
+  width: 50px;
+  text-align: center;
+  border-radius: 8px;
+  display: inline-block;
+  position: relative;
+  top: 120px;
+  left: 40px;
+}
+
+.card-outline1 {
+  padding-top: 70px;
+  padding-bottom: 70px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  width: 40px;
+
+  text-align: center;
+  border-radius: 8px;
+  border: black;
+  border-style: solid;
+  position: absolute;
+  top: 159px;
+  left: 239px;
+}
+
+.card-outline2 {
+  padding-top: 70px;
+  padding-bottom: 70px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  width: 40px;
+
+  text-align: center;
+  border-radius: 8px;
+  border: black;
+  border-style: solid;
+  position: absolute;
+  top: 159px;
+  left: 369px;
+}
+
+.card-outline3 {
+  padding-top: 70px;
+  padding-bottom: 70px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  width: 40px;
+
+  text-align: center;
+  border-radius: 8px;
+  border: black;
+  border-style: solid;
+  position: absolute;
+  top: 159px;
+  left: 497px;
+}
+
+.card-outline4 {
+  padding-top: 70px;
+  padding-bottom: 70px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  width: 40px;
+
+  text-align: center;
+  border-radius: 8px;
+  border: black;
+  border-style: solid;
+  position: absolute;
+  top: 159px;
+  left: 625px;
+}
+
+.card-outline5 {
+  padding-top: 70px;
+  padding-bottom: 70px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  width: 40px;
+  text-align: center;
+  border-radius: 8px;
+  border: black;
+  border-style: solid;
+  position: absolute;
+  top: 159px;
+  left: 756px;
+}
+
+.suit {
+  margin: 10px;
+  font-size: 30px;
+}
+
+.name {
+  margin: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  /* align-content: center; */
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+/* Non-card css */
+body {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.first-row {
+  /* position: relative; */
+  display: flex;
+  justify-content: space-around;
+}
+
+.light-bulb {
+  /* position: absolute; */
+  /* height: 30%; */
+  width: 15%;
+}
+
+.light-bulb2 {
+  /* position: absolute; */
+  /* left: 740px; */
+  /* height: 30%; */
+  width: 15%;
+}
+
+.score-board {
+  width: 65%;
+  /* position: relative; */
+}
+
+.score-board-container {
+  display: flex;
+  justify-content: center;
+}
+
+.first-row {
+  display: flex;
+}
+
+.poker-table {
+  width: 1000px;
+  position: absolute;
+  z-index: -1;
+}
+
+.poker-table-container {
+  /* display: flex; */
+  position: relative;
+  /* justify-content: center; */
+  height: 483.72px;
+  width: 1000px;
+}
+
+/* .cardDisplay {
+  width: 1000px;
+  display: flex;
+  justify-content: space-evenly;
+} */
+
+/* .deal-swap-container {
+  display: flex;
+  justify-content: end;
+}
+
+/* Betting buttons */
+/* .bet-container {
+  height: 483.72px;
+  width: 100px;
+  position: relative;
+  left: 120px; */
+/* display: flex;
+} */
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    animation-timing-function: ease-in;
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.bet-button-1 {
+  position: absolute;
+  left: 130px;
+  top: 80px;
+}
+
+.bet-button-1:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.bet-button-2 {
+  position: absolute;
+  left: 130px;
+  top: 145px;
+}
+
+.bet-button-2:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.bet-button-3 {
+  position: absolute;
+  left: 130px;
+  top: 212px;
+}
+
+.bet-button-3:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.bet-button-4 {
+  position: absolute;
+  left: 130px;
+  top: 280px;
+}
+.bet-button-4:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.bet-button-5 {
+  position: absolute;
+  left: 130px;
+  top: 350px;
+}
+
+.bet-button-5:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.deal-button {
+  position: absolute;
+  left: 320px;
+  top: 350px;
+}
+.deal-button:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.swap-button {
+  position: absolute;
+  left: 600px;
+  top: 350px;
+}
+
+.swap-button:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.points {
+  font-family: "Press Start 2P";
+  font-size: 20px;
+  position: absolute;
+  color: white;
+  left: 380px;
+  top: 70px;
+}
+
+.chip1 {
+  background-color: red;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  border: 4px dashed white;
+  transition: all 1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Press Start 2P";
+  font-size: 9px;
+  margin: 0px 8px;
+}
+
+.chip2 {
+  background-color: rgb(18, 18, 252);
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  border: 4px dashed white;
+  transition: all 1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Press Start 2P";
+  font-size: 9px;
+  margin: 0px 8px;
+}
+
+.chip3 {
+  background-color: orange;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  border: 4px dashed white;
+  transition: all 1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Press Start 2P";
+  font-size: 9px;
+  margin: 0px 8px;
+}
+
+.chip4 {
+  background-color: rgb(14, 211, 181);
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  border: 4px dashed white;
+  transition: all 1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Press Start 2P";
+  font-size: 9px;
+  margin: 0px 8px;
+}
+
+.chip5 {
+  background-color: palevioletred;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  border: 4px dashed white;
+  transition: all 1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Press Start 2P";
+  font-size: 9px;
+  margin: 0px 8px;
+}
+
+.chip6 {
+  background-color: rgb(55, 8, 23);
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  border: 5px dashed white;
+  transition: all 1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Press Start 2P";
+  font-size: 13px;
+  margin: 0px 8px;
+}
+
+.chip7 {
+  background-color: rgb(4, 108, 113);
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  border: 5px dashed white;
+  transition: all 1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Press Start 2P";
+  font-size: 13px;
+  margin: 0px 8px;
+}
+
+.image-container {
+  height: 301.65px;
+  position: relative;
+  left: 175px;
+}
