@@ -4,7 +4,7 @@
   padding-bottom: 35px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: whitesmoke;
+  background-color: #f5f5dc;
   width: 50px;
   text-align: center;
   border-radius: 8px;
@@ -12,6 +12,10 @@
   position: relative;
   top: 120px;
   left: 40px;
+}
+
+.card:hover {
+  transform: scale(1.2);
 }
 
 .card-outline1 {
@@ -460,7 +464,7 @@ body {
   background-color: black;
   position: relative;
   left: 962px;
-  bottom: 851px;
+  bottom: 865px;
   width: 292px;
-  height: 376px;
+  height: 400px;
 }
