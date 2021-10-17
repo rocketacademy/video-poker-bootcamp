@@ -117,7 +117,6 @@
 .card-container {
   display: flex;
   justify-content: center;
-  /* align-content: center; */
 }
 
 .red {
@@ -128,7 +127,6 @@
   color: black;
 }
 
-/* Non-card css */
 body {
   max-width: 1000px;
   margin: 0 auto;
@@ -139,27 +137,20 @@ body {
 }
 
 .first-row {
-  /* position: relative; */
   display: flex;
   justify-content: space-around;
 }
 
 .light-bulb {
-  /* position: absolute; */
-  /* height: 30%; */
   width: 15%;
 }
 
 .light-bulb2 {
-  /* position: absolute; */
-  /* left: 740px; */
-  /* height: 30%; */
   width: 15%;
 }
 
 .score-board {
   width: 65%;
-  /* position: relative; */
 }
 
 .score-board-container {
@@ -178,32 +169,10 @@ body {
 }
 
 .poker-table-container {
-  /* display: flex; */
   position: relative;
-  /* justify-content: center; */
   height: 483.72px;
   width: 1000px;
 }
-
-/* .cardDisplay {
-  width: 1000px;
-  display: flex;
-  justify-content: space-evenly;
-} */
-
-/* .deal-swap-container {
-  display: flex;
-  justify-content: end;
-}
-
-/* Betting buttons */
-/* .bet-container {
-  height: 483.72px;
-  width: 100px;
-  position: relative;
-  left: 120px; */
-/* display: flex;
-} */
 
 @keyframes pulse {
   0%,
@@ -338,8 +307,10 @@ body {
   font-size: 20px;
   position: absolute;
   color: white;
-  left: 290px;
+  left: 200px;
   top: 110px;
+  width: 600px;
+  text-align: center;
 }
 
 .chip1 {
@@ -518,7 +489,6 @@ body {
 
 .swap-bar3 {
   font-family: "Press Start 2P";
-  /* border: black solid; */
   color: black;
   position: relative;
   width: 90px;
@@ -533,7 +503,6 @@ body {
 
 .swap-bar4 {
   font-family: "Press Start 2P";
-  /* border: black solid; */
   color: black;
   position: relative;
   width: 90px;

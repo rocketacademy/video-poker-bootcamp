@@ -44,17 +44,12 @@ instructionsBtn.addEventListener('click', showInstructions);
 
 // Create a deck
 const makeDeck = () => {
-  // Initialise an empty deck array
   cardDeck = [];
-  // Initialise an array of the 4 suits & emojis in our deck
   const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
   const suitEmoji = ['❤️', '♦️', '♣️', '♠️'];
-  // Loop over the suits array
   for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
-    // Store the current suit & suit emoji in a variable
     const currentSuit = suits[suitIndex];
     const currentEmoji = suitEmoji[suitIndex];
-    // Loop from 1 to 13 to create all cards for a given suit
     for (let rankCounter = 1; rankCounter <= 13; rankCounter += 1) {
       let shortName = `${rankCounter}`;
 
@@ -107,27 +102,18 @@ const makeDeck = () => {
   return cardDeck;
 };
 
-// Get a random index ranging from 0 (inclusive) to max (exclusive).
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
-// Shuffle the elements in the cardDeck array
 const shuffleCards = (cardDeck) => {
-  // Loop over the card deck array once
   let currentIndex = 0;
   while (currentIndex < cardDeck.length) {
-    // Select a random index in the deck
     const randomIndex = getRandomIndex(cardDeck.length);
-    // Select the card that corresponds to randomIndex
     const randomCard = cardDeck[randomIndex];
-    // Select the card that corresponds to currentIndex
     const currentCard = cardDeck[currentIndex];
-    // Swap positions of randomCard and currentCard in the deck
     cardDeck[currentIndex] = randomCard;
     cardDeck[randomIndex] = currentCard;
-    // Increment currentIndex
     currentIndex += 1;
   }
-  // Return the shuffled deck
   return cardDeck;
 };
 
@@ -223,29 +209,18 @@ const displayCard = () => {
   shuffleCards(cardDeck);
  
   playerPoints = playerPoints - (100 * pointMultiplier)
+  if (playerPoints <= 0) {
+    playerPoints = 1000;
+    playerPoints = playerPoints - (100 * pointMultiplier)
+  }
   pointsDisplay.innerHTML = `Points: ${playerPoints}`;
   
-  // playerHand = [];
   dealHand();
   convertHandToDisplay();
 };
 
-// const startNextRound = () => {
-//   endGameDiv.innerHTML = '';
-//   playerHand = [];
-//   cardDeck = [];
-//   cardsToChangeIndex = []
-//   arraySuitsNames = [];
-//   arrayNumOfEachSuit = [];
-//   arrayCardNames = [];
-//   arrayNumOfEachCard = [];
-//   makeDeck();
-//   shuffleCards(cardDeck);
-//   displayCard();
-// };
-
 const evaluateWin = () => {
-// // calcHandScore returns the number of points a given hand earns.
+ // // calcHandScore returns the number of points a given hand earns.
   // const pointsForHand = calcHandScore(playerHand);
   const cardNameTally = {};
   for (let i = 0; i < playerHand.length; i += 1) {
@@ -273,8 +248,6 @@ const evaluateWin = () => {
   }
 
   arraySuitsNames = Object.keys(cardSuitTally);
-  // arrayNumOfEachSuit = Object.values(cardSuitTally);
-
   arrayCardNames = Object.keys(cardNameTally);
   arrayNumOfEachCard = Object.values(cardNameTally);
 
@@ -288,15 +261,16 @@ const evaluateWin = () => {
   checkForTwoPair();
   checkForOnePair();
   checkForHighCard();
-  pointsDisplay.innerHTML = `Points: ${playerPoints}`
-  handDisplay.innerHTML =  `Your Best Hand: ${gameOutcome}! `
-  
-  
-  endGameDiv.classList.add('next-round-container')
-  endGameDiv.innerHTML = `You got a ${gameOutcome}`
+  pointsDisplay.innerHTML = `Points: ${playerPoints}`;
+  if (playerPoints <= 0) {
+    handDisplay.innerHTML =  `You Ran Out Of Points! <br> Game Over!`
+  } else {
+    handDisplay.innerHTML =  `Your Best Hand: ${gameOutcome}! `;
+  }  
+  endGameDiv.classList.add('next-round-container');
+  endGameDiv.innerHTML = `You got a ${gameOutcome}`;
   document.body.appendChild(endGameDiv);
 
-  
 };
 
 const changeCards = () => {
@@ -313,51 +287,39 @@ const changeCards = () => {
 const multiplyBet1 = () => {
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board1.png";
-  
   return pointMultiplier = 1;
 };
 
 const multiplyBet2 = () => {
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board2.png";
-  
   return pointMultiplier = 2;
 };
 
 const multiplyBet3 = () => {
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board3.png";
-  
   return pointMultiplier = 3;
 };
 
 const multiplyBet4 = () => {
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board4.png";
-  
   return pointMultiplier = 4;
 };
 
 const multiplyBet5 = () => {
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board5.png";
-  
   return pointMultiplier = 5;
 };
 
 
 const createDisplay = () => {
-  
   pointsDisplay.innerHTML = `Points: ${playerPoints}`;
-
   const gameInfo = document.createElement('div');
   gameInfo.innerHTML = 'Click \'Deal\' to start playing!';
   gameInfo.classList.add('game-info');
-
-  // const buttonDiv = document.createElement('div');
-  // buttonDiv.classList.add('deal-swap-container');
-  // const buttonDiv2 = document.createElement('div');
-  // buttonDiv2.classList.add('bet-container');
 
   const dealButton = document.createElement('button');
   dealButton.innerText = 'Deal';
@@ -368,7 +330,6 @@ const createDisplay = () => {
   swapButton.innerText = 'Swap';
   swapButton.classList.add('swap-button');
   swapButton.classList.add('chip7');
-
 
   const pointsBtn1 = document.createElement('button');
   pointsBtn1.classList.add('bet-button-1');
@@ -383,7 +344,6 @@ const createDisplay = () => {
   const pointsBtn3 = document.createElement('button');
   pointsBtn3.classList.add('bet-button-3');
   pointsBtn3.classList.add('chip3');
-
 
   pointsBtn3.innerHTML = `Bet 300`;
   const pointsBtn4 = document.createElement('button');
@@ -401,17 +361,12 @@ const createDisplay = () => {
 
   pokerTable.appendChild(dealButton);
   pokerTable.appendChild(swapButton);
- 
-
   pokerTable.appendChild(pointsBtn1);
   pokerTable.appendChild(pointsBtn2);
   pokerTable.appendChild(pointsBtn3);
   pokerTable.appendChild(pointsBtn4);
   pokerTable.appendChild(pointsBtn5);
- 
   pokerTable.appendChild(gameInfo);
-  // pokerTable.appendChild(buttonDiv2);
-  // pokerTable.appendChild(buttonDiv);
   pokerTable.appendChild(pointsDisplay);
   pokerTable.appendChild(handDisplay);
   pokerTable.appendChild(cardDisplay);
@@ -423,7 +378,6 @@ const createDisplay = () => {
   pointsBtn3.addEventListener('click', multiplyBet3);
   pointsBtn4.addEventListener('click', multiplyBet4);
   pointsBtn5.addEventListener('click', multiplyBet5);
-  // nextRoundButton.addEventListener('click');
 };
 
 const checkForFlush = () => {
@@ -431,7 +385,6 @@ const checkForFlush = () => {
 
   let straight = true;
   for (let i = 0; i < playerHand.length - 1; i += 1) {
-
     if (playerHand[i].rank + 1 !== playerHand[i + 1].rank) {
       straight = false;
     }
@@ -493,7 +446,6 @@ const checkForOnePair = () => {
 
 const checkForStraight = () => {
   playerHand.sort((a, b) => a.rank - b.rank);
-
   let straight = true;
   for (let i = 0; i < playerHand.length - 1; i += 1) {
     if (playerHand[i].rank + 1 !== playerHand[i + 1].rank) {
@@ -511,7 +463,6 @@ const checkForStraight = () => {
 
 const checkForStraightFlush = () => {
   playerHand.sort((a, b) => a.rank - b.rank);
-
   let straight = true;
   for (let i = 0; i < playerHand.length - 1; i += 1) {
     if (playerHand[i].rank + 1 !== playerHand[i + 1].rank) {
@@ -528,7 +479,6 @@ const checkForStraightFlush = () => {
 
 const checkForRoyalFlush = () => {
   playerHand.sort((a, b) => a.rank - b.rank);
-
   let straight = true;
   for (let i = 1; i < playerHand.length - 1; i += 1) {
     if (playerHand[i].rank + 1 !== playerHand[i + 1].rank) {
@@ -547,7 +497,6 @@ const checkForRoyalFlush = () => {
 const checkForHighCard = () => {
   // Check for straight
   playerHand.sort((a, b) => a.rank - b.rank);
-
   let straight = true;
   for (let i = 0; i < playerHand.length - 1; i += 1) {
     if (playerHand[i].rank + 1 !== playerHand[i + 1].rank) {
@@ -557,10 +506,10 @@ const checkForHighCard = () => {
 
   if (straight === false && arraySuitsNames.length !== 1 && arrayCardNames.length === 5)
   {
+    playerPoints = playerPoints - (100 * pointMultiplier)
     console.log('High card');
     gameOutcome = 'High Card'
-
-    return playerPoints = playerPoints - (100 * pointMultiplier);
+    return playerPoints ;
   }
   return playerPoints;
 };
@@ -574,9 +523,6 @@ const checkForHighCard = () => {
 // const calcHandScore = () => playerPoints;
 
 const initGame = () => {
-  // playerHand = [];
-  // makeDeck();
-  // shuffleCards(cardDeck);
   createDisplay();
 };
 
