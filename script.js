@@ -26,7 +26,7 @@ betSound.volume = 0.5;
 const instructionsSound = document.getElementById('instructions-sound');
 instructionsSound.volume = 0.5;
 const dealSound = document.getElementById('deal-sound');
-
+// const introSound = document.getElementById('intro-sound');
 
 const scoreboardContainer = document.querySelector('.score-board-container');
 const instructionsBtn = document.createElement('button');
@@ -567,6 +567,7 @@ const checkForHighCard = () => {
 // const calcHandScore = () => playerPoints;
 
 const initGame = () => {
+  // introSound.play();
   createDisplay();
 };
 
