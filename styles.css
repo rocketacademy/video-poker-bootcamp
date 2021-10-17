@@ -514,3 +514,29 @@ body {
   align-items: center;
   z-index: -4;
 }
+
+.score-addition {
+  height: 40px;
+  width: 80px;
+  position: absolute;
+  left: 627px;
+  top: 59px;
+  font-family: "Press Start 2P";
+  font-size: 21px;
+  color: green;
+  display: flex;
+  align-items: center;
+}
+
+.score-subtraction {
+  height: 40px;
+  width: 80px;
+  position: absolute;
+  left: 627px;
+  top: 59px;
+  font-family: "Press Start 2P";
+  font-size: 21px;
+  color: red;
+  display: flex;
+  align-items: center;
+}

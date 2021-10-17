@@ -18,6 +18,7 @@ let arrayNumOfEachCard = [];
 let gameOutcome = '';
 let isInstrucDisplayed = false;
 let swapCard = '';
+let addedScore = '';
 
 const scoreboardContainer = document.querySelector('.score-board-container');
 const instructionsBtn = document.createElement('button');
@@ -200,23 +201,32 @@ const displayCard = () => {
   endGameDiv.innerHTML = '';
   playerHand = [];
   cardDeck = [];
-  cardsToChangeIndex = []
+  cardsToChangeIndex = [];
   arraySuitsNames = [];
   arrayNumOfEachSuit = [];
   arrayCardNames = [];
   arrayNumOfEachCard = [];
   makeDeck();
   shuffleCards(cardDeck);
- 
-  playerPoints = playerPoints - (100 * pointMultiplier)
+
+ const scoreSubtraction = document.querySelector('.score-subtraction');
+
+  playerPoints = playerPoints - (100 * pointMultiplier);
+
+
   if (playerPoints <= 0) {
     playerPoints = 1000;
-    playerPoints = playerPoints - (100 * pointMultiplier)
+    playerPoints = playerPoints - (100 * pointMultiplier);
+      scoreSubtraction.innerHTML = `<p style="color:green">+1000</p>  -${(100 * pointMultiplier)}`;
+  } else {
+    scoreSubtraction.innerHTML = `-${(100 * pointMultiplier)}`;
   }
+
   pointsDisplay.innerHTML = `Points: ${playerPoints}`;
   
   dealHand();
   convertHandToDisplay();
+  setTimeout(() => { scoreSubtraction.innerHTML = `` }, 1500);
 };
 
 const evaluateWin = () => {
@@ -271,6 +281,14 @@ const evaluateWin = () => {
   endGameDiv.innerHTML = `You got a ${gameOutcome}`;
   document.body.appendChild(endGameDiv);
 
+  const scoreAddition = document.querySelector('.score-addition');
+  scoreAddition.innerHTML = `${addedScore}`
+  if (addedScore === `-${(100 * pointMultiplier)}`) {
+    scoreAddition.style.color = 'red';
+  } else {
+    scoreAddition.style.color = 'green';
+  };
+  setTimeout(() => { scoreAddition.innerHTML = `` }, 1500);
 };
 
 const changeCards = () => {
@@ -318,7 +336,7 @@ const multiplyBet5 = () => {
 const createDisplay = () => {
   pointsDisplay.innerHTML = `Points: ${playerPoints}`;
   const gameInfo = document.createElement('div');
-  gameInfo.innerHTML = 'Click \'Deal\' to start playing!';
+  gameInfo.innerHTML = '.';
   gameInfo.classList.add('game-info');
 
   const dealButton = document.createElement('button');
@@ -391,7 +409,8 @@ const checkForFlush = () => {
   }
   if (straight === false && arraySuitsNames.length === 1 && arrayNumOfEachCard.includes(4) === false && !(arrayNumOfEachCard.includes(3) === true && arrayNumOfEachCard.includes(2) === true)) {
     console.log('Flush win');
-    gameOutcome = 'Flush'
+    gameOutcome = 'Flush';
+    addedScore = `+${(500 * pointMultiplier)}`;
     return playerPoints = playerPoints + (500 * pointMultiplier);
   }
   return playerPoints ;
@@ -400,7 +419,9 @@ const checkForFlush = () => {
 const checkForThreeOfKind = () => {
   if (arrayNumOfEachCard.includes(3) === true && arrayNumOfEachCard.includes(2) === false && arraySuitsNames.length !== 1) {
     console.log('3 of a kind win');
-    gameOutcome = 'Three of a Kind'
+    gameOutcome = 'Three of a Kind';
+    addedScore = `+${(300 * pointMultiplier)}`;
+
     return playerPoints = playerPoints + (300 * pointMultiplier);
   }
   return playerPoints ;
@@ -409,7 +430,8 @@ const checkForThreeOfKind = () => {
 const checkForFourOfKind = () => {
   if (arrayNumOfEachCard.includes(4) === true) {
     console.log('Four of a kind win');
-    gameOutcome = 'Four of a Kind'
+    gameOutcome = 'Four of a Kind';
+    addedScore = `+${(2500 * pointMultiplier)}`;
     return playerPoints = playerPoints + (2500 * pointMultiplier);
   }
   return playerPoints;
@@ -418,7 +440,8 @@ const checkForFourOfKind = () => {
 const checkForFullHouse = () => {
   if (arrayNumOfEachCard.includes(3) === true && arrayNumOfEachCard.includes(2) === true) {
     console.log('Full house win');
-    gameOutcome = 'Full House'
+    gameOutcome = 'Full House';
+    addedScore = `+${(1000 * pointMultiplier)}`;
     return playerPoints = playerPoints + (1000 * pointMultiplier);
   }
   return playerPoints;
@@ -427,7 +450,8 @@ const checkForFullHouse = () => {
 const checkForTwoPair = () => {
   if (arrayNumOfEachCard.includes(2) === true && arrayNumOfEachCard.includes(2) === true && arrayNumOfEachCard.includes(3) === false && arraySuitsNames.length !== 1 && arrayCardNames.length === 3) {
     console.log('2 pair win');
-    gameOutcome = 'Two Pair'
+    gameOutcome = 'Two Pair';  
+    addedScore = `+${(200 * pointMultiplier)}`;
     return playerPoints = playerPoints + (200 * pointMultiplier);
   }
   return playerPoints;
@@ -437,8 +461,8 @@ const checkForOnePair = () => {
   // eslint-disable-next-line max-len
   if (arrayNumOfEachCard.includes(2) === true && arrayNumOfEachCard.length === 4 && arrayNumOfEachCard.includes(3) === false && arrayNumOfEachCard.includes(4) === false && arraySuitsNames.length !== 1) {
     console.log('One pair win');
-    gameOutcome = 'One Pair'
-
+    gameOutcome = 'One Pair';
+    addedScore = `+${(100 * pointMultiplier)}`;
     return playerPoints = playerPoints + (100 * pointMultiplier);
   }
   return playerPoints;
@@ -454,8 +478,8 @@ const checkForStraight = () => {
   }
   if (straight === true && arraySuitsNames.length !== 1) {
       console.log('Straight win');
-      gameOutcome = 'Straight'
-
+      gameOutcome = 'Straight';
+      addedScore = `+${(400 * pointMultiplier)}`;
       return playerPoints = playerPoints + (400 * pointMultiplier);
   }
   return playerPoints;
@@ -470,7 +494,8 @@ const checkForStraightFlush = () => {
     }
   }
   if (straight === true && arraySuitsNames.length === 1) {
-    gameOutcome = 'Straight Flush'
+    gameOutcome = 'Straight Flush';
+    addedScore = `+${(5000 * pointMultiplier)}`;
     console.log('Straight flush win');
     return playerPoints = playerPoints + (5000 * pointMultiplier);
   }
@@ -487,7 +512,8 @@ const checkForRoyalFlush = () => {
   }
   // eslint-disable-next-line max-len
   if (straight === true && arraySuitsNames.length === 1 && playerHand[0].rank === 1 && playerHand[1].rank === 10) {
-    gameOutcome = 'Royal Flush'
+    gameOutcome = 'Royal Flush';
+    addedScore = `+${(10000 * pointMultiplier)}`;
     console.log('Royal flush win');
     return playerPoints = playerPoints + (10000 * pointMultiplier);
   }
@@ -508,7 +534,8 @@ const checkForHighCard = () => {
   {
     playerPoints = playerPoints - (100 * pointMultiplier)
     console.log('High card');
-    gameOutcome = 'High Card'
+    gameOutcome = 'High Card';
+    addedScore = `-${(100 * pointMultiplier)}`;
     return playerPoints ;
   }
   return playerPoints;
