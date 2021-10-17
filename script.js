@@ -17,6 +17,7 @@ let arrayCardNames = [];
 let arrayNumOfEachCard = [];
 let gameOutcome = '';
 let isInstrucDisplayed = false;
+let swapCard = '';
 
 const scoreboardContainer = document.querySelector('.score-board-container');
 const instructionsBtn = document.createElement('button');
@@ -133,6 +134,7 @@ const shuffleCards = (cardDeck) => {
 const cardClick = (index) => {
   // Each card is linked to an index based on loop in line 172
   for (let m = 0; m < 5; m += 1) {
+    
     // If card index equal to loop index then enter code block
     if (index === m) {
       // If card index is inside of global array, remove it
@@ -141,14 +143,25 @@ const cardClick = (index) => {
       if (cardsToChangeIndex.includes(m) === true) {
         console.log('card UNCLICKED');
         cardsToChangeIndex = cardsToChangeIndex.filter((n) => n !== m);
+        swapCard = document.querySelector(`.swap-bar${m}`);
+        swapCard.style.zIndex = "-4";
         // If card index is not inside global array, add index to global array
       } else {
         console.log('card CLICKED');
         cardsToChangeIndex.push(m);
+        swapCard = document.querySelector(`.swap-bar${m}`);
+        swapCard.style.zIndex = "4";
+       
       }
     }
   }
 };
+const resetSwapCard0 = document.querySelector('.swap-bar0');
+const resetSwapCard1 = document.querySelector('.swap-bar1');
+const resetSwapCard2 = document.querySelector('.swap-bar2');
+const resetSwapCard3 = document.querySelector('.swap-bar3');
+const resetSwapCard4 = document.querySelector('.swap-bar4');
+
 
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
@@ -159,12 +172,12 @@ const createCard = (cardInfo) => {
   name.classList.add(cardInfo.displayName, cardInfo.colour);
   name.innerText = cardInfo.displayName;
 
+
   const card = document.createElement('div');
   card.classList.add('card');
 
   card.appendChild(name);
   card.appendChild(suit);
-
   return card;
 };
 
@@ -190,6 +203,12 @@ const convertHandToDisplay = () => {
 };
 
 const displayCard = () => {
+  resetSwapCard0.style.zIndex = "-4";
+  resetSwapCard1.style.zIndex = "-4";
+  resetSwapCard2.style.zIndex = "-4";
+  resetSwapCard3.style.zIndex = "-4";
+  resetSwapCard4.style.zIndex = "-4";
+
   handDisplay.innerHTML = '';
   cardDisplay.innerHTML = '';
   endGameDiv.innerHTML = '';
