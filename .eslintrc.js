@@ -20,5 +20,15 @@ module.exports = {
     'no-console': 'off',
     // Allow function param reassign for array or object elements or properties
     'no-param-reassign': ['error', { props: false }],
+
+    // Disable no-undef and no-unused-vars as the variables exist in seperate files for this project
+    'no-undef': 'off',
+    'no-unused-vars': 'off',
+  },
+  options: {
+    'prefer-const': ['error', {
+      destructuring: 'any',
+      ignoreReadBeforeAssign: false,
+    }],
   },
 };
