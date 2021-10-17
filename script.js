@@ -19,6 +19,14 @@ let gameOutcome = '';
 let isInstrucDisplayed = false;
 let swapCard = '';
 let addedScore = '';
+const cardSound = document.getElementById('card-sound');
+cardSound.volume = 1;
+const betSound = document.getElementById('bet-sound');
+betSound.volume = 0.5;
+const instructionsSound = document.getElementById('instructions-sound');
+instructionsSound.volume = 0.5;
+const dealSound = document.getElementById('deal-sound');
+
 
 const scoreboardContainer = document.querySelector('.score-board-container');
 const instructionsBtn = document.createElement('button');
@@ -31,6 +39,7 @@ blackBox.classList.add('black-box');
 
 const showInstructions = () => {
   console.log('working???');
+  instructionsSound.play();
 if (isInstrucDisplayed === false){
   isInstrucDisplayed = true;
   document.body.removeChild(blackBox);
@@ -119,9 +128,10 @@ const shuffleCards = (cardDeck) => {
 };
 
 const cardClick = (index) => {
+ cardSound.play();
   // Each card is linked to an index based on loop in line 172
   for (let m = 0; m < 5; m += 1) {
-    
+
     // If card index equal to loop index then enter code block
     if (index === m) {
       // If card index is inside of global array, remove it
@@ -138,7 +148,7 @@ const cardClick = (index) => {
         cardsToChangeIndex.push(m);
         swapCard = document.querySelector(`.swap-bar${m}`);
         swapCard.style.zIndex = "4";
-       
+
       }
     }
   }
@@ -190,6 +200,7 @@ const convertHandToDisplay = () => {
 };
 
 const displayCard = () => {
+  dealSound.play();
   resetSwapCard0.style.zIndex = "-4";
   resetSwapCard1.style.zIndex = "-4";
   resetSwapCard2.style.zIndex = "-4";
@@ -214,7 +225,7 @@ const displayCard = () => {
   playerPoints = playerPoints - (100 * pointMultiplier);
 
 
-  if (playerPoints <= 0) {
+  if (playerPoints < 0) {
     playerPoints = 1000;
     playerPoints = playerPoints - (100 * pointMultiplier);
       scoreSubtraction.innerHTML = `<p style="color:green">+1000</p>  -${(100 * pointMultiplier)}`;
@@ -223,7 +234,7 @@ const displayCard = () => {
   }
 
   pointsDisplay.innerHTML = `Points: ${playerPoints}`;
-  
+
   dealHand();
   convertHandToDisplay();
   setTimeout(() => { scoreSubtraction.innerHTML = `` }, 1500);
@@ -276,7 +287,7 @@ const evaluateWin = () => {
     handDisplay.innerHTML =  `You Ran Out Of Points! <br> Game Over!`
   } else {
     handDisplay.innerHTML =  `Your Best Hand: ${gameOutcome}! `;
-  }  
+  }
   endGameDiv.classList.add('next-round-container');
   endGameDiv.innerHTML = `You got a ${gameOutcome}`;
   document.body.appendChild(endGameDiv);
@@ -292,6 +303,7 @@ const evaluateWin = () => {
 };
 
 const changeCards = () => {
+    dealSound.play();
   let newCard;
   for (let j = 0; j < cardsToChangeIndex.length; j += 1) {
     newCard = cardDeck.pop();
@@ -303,30 +315,35 @@ const changeCards = () => {
 };
 
 const multiplyBet1 = () => {
+  betSound.play();
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board1.png";
   return pointMultiplier = 1;
 };
 
 const multiplyBet2 = () => {
+    betSound.play();
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board2.png";
   return pointMultiplier = 2;
 };
 
 const multiplyBet3 = () => {
+    betSound.play();
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board3.png";
   return pointMultiplier = 3;
 };
 
 const multiplyBet4 = () => {
+    betSound.play();
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board4.png";
   return pointMultiplier = 4;
 };
 
 const multiplyBet5 = () => {
+    betSound.play();
   const scoreTable = document.querySelector('.score-board')
     scoreTable.src = "Media/score-board5.png";
   return pointMultiplier = 5;
@@ -450,7 +467,7 @@ const checkForFullHouse = () => {
 const checkForTwoPair = () => {
   if (arrayNumOfEachCard.includes(2) === true && arrayNumOfEachCard.includes(2) === true && arrayNumOfEachCard.includes(3) === false && arraySuitsNames.length !== 1 && arrayCardNames.length === 3) {
     console.log('2 pair win');
-    gameOutcome = 'Two Pair';  
+    gameOutcome = 'Two Pair';
     addedScore = `+${(200 * pointMultiplier)}`;
     return playerPoints = playerPoints + (200 * pointMultiplier);
   }
