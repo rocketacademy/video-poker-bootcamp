@@ -14,15 +14,22 @@
       href="https://fonts.googleapis.com/css2?family=Codystar&display=swap"
       rel="stylesheet"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
   </head>
 
   <body>
     <h1 id="header">♠ Video Poker ♠</h1>
     <!-- Import program logic -->
     <div id="rules">
+      <div id="red-highlight-container"></div>
       <div id="combo"></div>
       <div id="column-points-wrapper">
         <div id="column-header"></div>
+        <div id="highlight-container"></div>
         <div id="points"></div>
       </div>
     </div>
@@ -46,6 +53,9 @@
       <button class="button" id="deal">DEAL</button>
       <button class="button" id="max-bet">MAX BET</button>
     </div>
+    <audio id="bet-audio" src="pokerchips.mp3"></audio>
+    <audio id="deal-cards-audio" src="dealcards.mp3"></audio>
+    <audio id="bgm" src="all-of-me-background-music.mp3"></audio>
     <script src="script.js"></script>
   </body>
 </html>

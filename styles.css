@@ -3,7 +3,7 @@ body {
   color: white;
   font-size: 20px;
   width: 90%;
-  margin: 5% auto;
+  margin: 2% auto;
   font-family: "source sans pro";
   font-weight: 400;
   max-width: 900px;
@@ -14,6 +14,8 @@ body {
   font-family: "Codystar", cursive;
   text-shadow: 2px 2px 20px rgb(241, 111, 111);
   font-size: 45px;
+  margin: 4%;
+  margin-bottom: 5%;
 }
 
 #rules {
@@ -22,10 +24,10 @@ body {
 
 #game-info {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 24px;
   margin-bottom: -14px;
   font-family: "source sans pro";
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .name {
@@ -43,9 +45,12 @@ body {
 .hold {
   text-align: center;
   color: white;
-  height: 0.5em;
-  font-size: 10px;
-  margin-bottom: 5px;
+  margin-top: 5px;
+  height: 1.1em;
+  font-size: 12px;
+  align-self: center;
+  width: 3em;
+  border-radius: 5px;
 }
 
 #card-container {
@@ -53,7 +58,9 @@ body {
   justify-content: center;
   height: 40%;
   margin: 2% auto 3% auto;
-  font-size: 30px;
+  font-size: 28px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: lighter;
 }
 
 .wrapper {
@@ -68,6 +75,8 @@ body {
   height: 5.2em;
   position: relative;
   align-items: center;
+  transform-style: preserve-3d;
+  transition: all 0.8s ease;
 }
 
 .card-front {
@@ -80,7 +89,8 @@ body {
   flex-direction: column;
   justify-content: center;
   position: absolute;
-  z-index: 0;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
 }
 
 .card-back {
@@ -95,18 +105,33 @@ body {
   border-radius: 4px;
   display: inline-block;
   position: absolute;
-  z-index: 2;
+  backface-visibility: hidden;
+}
+
+.highlight-card {
+  border-left: none;
+  box-shadow: 0 0 10px 2px rgb(255 0 98);
+}
+
+.darken-card {
+  background-color: #40456f;
+}
+
+.flip-card {
+  transform: rotateY(180deg);
 }
 
 .display-panel {
   color: white;
   font-size: 16px;
+  font-weight: 500;
   padding: 0% 10% 0% 10%;
   height: 20%;
   width: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .display-bet {
@@ -120,7 +145,7 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin: 0% 15% 0% 15%;
+  margin: 0% 10% 0% 10%;
 }
 
 #chosen-bet-title {
@@ -131,12 +156,18 @@ body {
 }
 
 #chosen-bet-display {
-  font-size: 1em;
+  font-size: 1.1em;
   text-align: center;
   margin: 0px 0px 5px 0px;
+  font-weight: 500;
 }
 
 #wallet {
+  width: 25%;
+}
+
+#add-points {
+  position: absolute;
   width: 25%;
 }
 
@@ -180,55 +211,84 @@ body {
 
 /** .board, .row, .square */
 
-.cell-darkblue,
-.cell-lightblue,
+.cell,
 .cell-header {
+  flex-grow: 1;
+  flex-basis: 0;
   display: inline-block;
   vertical-align: middle;
   padding: 4px 0px 4px 0px;
 }
 
-.cell-darkblue {
+.highlight-blue {
+  border: solid rgb(150, 150, 255) 0.1em;
+  height: 15.8em;
+  flex-grow: 1;
+  flex-basis: 0;
+  display: inline-block;
+  padding: 4px 0px 4px 0px;
+  box-shadow: 0 0 5px 2px rgb(150, 150, 255) inset;
+  visibility: hidden;
+}
+
+.highlight-red {
+  border: solid rgb(255, 0, 98) 0.1em;
+  height: 2px;
+  flex-grow: 1;
+  flex-basis: 0;
+  width: 100%-2em;
+  padding: 4px 0px 4px 0px;
+  box-shadow: 0 0 5px 2px rgb(255, 0, 98);
+  visibility: hidden;
+}
+
+.show-blue-highlight {
+  visibility: visible;
+}
+
+.darkblue {
   background-color: #0f1242;
-  flex-grow: 1;
-  flex-basis: 0;
 }
 
-.cell-lightblue {
+.lightblue {
   background-color: #1b1f42;
-  flex-grow: 1;
-  flex-basis: 0;
 }
 
-.long {
-  width: 28%;
+.combo-row {
   text-align: left;
-  padding-left: 10px;
+  padding: 4px 0px 4px 10px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
-.cell-header {
-  flex-grow: 1;
-  flex-basis: 0;
+.points-row {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .row {
   display: flex;
-  width: 100%;
-  height: 11.1%;
-  margin: 0;
+  flex-grow: 1;
+  flex-basis: 0;
   align-items: center;
 }
 
-#rules {
-  margin: 0 10% 0 10%;
-  border: solid white 0.1em;
-  font-size: 0.65em;
-  display: flex;
-  position: relative;
+.highlight-combo-row {
+  border: solid rgb(255, 0, 98) 0.1em;
+  border-right: none;
+  box-shadow: 0 0 10px 2px rgb(255 0 98);
+  clip-path: inset(-20px 0px -20px -20px);
+  z-index: 5;
+  background: transparent;
 }
 
-#combo {
-  flex-grow: 1;
+.highlight-points-row {
+  border: solid rgb(255, 0, 98) 0.1em;
+  border-left: none;
+  box-shadow: 0 0 10px 2px rgb(255 0 98);
+  clip-path: inset(-20px -20px -20px 0px);
+  z-index: 5;
+  background: transparent;
 }
 
 #column-header {
@@ -242,13 +302,46 @@ body {
   bottom: 2em;
 }
 
+#highlight-container {
+  display: flex;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+}
+
+#red-highlight-container {
+  display: flex;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+#rules {
+  margin: 0 10% 0 10%;
+  border: solid white 0.1em;
+  font-size: 0.7em;
+  display: flex;
+  position: relative;
+  border-radius: 5px;
+}
+
+#combo {
+  flex-grow: 1;
+}
+
 #points {
   width: 100%;
-  margin-top: -1.8em;
+  margin-top: -25.3px;
 }
 
 #column-points-wrapper {
   flex-grow: 5;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
+
+/* @media screen and (min-width: 680px)  */
