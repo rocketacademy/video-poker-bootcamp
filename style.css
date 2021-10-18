@@ -1,0 +1,193 @@
+body {
+  background-color: blue;
+  font-family: "Comic Sans MS";
+}
+
+@font-face {
+  font-family: "Comic Sans MS";
+  src: url("assets/fonts/Comic Sans MS.ttf");
+}
+
+p {
+  font-weight: bold;
+  color: white;
+}
+
+marquee {
+  color: white;
+}
+
+button {
+  color: white;
+  font-family: "Comic Sans MS";
+  font-weight: bold;
+  background-color: transparent;
+  /* border: 1px solid white; */
+  width: 100px;
+  display: inline-block;
+  margin: 10px;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: auto;
+  /* border: 1px solid black; */
+  padding: 20px;
+}
+
+/* .card {
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+  text-align: center;
+  border-radius: 8px;
+  border-style: outset;
+  border-width: 2px;
+  border-color: whitesmoke;
+  display: inline-block;
+} */
+
+/* CARD DISPLAY */
+
+.card-face-container {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px outset whitesmoke;
+  width: 80px;
+  height: 120px;
+}
+
+.card-face-top {
+  display: flex;
+  flex-direction: row;
+  /* border: 1px solid fuchsia; */
+}
+
+.card-face-top-left {
+  flex: 50%;
+  /* border: 1px solid white; */
+  height: 20px;
+  width: 20px;
+}
+
+.card-face-top-right {
+  flex: 50%;
+  text-align: right;
+  /* border: 1px solid white; */
+  height: 20px;
+  width: 20px;
+}
+
+.card-face-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 85px;
+}
+
+.card-face-btm {
+  display: flex;
+  flex-direction: row;
+  /* border: 1px solid red; */
+}
+
+.card-face-btm-left {
+  flex: 50%;
+  flex-direction: column;
+  /* border: 1px solid white; */
+  height: 20px;
+}
+
+.card-face-btm-right {
+  flex: 50%;
+  text-align: center left;
+  /* border: 1px solid white; */
+  height: 20px;
+  /* transform: rotate(); */
+  transform: rotate(180deg);
+}
+
+.card-back {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px outset whitesmoke;
+  width: 80px;
+  height: 120px;
+  font-family: "Comic Sans MS";
+  font-weight: bold;
+  color: blue;
+}
+
+.card-placeholder {
+  background-color: blue;
+  fill: blue;
+  color: blue;
+  /* display: inline-block; */
+}
+
+/* ^^ CARD DISPLAY ^^ */
+
+.suit {
+  margin: 5px;
+  font-size: 28px;
+}
+
+.name {
+  margin: 5px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.court {
+  font-size: 18px;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.card-container {
+  display: flex;
+  max-width: max-content;
+  /* background-color: white; */
+  /* border: 1px solid white; */
+  margin: 10px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  /* border: 1px solid yellow; */
+  margin: 10px;
+}
+
+.message {
+  color: white;
+}
+
+.points {
+  display: flex;
+  flex: row;
+  margin: 10px;
+  /* left: 50px;
+  top: 50px; */
+  color: white;
+}
