@@ -33,6 +33,7 @@ const tallyUpCards = (hand) => {
   const cardNameTally = {};
   for (let i = 0; i < hand.length; i += 1) {
     const cardName = hand[i].name;
+
     // If we have seen the card name before, increment its count
     if (cardName in cardNameTally) {
       cardNameTally[cardName] += 1;
@@ -64,6 +65,11 @@ const determineWin = (hand) => {
     if (sortedRanks[j] + 1 !== sortedRanks[j + 1]) {
       straights = false; // straights
     }
+  }
+  // broadway, straight sequence of A-K-Q-J-10
+  const broadwaySequence = [1, 10, 11, 12, 13];
+  if (JSON.stringify(broadwaySequence) === JSON.stringify(sortedRanks)) {
+    broadway = true;
   }
 
   for (let i = 0; i < arrayOfCardNameTallyValues.length; i += 1) {
