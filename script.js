@@ -4,12 +4,12 @@ let playerPoints = 1000;
 let pointMultiplier = 1;
 let cardsToChangeIndex = [];
 const cardDisplay = document.createElement('div');
-cardDisplay.classList.add("card-container")
+cardDisplay.classList.add('card-container');
 const pointsDisplay = document.createElement('div');
 const handDisplay = document.createElement('div');
-handDisplay.classList.add('hand-outcome')
+handDisplay.classList.add('hand-outcome');
 const endGameDiv = document.createElement('div');
-pointsDisplay.classList.add('points')
+pointsDisplay.classList.add('points');
 let playerHand = [];
 let arraySuitsNames = [];
 let arrayNumOfEachSuit = [];
@@ -22,11 +22,20 @@ let addedScore = '';
 const cardSound = document.getElementById('card-sound');
 cardSound.volume = 1;
 const betSound = document.getElementById('bet-sound');
-betSound.volume = 0.5;
+betSound.volume = 0.2;
 const instructionsSound = document.getElementById('instructions-sound');
-instructionsSound.volume = 0.5;
+instructionsSound.volume = 0.4;
 const dealSound = document.getElementById('deal-sound');
+dealSound.volume = 0.5;
 // const introSound = document.getElementById('intro-sound');
+const winSound = document.getElementById('win-sound');
+winSound.volume = 0.4;
+const winSound2 = document.getElementById('win-sound2');
+winSound2.volume = 0.4;
+const winSound3 = document.getElementById('win-sound3');
+winSound3.volume = 0.4;
+let winIndex = 0;
+const winSoundArray = [winSound, winSound2, winSound3];
 
 const scoreboardContainer = document.querySelector('.score-board-container');
 const instructionsBtn = document.createElement('button');
@@ -35,22 +44,20 @@ instructionsBtn.innerHTML = 'Instructions';
 document.body.appendChild(instructionsBtn);
 const blackBox = document.createElement('div');
 blackBox.classList.add('black-box');
-  document.body.appendChild(blackBox);
+document.body.appendChild(blackBox);
 
 const showInstructions = () => {
   console.log('working???');
   instructionsSound.play();
-if (isInstrucDisplayed === false){
-  isInstrucDisplayed = true;
-  document.body.removeChild(blackBox);
-} else {
-  isInstrucDisplayed = false;
-  document.body.appendChild(blackBox);
-}
+  if (isInstrucDisplayed === false) {
+    isInstrucDisplayed = true;
+    document.body.removeChild(blackBox);
+  } else {
+    isInstrucDisplayed = false;
+    document.body.appendChild(blackBox);
+  }
 };
 instructionsBtn.addEventListener('click', showInstructions);
-
-
 
 // Create a deck
 const makeDeck = () => {
@@ -128,10 +135,9 @@ const shuffleCards = (cardDeck) => {
 };
 
 const cardClick = (index) => {
- cardSound.play();
+  cardSound.play();
   // Each card is linked to an index based on loop in line 172
   for (let m = 0; m < 5; m += 1) {
-
     // If card index equal to loop index then enter code block
     if (index === m) {
       // If card index is inside of global array, remove it
@@ -141,14 +147,13 @@ const cardClick = (index) => {
         console.log('card UNCLICKED');
         cardsToChangeIndex = cardsToChangeIndex.filter((n) => n !== m);
         swapCard = document.querySelector(`.swap-bar${m}`);
-        swapCard.style.zIndex = "-4";
+        swapCard.style.zIndex = '-4';
         // If card index is not inside global array, add index to global array
       } else {
         console.log('card CLICKED');
         cardsToChangeIndex.push(m);
         swapCard = document.querySelector(`.swap-bar${m}`);
-        swapCard.style.zIndex = "4";
-
+        swapCard.style.zIndex = '4';
       }
     }
   }
@@ -159,7 +164,6 @@ const resetSwapCard2 = document.querySelector('.swap-bar2');
 const resetSwapCard3 = document.querySelector('.swap-bar3');
 const resetSwapCard4 = document.querySelector('.swap-bar4');
 
-
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
   suit.classList.add('suit');
@@ -168,7 +172,6 @@ const createCard = (cardInfo) => {
   const name = document.createElement('div');
   name.classList.add(cardInfo.displayName, cardInfo.colour);
   name.innerText = cardInfo.displayName;
-
 
   const card = document.createElement('div');
   card.classList.add('card');
@@ -201,11 +204,11 @@ const convertHandToDisplay = () => {
 
 const displayCard = () => {
   dealSound.play();
-  resetSwapCard0.style.zIndex = "-4";
-  resetSwapCard1.style.zIndex = "-4";
-  resetSwapCard2.style.zIndex = "-4";
-  resetSwapCard3.style.zIndex = "-4";
-  resetSwapCard4.style.zIndex = "-4";
+  resetSwapCard0.style.zIndex = '-4';
+  resetSwapCard1.style.zIndex = '-4';
+  resetSwapCard2.style.zIndex = '-4';
+  resetSwapCard3.style.zIndex = '-4';
+  resetSwapCard4.style.zIndex = '-4';
 
   handDisplay.innerHTML = '';
   cardDisplay.innerHTML = '';
@@ -220,15 +223,14 @@ const displayCard = () => {
   makeDeck();
   shuffleCards(cardDeck);
 
- const scoreSubtraction = document.querySelector('.score-subtraction');
+  const scoreSubtraction = document.querySelector('.score-subtraction');
 
-  playerPoints = playerPoints - (100 * pointMultiplier);
-
+  playerPoints -= (100 * pointMultiplier);
 
   if (playerPoints < 0) {
     playerPoints = 1000;
-    playerPoints = playerPoints - (100 * pointMultiplier);
-      scoreSubtraction.innerHTML = `<p style="color:green">+1000</p>  -${(100 * pointMultiplier)}`;
+    playerPoints -= (100 * pointMultiplier);
+    scoreSubtraction.innerHTML = `<p style="color:green">+1000</p>  -${(100 * pointMultiplier)}`;
   } else {
     scoreSubtraction.innerHTML = `-${(100 * pointMultiplier)}`;
   }
@@ -237,11 +239,11 @@ const displayCard = () => {
 
   dealHand();
   convertHandToDisplay();
-  setTimeout(() => { scoreSubtraction.innerHTML = `` }, 1500);
+  setTimeout(() => { scoreSubtraction.innerHTML = ''; }, 1500);
 };
 
 const evaluateWin = () => {
- // // calcHandScore returns the number of points a given hand earns.
+  // // calcHandScore returns the number of points a given hand earns.
   // const pointsForHand = calcHandScore(playerHand);
   const cardNameTally = {};
   for (let i = 0; i < playerHand.length; i += 1) {
@@ -284,26 +286,26 @@ const evaluateWin = () => {
   checkForHighCard();
   pointsDisplay.innerHTML = `Points: ${playerPoints}`;
   if (playerPoints <= 0) {
-    handDisplay.innerHTML =  `You Ran Out Of Points! <br> Game Over!`
+    handDisplay.innerHTML = 'You Ran Out Of Points! <br> Game Over!';
   } else {
-    handDisplay.innerHTML =  `Your Best Hand: ${gameOutcome}! `;
+    handDisplay.innerHTML = `Your Best Hand: ${gameOutcome}! `;
   }
   endGameDiv.classList.add('next-round-container');
   endGameDiv.innerHTML = `You got a ${gameOutcome}`;
   document.body.appendChild(endGameDiv);
 
   const scoreAddition = document.querySelector('.score-addition');
-  scoreAddition.innerHTML = `${addedScore}`
+  scoreAddition.innerHTML = `${addedScore}`;
   if (addedScore === `-${(100 * pointMultiplier)}`) {
     scoreAddition.style.color = 'red';
   } else {
     scoreAddition.style.color = 'green';
-  };
-  setTimeout(() => { scoreAddition.innerHTML = `` }, 1500);
+  }
+  setTimeout(() => { scoreAddition.innerHTML = ''; }, 1500);
 };
 
 const changeCards = () => {
-    dealSound.play();
+  // dealSound.play();
   let newCard;
   for (let j = 0; j < cardsToChangeIndex.length; j += 1) {
     newCard = cardDeck.pop();
@@ -316,39 +318,38 @@ const changeCards = () => {
 
 const multiplyBet1 = () => {
   betSound.play();
-  const scoreTable = document.querySelector('.score-board')
-    scoreTable.src = "Media/score-board1.png";
+  const scoreTable = document.querySelector('.score-board');
+  scoreTable.src = 'Media/score-board1.png';
   return pointMultiplier = 1;
 };
 
 const multiplyBet2 = () => {
-    betSound.play();
-  const scoreTable = document.querySelector('.score-board')
-    scoreTable.src = "Media/score-board2.png";
+  betSound.play();
+  const scoreTable = document.querySelector('.score-board');
+  scoreTable.src = 'Media/score-board2.png';
   return pointMultiplier = 2;
 };
 
 const multiplyBet3 = () => {
-    betSound.play();
-  const scoreTable = document.querySelector('.score-board')
-    scoreTable.src = "Media/score-board3.png";
+  betSound.play();
+  const scoreTable = document.querySelector('.score-board');
+  scoreTable.src = 'Media/score-board3.png';
   return pointMultiplier = 3;
 };
 
 const multiplyBet4 = () => {
-    betSound.play();
-  const scoreTable = document.querySelector('.score-board')
-    scoreTable.src = "Media/score-board4.png";
+  betSound.play();
+  const scoreTable = document.querySelector('.score-board');
+  scoreTable.src = 'Media/score-board4.png';
   return pointMultiplier = 4;
 };
 
 const multiplyBet5 = () => {
-    betSound.play();
-  const scoreTable = document.querySelector('.score-board')
-    scoreTable.src = "Media/score-board5.png";
+  betSound.play();
+  const scoreTable = document.querySelector('.score-board');
+  scoreTable.src = 'Media/score-board5.png';
   return pointMultiplier = 5;
 };
-
 
 const createDisplay = () => {
   pointsDisplay.innerHTML = `Points: ${playerPoints}`;
@@ -380,17 +381,17 @@ const createDisplay = () => {
   pointsBtn3.classList.add('bet-button-3');
   pointsBtn3.classList.add('chip3');
 
-  pointsBtn3.innerHTML = `Bet 300`;
+  pointsBtn3.innerHTML = 'Bet 300';
   const pointsBtn4 = document.createElement('button');
   pointsBtn4.classList.add('bet-button-4');
   pointsBtn4.classList.add('chip4');
 
-  pointsBtn4.innerHTML = `Bet 400`;
+  pointsBtn4.innerHTML = 'Bet 400';
   const pointsBtn5 = document.createElement('button');
   pointsBtn5.classList.add('bet-button-5');
   pointsBtn5.classList.add('chip5');
 
-  pointsBtn5.innerHTML = `Bet 500`;
+  pointsBtn5.innerHTML = 'Bet 500';
 
   const pokerTable = document.querySelector('.poker-table-container');
 
@@ -425,51 +426,76 @@ const checkForFlush = () => {
     }
   }
   if (straight === false && arraySuitsNames.length === 1 && arrayNumOfEachCard.includes(4) === false && !(arrayNumOfEachCard.includes(3) === true && arrayNumOfEachCard.includes(2) === true)) {
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
     console.log('Flush win');
     gameOutcome = 'Flush';
     addedScore = `+${(500 * pointMultiplier)}`;
-    return playerPoints = playerPoints + (500 * pointMultiplier);
+    return playerPoints += (500 * pointMultiplier);
   }
-  return playerPoints ;
+  return playerPoints;
 };
 
 const checkForThreeOfKind = () => {
   if (arrayNumOfEachCard.includes(3) === true && arrayNumOfEachCard.includes(2) === false && arraySuitsNames.length !== 1) {
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
     console.log('3 of a kind win');
     gameOutcome = 'Three of a Kind';
     addedScore = `+${(300 * pointMultiplier)}`;
 
-    return playerPoints = playerPoints + (300 * pointMultiplier);
+    return playerPoints += (300 * pointMultiplier);
   }
-  return playerPoints ;
+  return playerPoints;
 };
 
 const checkForFourOfKind = () => {
   if (arrayNumOfEachCard.includes(4) === true) {
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
     console.log('Four of a kind win');
     gameOutcome = 'Four of a Kind';
     addedScore = `+${(2500 * pointMultiplier)}`;
-    return playerPoints = playerPoints + (2500 * pointMultiplier);
+    return playerPoints += (2500 * pointMultiplier);
   }
   return playerPoints;
 };
 
 const checkForFullHouse = () => {
   if (arrayNumOfEachCard.includes(3) === true && arrayNumOfEachCard.includes(2) === true) {
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
     console.log('Full house win');
     gameOutcome = 'Full House';
     addedScore = `+${(1000 * pointMultiplier)}`;
-    return playerPoints = playerPoints + (1000 * pointMultiplier);
+    return playerPoints += (1000 * pointMultiplier);
   }
   return playerPoints;
 };
 
 const checkForTwoPair = () => {
   if (arrayNumOfEachCard.includes(2) === true && arrayNumOfEachCard.includes(2) === true && arrayNumOfEachCard.includes(3) === false && arraySuitsNames.length !== 1 && arrayCardNames.length === 3) {
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
     console.log('2 pair win');
     gameOutcome = 'Two Pair';
     addedScore = `+${(200 * pointMultiplier)}`;
-    return playerPoints = playerPoints + (200 * pointMultiplier);
+    return playerPoints += (200 * pointMultiplier);
   }
   return playerPoints;
 };
@@ -477,10 +503,15 @@ const checkForTwoPair = () => {
 const checkForOnePair = () => {
   // eslint-disable-next-line max-len
   if (arrayNumOfEachCard.includes(2) === true && arrayNumOfEachCard.length === 4 && arrayNumOfEachCard.includes(3) === false && arrayNumOfEachCard.includes(4) === false && arraySuitsNames.length !== 1) {
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
     console.log('One pair win');
     gameOutcome = 'One Pair';
     addedScore = `+${(100 * pointMultiplier)}`;
-    return playerPoints = playerPoints + (100 * pointMultiplier);
+    return playerPoints += (100 * pointMultiplier);
   }
   return playerPoints;
 };
@@ -494,10 +525,15 @@ const checkForStraight = () => {
     }
   }
   if (straight === true && arraySuitsNames.length !== 1) {
-      console.log('Straight win');
-      gameOutcome = 'Straight';
-      addedScore = `+${(400 * pointMultiplier)}`;
-      return playerPoints = playerPoints + (400 * pointMultiplier);
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
+    console.log('Straight win');
+    gameOutcome = 'Straight';
+    addedScore = `+${(400 * pointMultiplier)}`;
+    return playerPoints += (400 * pointMultiplier);
   }
   return playerPoints;
 };
@@ -511,10 +547,15 @@ const checkForStraightFlush = () => {
     }
   }
   if (straight === true && arraySuitsNames.length === 1) {
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
     gameOutcome = 'Straight Flush';
     addedScore = `+${(5000 * pointMultiplier)}`;
     console.log('Straight flush win');
-    return playerPoints = playerPoints + (5000 * pointMultiplier);
+    return playerPoints += (5000 * pointMultiplier);
   }
   return playerPoints;
 };
@@ -529,10 +570,15 @@ const checkForRoyalFlush = () => {
   }
   // eslint-disable-next-line max-len
   if (straight === true && arraySuitsNames.length === 1 && playerHand[0].rank === 1 && playerHand[1].rank === 10) {
+    winSoundArray[winIndex].play();
+    winIndex += 1;
+    if (winIndex === 3) {
+      winIndex = 0;
+    }
     gameOutcome = 'Royal Flush';
     addedScore = `+${(10000 * pointMultiplier)}`;
     console.log('Royal flush win');
-    return playerPoints = playerPoints + (10000 * pointMultiplier);
+    return playerPoints += (10000 * pointMultiplier);
   }
   return playerPoints;
 };
@@ -549,11 +595,11 @@ const checkForHighCard = () => {
 
   if (straight === false && arraySuitsNames.length !== 1 && arrayCardNames.length === 5)
   {
-    playerPoints = playerPoints - (100 * pointMultiplier)
+    playerPoints -= (100 * pointMultiplier);
     console.log('High card');
     gameOutcome = 'High Card';
     addedScore = `-${(100 * pointMultiplier)}`;
-    return playerPoints ;
+    return playerPoints;
   }
   return playerPoints;
 };
