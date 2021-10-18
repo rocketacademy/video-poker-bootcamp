@@ -72,3 +72,19 @@ body {
   margin: auto;
   display: none;
 }
+
+.result {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  top: 47%;
+  width: max-content; /* Need a specific value to work */
+  font-size: 4rem;
+  font-weight: 600;
+  background-color: blue;
+  color: red;
+  -webkit-text-stroke: 2.5px yellow;
+  text-transform: uppercase;
+}
