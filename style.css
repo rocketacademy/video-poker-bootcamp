@@ -1,0 +1,92 @@
+body {
+  background-color: #f3cfc6;
+  max-width: 700px;
+  margin: auto;
+}
+
+button {
+  display: inline-block;
+  margin: 0 auto;
+  position: center;
+  background-color: #f3cfc6;
+  color: #741910;
+}
+
+h1 {
+  font-family: "Palette Mosaic", cursive;
+  font-size: 30px;
+  color: #741910;
+  margin: 0;
+}
+
+.numbers {
+  font-family: "IM Fell English SC", serif;
+  font-size: 30px;
+  color: #a62316;
+  margin: 0;
+}
+
+#message-text {
+  font-family: "IM Fell English SC", serif;
+  font-size: 16px;
+  color: #a62316;
+  margin-left: 30px;
+  margin-right: -20px;
+  text-align: center;
+}
+
+.card {
+  margin: 10px;
+  padding: 0;
+  width: 80px;
+  display: inline-block;
+}
+.main {
+  display: flex;
+  margin-top: 50px;
+}
+/* message + portrait block */
+#message-portrait {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+#message-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+}
+
+#portrait-image {
+  height: 200px;
+  margin: 0;
+}
+
+.portrait-container {
+  margin-right: 0;
+}
+
+#time-score {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#buttons-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+#card-container {
+  margin-top: 35px;
+  display: flex;
+  justify-content: space-around;
+}
+
+a {
+  text-decoration: none;
+  color: #741910;
+}

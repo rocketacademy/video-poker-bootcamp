@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queen's Video Poker</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Palette+Mosaic&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <div id="buttons-container">
+        <h1 id="deal-button">Deal_Cards</h1>
+        <h1 id="results-button">Show_Hand</h1>
+        <h1 id="restart-button">Restart</h1>
+        <h1>
+          <a
+            href="https://www.smythson.com/uk/nile-blue-playing-cards-twin-pack-1006302.html?cgid=527"
+            >Eat_Cake</a
+          >
+        </h1>
+      </div>
+      <div id="message-portrait">
+        <div id="message-container"><h2 id="message-text"></h2></div>
+        <div class="portrait-container">
+          <img
+            id="portrait-image"
+            src="other-images/portrait-normal.png"
+            alt="marie-antoinette portrait"
+          />
+        </div>
+      </div>
+      <div id="time-score">
+        <div id="timer-container">
+          <h1>Timer</h1>
+          <h2 id="countdown" class="numbers"></h2>
+        </div>
+        <div>
+          <h1>Score</h1>
+          <h2 id="score-board" class="numbers"></h2>
+        </div>
+      </div>
+    </div>
+
+    <div id="card-container">
+      <img
+        id="card-container-0"
+        src="card-images/card-back.png"
+        alt="back of card"
+      />
+      <img
+        id="card-container-1"
+        src="card-images/card-back.png"
+        alt="back of card"
+      />
+      <img
+        id="card-container-2"
+        src="card-images/card-back.png"
+        alt="back of card"
+      />
+      <img
+        id="card-container-3"
+        src="card-images/card-back.png"
+        alt="back of card"
+      />
+      <img
+        id="card-container-4"
+        src="card-images/card-back.png"
+        alt="back of card"
+      />
+    </div>
+
+    <!-- Import program logic -->
+    <script src="0Test.js"></script>
+    <script src="1CardDeck.js"></script>
+    <script src="2Global.js"></script>
+    <script src="3CardHelper.js"></script>
+    <script src="4WinConditions.js"></script>
+    <script src="5GamePlayDealCards.js"></script>
+    <script src="6GamePlayShowHand.js"></script>
+  </body>
+</html>
