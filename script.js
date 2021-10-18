@@ -27,7 +27,8 @@ const instructionsSound = document.getElementById('instructions-sound');
 instructionsSound.volume = 0.4;
 const dealSound = document.getElementById('deal-sound');
 dealSound.volume = 0.5;
-// const introSound = document.getElementById('intro-sound');
+const introSound = document.getElementById('intro-sound');
+introSound.volume = 0.6;
 const winSound = document.getElementById('win-sound');
 winSound.volume = 0.3;
 const winSound2 = document.getElementById('win-sound2');
@@ -43,9 +44,8 @@ loseSound2.volume = 0.3;
 let loseIndex = 0;
 const loseSoundArray = [loseSound, loseSound2];
 const gameOverSound = document.getElementById('game-over');
-gameOverSound.volume = 0.3;
-
-const scoreboardContainer = document.querySelector('.score-board-container');
+gameOverSound.volume = 0.6;
+// const scoreboardContainer = document.querySelector('.score-board-container');
 const instructionsBtn = document.createElement('button');
 instructionsBtn.classList.add('instructions-button');
 instructionsBtn.innerHTML = 'Instructions';
@@ -53,6 +53,13 @@ document.body.appendChild(instructionsBtn);
 const blackBox = document.createElement('div');
 blackBox.classList.add('black-box');
 document.body.appendChild(blackBox);
+const resetSwapCard0 = document.querySelector('.swap-bar0');
+const resetSwapCard1 = document.querySelector('.swap-bar1');
+const resetSwapCard2 = document.querySelector('.swap-bar2');
+const resetSwapCard3 = document.querySelector('.swap-bar3');
+const resetSwapCard4 = document.querySelector('.swap-bar4');
+const pokerTable = document.querySelector('.poker-table-container');
+const welcomeMessage = document.createElement('div');
 
 const showInstructions = () => {
   console.log('working???');
@@ -166,11 +173,6 @@ const cardClick = (index) => {
     }
   }
 };
-const resetSwapCard0 = document.querySelector('.swap-bar0');
-const resetSwapCard1 = document.querySelector('.swap-bar1');
-const resetSwapCard2 = document.querySelector('.swap-bar2');
-const resetSwapCard3 = document.querySelector('.swap-bar3');
-const resetSwapCard4 = document.querySelector('.swap-bar4');
 
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
@@ -401,8 +403,6 @@ const createDisplay = () => {
 
   pointsBtn5.innerHTML = 'Bet 500';
 
-  const pokerTable = document.querySelector('.poker-table-container');
-
   pokerTable.appendChild(dealButton);
   pokerTable.appendChild(swapButton);
   pokerTable.appendChild(pointsBtn1);
@@ -621,6 +621,38 @@ const checkForHighCard = () => {
   }
   return playerPoints;
 };
+const removeMessageBox = () => {
+  pokerTable.removeChild(welcomeMessage);
+  introSound.play();
+};
+
+const createWelcomeMessage = () => {
+  welcomeMessage.classList.add('welcome-message');
+
+  const continueBtn = document.createElement('button');
+  continueBtn.innerHTML = 'Click To Continue!';
+  continueBtn.classList.add('continue-button');
+
+  const welcomeGif1 = document.createElement('img');
+  welcomeGif1.classList.add('welcome-gif1');
+  welcomeGif1.src = 'Media/welcome1.gif';
+
+  const welcomeGif2 = document.createElement('img');
+  welcomeGif2.classList.add('welcome-gif2');
+  welcomeGif2.src = 'Media/welcome2.gif';
+
+  const gifImg = document.createElement('img');
+  gifImg.classList.add('gif-image');
+  gifImg.src = 'Media/intro-gif.gif';
+
+  welcomeMessage.appendChild(welcomeGif1);
+  welcomeMessage.appendChild(welcomeGif2);
+  welcomeMessage.appendChild(continueBtn);
+  welcomeMessage.appendChild(gifImg);
+  pokerTable.appendChild(welcomeMessage);
+
+  continueBtn.addEventListener('click', removeMessageBox);
+};
 
 // /**
 //  * A function that calculates players score
@@ -631,8 +663,8 @@ const checkForHighCard = () => {
 // const calcHandScore = () => playerPoints;
 
 const initGame = () => {
-  // introSound.play();
   createDisplay();
+  createWelcomeMessage();
 };
 
 initGame();
