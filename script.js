@@ -568,7 +568,7 @@ const resetGame = () => {
   deck = shuffleCards(makeDeck());
   setTimeout(() => {
     output("Place your bet");
-  }, 8000);
+  }, 6000);
   displayWallet();
   displayBet();
   dealButton.innerHTML = "DEAL";
@@ -585,7 +585,6 @@ const flipCards = () => {
       [i].classList.toggle("flip-card");
   }
 };
-
 const showCards = () => {
   for (i = 0; i < 5; i += 1) {
     document.getElementsByClassName("card-back")[i].style.zIndex = "-1";
@@ -712,7 +711,11 @@ const deal = () => {
     addPoints();
     // To add: show animation of points added to wallet
     // display combo won
-    output(`${combo}`);
+    if (points > 0) {
+      output(`${combo} (+${points} CREDITS)`)
+    } else {
+      output(`${combo}`);
+    }
     // reset all values for next round
     resetGame();
     gameMode = "deal";
@@ -729,7 +732,7 @@ dealButton.addEventListener("click", deal);
 const startGame = () => {
   pointsInWallet = 100;
   createHand(deck);
-  playerArray = [
+  /* playerArray = [
     {
       suit: "hearts",
       rank: 9,
@@ -760,15 +763,14 @@ const startGame = () => {
     },
     {
       suit: "clubs",
-      rank: 13,
-      displayName: "K",
+      rank: 7,
+      displayName: "7",
       suitSymbol: "♣",
       colour: "black",
     },
-  ];
+  ];  */
   displayHand(playerArray);
   displayWallet();
-  displayName();
   gameInfo.innerHTML = "Place your bet";
 };
 
