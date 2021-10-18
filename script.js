@@ -1,8 +1,18 @@
 // Global variables
+// Card arrays
 let cardDeck = [];
-let playerPoints = 1000;
-let pointMultiplier = 1;
+let playerHand = [];
+// Arrays to store data from player's hand
+let arraySuitsNames = [];
+let arrayNumOfEachSuit = [];
+let arrayCardNames = [];
+let arrayNumOfEachCard = [];
+// Array to store index of cards to swap after clicking
 let cardsToChangeIndex = [];
+let playerPoints = 1000;
+// Multiply players points based on bet amount selected
+let pointMultiplier = 1;
+// Variables to generate visual displays and add a class
 const cardDisplay = document.createElement('div');
 cardDisplay.classList.add('card-container');
 const pointsDisplay = document.createElement('div');
@@ -10,15 +20,26 @@ const handDisplay = document.createElement('div');
 handDisplay.classList.add('hand-outcome');
 const endGameDiv = document.createElement('div');
 pointsDisplay.classList.add('points');
-let playerHand = [];
-let arraySuitsNames = [];
-let arrayNumOfEachSuit = [];
-let arrayCardNames = [];
-let arrayNumOfEachCard = [];
+const instructionsBtn = document.createElement('button');
+instructionsBtn.classList.add('instructions-button');
+instructionsBtn.innerHTML = 'Instructions';
+document.body.appendChild(instructionsBtn);
+const blackBox = document.createElement('div');
+blackBox.classList.add('black-box');
+document.body.appendChild(blackBox);
+const resetSwapCard0 = document.querySelector('.swap-bar0');
+const resetSwapCard1 = document.querySelector('.swap-bar1');
+const resetSwapCard2 = document.querySelector('.swap-bar2');
+const resetSwapCard3 = document.querySelector('.swap-bar3');
+const resetSwapCard4 = document.querySelector('.swap-bar4');
+const pokerTable = document.querySelector('.poker-table-container');
+const welcomeMessage = document.createElement('div');
+// Global values for output variables
 let gameOutcome = '';
 let isInstrucDisplayed = false;
 let swapCard = '';
 let addedScore = '';
+// Arrays to get sound elements from HTML file and adjust volume
 const cardSound = document.getElementById('card-sound');
 cardSound.volume = 1;
 const betSound = document.getElementById('bet-sound');
@@ -35,35 +56,24 @@ const winSound2 = document.getElementById('win-sound2');
 winSound2.volume = 0.3;
 const winSound3 = document.getElementById('win-sound3');
 winSound3.volume = 0.3;
-let winIndex = 0;
-const winSoundArray = [winSound, winSound2, winSound3];
 const loseSound = document.getElementById('lose-sound1');
 loseSound.volume = 0.3;
 const loseSound2 = document.getElementById('lose-sound2');
 loseSound2.volume = 0.3;
-let loseIndex = 0;
-const loseSoundArray = [loseSound, loseSound2];
 const gameOverSound = document.getElementById('game-over');
 gameOverSound.volume = 0.6;
-// const scoreboardContainer = document.querySelector('.score-board-container');
-const instructionsBtn = document.createElement('button');
-instructionsBtn.classList.add('instructions-button');
-instructionsBtn.innerHTML = 'Instructions';
-document.body.appendChild(instructionsBtn);
-const blackBox = document.createElement('div');
-blackBox.classList.add('black-box');
-document.body.appendChild(blackBox);
-const resetSwapCard0 = document.querySelector('.swap-bar0');
-const resetSwapCard1 = document.querySelector('.swap-bar1');
-const resetSwapCard2 = document.querySelector('.swap-bar2');
-const resetSwapCard3 = document.querySelector('.swap-bar3');
-const resetSwapCard4 = document.querySelector('.swap-bar4');
-const pokerTable = document.querySelector('.poker-table-container');
-const welcomeMessage = document.createElement('div');
+// Store win and lose sounds in array so that they can be rotated on each button click
+const winSoundArray = [winSound, winSound2, winSound3];
+const loseSoundArray = [loseSound, loseSound2];
+// Using global counters to loop through above arrays to change sounds
+let winIndex = 0;
+let loseIndex = 0;
 
+// Function to toggle between showing and hiding instructions
 const showInstructions = () => {
-  console.log('working???');
+  // Play sound when button clicked
   instructionsSound.play();
+  // If hidden show, else hide instructions
   if (isInstrucDisplayed === false) {
     isInstrucDisplayed = true;
     document.body.removeChild(blackBox);
@@ -149,9 +159,11 @@ const shuffleCards = (cardDeck) => {
   return cardDeck;
 };
 
+// Select or unselect card to be swapped and hide or show 'swap' message
 const cardClick = (index) => {
+  // Play sound when button clicked
   cardSound.play();
-  // Each card is linked to an index based on loop in line 172
+  // Each card is linked to an index based on loop in line 222
   for (let m = 0; m < 5; m += 1) {
     // If card index equal to loop index then enter code block
     if (index === m) {
@@ -159,21 +171,22 @@ const cardClick = (index) => {
       // This means that if player clicks the same card twice, we count it as unselecting the card
       // and remove it from the array
       if (cardsToChangeIndex.includes(m) === true) {
-        console.log('card UNCLICKED');
         cardsToChangeIndex = cardsToChangeIndex.filter((n) => n !== m);
         swapCard = document.querySelector(`.swap-bar${m}`);
+        // Hide 'swap' text
         swapCard.style.zIndex = '-4';
         // If card index is not inside global array, add index to global array
       } else {
-        console.log('card CLICKED');
         cardsToChangeIndex.push(m);
         swapCard = document.querySelector(`.swap-bar${m}`);
+        // Show 'swap' text
         swapCard.style.zIndex = '4';
       }
     }
   }
 };
 
+// Create visual card based on card info from playerHand
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
   suit.classList.add('suit');
@@ -191,6 +204,7 @@ const createCard = (cardInfo) => {
   return card;
 };
 
+// Deal player a hand after clicking deal button
 const dealHand = () => {
   let newCard;
   for (let i = 0; i < 5; i += 1) {
@@ -201,6 +215,7 @@ const dealHand = () => {
   return playerHand;
 };
 
+// Convert dealt hand into visual cards
 const convertHandToDisplay = () => {
   let cardElement;
   let appendCard;
@@ -212,14 +227,17 @@ const convertHandToDisplay = () => {
   }
 };
 
+// Deal card to player and convert info into visual card
 const displayCard = () => {
+  // Play sound effect on button click
   dealSound.play();
+  // 'Reset' swap messages by changing stack order
   resetSwapCard0.style.zIndex = '-4';
   resetSwapCard1.style.zIndex = '-4';
   resetSwapCard2.style.zIndex = '-4';
   resetSwapCard3.style.zIndex = '-4';
   resetSwapCard4.style.zIndex = '-4';
-
+  // Reset all visual elements and global values for subsequent rounds
   handDisplay.innerHTML = '';
   cardDisplay.innerHTML = '';
   endGameDiv.innerHTML = '';
@@ -230,31 +248,35 @@ const displayCard = () => {
   arrayNumOfEachSuit = [];
   arrayCardNames = [];
   arrayNumOfEachCard = [];
+  // Create new deck
   makeDeck();
   shuffleCards(cardDeck);
-
+  // Create element to visualize score subtraction from betting
   const scoreSubtraction = document.querySelector('.score-subtraction');
-
+  // Update player points based on bet amount
   playerPoints -= (100 * pointMultiplier);
-
+  // If player is broke, give them another 1000 point
   if (playerPoints < 0) {
     playerPoints = 1000;
     playerPoints -= (100 * pointMultiplier);
+    // Used inline styling to show 1000 points given in green and bet amount in red
     scoreSubtraction.innerHTML = `<p style="color:green">+1000</p>  -${(100 * pointMultiplier)}`;
   } else {
     scoreSubtraction.innerHTML = `-${(100 * pointMultiplier)}`;
   }
-
+  // Displays players current points
   pointsDisplay.innerHTML = `Credits: ${playerPoints}`;
-
+  // Deal cards to player
   dealHand();
+  // Convert cards into visual display
   convertHandToDisplay();
+  // Timeout so that point subtraction is only temporary
   setTimeout(() => { scoreSubtraction.innerHTML = ''; }, 1500);
 };
 
+// Calculate best hand after player clicks swap button
 const evaluateWin = () => {
-  // // calcHandScore returns the number of points a given hand earns.
-  // const pointsForHand = calcHandScore(playerHand);
+  // Store card names and frequency in object
   const cardNameTally = {};
   for (let i = 0; i < playerHand.length; i += 1) {
     const cardName = playerHand[i].name;
@@ -267,7 +289,7 @@ const evaluateWin = () => {
       cardNameTally[cardName] = 1;
     }
   }
-
+  // Store card suit and frequency in object
   const cardSuitTally = {};
   for (let i = 0; i < playerHand.length; i += 1) {
     const cardSuit = playerHand[i].suit;
@@ -279,11 +301,11 @@ const evaluateWin = () => {
       cardSuitTally[cardSuit] = 1;
     }
   }
-
+  // Update global arrays to store card data
   arraySuitsNames = Object.keys(cardSuitTally);
   arrayCardNames = Object.keys(cardNameTally);
   arrayNumOfEachCard = Object.values(cardNameTally);
-
+  // Execute each function to check for winning condition
   checkForRoyalFlush();
   checkForStraightFlush();
   checkForFourOfKind();
@@ -294,18 +316,21 @@ const evaluateWin = () => {
   checkForTwoPair();
   checkForOnePair();
   checkForHighCard();
+  // Update points
   pointsDisplay.innerHTML = `Credits: ${playerPoints}`;
   if (playerPoints <= 0) {
     handDisplay.innerHTML = 'You Ran Out Of Points! <br> Game Over!';
   } else {
     handDisplay.innerHTML = `Your Best Hand: ${gameOutcome}! `;
   }
+  // Display players hand
   endGameDiv.classList.add('next-round-container');
   endGameDiv.innerHTML = `You got a ${gameOutcome}`;
   document.body.appendChild(endGameDiv);
-
+  // Display points won or loss for a few seconds
   const scoreAddition = document.querySelector('.score-addition');
   scoreAddition.innerHTML = `${addedScore}`;
+  // If high card (lose points) ensure points change text color is red, else green
   if (addedScore === `-${(100 * pointMultiplier)}`) {
     scoreAddition.style.color = 'red';
   } else {
@@ -314,8 +339,8 @@ const evaluateWin = () => {
   setTimeout(() => { scoreAddition.innerHTML = ''; }, 1500);
 };
 
+// After player has clicked swap button, use index of positions to change to update hand, generate new display and check for winning condition
 const changeCards = () => {
-  // dealSound.play();
   let newCard;
   for (let j = 0; j < cardsToChangeIndex.length; j += 1) {
     newCard = cardDeck.pop();
@@ -326,6 +351,7 @@ const changeCards = () => {
   evaluateWin();
 };
 
+// Multiply bet amount based on betting button selected
 const multiplyBet1 = () => {
   betSound.play();
   const scoreTable = document.querySelector('.score-board');
@@ -361,6 +387,7 @@ const multiplyBet5 = () => {
   return pointMultiplier = 5;
 };
 
+// Create visual displays for when browser loads
 const createDisplay = () => {
   pointsDisplay.innerHTML = `Credits: ${playerPoints}`;
   const gameInfo = document.createElement('div');
@@ -424,9 +451,10 @@ const createDisplay = () => {
   pointsBtn5.addEventListener('click', multiplyBet5);
 };
 
+// Check for winning conditions
 const checkForFlush = () => {
+  // Sort cards so they can be compared for straight winning condition
   playerHand.sort((a, b) => a.rank - b.rank);
-
   let straight = true;
   for (let i = 0; i < playerHand.length - 1; i += 1) {
     if (playerHand[i].rank + 1 !== playerHand[i + 1].rank) {
@@ -439,7 +467,6 @@ const checkForFlush = () => {
     if (winIndex === 3) {
       winIndex = 0;
     }
-    console.log('Flush win');
     gameOutcome = 'Flush';
     addedScore = `+${(500 * pointMultiplier)}`;
     return playerPoints += (500 * pointMultiplier);
@@ -454,7 +481,6 @@ const checkForThreeOfKind = () => {
     if (winIndex === 3) {
       winIndex = 0;
     }
-    console.log('3 of a kind win');
     gameOutcome = 'Three of a Kind';
     addedScore = `+${(300 * pointMultiplier)}`;
 
@@ -470,7 +496,6 @@ const checkForFourOfKind = () => {
     if (winIndex === 3) {
       winIndex = 0;
     }
-    console.log('Four of a kind win');
     gameOutcome = 'Four of a Kind';
     addedScore = `+${(2500 * pointMultiplier)}`;
     return playerPoints += (2500 * pointMultiplier);
@@ -485,7 +510,6 @@ const checkForFullHouse = () => {
     if (winIndex === 3) {
       winIndex = 0;
     }
-    console.log('Full house win');
     gameOutcome = 'Full House';
     addedScore = `+${(1000 * pointMultiplier)}`;
     return playerPoints += (1000 * pointMultiplier);
@@ -500,7 +524,6 @@ const checkForTwoPair = () => {
     if (winIndex === 3) {
       winIndex = 0;
     }
-    console.log('2 pair win');
     gameOutcome = 'Two Pair';
     addedScore = `+${(200 * pointMultiplier)}`;
     return playerPoints += (200 * pointMultiplier);
@@ -516,7 +539,6 @@ const checkForOnePair = () => {
     if (winIndex === 3) {
       winIndex = 0;
     }
-    console.log('One pair win');
     gameOutcome = 'One Pair';
     addedScore = `+${(100 * pointMultiplier)}`;
     return playerPoints += (100 * pointMultiplier);
@@ -538,7 +560,6 @@ const checkForStraight = () => {
     if (winIndex === 3) {
       winIndex = 0;
     }
-    console.log('Straight win');
     gameOutcome = 'Straight';
     addedScore = `+${(400 * pointMultiplier)}`;
     return playerPoints += (400 * pointMultiplier);
@@ -562,7 +583,6 @@ const checkForStraightFlush = () => {
     }
     gameOutcome = 'Straight Flush';
     addedScore = `+${(5000 * pointMultiplier)}`;
-    console.log('Straight flush win');
     return playerPoints += (5000 * pointMultiplier);
   }
   return playerPoints;
@@ -585,7 +605,6 @@ const checkForRoyalFlush = () => {
     }
     gameOutcome = 'Royal Flush';
     addedScore = `+${(10000 * pointMultiplier)}`;
-    console.log('Royal flush win');
     return playerPoints += (10000 * pointMultiplier);
   }
   return playerPoints;
@@ -614,18 +633,21 @@ const checkForHighCard = () => {
       }
     }
 
-    console.log('High card');
     gameOutcome = 'High Card';
     addedScore = `-${(100 * pointMultiplier)}`;
     return playerPoints;
   }
   return playerPoints;
 };
+
+// Remove pop up display at the start so that game can begin
 const removeMessageBox = () => {
   pokerTable.removeChild(welcomeMessage);
+  // Play intro song
   introSound.play();
 };
 
+// Create and display pop-up elements, when page loads
 const createWelcomeMessage = () => {
   welcomeMessage.classList.add('welcome-message');
 
@@ -654,17 +676,10 @@ const createWelcomeMessage = () => {
   continueBtn.addEventListener('click', removeMessageBox);
 };
 
-// /**
-//  * A function that calculates players score
-//  * @param  a {number} number to add together
-//  * @param  b {number} number to add together
-//  * @return {number}   a and b added together
-//  */
-// const calcHandScore = () => playerPoints;
-
+// Create pop-up and display to appear when page loads
 const initGame = () => {
   createDisplay();
   createWelcomeMessage();
 };
-
+// Execute game
 initGame();
