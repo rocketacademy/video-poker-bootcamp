@@ -9,13 +9,13 @@ button {
   margin: 0 auto;
   position: center;
   background-color: #f3cfc6;
-  color: #a62316;
+  color: #741910;
 }
 
 h1 {
   font-family: "Palette Mosaic", cursive;
   font-size: 30px;
-  color: #a62316;
+  color: #741910;
   margin: 0;
 }
 
@@ -43,7 +43,7 @@ h1 {
 }
 .main {
   display: flex;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 /* message + portrait block */
 #message-portrait {
@@ -88,5 +88,5 @@ h1 {
 
 a {
   text-decoration: none;
-  color: #a62316;
+  color: #741910;
 }

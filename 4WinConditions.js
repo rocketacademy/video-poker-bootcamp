@@ -68,6 +68,7 @@ const determineWin = (hand) => {
   }
   // broadway, straight sequence of A-K-Q-J-10
   const broadwaySequence = [1, 10, 11, 12, 13];
+
   if (JSON.stringify(broadwaySequence) === JSON.stringify(sortedRanks)) {
     broadway = true;
   }

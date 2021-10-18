@@ -114,7 +114,7 @@ const winGame = () => {
 const startTimer = () => {
   const timer = setInterval(() => {
     countDownElement.innerText = timerStartSeconds;
-    if (score >= 120) {
+    if (score >= winningScore) {
       clearInterval(timer);
     }
     else if (timerStartSeconds <= 0) {
