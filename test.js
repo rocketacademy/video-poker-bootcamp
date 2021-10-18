@@ -13,10 +13,19 @@ const { sort } = require("prelude-ls");
 const testCard = {
         name: "queen",
         suit: "heart",
-        suitSymbol: "♥️",
+        suitSymbol: "♥",
         displayName: "Q",
         colour: "red",
         rank: 12,
+      };
+
+const testCard1 = {
+        name: "10",
+        suit: "heart",
+        suitSymbol: "♥",
+        displayName: "10",
+        colour: "red",
+        rank: 10,
       };
 
 
@@ -103,33 +112,75 @@ const getCardInfo = () => {
 
 const spawnCard2 = (cardInfo) => {
   const suit = document.createElement('div');
-  suit.classList.add('suit');
-  suit.innerText = cardInfo.suitSymbol;
+  suit.classList.add('suit-elements', cardInfo.colour);
 
-  const name = document.createElement('div');
-  name.classList.add('name', cardInfo.colour);
-  name.innerText = cardInfo.displayName;
-  // name.innerText = `"QUEEN"`;
+  for (let i = 0; i < cardInfo.rank; i++) {
+    suit.innerText += " " + cardInfo.suitSymbol;
+  }
+
+  // const name = document.createElement('div');
+  // name.classList.add('name', cardInfo.colour);
+
+  // if (cardInfo.displayName === "J") {
+  //   name.innerText = `"jack"`;
+  //   // name.classList.add('court');
+  // } else if (cardInfo.displayName === "Q") {
+  //   name.innerText = `"queen"`;
+  //   // name.classList.add('court');
+
+  // } else if (cardInfo.displayName === "K") {
+  //   name.innerText = `"king"`;
+  //   // name.classList.add('court');
+
+  // } else {
+  //   name.innerText = cardInfo.displayName;
+  // // name.innerText = `"QUEEN"`;
+  // }
+
+  const card = document.createElement('div');
+  card.classList.add('card-face-container');
+  document.body.appendChild(card);
+
+  const cardTop = document.createElement('div');
+  cardTop.classList.add('card-face-top');
+  card.appendChild(cardTop);
+
+  const cardTopLeft = document.createElement('div');
+  cardTopLeft.classList.add('card-face-top-left');
+  card.appendChild(cardTopLeft);
+
+  const cardFaceInfo = document.createElement('div');
+  cardFaceInfo.classList.add('card-face-info');
+  card.appendChild(cardFaceInfo);
+
+  const cardBtm = document.createElement('div');
+  cardBtm.classList.add('card-face-btm');
+  card.appendChild(cardBtm);
+
+  const cardBtmRight = document.createElement('div');
+  cardBtmRight.classList.add('card-face-btm-right');
+  cardBtm.appendChild(cardBtmRight);
 
 
   cardTopLeft.classList.add(cardInfo.colour);
   cardTopLeft.innerHTML = cardInfo.displayName + "<br />" + cardInfo.suitSymbol;
-  // cardTopRight.classList.add(cardInfo.colour);
-  // cardTopRight.innerText = cardInfo.displayName;
-  // cardBtmLeft.classList.add(cardInfo.colour);
-  // cardBtmLeft.innerText = cardInfo.displayName;
+ 
   cardBtmRight.classList.add(cardInfo.colour);
   cardBtmRight.innerHTML = cardInfo.displayName + "<br />" + cardInfo.suitSymbol;
 
-  cardFaceInfo.appendChild(name);
+
+  // card.appendChild(name);
+  card.appendChild(suit);
+
+  // cardFaceInfo.appendChild(name);
   cardFaceInfo.appendChild(suit);
 
-  // fakeCardFace.appendChild(card);
+  cardContainer.appendChild(card);
 
-  // return card;
+  return card;
 };
 
-// const difficultLife = spawnCard2(testCard);
+// const difficultLife = spawnCard2(testCard1);
 
 const testCard2 = {
         name: "queen",

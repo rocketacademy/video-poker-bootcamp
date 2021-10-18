@@ -17,6 +17,14 @@ marquee {
   color: white;
 }
 
+#scroller-top {
+  padding: 0px;
+}
+
+#scrooer-btm {
+  padding: 0px;
+}
+
 button {
   color: white;
   font-family: "Comic Sans MS";
@@ -33,6 +41,7 @@ button {
   flex-direction: column;
   flex-wrap: wrap;
   margin: auto;
+  max-width: 100%;
   /* border: 1px solid black; */
   padding: 20px;
 }
@@ -146,10 +155,21 @@ button {
   font-size: 28px;
 }
 
+/* Generates number of suit symbols */
+.suit-elements {
+  display: inline-flexbox;
+  flex-wrap: wrap;
+  padding: 0px 12px 0px 12px;
+  margin: 0px;
+  font-size: 16px;
+  text-align: center;
+}
+
 .name {
   margin: 5px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
+  text-justify: distribute;
 }
 
 .court {
@@ -166,7 +186,9 @@ button {
 
 .card-container {
   display: flex;
-  max-width: max-content;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  max-width: 100%;
   /* background-color: white; */
   /* border: 1px solid white; */
   margin: 10px;
@@ -181,6 +203,7 @@ button {
 
 .message {
   color: white;
+  padding: 10px;
 }
 
 .points {
@@ -190,4 +213,24 @@ button {
   /* left: 50px;
   top: 50px; */
   color: white;
+}
+
+.bsod {
+  display: flex;
+  justify-content: space-evenly;
+  width: 90%;
+  height: 100%;
+  text-align: left;
+  font-family: "Comic Sans MS";
+  font-size: 20px;
+  color: white;
+  padding: 50px;
+}
+
+.countdown {
+  /* display: flex; */
+  align-items: center;
+  font-size: 60px;
+  color: white;
+  text-align: center;
 }

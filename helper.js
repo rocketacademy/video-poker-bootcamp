@@ -262,8 +262,8 @@ const checkJacksBetter = (playerHand) => {
 
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
-  suit.classList.add('suit', cardInfo.colour);
-  suit.innerText = cardInfo.suitSymbol;
+  suit.classList.add('suit-elements', cardInfo.colour);
+  // suit.innerText = cardInfo.suitSymbol;
 
   const name = document.createElement('div');
   name.classList.add('name', cardInfo.colour);
@@ -280,11 +280,13 @@ const createCard = (cardInfo) => {
     // name.classList.add('court');
 
   } else {
-    name.innerText = cardInfo.displayName;
-  // name.innerText = `"QUEEN"`;
+    // name.innerText = cardInfo.displayName;
+    for (let i = 0; i < cardInfo.rank; i++) {
+    suit.innerText += " " + cardInfo.suitSymbol;
+  }
+
   }
   
-
   const card = document.createElement('div');
   card.classList.add('card-face-container');
   document.body.appendChild(card);
@@ -435,4 +437,67 @@ const getGreeting = () => {
     } else {
     return "time does not exist";
     }
+}
+
+// ---------------------------------------------------------
+// DECK CHECKER - checks if deck is running out
+// ---------------------------------------------------------
+
+/**
+ * Checks remaining cards in dealer's deck
+ * @constructor
+ */
+const deckChecker = () => {
+  console.log('current deck length: ' + cardDeck.length);
+  if (cardDeck.length < 10) {
+    cardDeck = [];
+    cardDeck = shuffleCards(makeDeck());
+    console.log('new deck length: ' + cardDeck.length);
+  }
+}
+
+/**
+ * Blue Screen of Death
+ * @constructor
+ * @param {number} currentPoints - User points
+ */
+const bsod = (currentPoints) => {
+
+  if (currentPoints <= 0) {
+  gameContainer.innerHTML = "";
+  document.getElementById("scroller-top").innerHTML = "";
+  document.getElementById("scroller-btm").innerHTML = "";
+
+    let timeLeft = 9;
+    const delay = 1000;
+    const secsLeft = document.createElement('div');
+    secsLeft.classList.add("countdown");
+    secsLeft.innerText = "10";
+
+
+    const shutDown = setInterval(() => {
+    secsLeft.innerText = timeLeft;
+    timeLeft--;
+
+    if (timeLeft === 0) {
+      clearInterval(shutDown);
+    } 
+  }, delay);
+
+    const death = document.createElement('div');
+    death.classList.add('bsod');
+    death.innerHTML = 
+    `A gambling problem has been detected and Video Poker will shut down to prevent damage to the user. <br> If this is the first time you've seen this stop error screen, restart your computer. if this screen appears again, follow these steps: <br><br>
+
+Check to make sure any new hardware or software is properly installed. If this is a new installation, ask your hardware or software manufacturer for and Windows updates you might need. <br><br>
+
+If problems continue, disable or remove any newly installed hardware or software. Disable BIOS memory options such as caching or shadowing. If you need to use Safe Mode to remove or disable components, restart your computer, press F8 to select Advanced Startup Options, and then select Safe Mode. <br><br>
+
+Technical information: Error Code: YOU_ARE_ADDICTED_TO_VIDEO_POKER *** STOP: 0x000000FE (0x00000008, 0x000000006, 0x00000009, 0x847075cc)`
+    document.body.appendChild(death);
+
+    document.body.appendChild(secsLeft);
+
+    setTimeout( function() { window.close(); }, 10000);
+}
 }

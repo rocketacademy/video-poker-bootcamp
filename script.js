@@ -106,7 +106,11 @@ const swapCard = () => {
     gameInfo.innerHTML = `You ${userWin} <br> Click DEAL to try again`
   } 
 };
-
+/**
+ * Calculate hand score
+ * @constructor
+ * @param {Array} currentHand - Array of cards
+ */
 const calcHandScore = (currentHand) => {
   
   if (checkRoyalFlush(currentHand) === true) {
@@ -167,6 +171,9 @@ const calcHandScore = (currentHand) => {
 canDeal = true;
 console.log('user points: ', userPoints);
 pointsContainer.innerText = `You have: ${userPoints} points`;
+console.log('current card deck length', cardDeck.length);
+deckChecker();
+bsod(userPoints);
 }
 
 // Create a helper function for output to abstract complexity
@@ -180,13 +187,16 @@ const output = (message) => {
 // ----------------------------------------------------------------
 
 const initGame = () => {
-  gameInfo.innerText = "Good " + getGreeting() + ', click deal to get your first hand';
-  console.log('game init');
+  gameInfo.innerText = "Good " + getGreeting() + ', click DEAL to get your first hand';
+  // console.log('game init');
+  
+  canDeal = true;
 
   cardDeck = shuffleCards(makeDeck());
 
   cardContainer.innerText = "";
   userPoints = 100;
+  pointsContainer.innerText = `You have: ${userPoints} points`;
 
  cardContainer.appendChild(cardBack);
 
@@ -195,7 +205,7 @@ const initGame = () => {
   };
   
 };
-initGame();
 
+initGame();
 resetButton.addEventListener('click', () => initGame());
 
