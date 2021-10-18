@@ -245,7 +245,7 @@ const displayCard = () => {
     scoreSubtraction.innerHTML = `-${(100 * pointMultiplier)}`;
   }
 
-  pointsDisplay.innerHTML = `Points: ${playerPoints}`;
+  pointsDisplay.innerHTML = `Credits: ${playerPoints}`;
 
   dealHand();
   convertHandToDisplay();
@@ -294,7 +294,7 @@ const evaluateWin = () => {
   checkForTwoPair();
   checkForOnePair();
   checkForHighCard();
-  pointsDisplay.innerHTML = `Points: ${playerPoints}`;
+  pointsDisplay.innerHTML = `Credits: ${playerPoints}`;
   if (playerPoints <= 0) {
     handDisplay.innerHTML = 'You Ran Out Of Points! <br> Game Over!';
   } else {
@@ -362,7 +362,7 @@ const multiplyBet5 = () => {
 };
 
 const createDisplay = () => {
-  pointsDisplay.innerHTML = `Points: ${playerPoints}`;
+  pointsDisplay.innerHTML = `Credits: ${playerPoints}`;
   const gameInfo = document.createElement('div');
   gameInfo.innerHTML = '.';
   gameInfo.classList.add('game-info');
