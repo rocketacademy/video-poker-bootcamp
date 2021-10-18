@@ -29,13 +29,21 @@ const dealSound = document.getElementById('deal-sound');
 dealSound.volume = 0.5;
 // const introSound = document.getElementById('intro-sound');
 const winSound = document.getElementById('win-sound');
-winSound.volume = 0.4;
+winSound.volume = 0.3;
 const winSound2 = document.getElementById('win-sound2');
-winSound2.volume = 0.4;
+winSound2.volume = 0.3;
 const winSound3 = document.getElementById('win-sound3');
-winSound3.volume = 0.4;
+winSound3.volume = 0.3;
 let winIndex = 0;
 const winSoundArray = [winSound, winSound2, winSound3];
+const loseSound = document.getElementById('lose-sound1');
+loseSound.volume = 0.3;
+const loseSound2 = document.getElementById('lose-sound2');
+loseSound2.volume = 0.3;
+let loseIndex = 0;
+const loseSoundArray = [loseSound, loseSound2];
+const gameOverSound = document.getElementById('game-over');
+gameOverSound.volume = 0.3;
 
 const scoreboardContainer = document.querySelector('.score-board-container');
 const instructionsBtn = document.createElement('button');
@@ -596,6 +604,16 @@ const checkForHighCard = () => {
   if (straight === false && arraySuitsNames.length !== 1 && arrayCardNames.length === 5)
   {
     playerPoints -= (100 * pointMultiplier);
+    if (playerPoints <= 0) {
+      gameOverSound.play();
+    } else {
+      loseSoundArray[loseIndex].play();
+      loseIndex += 1;
+      if (loseIndex === 2) {
+        loseIndex = 0;
+      }
+    }
+
     console.log('High card');
     gameOutcome = 'High Card';
     addedScore = `-${(100 * pointMultiplier)}`;
