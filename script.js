@@ -738,7 +738,7 @@ dealButton.addEventListener("click", deal);
 const startGame = () => {
   pointsInWallet = 100;
   createHand(deck);
-  /* playerArray = [
+  playerArray = [
     {
       suit: "hearts",
       rank: 7,
@@ -774,7 +774,7 @@ const startGame = () => {
       suitSymbol: "♣",
       colour: "black",
     },
-  ];   */
+  ]; 
   displayHand(playerArray);
   displayWallet();
   gameInfo.innerHTML = "Place your bet";
