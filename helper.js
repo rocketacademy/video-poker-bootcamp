@@ -76,7 +76,7 @@ const makeDeck = () => {
         color = 'black';
       }
 
-      const cardImgPath = `assets/cards/${currentSuit}/card_${rankCounter}_${currentSuit}.png`;
+      const cardImgPath = `/assets/cards/${currentSuit}/card_${rankCounter}_${currentSuit}.png`;
       const cardBackPath = `assets/cards/common/${color}`;
 
       // Create a new card with the current name, suit, and rank
