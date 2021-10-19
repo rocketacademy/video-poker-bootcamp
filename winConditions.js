@@ -49,6 +49,7 @@ const tallyPlayerHand = (hand) => {
   return tally;
 };
 
+//rename to broadway
 const checkForRoyalStraight = (hand, tally) => {
   const royalStraightNames = ['10', 'jack', 'queen', 'king', 'ace'];
 
@@ -71,6 +72,7 @@ const checkForRoyalStraight = (hand, tally) => {
 };
 
 const checkForRoyalFlush = (hand, tally) => {
+  console.log(tally, 'tally');
   //checking for a Royal Flush requires 3 winning conditions,
   // 1. must be a flush
   // 2. must be a spades flush
@@ -81,8 +83,10 @@ const checkForRoyalFlush = (hand, tally) => {
 
   let spade;
   if (flush) {
-    //2. checking if all suits spade
-    spade = Object.keys(tally.suits)[0] === 'spade';
+    //2. checking if all suits spade //check for length
+    spade =
+      Object.keys(tally.suits)[0] === 'spade' &&
+      Object.keys(tally.suits)[0].length === 1;
   } else {
     return false;
   }

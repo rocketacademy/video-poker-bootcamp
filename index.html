@@ -6,14 +6,98 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
+
 </head>
 
 <body>
     <main>
         <div class="center">
             <div class="container">
+                <table class="winning-table">
+                    <th>
+                    <td class="one-point">1</td>
+                    <td class="two-point">2</td>
+                    <td class="three-point">3</td>
+                    <td class="four-point">4</td>
+                    <td class="five-point">5</td>
+                    </th>
+                    <tr id="royal-flush">
+                        <td>Royal Flush</td>
+                        <td class="one-point">250</td>
+                        <td class="two-point">500</td>
+                        <td class="three-point">750</td>
+                        <td class="four-point">1000</td>
+                        <td class="five-point">4000</td>
+                    </tr>
+                    <tr>
+                        <td>Straight Flush</td>
+                        <td class="one-point">50</td>
+                        <td class="two-point">100</td>
+                        <td class="three-point">150</td>
+                        <td class="four-point">200</td>
+                        <td class="five-point">250</td>
+                    </tr>
+                    <tr>
+                        <td>4 Of a kind</td>
+                        <td class="one-point">25</td>
+                        <td class="two-point">50</td>
+                        <td class="three-point">75</td>
+                        <td class="four-point">100</td>
+                        <td class="five-point">125</td>
+                    </tr>
+                    <tr>
+                        <td>Full House</td>
+                        <td class="one-point">9</td>
+                        <td class="two-point">18</td>
+                        <td class="three-point">27</td>
+                        <td class="four-point">36</td>
+                        <td class="five-point">45</td>
+                    </tr>
+                    <tr>
+                        <td>Flush</td>
+                        <td class="one-point">6</td>
+                        <td class="two-point">12</td>
+                        <td class="three-point">18</td>
+                        <td class="four-point">24</td>
+                        <td class="five-point">30</td>
+                    </tr>
+                    <tr>
+                        <td>Straight</td>
+                        <td class="one-point">4</td>
+                        <td class="two-point">8</td>
+                        <td class="three-point">12</td>
+                        <td class="four-point">16</td>
+                        <td class="five-point">20</td>
+                    </tr>
+                    <tr>
+                        <td>3 Of a Kind</td>
+                        <td class="one-point">3</td>
+                        <td class="two-point">6</td>
+                        <td class="three-point">9</td>
+                        <td class="four-point">12</td>
+                        <td class="five-point">15</td>
+                    </tr>
+                    <tr>
+                        <td>2 Pair</td>
+                        <td class="one-point">2</td>
+                        <td class="two-point">4</td>
+                        <td class="three-point">6</td>
+                        <td class="four-point">8</td>
+                        <td class="five-point">10</td>
+                    </tr>
+                    <tr>
+                        <td>Jacks Or Better</td>
+                        <td class="one-point">1</td>
+                        <td class="two-point">2</td>
+                        <td class="three-point">3</td>
+                        <td class="four-point">4</td>
+                        <td class="five-point">5</td>
+                    </tr>
+                </table>
 
                 <div>
                     <div id="result" class="result"></div>
@@ -22,9 +106,15 @@
                 </div>
 
                 <div class="row">
-                    <button class="btn yellow">Bet One</button>
-                    <button class="btn yellow">Bet One</button>
-                    <button class="btn red" onclick="deal()">Deal</button>
+                    <div id="win">WIN 0</div>
+                    <div id="bet"></div>
+                    <div id="credits">100 credits</div>
+                </div>
+
+                <div class="row">
+                    <button class="btn yellow">Increase Bet</button>
+                    <button class="btn yellow">Decrease Bet</button>
+                    <button class="btn yellow" onclick="deal()">Deal</button>
 
                 </div>
             </div>

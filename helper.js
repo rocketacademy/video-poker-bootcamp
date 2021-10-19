@@ -211,16 +211,18 @@ const createCardDiv = (card) => {
  * @param {object} card -
  */
 
-const addCardToRow = (card) => {
-  const cardDiv = createCardDiv(card);
-  const cardRow = document.getElementById('card-row');
-  cardRow.append(cardDiv);
+const addCardToRow = (card, i) => {
+  setTimeout(() => {
+    const cardDiv = createCardDiv(card);
+    const cardRow = document.getElementById('card-row');
+    cardRow.append(cardDiv);
+  }, 100 + 100 * i);
 };
 
 /**
  * Deals card to player after bets have been placed
  * @param {object} player - Player global object created at initialisation
- * @param {object} deck  - Deck object created using make deck
+ * @param {object} deck - Deck object created using make deck
  */
 
 const dealCards = (player, deck) => {
@@ -235,6 +237,7 @@ const dealCards = (player, deck) => {
   for (let i = 0; i < 5; i += 1) {
     const card = deck.pop();
     player.hand.push(card);
-    addCardToRow(card);
+    addCardToRow(card, i);
   }
+  console.log(deck);
 };

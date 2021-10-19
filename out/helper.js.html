@@ -27,7 +27,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>// TODO
-// 1. swapping mechanism
+// 1. swapping mechanism DONE
 // 2. checking for win conditions
 // 3. betting system
 // 4. credit allocation system
@@ -147,37 +147,75 @@ const shuffleCards = (cards) => {
 };
 
 const holdCard = (cardDiv) => {
-  //checks if carddiv already exists in the cardsToHold array 
+  //checks if carddiv already exists in the cardsToHold array
   //and toggles the hold badge accordingly
-  const holdBadge = cardDiv.childNodes[0]
+  if (!gameOver) {
+    const holdBadge = cardDiv.childNodes[0];
 
-  if (cardsToHold.includes(cardDiv)){
-   cardsToHold = cardsToHold.filter((cardToHold) => cardToHold !== cardDiv) 
-   holdBadge.style.display = "none"
-  } else {
-    cardsToHold = cardsToHold.concat(cardDiv)
-    holdBadge.style.display = "block"
+    if (cardsToHold.includes(cardDiv)) {
+      cardsToHold = cardsToHold.filter((cardToHold) => cardToHold !== cardDiv);
+      holdBadge.style.display = 'none';
+    } else {
+      cardsToHold = cardsToHold.concat(cardDiv);
+      holdBadge.style.display = 'block';
+    }
+
+    console.log(cardsToHold);
   }
-
-  console.log(cardsToHold);
 };
 
+const deal = () => {
+  console.log(gameOver);
+  if (!gameOver) {
+    //if first round swap cards not in holdCards list
+    //player holds all then skip to 2nd round
 
-// const dealCards  = () => {
-//   //if first round swap cards not in holdCards list 
-//   //player holds all then skip to 2nd round
+    // returns a HTML collection
+    const cards = document.getElementsByClassName('card');
+    //convert to array so we can use array specific functions like .includes
+    const cardsArray = [...cards];
 
+    //checks if cards in hand are in the cardsToHold arrFay,
+    //if not swap the card out for a new one
+    cardsArray.forEach((card) => {
+      if (!cardsToHold.includes(card)) {
+        const cardIndex = cardsArray.indexOf(card);
+        const cardDiv = cardsArray[cardIndex];
+        const newCard = deck.pop();
+        player.hand[cardIndex] = newCard;
+        const cardImg = cardDiv.querySelector('img');
+        cardImg.src = newCard.cardImgPath;
+      }
+    });
 
-//   //if second round
-  
-// }
+    //changes the display style to none for previously selected cards
+    cardsToHold.forEach((cardToHold) => {
+      console.log(cardToHold);
+      const holdBadge = cardToHold.childNodes[0];
+      holdBadge.style.display = 'none';
+    });
 
-/**
- * Add's card to row
- * @param {object} card 
- */
+    //resets cardsToHold
+    cardsToHold = [];
 
-const addCardToRow = (card) => {
+    const result = calcHandScore(player.hand);
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerText = result;
+    gameOver = true;
+  } else {
+    //init game again
+    gameOver = false;
+    player.hand = [];
+    const cardRow = document.getElementById('card-row');
+    cardRow.innerHTML = '';
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerText = '';
+    deck = shuffleCards(makeDeck());
+    dealCards(player, deck);
+  }
+};
+
+const createCardDiv = (card) => {
   const cardDiv = document.createElement('div');
   cardDiv.classList.add('card');
   cardDiv.addEventListener('click', () => holdCard(cardDiv));
@@ -186,20 +224,33 @@ const addCardToRow = (card) => {
   img.src = card.cardImgPath;
   img.classList.add('img-fluid');
 
-  const holdBadge = document.createElement('div')
-  holdBadge.classList.add('hold-badge')
-  holdBadge.innerText = "HOLD"
-  cardDiv.appendChild(holdBadge)
+  const holdBadge = document.createElement('div');
+  holdBadge.classList.add('hold-badge');
+  holdBadge.innerText = 'HOLD';
+  cardDiv.appendChild(holdBadge);
 
   cardDiv.appendChild(img);
-  const cardRow = document.getElementById('card-row');
-  cardRow.append(cardDiv);
+
+  return cardDiv;
+};
+
+/**
+ * Adds card to row
+ * @param {object} card -
+ */
+
+const addCardToRow = (card, i) => {
+  setTimeout(() => {
+    const cardDiv = createCardDiv(card);
+    const cardRow = document.getElementById('card-row');
+    cardRow.append(cardDiv);
+  }, 100 + 100 * i);
 };
 
 /**
  * Deals card to player after bets have been placed
  * @param {object} player - Player global object created at initialisation
- * @param {object} deck  - Deck object created using make deck
+ * @param {object} deck   Deck object created using make deck
  */
 
 const dealCards = (player, deck) => {
@@ -209,12 +260,14 @@ const dealCards = (player, deck) => {
       const card = deck.pop();
       player.hand.push(card);
       addCardToRow(card);
-    }, 100 + (100 * i));
+    }, 100 + 100 * i);
   };
-
   for (let i = 0; i &lt; 5; i += 1) {
-    delayDeal(i);
+    const card = deck.pop();
+    player.hand.push(card);
+    addCardToRow(card, i);
   }
+  console.log(deck);
 };
 </code></pre>
         </article>
@@ -232,7 +285,7 @@ const dealCards = (player, deck) => {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Oct 16 2021 18:19:32 GMT+0800 (Singapore Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Oct 18 2021 11:58:10 GMT+0800 (Singapore Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
