@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shan's Awesome Video Poker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Press Start 2P"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body>
+    <audio id="intro-sound" type="audio/mp3">
+      <source src="Media/intro.mp3" type="audio/mp3" />
+    </audio>
+    <audio id="card-sound">
+      <source src="Media/card.wav" type="audio/wav" />
+    </audio>
+    <audio id="bet-sound">
+      <source src="Media/bet.wav" type="audio/wav" />
+    </audio>
+    <audio id="instructions-sound">
+      <source src="Media/instructions.wav" type="audio/wav" />
+    </audio>
+    <audio id="deal-sound">
+      <source src="Media/deal.wav" type="audio/wav" />
+    </audio>
+    <audio id="win-sound">
+      <source src="Media/win1.wav" type="audio/wav" />
+    </audio>
+    <audio id="win-sound2">
+      <source src="Media/win2.wav" type="audio/wav" />
+    </audio>
+    <audio id="win-sound3">
+      <source src="Media/win3.wav" type="audio/wav" />
+    </audio>
+    <audio id="lose-sound1">
+      <source src="Media/lose1.wav" type="audio/wav" />
+    </audio>
+    <audio id="lose-sound2">
+      <source src="Media/lose2.wav" type="audio/wav" />
+    </audio>
+    <audio id="game-over">
+      <source src="Media/game-over.mp3" type="audio/mp3" />
+    </audio>
+    <div class="first-row">
+      <img src="Media/neon-bulb.gif" alt="light-bulb" class="light-bulb" />
+      <img src="Media/neon.gif" alt="neon-sign" class="neon-sign" />
+      <img src="Media/neon-bulb.gif" alt="light-bulb2" class="light-bulb2" />
+    </div>
+    <div class="score-board-container">
+      <div class="image-container">
+        <img
+          src="Media/score-board.png"
+          alt="score-board"
+          class="score-board"
+        />
+        <div class="instructions">
+          <p class="list">Instructions:</p>
+          <ol>
+            <li class="list">Choose a bet amount</li>
+            <li class="list">Click on 'Deal'</li>
+            <li class="list">Select the cards you want to swap</li>
+            <li class="list">Click on 'Swap'</li>
+            <li class="list">Rinse and repeat!</li>
+          </ol>
+          <p class="list">Click 'Instructions' again to dismiss</p>
+        </div>
+      </div>
+    </div>
+    <div class="poker-table-container">
+      <img src="Media/poker-table.png" alt="pokertable" class="poker-table" />
+      <div class="card-outline-container">
+        <div class="card-outline1"></div>
+        <div class="card-outline2"></div>
+        <div class="card-outline3"></div>
+        <div class="card-outline4"></div>
+        <div class="card-outline5"></div>
+      </div>
+      <div class="swap-container">
+        <div class="swap-bar0">SWAP!</div>
+        <div class="swap-bar1">SWAP!</div>
+        <div class="swap-bar2">SWAP!</div>
+        <div class="swap-bar3">SWAP!</div>
+        <div class="swap-bar4">SWAP!</div>
+      </div>
+      <div class="score-subtraction"></div>
+      <div class="score-addition"></div>
+    </div>
+    <!-- Import program logic -->
+    <script src="script.js"></script>
+  </body>
+</html>
