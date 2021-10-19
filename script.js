@@ -194,7 +194,7 @@ const buildBoard = (board) => {
   for (let j = 0; j < board[0].length; j += 1) {
     const cell = document.createElement("div");
     cell.classList.add("cell-header");
-    cell.innerHTML = j + 1;
+    cell.innerHTML = `${j + 1}x`;
     columnHeader.appendChild(cell);
   }
 
@@ -568,7 +568,7 @@ const resetGame = () => {
   deck = shuffleCards(makeDeck());
   setTimeout(() => {
     output("Place your bet");
-  }, 6000);
+  }, 3000);
   displayWallet();
   displayBet();
   dealButton.innerHTML = "DEAL";

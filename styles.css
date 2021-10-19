@@ -28,6 +28,7 @@ body {
   margin-top: 24px;
   margin-bottom: -14px;
   font-family: "source sans pro";
+  color: rgb(252, 231, 111);
   font-weight: 500;
 }
 
@@ -49,6 +50,7 @@ body {
   margin-top: 5px;
   height: 1.1em;
   font-size: 12px;
+  font-weight: 500;
   align-self: center;
   width: 3em;
   border-radius: 5px;
@@ -378,7 +380,7 @@ body {
     height: 40%;
     margin: 2% auto 3% auto;
     font-size: 28px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: "source sans pro";
     font-weight: lighter;
   }
 
@@ -455,7 +457,7 @@ body {
 
   .display-bet {
     border-width: 1px;
-    border-color: rgb(163, 195, 236);
+    border-color: #5682e2;
     border-style: solid;
     height: 2.8em;
     width: 25%;
@@ -467,7 +469,7 @@ body {
   }
 
   #chosen-bet-title {
-    color: rgb(163, 195, 236);
+    color: #7d9bdb;
     font-size: 0.7em;
     align-self: center;
     margin: 2px 0px 0px 0px;
