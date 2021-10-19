@@ -136,10 +136,53 @@ const holdCard = (cardDiv) => {
   }
 };
 
-const allocateCredits = (result) => {};
+const allocateCredits = (result) => {
+  const winDiv = document.getElementById('win');
+  const creditDiv = document.getElementById('credits');
+
+  let winnings;
+  const bet = player.bet;
+  if (result === 'Jacks Or Better') {
+    winnings = bet * 1;
+  } else if (result === 'Two Pair') {
+    winnings = bet * 2;
+  } else if (result === 'Three of A Kind') {
+    winnings = bet * 3;
+  } else if (result === 'Straight') {
+    winnings = bet * 4;
+  } else if (result === 'Flush') {
+    winnings = bet * 6;
+  } else if (result === 'Full House') {
+    winnings = bet * 9;
+  } else if (result === 'Four Of A Kind') {
+    winnings = bet * 25;
+  } else if (result === 'Straight Flush') {
+    winnings = bet * 50;
+  } else if (result === 'Royal Flush') {
+    if (bet !== 5) {
+      winnings = bet * 250;
+    } else {
+      winnings = 4000;
+    }
+  } else {
+    console.log('lose');
+    winnings = bet * 0;
+  }
+
+  if (result !== 'Lose') {
+    player.credits = player.credits + player.bet;
+    player.wins += 1;
+    winDiv.innerText = `win ${player.wins}`;
+  }
+
+  player.credits = player.credits + winnings;
+  console.log(player.credits, 'credits');
+  creditDiv.innerText = `${player.credits} credits`;
+};
+
+const adjustCredits = () => {};
 
 const deal = () => {
-  console.log(gameOver);
   if (!gameOver) {
     //if first round swap cards not in holdCards list
     //player holds all then skip to 2nd round
@@ -173,12 +216,16 @@ const deal = () => {
     cardsToHold = [];
 
     const result = calcHandScore(player.hand);
+    allocateCredits(result);
     const resultDiv = document.getElementById('result');
     resultDiv.innerText = result;
     gameOver = true;
   } else {
     //init game again
     gameOver = false;
+    const creditDiv = document.getElementById('credits');
+    player.credits = player.credits - player.bet;
+    creditDiv.innerText = `${player.credits} credits`;
     player.hand = [];
     const cardRow = document.getElementById('card-row');
     cardRow.innerHTML = '';

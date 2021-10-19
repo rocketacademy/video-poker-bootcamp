@@ -8,7 +8,7 @@ const player = {
   wins: 0,
 };
 let cardsToHold = [];
-let gameOver = false;
+let gameOver = true;
 
 // END GLOBALS
 
@@ -17,7 +17,7 @@ const init = () => {
 
   const decreaseBtn = document.getElementById('decrease');
   decreaseBtn.disabled = true;
-  deck = shuffleCards(makeDeck());
-  dealCards(player, deck);
+  // deck = shuffleCards(makeDeck());
+  // dealCards(player, deck);
 };
 init();
