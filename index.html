@@ -17,7 +17,7 @@
     <main>
         <div class="center">
             <div class="container">
-                <table class="winning-table">
+                <table id="winning-table" class="winning-table">
                     <th>
                     <td class="one-point">1</td>
                     <td class="two-point">2</td>
@@ -112,8 +112,8 @@
                 </div>
 
                 <div class="row">
-                    <button class="btn yellow">Increase Bet</button>
-                    <button class="btn yellow">Decrease Bet</button>
+                    <button id="increase" class="btn yellow" onclick="increaseBet()">Increase Bet</button>
+                    <button id="decrease" class="btn yellow" onclick="decreaseBet()">Decrease Bet</button>
                     <button class="btn yellow" onclick="deal()">Deal</button>
 
                 </div>

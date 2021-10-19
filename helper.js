@@ -1,6 +1,6 @@
 // TODO
 // 1. swapping mechanism DONE
-// 2. checking for win conditions
+// 2. checking for win conditions DONE
 // 3. betting system
 // 4. credit allocation system
 
@@ -136,6 +136,8 @@ const holdCard = (cardDiv) => {
   }
 };
 
+const allocateCredits = (result) => {};
+
 const deal = () => {
   console.log(gameOver);
   if (!gameOver) {
@@ -184,6 +186,70 @@ const deal = () => {
     resultDiv.innerText = '';
     deck = shuffleCards(makeDeck());
     dealCards(player, deck);
+  }
+};
+
+const highlightBet = (bet) => {
+  const cells = document.querySelectorAll('td');
+  for (let i = 0; i < cells.length; i++) {
+    const cell = cells[i];
+    cell.style.backgroundColor = 'green';
+  }
+
+  const highlight = (column) => {
+    for (let i = 0; i < column.length; i++) {
+      const cell = column[i];
+      cell.style.backgroundColor = 'red';
+    }
+  };
+
+  if (bet === 1) {
+    const column = document.getElementsByClassName('one-point');
+    highlight(column);
+  } else if (bet === 2) {
+    const column = document.getElementsByClassName('two-point');
+    highlight(column);
+  } else if (bet === 3) {
+    const column = document.getElementsByClassName('three-point');
+    highlight(column);
+  } else if (bet === 4) {
+    const column = document.getElementsByClassName('four-point');
+    highlight(column);
+  } else {
+    const column = document.getElementsByClassName('five-point');
+    highlight(column);
+  }
+};
+
+const increaseBet = () => {
+  if (player.bet < 5) {
+    player.bet += 1;
+    highlightBet(player.bet);
+    console.log(player.bet);
+    const decreaseBtn = document.getElementById('decrease');
+    decreaseBtn.disabled = false;
+    const increaseBtn = document.getElementById('increase');
+
+    if (player.bet === 5) {
+      increaseBtn.disabled = true;
+    } else {
+      increaseBtn.disabled = false;
+    }
+  }
+};
+
+const decreaseBet = () => {
+  if (player.bet > 1) {
+    player.bet -= 1;
+    highlightBet(player.bet);
+    const increaseButton = document.getElementById('increase');
+    increaseButton.disabled = false;
+    const decreaseBtn = document.getElementById('decrease');
+    if (player.bet === 1) {
+      decreaseBtn.disabled = true;
+    } else {
+      decreaseBtn.disabled = false;
+    }
   }
 };
 
