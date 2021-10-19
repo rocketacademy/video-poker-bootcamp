@@ -572,10 +572,7 @@ const resetGame = () => {
   displayWallet();
   displayBet();
   dealButton.innerHTML = "DEAL";
-  for (i = 0; i < 5; i += 1) {
-    document.getElementsByClassName("highlight-blue")[i].style.visibility =
-      "hidden";
-  }
+  
 };
 
 const flipCards = () => {
@@ -605,6 +602,10 @@ const play = (i) => {
 
 const betOne = () => {
   play("bgm");
+  for (i = 0; i < 5; i += 1) {
+    document.getElementsByClassName("highlight-blue")[i].style.visibility =
+      "hidden";
+  }
   if (chosenBet < 5) {
     chosenBet += 1;
   }
@@ -630,6 +631,11 @@ const betOne = () => {
 };
 
 const maxBet = () => {
+  play("bgm");
+  for (i = 0; i < 5; i += 1) {
+    document.getElementsByClassName("highlight-blue")[i].style.visibility =
+      "hidden";
+  }
   chosenBet = 5;
   displayBet();
   for (i = 0; i < 4; i += 1) {
@@ -712,7 +718,7 @@ const deal = () => {
     // To add: show animation of points added to wallet
     // display combo won
     if (points > 0) {
-      output(`${combo} (+${points} CREDITS)`)
+      output(`${combo}  (+${points} CREDITS)`)
     } else {
       output(`${combo}`);
     }
@@ -735,8 +741,8 @@ const startGame = () => {
   /* playerArray = [
     {
       suit: "hearts",
-      rank: 9,
-      displayName: "9",
+      rank: 7,
+      displayName: "7",
       suitSymbol: "♥️",
       colour: "red",
     },
@@ -763,12 +769,12 @@ const startGame = () => {
     },
     {
       suit: "clubs",
-      rank: 7,
-      displayName: "7",
+      rank: 13,
+      displayName: "K",
       suitSymbol: "♣",
       colour: "black",
     },
-  ];  */
+  ];   */
   displayHand(playerArray);
   displayWallet();
   gameInfo.innerHTML = "Place your bet";
