@@ -1,0 +1,211 @@
+body {
+  background-image: url("test.png");
+  background-size: cover;
+}
+
+#main {
+  height: 99%;
+  width: 99%;
+  display: flex;
+  border: solid 8px black;
+  /* align-content: space-between; */
+}
+
+#left-side {
+  width: 80%;
+  display: flex;
+  /* justify-content: space-evenly; */
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+#container-message {
+  background-color: rgba(0, 0, 0, 0.87);
+  border: solid 3px rgb(247, 56, 167);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 480px;
+  margin-top: 20px;
+  margin-left: 100px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 15px;
+  color: rgb(245, 80, 176);
+}
+
+#container-message:hover {
+  background-color: rgba(255, 255, 255, 0.699);
+  border: solid 3px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 480px;
+  margin-top: 20px;
+  margin-left: 100px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 15px;
+  color: black;
+}
+
+#logo {
+  height: 0px;
+  width: auto;
+  margin-left: 50px;
+}
+
+.player {
+  background-image: url("player.png");
+  background-size: 205px;
+  background-repeat: no-repeat;
+  height: 200px;
+  width: 200px;
+  margin-top: 20px;
+  margin-left: 70px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: flex-end;
+}
+
+.header {
+  height: 240px;
+  width: auto;
+}
+
+/* #audio {
+  margin-top: 500px;
+  height: 100px;
+  width: 100px;
+} */
+
+.guard {
+  display: flex;
+  align-items: center;
+  margin-top: 100px;
+  margin-right: 50px;
+  /* height: 350px;
+  width: auto; */
+}
+
+#right-side {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#display-card {
+  height: 500px;
+  width: 1400px;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 15px;
+}
+
+#buttons {
+  display: flex;
+  width: 1400px;
+  margin-right: 120px;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-content: space-around;
+}
+
+#display-points {
+  height: 65px;
+  width: 100px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#bidding-form {
+  height: 65px;
+  width: 100px;
+  margin-left: 50px;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0);
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 35px;
+}
+
+button,
+input[type="submit"],
+input[type="reset"] {
+  background-color: rgba(250, 250, 250, 0.788);
+  height: 110px;
+  width: 250px;
+  margin-left: 45px;
+  margin-bottom: 30px;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: 3px solid black;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1px;
+}
+
+button:hover,
+input[type="submit"],
+input[type="reset"] {
+  background-color: rgba(230, 24, 120, 0.658);
+  height: 110px;
+  width: 250px;
+  margin-left: 45px;
+  margin-bottom: 30px;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: 3px solid black;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 1px;
+}
+
+.cardStyle {
+  height: 75%;
+  width: auto;
+  margin-right: 30px;
+  border-radius: 25px;
+}
+
+.cardStyle:hover {
+  height: 75%;
+  width: auto;
+  margin-right: 30px;
+  border-radius: 25px;
+  outline: 5px solid rgba(230, 24, 120, 0.658);
+}
+
+#login {
+  display: flex;
+  background-size: contain;
+}
