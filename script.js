@@ -631,6 +631,7 @@ const betOne = () => {
 };
 
 const maxBet = () => {
+  play("bgm").volume = 0.2;
   play("bgm");
   for (i = 0; i < 5; i += 1) {
     document.getElementsByClassName("highlight-blue")[i].style.visibility =
