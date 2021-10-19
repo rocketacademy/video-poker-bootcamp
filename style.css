@@ -30,7 +30,6 @@ button {
   font-family: "Comic Sans MS";
   font-weight: bold;
   background-color: transparent;
-  /* border: 1px solid white; */
   width: 100px;
   display: inline-block;
   margin: 10px;
@@ -42,23 +41,8 @@ button {
   flex-wrap: wrap;
   margin: auto;
   max-width: 100%;
-  /* border: 1px solid black; */
   padding: 20px;
 }
-
-/* .card {
-  margin: 10px;
-  padding: 10px;
-  background-color: white;
-  text-align: center;
-  border-radius: 8px;
-  border-style: outset;
-  border-width: 2px;
-  border-color: whitesmoke;
-  display: inline-block;
-} */
-
-/* CARD DISPLAY */
 
 .card-face-container {
   display: flex;
@@ -77,12 +61,10 @@ button {
 .card-face-top {
   display: flex;
   flex-direction: row;
-  /* border: 1px solid fuchsia; */
 }
 
 .card-face-top-left {
   flex: 50%;
-  /* border: 1px solid white; */
   height: 20px;
   width: 20px;
 }
@@ -90,7 +72,6 @@ button {
 .card-face-top-right {
   flex: 50%;
   text-align: right;
-  /* border: 1px solid white; */
   height: 20px;
   width: 20px;
 }
@@ -105,28 +86,23 @@ button {
 .card-face-btm {
   display: flex;
   flex-direction: row;
-  /* border: 1px solid red; */
 }
 
 .card-face-btm-left {
   flex: 50%;
   flex-direction: column;
-  /* border: 1px solid white; */
   height: 20px;
 }
 
 .card-face-btm-right {
   flex: 50%;
   text-align: center left;
-  /* border: 1px solid white; */
   height: 20px;
-  /* transform: rotate(); */
   transform: rotate(180deg);
 }
 
 .card-back {
   display: flex;
-  /* flex-wrap: wrap; */
   flex-direction: column;
   justify-content: space-between;
   margin: 10px;
@@ -145,10 +121,7 @@ button {
   background-color: blue;
   fill: blue;
   color: blue;
-  /* display: inline-block; */
 }
-
-/* ^^ CARD DISPLAY ^^ */
 
 .suit {
   margin: 5px;
@@ -186,18 +159,14 @@ button {
 
 .card-container {
   display: flex;
-  /* flex-direction: column; */
   flex-wrap: wrap;
   max-width: 100%;
-  /* background-color: white; */
-  /* border: 1px solid white; */
   margin: 10px;
 }
 
 .buttons {
   display: flex;
   flex-direction: row;
-  /* border: 1px solid yellow; */
   margin: 10px;
 }
 
@@ -210,8 +179,6 @@ button {
   display: flex;
   flex: row;
   margin: 10px;
-  /* left: 50px;
-  top: 50px; */
   color: white;
 }
 
@@ -228,7 +195,6 @@ button {
 }
 
 .countdown {
-  /* display: flex; */
   align-items: center;
   font-size: 60px;
   color: white;

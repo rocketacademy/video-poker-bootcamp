@@ -1,5 +1,5 @@
 // ---------------------------------------------------------
-// HELPER FUNCTIONS WIN CONDITIONS
+// HELPER FUNCTIONS FOR WIN CONDITIONS
 // ---------------------------------------------------------
 
 // 1) ROYAL FLUSH - ACE HIGH STRAIGHT FLUSH -- checked and working
@@ -107,8 +107,6 @@ const checkFlush = (playerHand) => {
 
 
 // 6) STRAIGHT (SQUENTIAL RANK)
-// need 1 condition that checks for AKQJ10
-// rest can be determined just through rank
 const checkStraight = (playerHand) => {
   
   // Extract ranks from player's hand and sort them in ascending order
@@ -259,7 +257,11 @@ const checkJacksBetter = (playerHand) => {
 // HELPER FUNCTIONS FOR CARD FACE GENERATION
 // ---------------------------------------------------------
 
-
+/**
+ * Generates card face
+ * @constructor
+ * @param {object} cardInfo
+ */
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
   suit.classList.add('suit-elements', cardInfo.colour);
@@ -336,10 +338,18 @@ const createCard = (cardInfo) => {
 // HELPER FUNCTIONS FOR CARD DECK GENERATION
 // ---------------------------------------------------------
 
-// Get a random index ranging from 0 (inclusive) to max (exclusive).
+/**
+ * Get a random index ranging from 0 (inclusive) to max (exclusive)
+ * @constructor
+ * @param {number} max
+ */
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
-// Shuffle an array of cards
+/**
+ * Shuffle an array of cards
+ * @constructor
+ * @param {Array} cards
+ */
 const shuffleCards = (cards) => {
   // Loop over the card deck array once
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
@@ -357,6 +367,10 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
+/**
+ * Generates deck of 52 cards
+ * @constructor
+ */
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
@@ -409,12 +423,10 @@ const makeDeck = () => {
         colour: suitColour,
         rank: rankCounter,
       };
-
       // Add the new card to the deck
       newDeck.push(card);
     }
   }
-
   // Return the completed card deck
   return newDeck;
 };
@@ -423,6 +435,10 @@ const makeDeck = () => {
 // HELPER FUNCTION FOR GREETING
 // ---------------------------------------------------------
 
+/**
+ * Gets time of day
+ * @constructor
+ */
 const getGreeting = () => {
   let today = new Date();
   let time = today.getHours();
@@ -455,6 +471,10 @@ const deckChecker = () => {
     console.log('new deck length: ' + cardDeck.length);
   }
 }
+
+// ---------------------------------------------------------
+// BSOD - totally unnecessary feature
+// ---------------------------------------------------------
 
 /**
  * Blue Screen of Death

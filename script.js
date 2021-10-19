@@ -4,7 +4,6 @@
  * 
  */
 
-
 const dealCards = () => {
   if (canDeal === true) {
     cardContainer.innerText = "";
@@ -63,13 +62,9 @@ const selectCard = (cardIndex) => {
         // cardsToSwap = cardsToSwap.filter((desel) => desel !== i)
         cardsToSwap = cardsToSwap.filter((desel) => desel !== cardIndex) 
  
-
-        // DOM MAKE THE CARD REAPPEAR
-
       } else {
         console.log("you selected this card to discard, it will leave your hand");
         cardsToSwap.push(cardIndex);
-        // DOM MAKE THE CARD VANISH 
       }
 
     // }
@@ -93,7 +88,6 @@ const swapCard = () => {
   }
     console.log("new user hand: ", userHand)
     console.log("new user hand length: ", userHand.length);
-   // REPOPULATE PLAYERS HAND ON DOM
 
     cardContainer.innerText = "";
 
@@ -117,56 +111,45 @@ const calcHandScore = (currentHand) => {
   userWin = "royal flush";
   if (userBet === 5) {
     userPoints += 4000;
-    // return userWin;
   } else {
     userPoints += (userBet * 250);
     console.log(userWin);
-    // return userWin;
   } 
 } else if (checkStraightFlush(currentHand) === true) {
   userWin = "got straight flush";
   userPoints += (userBet * 50);
   console.log(userWin);
-  // return userWin;
 } else if (checkFourKind(currentHand) === true) {
   userWin = "got four of a kind";
   userPoints += (userBet * 25);
   console.log(userWin);
-  // return userWin;
 } else if (checkFullHouse(currentHand) === true) {
   userWin = "got full house";
   userPoints += (userBet * 9);
   console.log(userWin);
-  // return userWin;
 } else if (checkFlush(currentHand) === true) {
   userWin = "got flush";
   userPoints += (userBet * 6);
   console.log(userWin);
-  // return userWin;
 } else if (checkStraight(currentHand) === true) {
   userWin = "got straight";
   userPoints += (userBet * 4);
   console.log(userWin);
-  // return userWin;
 } else if (checkThreeKind(currentHand) === true) {
   userWin = "got three of a kind";
   userPoints += (userBet * 3);
   console.log(userWin);
-  // return userWin;
 } else if (checkTwoPair(currentHand) === true) {
   userWin = "got two pair";
   userPoints += (userBet * 2);
   console.log(userWin);
-  // return userWin;
 } else if (checkJacksBetter(currentHand) === true) {
   userWin = "got jacks or better";
   userPoints += (userBet * 1);
   console.log(userWin);
-  // return userWin;
 } else {
   userWin = "lose (╯°□°)╯︵ ┻━┻";
   console.log(userWin);
-  // return userWin;
 } 
 canDeal = true;
 console.log('user points: ', userPoints);
@@ -182,9 +165,9 @@ const output = (message) => {
   gameInfo.innerText = message;
 };
 
-// ----------------------------------------------------------------
+// ----------------------------------------------------------
 // GAME INITIALISATION
-// ----------------------------------------------------------------
+// ----------------------------------------------------------
 
 const initGame = () => {
   gameInfo.innerText = "Good " + getGreeting() + ', click DEAL to get your first hand';

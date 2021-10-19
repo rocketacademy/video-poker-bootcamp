@@ -4,11 +4,8 @@
 
 /* WEIRD THINGS APPEARING WHENEVER I COPY AND PASTE CODE FROM W3SCHOOLS 
 const { compare } = require("semver");
-
-why the fuck is this here
 const { sort } = require("prelude-ls");
 */
-
 
 const testCard = {
         name: "queen",
@@ -27,7 +24,6 @@ const testCard1 = {
         colour: "red",
         rank: 10,
       };
-
 
 // const fakeCard = document.createElement('div');
 // fakeCard.innerText = "fake card";
@@ -67,11 +63,7 @@ const getCardInfo = () => {
 
 // dummyCard.addEventListener('click', getCardInfo);
 
-
-
 // CARD FACE GENERATION 
-
-
 
 // const cardBtmLeft = document.createElement('div');
 // cardBtmLeft.classList.add('card-face-btm-left');

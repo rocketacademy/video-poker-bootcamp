@@ -59,7 +59,7 @@ const swapButton = document.createElement('button');
 swapButton.innerText = "SWAP";
 buttons.appendChild(swapButton);
 
-// New button
+// Reset game button
 const resetButton = document.createElement('button');
 resetButton.innerText = "RESET";
 buttons.appendChild(resetButton);
@@ -67,4 +67,3 @@ buttons.appendChild(resetButton);
 const cardBack = document.createElement('div');
 cardBack.classList.add('card-back');
 cardBack.innerHTML = "Be a quitter :" + "<br/>" + "1800-6-668-668";
-// document.body.appendChild(cardBack);
