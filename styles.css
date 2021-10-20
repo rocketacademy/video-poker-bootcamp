@@ -1,31 +1,115 @@
-body {
-  background-color: rgb(131, 86, 86);
+
+
+h1 {
+  padding: 20px 0;
+  background-color: white;
+  font-size: 30px;
 }
+#how-to-play,
+#scoring-table,
+
+
+/* for how-to-play section */
+ol {
+  text-align: justify;
+  padding-inline-start: 1em;
+  margin-right: 1em;
+  font-family: serif;
+}
+li {
+  padding-bottom: 0.5em;
+}
+
+/* for game section */
+#game-background {
+  background-color: rgba(151, 29, 39, 0.7);
+}
+#game-display {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .card {
-  margin: 10px;
-  padding: 10px;
-  background-color: grey;
-  width: 50px;
+  margin: 2px;
+  padding: 2% 4%;
+  background-color: white;
   text-align: center;
   border-radius: 8px;
-  display: inline-block;
+  border-width: 4px;
+  animation-duration: 1s;
 }
-
+.card-border {
+  border-color: blue;
+}
 .suit {
-  margin: 5px;
-  font-size: 20px;
+  margin: 2px;
+  font-size: 150%;
 }
-
 .name {
-  margin: 5px;
-  font-size: 24px;
-  font-weight: bold;
-  font-family: sans-serif;
+  margin: 2px;
+  font-size: 100%;
 }
-
 .red {
-  color: red;
+  color: rgb(221, 7, 7);
 }
 .black {
   color: black;
 }
+
+}
+#buttons-container {
+  margin-left: 0;
+  margin-right: 0;
+  justify-content: space-evenly;
+}
+#deal-button,
+#exchange-button {
+  font-size: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#total-points-container {
+  display: inline-block;
+  margin-top: 15px;
+  margin-left: 40px;
+  width: 20vw;
+}
+#bid-points-container {
+  display: inline-block;
+  margin-top: 15px;
+  margin-left: 20px;
+  width: 20vw;
+}
+#bid-points-input-container {
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+  /* for game section */
+  .card {
+    margin: 4px;
+    padding: 5% 8%;
+    background-color: white;
+    text-align: center;
+    border-radius: 6px;
+    border-width: 3px;
+  }
+  .card-border {
+    border-color: green;
+  }
+  #deal-button,
+  #exchange-button {
+    font-size: 10px;
+  }
+  #bid-points-container {
+    width: 140px;
+  }
+  #total-points-container {
+    width: 140px;
+  }
+  #bid-points-input-container {
+    display: inline-block;
+    margin: 0 20px; 
+    width: 250px;
+  }
