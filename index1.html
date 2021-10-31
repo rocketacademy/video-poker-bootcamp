@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Squid Poker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <script src="script.js" defer></script>
+
+    <div id="main">
+      <div id="left-side">
+        <div id="logo"><img class="header" src="logo.png" /></div>
+
+        <div class="player">
+          <div id="bidding-form">
+            <input type="text" id="bid" />
+          </div>
+
+          <div id="display-points"></div>
+        </div>
+
+        <div id="container-message"><p></p></div>
+
+        <div id="display-card"></div>
+
+        <div id="buttons">
+          <div class="button-bid">
+            <button>Place Bet</button>
+          </div>
+
+          <div class="button-draw">
+            <button>Deal Cards</button>
+          </div>
+
+          <div class="button-swap">
+            <button>Confirm</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="right-side">
+        <div id="logo">
+          <img class="guard" src="guard.png" /><audio
+            autoplay
+            loop
+            src="audio.mp3"
+          ></audio>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

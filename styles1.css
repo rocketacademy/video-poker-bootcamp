@@ -1,0 +1,38 @@
+body {
+  background-color: black;
+}
+
+div {
+  background-image: url("invite0.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 10px; /* Header Height */
+  bottom: 10px;
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 32px;
+  text-decoration: none;
+}
+
+div:hover {
+  background-image: url("invite1.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 10px; /* Header Height */
+  bottom: 10px; /* Footer Height */
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 32px;
+  text-decoration: none;
+}
+
+.img {
+  height: 800px;
+}
