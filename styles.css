@@ -1,0 +1,144 @@
+html {
+  min-height: 100vh;
+  cursor: url(https://cur.cursors-4u.net/holidays/hol-1/hol80.ani),
+    url(https://cur.cursors-4u.net/holidays/hol-1/hol80.png), auto !important;
+}
+
+body {
+  font-family: "Bubblegum Sans", cursive;
+  text-align: center;
+  margin: 0;
+  background: radial-gradient(#eef1f3, #ccf1f8);
+}
+
+h1 {
+  color: #11226b;
+  margin: 40px;
+}
+
+.game-info {
+  margin: 40px;
+  font-size: 150%;
+  white-space: pre;
+}
+
+.grid-container {
+  font-size: 250%;
+  color: #11226b;
+  margin-bottom: 40px;
+  position: absolute;
+  right: 100px;
+  top: 100px;
+  z-index: 2;
+  display: grid;
+  text-align: right;
+}
+.square {
+  position: relative;
+  padding: 5px;
+  margin: 10px;
+  background-color: white;
+  display: inline-block;
+  height: 100px;
+  width: 75px;
+  vertical-align: top;
+  font-size: 180%;
+  box-shadow: 0px 0px 8px 3px #30aac1;
+  border-radius: 8px;
+}
+
+.square img {
+  height: 100px;
+  width: 75px;
+}
+
+.square img:hover {
+  opacity: 50%;
+}
+
+.square.selected {
+  animation: dance 1s linear infinite 500ms;
+}
+
+@keyframes dance {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.button-wrapper {
+  text-align: center;
+  margin: auto;
+  display: none;
+  justify-content: space-around;
+  max-width: 250px;
+  position: relative;
+}
+
+.button-wrapper.visible {
+  display: flex;
+}
+
+.button {
+  border: none;
+  width: 100px;
+  height: 40px;
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 0px 0px 8px 3px #30aac1;
+  border-radius: 8px;
+  font-family: "Bubblegum Sans", cursive;
+}
+
+.overlay-text {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: none;
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+  transition: background-color 500ms, font-size 500ms;
+  font-size: 150%;
+  line-height: 200%;
+  color: white;
+  white-space: pre;
+}
+
+.overlay-text.visible {
+  display: flex;
+  animation: overlay-grow 500ms forwards;
+}
+
+.input {
+  width: 50vw;
+  max-width: 200px;
+  margin: auto;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: none;
+  box-shadow: 0px 0px 8px 3px #30aac1;
+  border-radius: 8px;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  display: none;
+  font-family: "Bubblegum Sans", cursive;
+}
+
+.input.visible {
+  display: block;
+}
