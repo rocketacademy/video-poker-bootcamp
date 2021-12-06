@@ -16,6 +16,18 @@ h1 {
   margin: 40px;
 }
 
+.audio {
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+}
+
+.audio.visible {
+  display: block;
+}
+
 .game-info {
   margin: 40px;
   font-size: 150%;
