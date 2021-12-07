@@ -11,10 +11,11 @@ betField.addEventListener("keydown", (e) => {
     betAmount = Number(betField.value);
     betField.value = "";
     money -= betAmount;
-    moneyField.innerText = `You have \n\ ${money}`;
+    moneyField.innerText = `Xmas pot \n\ ${money}`;
     gameInfo.innerText = `You bet ${betAmount} \n\ Click Deal`;
     buttonWrapper.classList.add("visible");
     betField.classList.remove("visible");
+    dealButton.disabled = false;
   } else return null;
 });
 
@@ -42,10 +43,12 @@ dealButton.addEventListener("click", function () {
     hand.push(deck.pop());
     squares[i].classList.add(i);
     squares[i].innerHTML = `<img src ="${hand[i].cardFront}"/>`;
+    
   }
   gameMode = "draw";
   drawButton.disabled = false;
   dealButton.disabled = true;
+  deckInfo.innerText = `Deck: ${deck.length}`;
   gameInfo.innerHTML = `Choose cards to replace \n\ click Draw`;
 });
 
@@ -69,7 +72,7 @@ drawButton.addEventListener("click", function () {
     hand[value] = deck.pop();
     squares[value].innerHTML = `<img src ="${hand[value].cardFront}"/>`;
   }
-
+  deckInfo.innerText = `Deck: ${deck.length}`;
   //count tally and score
   suitTally(hand);
   nameTally(hand);
@@ -81,7 +84,7 @@ drawButton.addEventListener("click", function () {
     gameInfo.innerHTML = `Game over`;
     overlay.classList.add("visible");
     overlay.innerHTML = `Game over\n\
-    You have ${money}\n\
+    Your Xmas pot \n\ 🪴${money}🪴\n\
     Remaining cards: ${deck.length}`;
     overlay.appendChild(replayButton);
   } else {
@@ -93,14 +96,13 @@ drawButton.addEventListener("click", function () {
   //reset state for each round
   setTimeout(function () {
     squares.forEach((item) => {
-      item.innerHTML = `<img src ="../assets/abstract_clouds.svg"/>`;
+      item.innerHTML = `<img src ="../assets/snowman.png"/>`;
     });
-  }, 3000);
-  moneyField.innerText = `You have \n\ ${money}`;
   buttonWrapper.classList.remove("visible");
   betField.classList.add("visible");
+  }, 3000);
+  moneyField.innerText = `🪴 Xmas pot 🪴 \n\ ${money}`;
   drawButton.disabled = true;
-  dealButton.disabled = false;
 });
 
 //replay event listener to refresh the browser

@@ -2,7 +2,13 @@
 ## HELPER FUNCTION ###
 ####################*/
 
-//to check ofAKind poker Rules
+/**
+ * A function that check name tally occurence given a number
+ * @param  objectTally {object} object keys to iterate
+ * @param  number {number} card name to match with numbers
+ * @param  occurence {number} number of occurence to increase counter
+ * @return {boolean} true false
+ */
 const ofAKind = (objectTally, number, occurence) => {
   let counter = 0;
   for (let key of Object.keys(objectTally)) {
@@ -16,7 +22,12 @@ const ofAKind = (objectTally, number, occurence) => {
   counter = 0;
 };
 
-//Check if there is any particular card
+/**
+ * A function that check whether a player's hand has the given card name
+ * @param  playerHand {array} array of player hand cards
+ * @param  named {string} card name
+ * @return {boolean} true false
+ */
 const haveNamedCard = (playerHand, named) => {
   const namedCard = playerHand.filter((v) => v.name === named).length;
   return namedCard > 0;

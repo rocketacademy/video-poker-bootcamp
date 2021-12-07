@@ -60,8 +60,8 @@ h1 {
 }
 
 .square img {
-  height: 100px;
   width: 75px;
+  height: 100px;
 }
 
 .square img:hover {
@@ -106,7 +106,12 @@ h1 {
   padding: 10px;
   box-shadow: 0px 0px 8px 3px #30aac1;
   border-radius: 8px;
+  line-height: 20px;
   font-family: "Bubblegum Sans", cursive;
+}
+
+.deck-info {
+  margin-top: 20px;
 }
 
 .overlay-text {

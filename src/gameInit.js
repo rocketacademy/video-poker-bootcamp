@@ -4,6 +4,7 @@
 let buttonWrapper;
 let dealButton;
 let drawButton;
+let deckInfo;
 let square;
 let gameInfo;
 let moneyField;
@@ -138,7 +139,7 @@ const buildOtherElements = () => {
 
   moneyField = document.createElement("div");
   moneyField.classList.add("input", "visible");
-  moneyField.innerText = `You have \n\ ${money}`;
+  moneyField.innerText = `🪴 Xmas pot 🪴 \n\ ${money}`;
   betWrapper.appendChild(moneyField);
 
   betField = document.createElement("input");
@@ -164,6 +165,12 @@ const buildOtherElements = () => {
   drawButton.innerText = "Draw";
   drawButton.disabled = true;
   buttonWrapper.appendChild(drawButton);
+
+  //remaining deck info
+  deckInfo = document.createElement("div");
+  deckInfo.classList.add("deck-info");
+  deckInfo.innerText = `Deck: ${deck.length}`;
+  drawButton.appendChild(deckInfo);
 
   //create overlay for game over state
   overlay = document.createElement("div");
@@ -191,7 +198,7 @@ const buildBoardElements = () => {
     square = document.createElement("div");
     // set a class for CSS purposes
     square.classList.add("square");
-    square.innerHTML = `<img src ="../assets/abstract_clouds.svg"/>`;
+    square.innerHTML = `<img src ="../assets/snowman.png"/>`;
     boardElement.appendChild(square);
   }
   document.body.insertBefore(boardElement, gameInfo);

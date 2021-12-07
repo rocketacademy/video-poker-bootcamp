@@ -2,21 +2,20 @@ const gameSound = document.createElement("audio");
 gameSound.setAttribute("src","../assets/christmas.mp3");
 gameSound.loop = true;
 gameSound.volume = 0.2;
-gameSound.autoplay = true;
 document.body.appendChild(gameSound);
 
 const playButton = document.createElement("img");
-playButton.classList.add("audio");
+playButton.classList.add("audio","visible");
 playButton.setAttribute("src","../assets/music.png");
 document.body.appendChild(playButton);
 
 const pauseButton = document.createElement("img");
-pauseButton.classList.add("audio","visible");
+pauseButton.classList.add("audio");
 pauseButton.setAttribute("src","../assets/no-music.png");
 document.body.appendChild(pauseButton);
 
 //add event listener
-let play = false;
+let play = true;
 
 function playAudio()
 {
