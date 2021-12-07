@@ -4,7 +4,7 @@
 let cardNameTally = {};
 let cardSuitTally = {};
 
-// Loop over hand
+// Loop over hand & update the card name tally
 const nameTally = (playerHand) => {
   cardNameTally = {};
   for (let i in playerHand) {
@@ -24,7 +24,7 @@ const nameTally = (playerHand) => {
   }
 };
 
-// Loop over hand
+// Loop over hand & update the card suit tally
 const suitTally = (playerHand) => {
   cardSuitTally = {};
   for (let i in playerHand) {

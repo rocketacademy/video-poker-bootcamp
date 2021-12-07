@@ -45,6 +45,7 @@ h1 {
   display: grid;
   text-align: right;
 }
+
 .square {
   position: relative;
   padding: 5px;

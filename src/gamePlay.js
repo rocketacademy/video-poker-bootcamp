@@ -1,4 +1,4 @@
-// enter bet amount
+// enter bet amount and capture the bet values to be deducted against the money available
 betField.addEventListener("keydown", (e) => {
   if (
     Number(betField.value) > money ||
@@ -13,13 +13,15 @@ betField.addEventListener("keydown", (e) => {
     money -= betAmount;
     moneyField.innerText = `Xmas pot \n\ ${money}`;
     gameInfo.innerText = `You bet ${betAmount} \n\ Click Deal`;
+
+    // show the draw and deal buttons + hide the bet field as they are not applicable
     buttonWrapper.classList.add("visible");
     betField.classList.remove("visible");
     dealButton.disabled = false;
   } else return null;
 });
 
-// handle selections
+// handle selections of cards to replace
 function handleSelection(event) {
   if (gameMode !== "draw") return;
 
@@ -29,13 +31,16 @@ function handleSelection(event) {
   } else event.currentTarget.classList.add("selected");
   console.log(event.currentTarget.classList[1]);
 }
-
+// get all the square elements and handle the selections
 const squares = document.querySelectorAll(".square");
 squares.forEach((item) => {
   item.addEventListener("click", handleSelection);
 });
 
+// deal button onclick will draw 5 cards from deck
 dealButton.addEventListener("click", function () {
+  //flag to check if the game mode is correct
+  //flag to check if there are enough cards on deck to deal  
   if (gameMode !== "deal" || deck.length < 5) return;
 
   hand = [];
@@ -52,12 +57,15 @@ dealButton.addEventListener("click", function () {
   gameInfo.innerHTML = `Choose cards to replace \n\ click Draw`;
 });
 
+//draw button onclick will exchange the selected cards with cards from the deck
 drawButton.addEventListener("click", function () {
   //get all selected cards
   let indexOfSelectedCards = [];
   const selected = document.querySelectorAll(".selected");
   console.log(selected);
 
+  //flag to check if the game mode is correct
+  //flag to check if there are enough cards on deck to exchange the selected cards
   if (gameMode !== "draw" || deck.length < selected.length) return;
 
   for (let j = 0; j < selected.length; j++) {
@@ -73,13 +81,15 @@ drawButton.addEventListener("click", function () {
     squares[value].innerHTML = `<img src ="${hand[value].cardFront}"/>`;
   }
   deckInfo.innerText = `Deck: ${deck.length}`;
-  //count tally and score
+  //count tally and multiplier
   suitTally(hand);
   nameTally(hand);
   getMultiplier(cardNameTally, cardSuitTally, hand);
 
+  //add or substract the money based on the winning case
   money += multiplier * betAmount;
 
+  //end the game if user ran out of money or deck
   if (money === 0 || deck.length < 5) {
     gameInfo.innerHTML = `Game over`;
     overlay.classList.add("visible");
@@ -93,7 +103,7 @@ drawButton.addEventListener("click", function () {
   }
   gameMode = "deal";
 
-  //reset state for each round
+  //reset states for each round
   setTimeout(function () {
     squares.forEach((item) => {
       item.innerHTML = `<img src ="../assets/snowman.png"/>`;
@@ -106,7 +116,7 @@ drawButton.addEventListener("click", function () {
   drawButton.disabled = true;
 });
 
-//replay event listener to refresh the browser
+//replay event listener to refresh the browser and this will only be available when the game is over
 replayButton.addEventListener("click", function () {
   location.reload();
 });
