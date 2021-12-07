@@ -100,6 +100,7 @@ drawButton.addEventListener("click", function () {
     });
   buttonWrapper.classList.remove("visible");
   betField.classList.add("visible");
+  gameInfo.innerHTML = `Let's continue !\n\ Please enter bet amount`
   }, 3000);
   moneyField.innerText = `🪴 Xmas pot 🪴 \n\ ${money}`;
   drawButton.disabled = true;

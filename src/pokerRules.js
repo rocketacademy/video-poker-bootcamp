@@ -4,7 +4,7 @@
 
 /**
  * A function that check name tally occurence given a number
- * @param  objectTally {object} object keys to iterate
+ * @param  objectTally {Object} object keys to iterate
  * @param  number {number} card name to match with numbers
  * @param  occurence {number} number of occurence to increase counter
  * @return {boolean} true false
@@ -24,7 +24,7 @@ const ofAKind = (objectTally, number, occurence) => {
 
 /**
  * A function that check whether a player's hand has the given card name
- * @param  playerHand {array} array of player hand cards
+ * @param  playerHand {Array} array of player hand cards
  * @param  named {string} card name
  * @return {boolean} true false
  */
@@ -116,7 +116,7 @@ const royalFlush = (suitObject, playerHand) => {
   return straightFlush(suitObject, playerHand) && playerHand[0].rank == 10;
 };
 
-// index of cases and the multiplier bet amount
+// index of cases for the multiplier bet amount & name table (make sure the order is the same)
 const FIVE = 0;
 const ROYAL = 1;
 const STRFL = 2;
@@ -149,6 +149,14 @@ const nameTable = [
   "Nothing",
 ];
 
+/**
+ * A function that check all the winning cases in order to return the index no of the best winning case
+ * @param  nameObject {Object} card name tally
+ * @param  suitObject {Object} card suit tally
+ * @param  playerHand {Array} the player's hands of cards
+ * @return {number} index of the winning cases
+ */
+
 const getWinningHand = (nameObject, suitObject, playerHand) => {
   if (fiveOfAKind(nameObject)) return FIVE;
   if (royalFlush(suitObject, playerHand)) return ROYAL;
@@ -162,6 +170,14 @@ const getWinningHand = (nameObject, suitObject, playerHand) => {
   if (onePair(nameObject)) return PAIR;
   else return NOTHING;
 };
+
+ /**
+  * A function that match winning case id, multiplier amount, and the name of the winning case in order to return an object of multiplier amount and the winning case name
+ * @param  nameObject {Object} card name tally
+ * @param  suitObject {Object} card suit tally
+ * @param  playerHand {Array} the player's hands of cards
+ * @return {Object} multiplier amount and winning case name
+ */
 
 const getMultiplier = (nameObject, suitObject, playerHand) => {
   let index = getWinningHand(nameObject, suitObject, playerHand);
