@@ -1,6 +1,8 @@
 // global variables
 let playerCard;
-
+const rankTally = {};
+const suitTally = {};
+const swapTally = {};
 const playerHand = [
   {
     rank: 2, suit: 'hearts', name: '2', symbol: '♥',
@@ -20,6 +22,7 @@ const playerHand = [
 ];
 
 const gameInfo = document.createElement('div');
+gameInfo.classList.add('gameInfoContainer');
 document.body.appendChild(gameInfo);
 
 const playerdiv = document.createElement('div');
@@ -31,6 +34,7 @@ const dealBtn = document.createElement('BUTTON');
 dealBtn.innerHTML = 'Deal';
 
 const buttonsContainer = document.createElement('div');
+buttonsContainer.classList.add('btnContainer');
 buttonsContainer.appendChild(dealBtn);
 
 // helper functions
@@ -144,21 +148,122 @@ const createCard = (cardInfo) => {
   return card;
 };
 
+// work on the function that count the number of cards in each rank
+// create an object to store the info of the cards in deck
+const tallyHand = () => {
+  for (let i = 0; i < playerHand.length; i += 1)
+  {
+    const card = playerHand[i];
+    if (card.rank in rankTally) {
+      rankTally[`${card.rank}`] += 1;
+    }
+    else {
+      rankTally[`${card.rank}`] = 1;
+    }
+
+    if (card.suit in suitTally) {
+      suitTally[`${card.suit}`] += 1;
+    }
+    else {
+      suitTally[`${card.suit}`] = 1;
+    }
+  }
+  return [rankTally, suitTally];
+};
+// helper function to clear the tally
+const clearTally = (object) => {
+  Object.keys(object).forEach((key) => delete object[key]);
+};
+
+// helper function to check for flush
+
+const checkFlush = () => {
+  for (suit in suitTally) {
+    if (suitTally[suit] === 5) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const checkFourOfAKind = () => {
+  for (rank in rankTally) {
+    if (rankTally[rank] === 4) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const checkThreeOfKind = () => {
+  for (rank in rankTally) {
+    if (rankTally[rank] === 3) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const checkPair = () => {
+  for (rank in rankTally) {
+    if (rankTally[rank] === 2) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const checkFullHouse = () => {
+  for (rank in rankTally) {
+    if (checkThreeOfKind === true && checkPair === true) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const checkTwoPair = () => {
+  let pairCount = 0;
+  for (rank in rankTally) {
+    if (rankTally[rank] === 2) {
+      pairCount += 1;
+    }
+    if (pairCount === 2) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const checkStraight = () => {
+  // rank 1-9, run loop 9 times
+  let count = 0;
+  for (let i = 1; i <= 9; i += 1) {
+    for (let j = 0; j < 5; j += 1) {
+      if (rankTally[i + j] >= 1) {
+        count += 1;
+      }
+      else break;
+    }
+  }
+  if (count === 5) {
+    return true;
+  }
+  return false;
+};
+
+const checkJacksOrBetter = () => {
+  if (rankTally['11'] === 2 || rankTally['12'] === 2 || rankTally['13'] === 2 || rankTally['1'] === 2) {
+    return true;
+  }
+  return false;
+};
 const playerClick = () => {
-  // Pop player 1's card metadata from the deck
-  // playerCard = deck.pop();
-  // Append the card element to the card container
-  // clear the player's div
-  // playerdiv.innerHTML = '';
-  // sort the player1 hand
-  // player1hand.sort((a, b) => a.rank - b.rank);
-  // player1temphighcard = player1hand.pop();
-  // player1hand.unshift(player1temphighcard);
-  // do a for loop to append it to player1div
   for (let i = 0; i < playerHand.length; i += 1) {
     const cardElement = createCard(playerHand[i]);
     playerdiv.appendChild(cardElement);
   }
+  tallyHand(playerHand);
 };
 
 dealBtn.addEventListener('click', playerClick);

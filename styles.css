@@ -1,5 +1,5 @@
 body {
-  background-color: pink;
+  background-color: cyan;
 }
 .card {
   margin: 10px;
@@ -8,6 +8,7 @@ body {
   width: 50px;
   text-align: center;
   border-radius: 8px;
+  border: 1px black solid;
   display: inline-block;
 }
 
@@ -31,4 +32,29 @@ body {
 }
 div {
   font-size: 20px;
+}
+
+.player1container {
+  margin: 0 auto;
+  width: 50%;
+  height: 120px;
+  border: 2px solid red;
+  background-color: white;
+  padding: 10px;
+}
+
+.gameInfoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
 }
