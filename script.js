@@ -1,40 +1,46 @@
 // global variables
 let playerCard;
+let gameScore = 100;
 const rankTally = {};
 const suitTally = {};
-const swapTally = {};
-const playerHand = [
-  {
-    rank: 2, suit: 'hearts', name: '2', symbol: '♥',
-  },
-  {
-    rank: 2, suit: 'diamonds', name: '2', symbol: '♦',
-  },
-  {
-    rank: 5, suit: 'spades', name: '5', symbol: '♠',
-  },
-  {
-    rank: 7, suit: 'spades', name: '7', symbol: '♠',
-  },
-  {
-    rank: 9, suit: 'hearts', name: '9', symbol: '♥',
-  },
-];
+let canClick = false;
+let gameMode = 'place_bets';
+const maxPlayerHand = 5;
+let currentBet = 0;
+const cardsToSwap = [];
+const playerHand = [];
+
+// game mode = place bets, deal card, swap card, calculate score
 
 const gameInfo = document.createElement('div');
 gameInfo.classList.add('gameInfoContainer');
 document.body.appendChild(gameInfo);
 
+const betInfo = document.createElement('div');
+betInfo.classList.add('gameInfoContainer');
+document.body.appendChild(betInfo);
+
 const playerdiv = document.createElement('div');
 playerdiv.classList.add('player1container');
 document.body.appendChild(playerdiv);
 
-// initialize button functionality
+// create the buttons
 const dealBtn = document.createElement('BUTTON');
+dealBtn.classList.add('start-btn');
 dealBtn.innerHTML = 'Deal';
+
+const bet1Btn = document.createElement('BUTTON');
+bet1Btn.innerHTML = '1 Coin';
+bet1Btn.classList.add('video-game-button');
+
+const bet5Btn = document.createElement('BUTTON');
+bet5Btn.innerHTML = '5 Coins';
+bet5Btn.classList.add('video-game-button');
 
 const buttonsContainer = document.createElement('div');
 buttonsContainer.classList.add('btnContainer');
+buttonsContainer.appendChild(bet1Btn);
+buttonsContainer.appendChild(bet5Btn);
 buttonsContainer.appendChild(dealBtn);
 
 // helper functions
@@ -42,6 +48,12 @@ buttonsContainer.appendChild(dealBtn);
 const output = (message) => {
   gameInfo.innerText = message;
 };
+
+const betOutput = (message) => {
+  betInfo.innerText = message;
+};
+
+const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
 // Shuffle an array of cards
 const shuffleCards = (cards) => {
@@ -124,6 +136,9 @@ const makeDeck = () => {
   // Return the completed card deck
   return newDeck;
 };
+
+const deck = shuffleCards(makeDeck());
+
 // function to store the metainfo of the drawn card
 const createCard = (cardInfo) => {
   console.log('card info:', cardInfo);
@@ -258,19 +273,76 @@ const checkJacksOrBetter = () => {
   }
   return false;
 };
-const playerClick = () => {
-  for (let i = 0; i < playerHand.length; i += 1) {
-    const cardElement = createCard(playerHand[i]);
-    playerdiv.appendChild(cardElement);
+// eslint-disable-next-line max-len
+/** When user clicks on the card, if the card exist not inside cardsToExchange array, it will push it in, otherwise, if card exist inside cardsToExchange array, it will remove it. The card selected will be toggled with the class of cardSwap */
+const cardClick = (cardElement, cardToSwap) => {
+  let isCardPresent = false;
+  if (cardsToSwap.length > 0) {
+    for (let j = 0; j < cardsToSwap.length; j += 1) {
+      if (cardToSwap === cardsToSwap[j]) {
+        // if the card is present, removeit from array
+        isCardPresent = true;
+        cardsToSwap.splice(j, 1); // remove it from array
+        j -= 1; // account for the decrease in array length
+      }
+    }
   }
-  tallyHand(playerHand);
+  cardElement.classList.toggle('cardSwap');
+  // if there is no card in cards to swap array, push it into the cardsToSwap array
+  if (isCardPresent === false) {
+    cardsToSwap.push(cardToSwap);
+  }
 };
 
-dealBtn.addEventListener('click', playerClick);
+const dealHand = () => {
+  output('Deal Hand! Select Which Cards to Swap!');
+  canClick = true;
+  console.log(`${gameMode}`);
+  if (currentBet >= 1 && gameMode === 'deal_Hand') {
+    for (let i = 0; i < maxPlayerHand; i += 1) {
+      playerHand.push(deck.pop());
+      const cardElement = createCard(playerHand[i]);
+      const cardToSwap = playerHand[i];
+      cardElement.addEventListener('click', (event) => {
+        if (canClick === true) {
+          cardClick(event.currentTarget, cardToSwap);
+        }
+      });
+      playerdiv.appendChild(cardElement);
+    }
+    tallyHand(playerHand);
+  }
+};
 
 const initGame = () => {
   document.body.appendChild(buttonsContainer);
-  output('lets play');
+  if (gameMode === 'place_bets') {
+    output('Place Your Bets');
+    betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
+    console.log(`${gameMode}`);
+  }
 };
+
+const betOne = () => {
+  if (gameMode === 'place_bets') {
+    gameScore -= 1;
+    currentBet += 1;
+  }
+  betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
+  gameMode = 'deal_Hand';
+};
+
+const betFive = () => {
+  if (gameMode === 'place_bets') {
+    gameScore -= 5;
+    currentBet += 5;
+  }
+  betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
+  gameMode = 'deal_Hand';
+};
+
+dealBtn.addEventListener('click', dealHand);
+bet1Btn.addEventListener('click', betOne);
+bet5Btn.addEventListener('click', betFive);
 
 initGame();
