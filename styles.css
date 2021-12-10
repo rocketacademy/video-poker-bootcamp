@@ -7,3 +7,24 @@
 body {
   background-color: lightgreen;
 }
+
+.overall-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 10px;
+  border: 3px solid black;
+}
+
+.section {
+  padding: 10px;
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.btn {
+  display: flex;
+  margin: auto;
+  /* justify-content: center;
+  align-items: center; */
+}
