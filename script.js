@@ -1,14 +1,17 @@
 // global variables
 let playerCard;
+const winType = '';
 let gameScore = 100;
 const rankTally = {};
 const suitTally = {};
 let canClick = false;
+let canSwap = false;
 let gameMode = 'place_bets';
 const maxPlayerHand = 5;
 let currentBet = 0;
-const cardsToSwap = [];
+let cardsToSwap = [];
 const playerHand = [];
+const handScore = 0;
 
 // game mode = place bets, deal card, swap card, calculate score
 
@@ -29,6 +32,10 @@ const dealBtn = document.createElement('BUTTON');
 dealBtn.classList.add('start-btn');
 dealBtn.innerHTML = 'Deal';
 
+const swapBtn = document.createElement('BUTTON');
+swapBtn.classList.add('start-btn');
+swapBtn.innerHTML = 'Swap';
+
 const bet1Btn = document.createElement('BUTTON');
 bet1Btn.innerHTML = '1 Coin';
 bet1Btn.classList.add('video-game-button');
@@ -42,6 +49,7 @@ buttonsContainer.classList.add('btnContainer');
 buttonsContainer.appendChild(bet1Btn);
 buttonsContainer.appendChild(bet5Btn);
 buttonsContainer.appendChild(dealBtn);
+buttonsContainer.appendChild(swapBtn);
 
 // helper functions
 // display message using output
@@ -95,13 +103,13 @@ const makeDeck = () => {
 
       // If rank is 1, 11, 12, or 13, set cardName to the ace or face card's name
       if (cardName === '1') {
-        cardName = 'ace';
+        cardName = 'A';
       } else if (cardName === '11') {
-        cardName = 'jack';
+        cardName = 'J';
       } else if (cardName === '12') {
-        cardName = 'queen';
+        cardName = 'Q';
       } else if (cardName === '13') {
-        cardName = 'king';
+        cardName = 'K';
       }
 
       if (currentSuit === 'diamonds') {
@@ -192,7 +200,7 @@ const clearTally = (object) => {
 
 // helper function to check for flush
 
-const checkFlush = () => {
+const checkFlush = (rankTally) => {
   for (suit in suitTally) {
     if (suitTally[suit] === 5) {
       return true;
@@ -201,7 +209,7 @@ const checkFlush = () => {
   return false;
 };
 
-const checkFourOfAKind = () => {
+const checkFourOfAKind = (rankTally) => {
   for (rank in rankTally) {
     if (rankTally[rank] === 4) {
       return true;
@@ -210,7 +218,7 @@ const checkFourOfAKind = () => {
   return false;
 };
 
-const checkThreeOfKind = () => {
+const checkThreeOfKind = (rankTally) => {
   for (rank in rankTally) {
     if (rankTally[rank] === 3) {
       return true;
@@ -219,7 +227,7 @@ const checkThreeOfKind = () => {
   return false;
 };
 
-const checkPair = () => {
+const checkPair = (rankTally) => {
   for (rank in rankTally) {
     if (rankTally[rank] === 2) {
       return true;
@@ -228,7 +236,7 @@ const checkPair = () => {
   return false;
 };
 
-const checkFullHouse = () => {
+const checkFullHouse = (rankTally) => {
   for (rank in rankTally) {
     if (checkThreeOfKind === true && checkPair === true) {
       return true;
@@ -237,7 +245,7 @@ const checkFullHouse = () => {
   return false;
 };
 
-const checkTwoPair = () => {
+const checkTwoPair = (rankTally) => {
   let pairCount = 0;
   for (rank in rankTally) {
     if (rankTally[rank] === 2) {
@@ -251,17 +259,40 @@ const checkTwoPair = () => {
 };
 
 const checkStraight = () => {
-  // rank 1-9, run loop 9 times
   let count = 0;
-  for (let i = 1; i <= 9; i += 1) {
-    for (let j = 0; j < 5; j += 1) {
-      if (rankTally[i + j] >= 1) {
-        count += 1;
-      }
-      else break;
+  for (let i = 0; i < (playerHand.length - 1); i += 1) {
+    if (playerHand[i].rank - playerHand[i + 1].rank === 1) {
+      count += 1;
     }
   }
-  if (count === 5) {
+  if (count === 4) {
+    return true;
+  }
+
+  return false;
+};
+
+const checkStraightFlush = (suitTally) => {
+  if (checkFlush(suitTally) && (checkStraight === true)) {
+    return true;
+  }
+  return false;
+};
+
+const isRoyalStraight = (rankTally) => {
+  if (
+    rankTally['1'] === 1
+    && rankTally['13'] === 1
+    && rankTally['12'] === 1
+    && rankTally['11'] === 1
+    && rankTally['10'] === 1) {
+    return true;
+  }
+  return false;
+};
+
+const checkRoyalFlush = () => {
+  if (isRoyalStraight(rankTally) && checkFlush(suitTally)) {
     return true;
   }
   return false;
@@ -273,44 +304,176 @@ const checkJacksOrBetter = () => {
   }
   return false;
 };
+
+const checkWin = (handScore) => {
+  if (checkRoyalFlush() === true) {
+    handScore = 800;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+    output('You Win! You got a royal flush!');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  if (checkStraightFlush() === true) {
+    handScore = 50;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+
+    output('You Win! You got a straight flush!');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  if (checkFlush() === true) {
+    handScore = 6;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+
+    output('You Win! You got a flush!');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  if (checkFourOfAKind() === true) {
+    handScore = 4;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+
+    output('You Win! You got a four of a kind!');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  if (checkThreeOfKind() === true) {
+    handScore = 3;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+
+    output('You Win! You got three of a kind!');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  if (checkFullHouse() === true) {
+    handScore = 9;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+
+    output('You Win! You got a full house!');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  if (checkTwoPair() === true) {
+    handScore = 2;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+
+    output('You Win! You got a two pair!');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  if (checkStraight() === true) {
+    handscore = 4;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+
+    output('You Win! You got a straight');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  if (checkJacksOrBetter() === true) {
+    handScore = 1;
+    const gameResult = currentBet * handScore;
+    gameScore += gameResult;
+
+    output('You Win! You got jacks or better');
+    betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+    return (gameScore, output, betOutput);
+  }
+  handScore = 0;
+  const gameResult = currentBet * handScore;
+  gameScore += gameResult;
+
+  output('You lose!');
+  betOutput(`You have ${gameScore} Coins! You won ${gameResult} coins`);
+
+  return (gameScore, output, betOutput);
+};
 // eslint-disable-next-line max-len
 /** When user clicks on the card, if the card exist not inside cardsToExchange array, it will push it in, otherwise, if card exist inside cardsToExchange array, it will remove it. The card selected will be toggled with the class of cardSwap */
 const cardClick = (cardElement, cardToSwap) => {
-  let isCardPresent = false;
-  if (cardsToSwap.length > 0) {
-    for (let j = 0; j < cardsToSwap.length; j += 1) {
-      if (cardToSwap === cardsToSwap[j]) {
+  if (canClick === true) {
+    let isCardPresent = false;
+    if (cardsToSwap.length > 0) {
+      for (let j = 0; j < cardsToSwap.length; j += 1) {
+        if (cardToSwap === cardsToSwap[j]) {
         // if the card is present, removeit from array
-        isCardPresent = true;
-        cardsToSwap.splice(j, 1); // remove it from array
-        j -= 1; // account for the decrease in array length
+          isCardPresent = true;
+          cardsToSwap.splice(j, 1); // remove it from array
+          j -= 1; // account for the decrease in array length
+        }
       }
     }
+    cardElement.classList.toggle('cardSwap');
+    // if there is no card in cards to swap array, push it into the cardsToSwap array
+    if (isCardPresent === false) {
+      cardsToSwap.push(cardToSwap);
+    }
   }
-  cardElement.classList.toggle('cardSwap');
-  // if there is no card in cards to swap array, push it into the cardsToSwap array
-  if (isCardPresent === false) {
-    cardsToSwap.push(cardToSwap);
+};
+
+const swapCards = () => {
+  // exchange the selected cards in playerHand
+  if (canSwap === true) {
+    output('Pick Which Cards to Swap!');
+    for (let i = 0; i < playerHand.length; i += 1) {
+      for (let j = 0; j < cardsToSwap.length; j += 1) {
+        if (cardsToSwap[j].rank === playerHand[i].rank
+        && cardsToSwap[j].suit === playerHand[i].suit) {
+          playerHand.splice(i, 1, deck.pop());
+        }
+      }
+    }
+    // empty cardsToExchange array since we do not need the cards inside anymore
+    cardsToSwap = [];
+
+    // clear previous display of player's hand
+    playerdiv.innerHTML = '';
+    // make the player's cards' display and display them
+    for (let i = 0; i < playerHand.length; i += 1) {
+      const cardElement = createCard(playerHand[i]);
+      playerdiv.appendChild(cardElement);
+    }
+    tallyHand(playerHand);
+    checkWin();
   }
 };
 
 const dealHand = () => {
   output('Deal Hand! Select Which Cards to Swap!');
-  canClick = true;
-  console.log(`${gameMode}`);
-  if (currentBet >= 1 && gameMode === 'deal_Hand') {
-    for (let i = 0; i < maxPlayerHand; i += 1) {
-      playerHand.push(deck.pop());
-      const cardElement = createCard(playerHand[i]);
-      const cardToSwap = playerHand[i];
-      cardElement.addEventListener('click', (event) => {
-        if (canClick === true) {
+  if (canClick === true) {
+    console.log(`${gameMode}`);
+    if (currentBet >= 1 && gameMode === 'deal_Hand') {
+      for (let i = 0; i < maxPlayerHand; i += 1) {
+        playerHand.push(deck.pop());
+        const cardElement = createCard(playerHand[i]);
+        const cardToSwap = playerHand[i];
+        cardElement.addEventListener('click', (event) => {
+        // if (canClick === true) {
           cardClick(event.currentTarget, cardToSwap);
-        }
-      });
-      playerdiv.appendChild(cardElement);
+        // }
+        });
+        playerdiv.appendChild(cardElement);
+      }
+      // tallyHand(playerHand);
+      gameMode = 'swap_Cards';
     }
-    tallyHand(playerHand);
+    canSwap = true;
   }
 };
 
@@ -330,6 +493,7 @@ const betOne = () => {
   }
   betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
   gameMode = 'deal_Hand';
+  canClick = true;
 };
 
 const betFive = () => {
@@ -339,9 +503,11 @@ const betFive = () => {
   }
   betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
   gameMode = 'deal_Hand';
+  canClick = true;
 };
 
 dealBtn.addEventListener('click', dealHand);
+swapBtn.addEventListener('click', swapCards);
 bet1Btn.addEventListener('click', betOne);
 bet5Btn.addEventListener('click', betFive);
 
