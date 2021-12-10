@@ -5,24 +5,17 @@ let overallContainer; // contains all assets
 let gameContainer;
 let output;
 let input;
+let betAmount = 0;
 
 const userPoints = 100;
 let deck = [];
 
 // TODO
-// clicks a button to deal cards DOING
-// user selects which card to keep
+// clicks a button to deal cards
+// user selects which card to keep DOING
 // game replaces the unselected cards, calculateds the handscore, and update total points.
 // function that adds card in a loop and adds a click element to change cards.
-const dealCardBtn = () => {
-  // button is placed in overall container only FYI
-  const btnEl = document.createElement('button');
-  btnEl.innerText = 'Deal Cards';
-  btnEl.classList.add('btn-deal-cards', 'btn');
-  overallContainer.appendChild(btnEl);
-};
 
-initGame();
 /**
  * Function that sums returns the sum of the playing hand
  * @param {array} cardHand the user's current playing hand
@@ -32,25 +25,10 @@ const calcHandScore = (cardHand) => {
   return score;
 };
 
-//////////////////
-// Slider Input //
-//////////////////
-const rangeInput = document.querySelector('.input-bet');
-const rangeOutput = document.querySelector('.output');
-
-const outputDefaultState = () => {
-  rangeOutput.value = rangeInput.value;
-};
-rangeInput.addEventListener('input', function () {
-  rangeOutput.value = this.value;
-});
-document.addEventListener('DOMContentLoaded', function () {
-  outputDefaultState();
-});
-
 //////////////////////
 // helper functions //
 //////////////////////
+
 /**
  * Function that makes a standard deck of cards
  */
@@ -115,6 +93,34 @@ const shuffleDeck = (cards) => {
 const randomNumberGenerator = (deckLength) => {
   return Math.floor(Math.random() * deckLength);
 };
+/**
+ * Function to create a button to deal shuffled cards
+ */
+const dealCardBtn = () => {
+  // button is placed in overall container only FYI
+  const btnEl = document.createElement('button');
+  btnEl.innerText = 'Deal Cards';
+  btnEl.classList.add('btn-deal-cards', 'btn');
+  overallContainer.appendChild(btnEl);
+  btnEl.addEventListener('click', () => {
+    deck = shuffleDeck(makeDeck());
+  });
+};
 
-//
-deck = shuffleDeck(makeDeck());
+initGame();
+
+/**
+ * Variables that make the betting slider function
+ */
+const rangeInput = document.querySelector('.input-bet');
+const rangeOutput = document.querySelector('.output');
+
+const outputDefaultState = () => {
+  rangeOutput.value = rangeInput.value;
+};
+rangeInput.addEventListener('input', function () {
+  rangeOutput.value = this.value;
+});
+document.addEventListener('DOMContentLoaded', function () {
+  outputDefaultState();
+});
