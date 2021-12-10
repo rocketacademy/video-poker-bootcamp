@@ -1,19 +1,94 @@
-
-body{
-	background-color: black;
+body {
+  background-color: black;
+  background-image: url("https://wallpaper-house.com/data/out/7/wallpaper2you_199983.gif");
+  background-size: 100%;
 }
 
-#header{
-	color:white;
-	margin-left:43%;
+#header {
+  color: white;
+  margin-left: 43%;
 }
 
-#deal-button{
-	color: black;
-	margin-left:50%;
+#deal-button {
+  color: black;
+  margin-left: 50%;
 }
 
-h3{
-color:white;
+#game-message {
+  font-size: 400%;
+  font-family: monospace;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
 }
 
+#ready-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 46%;
+  margin-top: 50px;
+  width: 100px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.795);
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#ready-button:after {
+  content: "";
+  background: rgb(15, 15, 15);
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s;
+}
+
+#ready-button:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s;
+}
+
+.container {
+  display: flex;
+  margin-top: 120px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  margin-left: 0.5%;
+  width: 60px;
+  height: 100px;
+  padding: 5px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.black {
+  color: black;
+}
+
+.red {
+  color: red;
+}
+
+.suit {
+  margin-left: 35px;
+  margin-top: 77px;
+  font-size: 180%;
+}
