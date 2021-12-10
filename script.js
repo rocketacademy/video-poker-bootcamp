@@ -9,12 +9,59 @@ let cardInHand =[];
 let userPoints = 0;
 
 // buttons creation
+// Need deal, hold, submit buttons
  let dealButton = document.createElement("button")
- dealButton.id = "deal-button"
- dealButton.innerHTML = "DEAL"
- document.body.appendChild(dealButton)
+ dealButton.id = "deal-button";
+ dealButton.innerHTML = "DEAL";
 
 
+ let holdButton = document.createElement("button")
+ holdButton.id = "hold-button";
+ holdButton.innerHTML = "HOLD";
+ 
+ 
+
+ 
+ 
+ // Inputting username and then amount to wager
+ const startOfGame = () => {
+ // DOM Elements
+ // game instruction tells user what the game wants you to do
+ let gameInst = document.createElement("h3");
+ gameInst.id = "game-instruction";
+ gameInst.innerHTML = "What is your name?"
+ document.body.appendChild(gameInst)
+ 
+ // form to take in input and submit button
+ let form = document.createElement("div");
+ form.id = "form";
+ 
+ let input = document.createElement("input");
+ input.id = "input";
+ 
+ let submitButton = document.createElement("button");
+ submitButton.id = "submit-button"
+ submitButton.innerHTML = "SUBMIT"
+ 
+ // append input and submit button into form
+ form.appendChild(input);
+ form.appendChild(submitButton);
+ document.body.appendChild(form)
+	 submitButton.addEventListener("click", () => {
+		 if(input.value === ""){
+		 alert("Field cannot be empty.")
+	 } 	 if(input.value !== ""){
+		 gameInst.innerHTML = `Hey ${input.value}! <br> Welcome to Video Poker.`
+		 input.value = ""
+	 }	 else {
+		 alert("Please enter a valid name.")
+	 }
+	 })
+	 
+ }
+ 
+ startOfGame();
+ 
 const makeDeck = (cardAmount) => {
   // create the empty deck at the beginning
   const newDeck = [];
@@ -80,7 +127,7 @@ const shuffleCards = (cards) => {
   return cards;
 }
 
-let shuffledCards = shuffleCards(newDeck)
+// let shuffledCards = shuffleCards(newDeck)
 
 const calcHandScore = (inHand) => {
 	let drawCards = shuffledCards.pop();
