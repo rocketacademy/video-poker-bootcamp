@@ -53,16 +53,11 @@ const initGame = () => {
   input.type = 'range';
   input.name = 'quantity';
   input.classList.add('input-bet');
-  input.setAttribute('min', 0);
-  input.setAttribute('max', 100);
+  input.min = 0;
+  input.max = 100;
   inputContainer.appendChild(input);
 
-  // bet submit button
-  // const inputBtn = document.createElement('button');
-  // inputBtn.classList.add('input-btn');
-  // inputBtn.innerText = 'Place Bet';
-  // inputContainer.appendChild(inputBtn);
-
+  // output
   output = document.createElement('output');
   output.classList.add('output');
   output.setAttribute('for', 'quantity');
