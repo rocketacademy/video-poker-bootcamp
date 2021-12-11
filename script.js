@@ -1,16 +1,11 @@
-// boardSize has to be an even number
-const boardSize = 4;
-const board = [];
-let firstCard = null;
-let firstCardElement;
+let board = [];
 let deck;
-
-// game state variables
-let isMatching = false;
-let isGameInProgress = false;
-let score = 0;
+let credit = 100;
+let bet = 0;
 
 const NUMBER_OF_CARDS = 5;
+const MAX_BET = 5;
+const MAX_MULTIPLIER = 40;
 
 /**
  * Display game state message.
@@ -47,16 +42,34 @@ const revealCard = (cardElement, cardInfo) => {
 };
 
 /**
- * Add score after a match game win.
+ * Update credits after a game.
  */
-const updateScore = (diff = 1) => {
-  score += diff;
+const updateCredits = (score) => {
+  console.log(`pre credit: ${credit}`);
+  credit += score;
+  console.log(`bet: ${bet} score: ${score}`);
+  console.log(`new credit: ${credit}`);
 
-  const scores = document.getElementById('scores');
-  scores.innerText = `Score: ${score}`;
+  const credits = document.querySelector('.credits');
+  credits.innerText = `Credits: ${credit}`;
 };
 
-const holdCard = (cardElement, index) => {
+/**
+ * Update bets.
+ * @param {*} newBet
+ */
+const updateBets = (newBet) => {
+  bet += newBet;
+  const bets = document.querySelector('.bets');
+  bets.innerText = `Bet: ${bet}`;
+};
+
+/**
+ * Hold selected card.
+ * @param {*} cardElement Card selected
+ * @param {*} index
+ */
+const holdCard = (cardElement) => {
   if (cardElement.classList.contains('held')) {
     cardElement.classList.remove('held');
   } else {
@@ -67,11 +80,9 @@ const holdCard = (cardElement, index) => {
 /**
  * Handle card click
  * @param {*} cardElement Card
- * @param {*} index Index of card
  */
-const cardClick = (cardElement, index) => {
-  const clickedCard = board[index];
-  holdCard(cardElement, index);
+const cardClick = (cardElement) => {
+  holdCard(cardElement);
 };
 
 /**
@@ -120,105 +131,6 @@ const setCardClickable = (isCardClickable) => {
   }
 };
 
-const dealCards = () => {
-  deck = shuffleCards(makeDeck());
-
-  // deal the cards out to the board data structure
-  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
-    board.push(deck.pop());
-  }
-  console.log(board);
-
-  // reveal the cards
-  const cards = document.querySelectorAll('.card');
-  for (let k = 0; k < cards.length; k += 1) {
-    revealCard(cards[k], board[k]);    
-  }
-};
-
-const drawCards = () => {
-  const cards = document.querySelectorAll('.card');
-  for (let k = 0; k < cards.length; k += 1) {
-    if (!cards[k].classList.contains('held')) {
-      board[k] = deck.pop();      
-      revealCard(cards[k], board[k]);
-    } else {
-      cards[k].classList.remove('held');
-    }
-  }
-
-  console.log(`score: ${calcHandScore(board)}`);
-  // update points
-};
-
-/**
- * Create all the board elements that will go on the screen.
- * @returns The built board
- */
-const buildBoardElements = () => {
-  // create the element that everything will go inside of
-  const boardElement = document.createElement('div');
-
-  // give it a class for CSS purposes
-  boardElement.classList.add('board');
-
-  // add area for state of game information
-  const stateOfGameElement = document.createElement('div');
-  stateOfGameElement.classList.add('game-state');
-  stateOfGameElement.innerText = 'Click deal button to start.';
-  boardElement.appendChild(stateOfGameElement);
-
-  // add area for scores
-  const scoresElement = document.createElement('div');
-  scoresElement.classList.add('scores');
-  boardElement.appendChild(scoresElement);
-
-  // make an element for this row of cards
-  const rowElement = document.createElement('div');
-  rowElement.classList.add('row');
-
-  // make all the squares for this row
-  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
-    const card = document.createElement('div');
-    card.classList.add('card');
-
-    // set the click event
-    // eslint-disable-next-line
-    card.addEventListener('click', (event) => {
-      // we will want to pass in the card element so
-      // that we can change how it looks on screen, i.e.,
-      // "turn the card over"
-      cardClick(event.currentTarget, j);
-    });
-
-    rowElement.appendChild(card);
-  }
-
-  boardElement.appendChild(rowElement);
-
-  // add area for buttons
-  const buttonsElement = document.createElement('div');
-  buttonsElement.classList.add('buttons');
-
-  // add deal game button
-  const dealButtonElement = document.createElement('button');
-  dealButtonElement.innerText = 'DEAL';
-  dealButtonElement.classList.add('button');
-  dealButtonElement.addEventListener('click', () => dealCards());
-  buttonsElement.appendChild(dealButtonElement);
-
-  // add draw game button
-  const drawButtonElement = document.createElement('button');
-  drawButtonElement.innerText = 'DRAW';
-  drawButtonElement.classList.add('button');
-  drawButtonElement.addEventListener('click', () => drawCards());
-  buttonsElement.appendChild(drawButtonElement);
-
-  boardElement.appendChild(buttonsElement);
-
-  return boardElement;
-};
-
 /**
  * Make a new card deck.
  * @returns An array of cards
@@ -235,7 +147,6 @@ const makeDeck = () => {
   for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
     // make a variable of the current suit
     const currentSuit = suits[suitIndex];
-    console.log(`current suit: ${currentSuit}`);
 
     // Loop from 1 to 13 to create all cards for a given suit
     // Notice rankCounter starts at 1 and not 0, and ends at 13 and not 12.
@@ -276,8 +187,6 @@ const makeDeck = () => {
         rank: rankCounter,
       };
 
-      console.log(`rank: ${rankCounter}`);
-
       // Add the new card to the deck
       newDeck.push(card);
     }
@@ -285,6 +194,292 @@ const makeDeck = () => {
 
   // Return the completed card deck
   return newDeck;
+};
+
+/**
+ * Tally the occurence of cards in hand.
+ * @param {*} cards Cards in hand
+ * @returns Object that contains card rank tally and card suit tally.
+ */
+const tallyCards = (cards) => {
+  // Create Object as tally
+  const cardRankTally = {};
+  const cardSuitTally = {};
+
+  // Loop over hand
+  for (let i = 0; i < cards.length; i += 1) {
+    const cardRank = cards[i].rank;
+    const cardSuit = cards[i].suit;
+
+    // If we have seen the card rank before, increment its count
+    if (cardRank in cardRankTally) {
+      cardRankTally[cardRank] += 1;
+    } else {
+      // Else, initialise count of this card rank to 1
+      cardRankTally[cardRank] = 1;
+    }
+
+    // If we have seen the card suit before, increment its count
+    if (cardSuit in cardSuitTally) {
+      cardSuitTally[cardSuit] += 1;
+    } else {
+      // Else, initialise count of this card suit to 1
+      cardSuitTally[cardSuit] = 1;
+    }
+  }
+
+  return { ranks: cardRankTally, suits: cardSuitTally };
+};
+
+/**
+ * Check if there is one pair in hand.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is one pair. False, otherwise.
+ */
+const isOnePair = (cardTally) => {
+  const rankKeys = Object.keys(cardTally.ranks);
+  return (rankKeys.length === 4)
+  && (((cardTally.ranks[rankKeys[0]] === 2) && ((rankKeys[0] >= 11) || (rankKeys[0] === 1)))
+    || ((cardTally.ranks[rankKeys[1]] === 2) && ((rankKeys[1] >= 11) || (rankKeys[1] === 1)))
+    || ((cardTally.ranks[rankKeys[2]] === 2) && ((rankKeys[2] >= 11) || (rankKeys[2] === 1)))
+    || ((cardTally.ranks[rankKeys[3]] === 2) && ((rankKeys[3] >= 11) || (rankKeys[3] === 1))));
+};
+
+/**
+ * Check if there is two pair in hand.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is two pair. False, otherwise.
+ */
+const isTwoPair = (cardTally) => {
+  const rankKeys = Object.keys(cardTally.ranks);
+  return (rankKeys.length === 3)
+  && (((cardTally.ranks[rankKeys[0]] === 2) && (cardTally.ranks[rankKeys[1]] === 2))
+    || ((cardTally.ranks[rankKeys[0]] === 2) && (cardTally.ranks[rankKeys[2]] === 2))
+    || ((cardTally.ranks[rankKeys[1]] === 2) && (cardTally.ranks[rankKeys[2]] === 2)));
+};
+
+/**
+ * Check if there is a three of a kind in hand.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is a three of a kind. False, otherwise.
+ */
+const isThreeOfAKind = (cardTally) => {
+  const rankKeys = Object.keys(cardTally.ranks);
+  return (rankKeys.length === 3)
+    && ((cardTally.ranks[rankKeys[0]] === 3) || (cardTally.ranks[rankKeys[1]] === 3));
+};
+
+/**
+ * Check if the cards in hand make a flush.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is a flush. False, otherwise.
+ */
+const isFlush = (cardTally) => (Object.keys(cardTally.suits).length === 1);
+
+/**
+ * Check if the cards in hand make a straight.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is a straight. False, otherwise.
+ */
+const isStraight = (cardTally) => {
+  let rankKeys = Object.keys(cardTally.ranks);
+  if (rankKeys.length !== 5) return false;
+
+  rankKeys = rankKeys.map(Number).sort((a, b) => a - b);
+  for (let i = 1; i < rankKeys.length; i += 1) {
+    if ((rankKeys[i] - rankKeys[i - 1]) !== 1) return false;
+  }
+
+  return true;
+};
+
+/**
+ * Check if the cards in hand make a full house.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is a full house. False, otherwise.
+ */
+const isFullHouse = (cardTally) => {
+  const rankKeys = Object.keys(cardTally.ranks);
+  return (rankKeys.length === 2)
+    && ((cardTally.ranks[rankKeys[0]] === 3) || (cardTally.ranks[rankKeys[1]] === 3));
+};
+
+/**
+ * Check if there is a four of a kind in hand.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is a four of a kind. False, otherwise.
+ */
+const isFourOfAKind = (cardTally) => {
+  const rankKeys = Object.keys(cardTally.ranks);
+  return (rankKeys.length === 2)
+    && ((cardTally.ranks[rankKeys[0]] === 4) || (cardTally.ranks[rankKeys[1]] === 4));
+};
+
+/**
+ * Check if the cards in hand make a straight flush.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is a straight flush. False, otherwise.
+ */
+const isStraightFlush = (cardTally) => isStraight(cardTally) && isFlush(cardTally);
+
+/**
+ * Check if the cards in hand make a royal flush.
+ * @param {*} cardTally Tally of cards in hand
+ * @returns True, if there is a royal flush. False, otherwise.
+ */
+const isRoyalFlush = (cardTally) => {
+  const rankKeys = Object.keys(cardTally.ranks);
+  return isStraightFlush(cardTally)
+    && ((rankKeys[0] >= 10) || (rankKeys[0] === 1))
+    && ((rankKeys[1] >= 10) || (rankKeys[1] === 1))
+    && ((rankKeys[2] >= 10) || (rankKeys[2] === 1))
+    && ((rankKeys[3] >= 10) || (rankKeys[3] === 1))
+    && ((rankKeys[4] >= 10) || (rankKeys[4] === 1));
+};
+
+/**
+ * Calculate score for the cards in hand.
+ * @param {*} cards Array of card objects
+ * @param {*} gameBet Current game bet
+ * @returns Number of points that the user scored for the cards in their hand
+ */
+const calcHandScore = (cards, gameBet) => {
+  const cardTally = tallyCards(cards);
+
+  if (isRoyalFlush(cardTally)) {
+    return SCORES.ROYAL_FLUSH * ((gameBet === MAX_BET) ? MAX_MULTIPLIER : MAX_BET);
+  }
+  if (isStraightFlush(cardTally)) return SCORES.STRAIGHT_FLUSH * gameBet;
+  if (isFourOfAKind(cardTally)) return SCORES.FOUR_OF_A_KIND * gameBet;
+  if (isFullHouse(cardTally)) return SCORES.FULL_HOUSE * gameBet;
+  if (isFlush(cardTally)) return SCORES.FLUSH * gameBet;
+  if (isStraight(cardTally)) return SCORES.STRAIGHT * gameBet;
+  if (isThreeOfAKind(cardTally)) return SCORES.THREE_OF_A_KIND * gameBet;
+  if (isTwoPair(cardTally)) return SCORES.TWO_PAIR * gameBet;
+  if (isOnePair(cardTally)) return SCORES.JACKS_OR_BETTER * gameBet;
+
+  return 0;
+};
+
+/**
+ * Handle deal button click with dealing cards.
+ * @param {*} cardElements Cards on hand
+ */
+const dealCards = (cardElements) => {
+  board = [];
+  deck = shuffleCards(makeDeck());
+
+  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
+    board.push(deck.pop());
+    revealCard(cardElements[j], board[j]);
+  }
+};
+
+/**
+ * Handle draw button click by replacing cards not held.
+ * @param {*} cardElements Cards on hand
+ */
+const drawCards = (cardElements) => {
+  for (let i = 0; i < cardElements.length; i += 1) {
+    if (!cardElements[i].classList.contains('held')) {
+      board[i] = deck.pop();
+      revealCard(cardElements[i], board[i]);
+    } else {
+      cardElements[i].classList.remove('held');
+    }
+  }
+
+  // calculate hand score and update credits
+  updateCredits(calcHandScore(board, bet));
+
+  updateBets(-1 * bet);
+};
+
+module.exports = calcHandScore;
+
+/**
+ * Create all the board elements that will go on the screen.
+ * @returns The built board
+ */
+const buildBoardElements = () => {
+  // create the element that everything will go inside of
+  const boardElement = document.createElement('div');
+
+  // give it a class for CSS purposes
+  boardElement.classList.add('board');
+
+  // add area for state of game information
+  const stateOfGameElement = document.createElement('div');
+  stateOfGameElement.classList.add('game-state');
+  stateOfGameElement.innerText = 'Click deal button to start.';
+  boardElement.appendChild(stateOfGameElement);
+
+  // add area for credits
+  const creditsElement = document.createElement('div');
+  creditsElement.classList.add('credits');
+  creditsElement.innerText = `Credits: ${credit}`;
+  boardElement.appendChild(creditsElement);
+
+  // add area for bets
+  const betsElement = document.createElement('div');
+  betsElement.classList.add('bets');
+  betsElement.innerText = `Bet: ${bet}`;
+  boardElement.appendChild(betsElement);
+
+  // make an element for the cards
+  const cardsElement = document.createElement('div');
+  cardsElement.classList.add('cards');
+
+  // make all the squares for this row
+  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    // set the click event
+    // eslint-disable-next-line
+    card.addEventListener('click', (event) => {
+      // we will want to pass in the card element so
+      // that we can change how it looks on screen, i.e.,
+      // "turn the card over"
+      cardClick(event.currentTarget);
+    });
+
+    cardsElement.appendChild(card);
+  }
+
+  boardElement.appendChild(cardsElement);
+
+  // add area for buttons
+  const buttonsElement = document.createElement('div');
+  buttonsElement.classList.add('buttons');
+
+  // add bet button
+  const betButtonElement = document.createElement('button');
+  betButtonElement.innerText = 'BET';
+  betButtonElement.classList.add('button');
+  betButtonElement.addEventListener('click', () => {
+    updateCredits(-1);
+    updateBets(1);
+  });
+  buttonsElement.appendChild(betButtonElement);
+
+  // add deal game button
+  const dealButtonElement = document.createElement('button');
+  dealButtonElement.innerText = 'DEAL';
+  dealButtonElement.classList.add('button');
+  dealButtonElement.addEventListener('click', () => dealCards(cardsElement.children));
+  buttonsElement.appendChild(dealButtonElement);
+
+  // add draw game button
+  const drawButtonElement = document.createElement('button');
+  drawButtonElement.innerText = 'DRAW';
+  drawButtonElement.classList.add('button');
+  drawButtonElement.addEventListener('click', () => drawCards(cardsElement.children));
+  buttonsElement.appendChild(drawButtonElement);
+
+  boardElement.appendChild(buttonsElement);
+
+  return boardElement;
 };
 
 /**
@@ -296,110 +491,3 @@ const initGame = () => {
 };
 
 initGame();
-
-const tallyCards = (cards) => {
-  // Create Object as tally
-  let cardRankTally = {};
-  let cardSuitTally = {};
-
-  // Loop over hand
-  for (let i = 0; i < cards.length; i += 1) {
-    let cardRank = cards[i].rank;
-    let cardSuit = cards[i].suit;
-
-    // If we have seen the card rank before, increment its count
-    if (cardRank in cardRankTally) {
-      cardRankTally[cardRank] += 1;
-    }
-    // Else, initialise count of this card rank to 1
-    else {
-      cardRankTally[cardRank] = 1;
-    }
-
-    // If we have seen the card suit before, increment its count
-    if (cardSuit in cardSuitTally) {
-      cardSuitTally[cardSuit] += 1;
-    }
-    // Else, initialise count of this card suit to 1
-    else {
-      cardSuitTally[cardSuit] = 1;
-    }
-  }
-
-  return { ranks: cardRankTally, suits: cardSuitTally };
-};
-
-const isOnePair = (cardTally) => {
-  let rankKeys = Object.keys(cardTally.ranks);
-  return (rankKeys.length === 4)
-  && (((cardTally.ranks[rankKeys[0]] === 2) && (rankKeys[0] >= 11))
-    || ((cardTally.ranks[rankKeys[1]] === 2) && (rankKeys[1] >= 11))
-    || ((cardTally.ranks[rankKeys[2]] === 2) && (rankKeys[2] >= 11))
-    || ((cardTally.ranks[rankKeys[3]] === 2) && (rankKeys[3] >= 11)));
-};
-
-const isTwoPair = (cardTally) => {
-  let rankKeys = Object.keys(cardTally.ranks);
-  return (rankKeys.length === 3)
-  && (((cardTally.ranks[rankKeys[0]] === 2) && (cardTally.ranks[rankKeys[1]] === 2))
-    || ((cardTally.ranks[rankKeys[0]] === 2) && (cardTally.ranks[rankKeys[2]] === 2))
-    || ((cardTally.ranks[rankKeys[1]] === 2) && (cardTally.ranks[rankKeys[2]] === 2)));
-};
-
-const isThreeOfAKind = (cardTally) => {
-  let rankKeys = Object.keys(cardTally.ranks);
-  return (rankKeys.length === 3) 
-    && ((cardTally.ranks[rankKeys[0]] === 3) || (cardTally.ranks[rankKeys[1]] === 3));
-};
-
-const isFlush = (cardTally) => (Object.keys(cardTally.suits).length === 1);
-
-const isStraight = (cardTally) => {
-  let rankKeys = Object.keys(cardTally.ranks);
-  if (rankKeys.length !== 5) return false;
-
-  rankKeys = rankKeys.map(Number).sort((a, b) => a - b);
-  for (let i = 1; i < rankKeys.length; i += 1) {
-    if ((rankKeys[i] - rankKeys[i - 1]) !== 1) return false; 
-  }
-
-  return true;
-};
-
-const isFullHouse = (cardTally) => {
-  let rankKeys = Object.keys(cardTally.ranks);
-  return (rankKeys.length === 2) 
-    && ((cardTally.ranks[rankKeys[0]] === 3) || (cardTally.ranks[rankKeys[1]] === 3));
-};
-
-const isFourOfAKind = (cardTally) => {
-  let rankKeys = Object.keys(cardTally.ranks);
-  return (rankKeys.length === 2) 
-    && ((cardTally.ranks[rankKeys[0]] === 4) || (cardTally.ranks[rankKeys[1]] === 4));
-};
-
-const isStraightFlush = (cardTally) => isStraight(cardTally) && isFlush(cardTally);
-
-/**
- * Calculate score for the cards in hand.
- * @param {*} cards Array of card objects
- * @returns Number of points that the user scored for the cards in their hand
- */
-const calcHandScore = (cards) => {
-  let handScore = 0;
-
-  let cardTally = tallyCards(cards);
-
-  if (isStraightFlush(cardTally)) return 8;
-  else if (isFourOfAKind(cardTally)) return 7;
-  else if (isFullHouse(cardTally)) return 6;
-  else if (isFlush(cardTally)) return 5;
-  else if (isStraight(cardTally)) return 4;
-  else if (isThreeOfAKind(cardTally)) return 3;
-  else if (isTwoPair(cardTally)) return 2;
-  else if (isOnePair(cardTally)) return 1;
-  
-  return handScore;
-};
-
-// module.exports = calcHandScore;
