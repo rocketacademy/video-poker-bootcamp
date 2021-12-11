@@ -48,8 +48,10 @@ div {
   margin: 0 auto;
   background-color: white;
   padding: 10px;
-  margin: 10px;
+  margin-left: 25px;
+  margin-right: 25px;
   min-height: 150px;
+  display: block;
 }
 
 .gameInfoContainer {
