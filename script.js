@@ -99,6 +99,12 @@ const flipEffect = () => {
 
 const winSoundEffect = () => {
   const audio = new Audio('sounds/win-sound.mp3');
+  audio.volume = 0.1;
+  audio.play();
+};
+
+const loseSoundEffect = () => {
+  const audio = new Audio('sounds/lose-sound.mp3');
   audio.play();
 };
 
@@ -390,56 +396,56 @@ const addPoints = () => {
 const displayGameResult = (rankTally, suitTally) => {
   if (handScore === 800) {
     winSoundEffect();
-    output('You Win! You got a royal flush!');
+    output('You Win! You got a Royal Flush!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 50) {
     winSoundEffect();
-    output('You Win! You got a straight flush!');
+    output('You Win! You got a Straight Flush!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 6) {
     winSoundEffect();
-    output('You Win! You got a flush!');
+    output('You Win! You got a Flush!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 4) {
     winSoundEffect();
-    output('You Win! You got a four of a kind!');
+    output('You Win! You got a Four of a Kind!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 3) {
     winSoundEffect();
-    output('You Win! You got three of a kind!');
+    output('You Win! You got Three of a Kind!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 9) {
     winSoundEffect();
-    output('You Win! You got a full house!');
+    output('You Win! You got a Full House!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 2) {
     winSoundEffect();
-    output('You Win! You got a two pair!');
+    output('You Win! You got a Two Pair!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 6) {
     winSoundEffect();
-    output('You Win! You got a straight');
+    output('You Win! You got a Straight');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 1) {
     winSoundEffect();
-    output('You Win! You got jacks or better');
+    output('You Win! You got Jacks or Better');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   }
-  output('You lose!');
+  loseSoundEffect();
+  output('You Lose!');
   betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
   return (output, betOutput);
 };
-// eslint-disable-next-line max-len
-/** When user clicks on the card, if the card exist not inside cardsToExchange array, it will push it in, otherwise, if card exist inside cardsToExchange array, it will remove it. The card selected will be toggled with the class of cardSwap */
+
 const cardClick = (cardElement, cardToSwap) => {
   if (canClick === true) {
     let isCardPresent = false;
