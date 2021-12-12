@@ -12,6 +12,10 @@ body {
   display: inline-block;
 }
 
+.card:hover {
+  transform: scale(1.1);
+}
+
 .cardSwap {
   margin: 10px;
   padding: 10px;
@@ -150,9 +154,9 @@ h1 {
   border-radius: 10px;
   display: flex;
   align-content: center;
-  padding: 25px;
+  padding: 20px;
   position: absolute;
   top: 10px;
   font-family: "Press Start 2p";
-  font-size: 40px;
+  font-size: 32px;
 }

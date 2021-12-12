@@ -96,6 +96,12 @@ const flipEffect = () => {
   const audio = new Audio('sounds/flip-card.mp3');
   audio.play();
 };
+
+const winSoundEffect = () => {
+  const audio = new Audio('sounds/win-sound.mp3');
+  audio.play();
+};
+
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
 // Shuffle an array of cards
@@ -383,38 +389,47 @@ const addPoints = () => {
 
 const displayGameResult = (rankTally, suitTally) => {
   if (handScore === 800) {
+    winSoundEffect();
     output('You Win! You got a royal flush!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 50) {
+    winSoundEffect();
     output('You Win! You got a straight flush!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 6) {
+    winSoundEffect();
     output('You Win! You got a flush!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 4) {
+    winSoundEffect();
     output('You Win! You got a four of a kind!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 3) {
+    winSoundEffect();
     output('You Win! You got three of a kind!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 9) {
+    winSoundEffect();
     output('You Win! You got a full house!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 2) {
+    winSoundEffect();
     output('You Win! You got a two pair!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 6) {
+    winSoundEffect();
     output('You Win! You got a straight');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
   } if (handScore === 1) {
+    winSoundEffect();
     output('You Win! You got jacks or better');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
