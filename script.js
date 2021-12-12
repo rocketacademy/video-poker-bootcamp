@@ -17,6 +17,8 @@ let cardHeld = false;
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
 let outputMessage = document.createElement("div");
+outputMessage.id = "output-message"
+
 let betOneButton = document.createElement("button");
 betOneButton.innerHTML = "BET ONE";
 betOneButton.setAttribute("id", "bet-one");
@@ -40,17 +42,20 @@ buttonContainer.appendChild(betAllButton);
 buttonContainer.appendChild(dealButton);
 
 const buttonFunctions = () => {
+document.body.appendChild(outputMessage)
   betAllButton.addEventListener("click", () => {
     dealButton.disabled = false;
     betAllButton.disabled = true;
     betOneButton.disabled = true;
-    bettingMoney = moneyInHand;
+    bettingMoney = 5;
+	    balanceAmount = moneyInHand - bettingMoney;
     if (balanceAmount === 0) {
       dealButton.disabled = false;
       betAllButton.disabled = true;
       betOneButton.disabled = true;
     }
-    gameMessage.innerHTML = `Money in hand: $${0} &nbsp Betting: $${bettingMoney}`;
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
+
   });
   betOneButton.addEventListener("click", () => {
     dealButton.disabled = false;
@@ -61,7 +66,7 @@ const buttonFunctions = () => {
       betAllButton.disabled = true;
       betOneButton.disabled = true;
     }
-    gameMessage.innerHTML = `Money in hand: $${balanceAmount} &nbsp Betting: $${bettingMoney}`;
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney}`;
   });
 
   dealButton.addEventListener("click", () => {
@@ -77,6 +82,7 @@ const flipCard = () => {
   for (let i = 0; i < flipTheCard.length; i += 1) {
     flipTheCard.item(i).classList.toggle("front-card");
   }
+  outputMessage.innerHTML = `Click on the card to hold.<br>Click on deal when done holding.`
 };
 
 // Removes an element from the document.
@@ -212,12 +218,13 @@ const playerClick = () => {
     container.appendChild(cardElement);
   }
   calcHandScore(playerHandRank);
-  gameMessage.innerHTML = `Money in hand: $${moneyInHand} &nbsp Betting: $${bettingMoney}`;
+
   document.body.appendChild(buttonContainer);
 };
 
 const initGame = () => {
   gameMessage.innerHTML = "";
+  generateTable();
   removeElement("ready-button");
   playerClick();
   buttonFunctions();
@@ -232,3 +239,33 @@ const calcHandScore = (handRank) => {
   }
   return userPoints;
 };
+
+const generateTable = () => {
+
+  // creates a <table> element and a <tbody> element
+  var tbl = document.createElement("table");
+  var tblBody = document.createElement("tbody");
+
+  // creating all cells
+  for (var i = 0; i < 6; i++) {
+    // creates a table row
+    var row = document.createElement("tr");
+
+    for (var j = 0; j < 9; j++) {
+      // Create a <td> element and a text node, make the text
+      // node the contents of the <td>, and put the <td> at
+      // the end of the table row
+      var cell = document.createElement("td");
+      row.appendChild(cell);
+    }
+
+    // add the row to the end of the table body
+    tblBody.appendChild(row);
+  }
+
+  // put the <tbody> in the <table>
+  tbl.appendChild(tblBody);
+  // appends <table> into <body>
+  document.body.appendChild(tbl);
+  tbl.setAttribute("border", 2)
+}

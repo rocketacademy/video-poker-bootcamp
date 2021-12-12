@@ -19,6 +19,17 @@ body {
   margin-top: 10%;
 }
 
+#output-message{
+  font-size: 150%;
+  font-family: monospace;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+  text-align: center;
+}
+
 #ready-button {
   display: flex;
   justify-content: center;
@@ -99,4 +110,20 @@ body {
 
 button {
   border-radius: 10px;
+}
+
+table{
+	background-color: grey;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 250px;
+	height: 170px;
+	border-radius: 10px;
+}
+
+tr,td{
+	
+	width: 20px;
+	height: 20px;
 }
