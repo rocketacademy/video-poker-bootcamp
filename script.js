@@ -1,8 +1,8 @@
 /*
- * A function that returns a fixed number of points
+ * A function that returns a fixed number of i
  * @param cardInHand = [] to store all cards drawn
  * @param push cards drawn into cardInHand
- * @return number of points that the user scored for the cards in hand
+ * @return number of i that the user scored for the cards in hand
  */
 
 let cardInHand = [];
@@ -13,35 +13,39 @@ let balanceAmount = 0;
 let container;
 let playerCardHand = [];
 let playerHandRank = [];
-let gameMessage;
+let cardHeld = false;
 let readyButton = document.createElement("button");
+let gameMessage = document.createElement("div");
+let betOneButton = document.createElement("button");
+let betAllButton = document.createElement("button");
 
-// this function helps remove buttons or other elements
+// Removes an element from the document.
 function removeElement(elementId) {
-  // Removes an element from the document.
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
 }
 
-// buttons creation
-// Need deal, hold, submit buttons
+// deal button will be at the start of the game
 let dealButton = document.createElement("button");
 dealButton.id = "deal-button";
 dealButton.innerHTML = "DEAL";
 
-let holdButton = document.createElement("button");
+// hold button will be on every card
+// hold button will be put on every card
+// when user clicks card, message will show on top of the card to show that it is being held
+// if clicked, cardHeld = true
+// if cardHeld = false, clicking DEAL will replace those unheld cards.
+const holdButton = document.createElement("div");
 holdButton.id = "hold-button";
-holdButton.innerHTML = "HOLD";
+/* holdButton.innerHTML = "HOLD"; */
 
 // Inputting username and then amount to wager
 const startOfGame = () => {
-  // DOM Elements
-  // game instruction tells user what the game wants you to do
-  gameMessage = document.createElement("div");
   gameMessage.id = "game-message";
   gameMessage.innerHTML = " Y O U &nbsp R E A D Y ?";
   document.body.appendChild(gameMessage);
 
+  // indicate ready to begin
   readyButton.id = "ready-button";
   readyButton.innerHTML = "R E A D Y";
   document.body.appendChild(readyButton);
@@ -119,62 +123,57 @@ const makeDeck = (cardAmount) => {
 const deck = shuffleCards(makeDeck());
 
 const createCard = (cardInfo) => {
-  const innerCard = document.createElement("div")
-  innerCard.class = "inner-card"
-  const backCard = document.createElement("div")
-  backCard.class = ("back-card")
+  const innerCard = document.createElement("div");
+  innerCard.classList.add("inner-card");
   const suit = document.createElement("div");
-  suit.classList.add("front-card","suit", cardInfo.cardColor);
+  suit.classList.add("front-card", "suit", cardInfo.cardColor);
   suit.innerText = cardInfo.suit;
   const name = document.createElement("div");
-  name.classList.add("front-card","name");
+  name.classList.add("front-card", "name");
   name.innerText = cardInfo.name;
+  const backCard = document.createElement("div");
+  backCard.classList.add("back-card");
   const card = document.createElement("div");
+  card.id = "card";
   card.classList.add("card");
+  innerCard.appendChild(name);
+  innerCard.appendChild(suit);
+  innerCard.appendChild(backCard);
   card.appendChild(innerCard);
-  card.appendChild(backCard);
-  card.appendChild(name);
-  card.appendChild(suit);
-  return card;
-};
 
-// create container to store all card elements inside
-const containerCreation = () => {
-  container = document.createElement("div");
-  container.classList.add("container");
-  document.body.appendChild(container);
+  return card;
 };
 
 // calling 5 cards out onto container
 const playerClick = () => {
+  container = document.createElement("div");
+  container.classList.add("container");
+  document.body.appendChild(container);
   for (i = 0; i < 5; i++) {
     playerCard = deck.pop();
     playerCardHand.push(playerCard); // for displaying sorted full display cards
     playerHandRank.push(playerCard.rank); // for comparing sorted cards rank
     let cardElement = createCard(playerCard);
+    cardElement.appendChild(holdButton);
     container.appendChild(cardElement);
   }
+  calcHandScore(playerHandRank);
+  console.log(playerHandRank);
+  console.log(userPoints);
 };
 
-const calcHandScore = (cardRank) =>{
-	for(i=0; i < cardRank.length; i++){
-		userPoints += cardRank[i];
-	}
-	return userPoints;
-}
-
-
-// initialize the game after clicking ready button
 const initGame = () => {
+  gameMessage.innerHTML = "";
   removeElement("ready-button");
-  containerCreation();
   playerClick();
-  calcHandScore(playerHandRank);
 };
 
 startOfGame();
 
-
-
-
-
+const calcHandScore = (handRank) => {
+  for (let i = 0; i < handRank.length; i++) {
+    // runs through the whole array of cards in hand to get total points in hand
+    userPoints += handRank[i];
+  }
+  return userPoints;
+};

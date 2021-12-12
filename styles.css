@@ -34,80 +34,51 @@ body {
   height: 20px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.795);
-  -webkit-transition-duration: 0.4s;
-  transition-duration: 0.4s;
-  text-decoration: none;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-#ready-button:after {
-  content: "";
-  background: rgb(15, 15, 15);
-  display: block;
-  position: absolute;
-  padding-top: 300%;
-  padding-left: 350%;
-  margin-left: -20px;
-  margin-top: -120%;
-  opacity: 0;
-  transition: all 0.8s;
-}
-
-#ready-button:active:after {
-  padding: 0;
-  margin: 0;
-  opacity: 1;
-  transition: 0s;
 }
 
 .container {
   display: flex;
   margin-top: 120px;
-
   justify-content: center;
   align-items: center;
 }
 
 .card {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 200%;
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJGdUkfIIURWSMhi9JpnvfPBw3sVpyFwSH7A&usqp=CAU");
   display: flex;
   margin-left: 0.5%;
   width: 60px;
   height: 100px;
   padding: 5px;
   border-radius: 8px;
-  background-color: white;
+  perspective: 1000px;
 }
 
 .inner-card {
   position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
+  width: 60px;
+  height: 100px;
+  text-align: left;
   transition: transform 0.8s;
   transform-style: preserve-3d;
 }
 
-card:hover .inner-card {
+.card:hover .inner-card {
   transform: rotateY(180deg);
 }
 
-.back-card, .front-card {
+.back-card,
+.front-card {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden; /* Safari */
+  width: 60px;
+  height: 100px;
   backface-visibility: hidden;
 }
 
-.back-card {
-  background-color: #bbb;
-  color: black;
-}
-
-.front-card{
-  background-color: dodgerblue;
-  color: white;
+.front-card {
   transform: rotateY(180deg);
 }
 
@@ -116,12 +87,11 @@ card:hover .inner-card {
 }
 
 .red {
-  color: red;
+  color: rgb(255, 0, 0);
 }
 
 .suit {
-  margin-left: 35px;
-  margin-top: 77px;
-  font-size: 180%;
+  margin-left: -37px;
+  margin-top: 73px;
+  font-size: 130%;
 }
-
