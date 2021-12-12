@@ -4,7 +4,8 @@
  * @param push cards drawn into cardInHand
  * @return number of i that the user scored for the cards in hand
  */
-
+let pair = false;
+let cardNameTally = {};
 let cardInHand = [];
 let userPoints = 0;
 let moneyInHand = 200;
@@ -17,7 +18,8 @@ let cardHeld = false;
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
 let outputMessage = document.createElement("div");
-outputMessage.id = "output-message"
+outputMessage.id = "output-message";
+let table = document.getElementById("table");
 
 let betOneButton = document.createElement("button");
 betOneButton.innerHTML = "BET ONE";
@@ -42,20 +44,19 @@ buttonContainer.appendChild(betAllButton);
 buttonContainer.appendChild(dealButton);
 
 const buttonFunctions = () => {
-document.body.appendChild(outputMessage)
+  document.body.appendChild(outputMessage);
   betAllButton.addEventListener("click", () => {
     dealButton.disabled = false;
     betAllButton.disabled = true;
     betOneButton.disabled = true;
     bettingMoney = 5;
-	    balanceAmount = moneyInHand - bettingMoney;
+    balanceAmount = moneyInHand - bettingMoney;
     if (balanceAmount === 0) {
       dealButton.disabled = false;
       betAllButton.disabled = true;
       betOneButton.disabled = true;
     }
     outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
-
   });
   betOneButton.addEventListener("click", () => {
     dealButton.disabled = false;
@@ -82,7 +83,11 @@ const flipCard = () => {
   for (let i = 0; i < flipTheCard.length; i += 1) {
     flipTheCard.item(i).classList.toggle("front-card");
   }
-  outputMessage.innerHTML = `Click on the card to hold.<br>Click on deal when done holding.`
+  calcHandScore(playerCardHand);
+  console.log(cardNameTally);
+  return outputMessage;
+  /* 
+  outputMessage.innerHTML = `Click on the card to hold.<br>Click on deal when done holding.`; */
 };
 
 // Removes an element from the document.
@@ -111,6 +116,7 @@ const startOfGame = () => {
   readyButton.innerHTML = "R E A D Y";
   document.body.appendChild(readyButton);
   readyButton.addEventListener("click", initGame);
+  removeElement("table");
 };
 
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
@@ -207,6 +213,7 @@ const createCard = (cardInfo) => {
 
 // calling 5 cards out onto container
 const playerClick = () => {
+  document.body.appendChild(table);
   container = document.createElement("div");
   container.classList.add("container");
   document.body.appendChild(container);
@@ -217,14 +224,12 @@ const playerClick = () => {
     let cardElement = createCard(playerCard);
     container.appendChild(cardElement);
   }
-  calcHandScore(playerHandRank);
 
   document.body.appendChild(buttonContainer);
 };
 
 const initGame = () => {
   gameMessage.innerHTML = "";
-  generateTable();
   removeElement("ready-button");
   playerClick();
   buttonFunctions();
@@ -232,26 +237,42 @@ const initGame = () => {
 
 startOfGame();
 
-const calcHandScore = (handRank) => {
-  for (let i = 0; i < handRank.length; i++) {
-    // runs through the whole array of cards in hand to get total points in hand
-    userPoints += handRank[i];
+const calcHandScore = (hand) => {
+  for (let i = 0; i < hand.length; i++) {
+    var cardName = hand[i].name;
+    // If we have seen the card name before, increment its count
+    if (cardName in cardNameTally) {
+      cardNameTally[cardName] += 1;
+    }
+    // Else, initialise count of this card name to 1
+    else {
+      cardNameTally[cardName] = 1;
+    }
   }
-  return userPoints;
+  for (let [key, value] of Object.entries(cardNameTally)) {
+    console.log(key === "J" && value >= 1);
+    if (value === 2) {
+      outputMessage.innerHTML = "You have Two Pairs.";
+    } else if (key === "J" && value >= 1) {
+      outputMessage.innerHTML = "You have Jacks.";
+    } else {
+      outputMessage.innerHTML = "You have no special combinations.";
+    }
+    return outputMessage;
+  }
 };
 
-const generateTable = () => {
-
+/* const generateTable = () => {
   // creates a <table> element and a <tbody> element
   var tbl = document.createElement("table");
   var tblBody = document.createElement("tbody");
 
   // creating all cells
-  for (var i = 0; i < 6; i++) {
+  for (var i = 0; i < 10; i++) {
     // creates a table row
     var row = document.createElement("tr");
 
-    for (var j = 0; j < 9; j++) {
+    for (var j = 0; j < 6; j++) {
       // Create a <td> element and a text node, make the text
       // node the contents of the <td>, and put the <td> at
       // the end of the table row
@@ -262,10 +283,9 @@ const generateTable = () => {
     // add the row to the end of the table body
     tblBody.appendChild(row);
   }
-
   // put the <tbody> in the <table>
   tbl.appendChild(tblBody);
   // appends <table> into <body>
   document.body.appendChild(tbl);
-  tbl.setAttribute("border", 2)
-}
+  tbl.setAttribute("border", 2);
+}; */

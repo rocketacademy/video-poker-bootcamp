@@ -19,7 +19,7 @@ body {
   margin-top: 10%;
 }
 
-#output-message{
+#output-message {
   font-size: 150%;
   font-family: monospace;
   color: white;
@@ -44,7 +44,7 @@ body {
 
 .container {
   display: flex;
-  margin-top: 120px;
+  margin-top: 25px;
   justify-content: center;
   align-items: center;
 }
@@ -68,7 +68,7 @@ body {
   width: 60px;
   height: 100px;
   text-align: left;
-  transition: transform 0.5s;
+  transition: transform 0.1s;
   transform-style: preserve-3d;
 }
 
@@ -79,7 +79,7 @@ body {
   width: 60px;
   height: 100px;
   backface-visibility: hidden;
-  transition: transform 0.5s;
+  transition: transform 0.1s;
   transform-style: preserve-3d;
 }
 
@@ -112,18 +112,30 @@ button {
   border-radius: 10px;
 }
 
-table{
-	background-color: grey;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 250px;
-	height: 170px;
-	border-radius: 10px;
+table {
+  background-color: rgba(128, 128, 128, 0.123);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 450px;
+  height: 282px;
+  border-radius: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  color: white;
+  border: 2px;
+  border-style: solid;
 }
 
-tr,td{
-	
-	width: 20px;
-	height: 20px;
+tr,
+td {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 433px;
+  height: 23px;
+  margin: 4px;
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px;
 }
