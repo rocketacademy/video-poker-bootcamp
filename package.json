@@ -4,7 +4,7 @@
   "description": "SWE1 Video Poker",
   "main": "script.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --verbose --coverage"
   },
   "repository": {
     "type": "git",

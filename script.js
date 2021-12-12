@@ -1,3 +1,15 @@
+const SCORES = {
+  ROYAL_FLUSH: 250,
+  STRAIGHT_FLUSH: 50,
+  FOUR_OF_A_KIND: 25,
+  FULL_HOUSE: 9,
+  FLUSH: 6,
+  STRAIGHT: 4,
+  THREE_OF_A_KIND: 3,
+  TWO_PAIR: 2,
+  ONE_PAIR: 1,
+};
+
 let board = [];
 let deck;
 let credit = 100;
@@ -5,7 +17,8 @@ let bet = 0;
 
 const NUMBER_OF_CARDS = 5;
 const MAX_BET = 5;
-const MAX_MULTIPLIER = 40;
+const MAX_MULTIPLIER = 16;
+const MIN_RANK_FOR_ONE_PAIR = 11; // jack or higher
 
 /**
  * Display game state message.
@@ -238,11 +251,17 @@ const tallyCards = (cards) => {
  */
 const isOnePair = (cardTally) => {
   const rankKeys = Object.keys(cardTally.ranks);
-  return (rankKeys.length === 4)
-  && (((cardTally.ranks[rankKeys[0]] === 2) && ((rankKeys[0] >= 11) || (rankKeys[0] === 1)))
-    || ((cardTally.ranks[rankKeys[1]] === 2) && ((rankKeys[1] >= 11) || (rankKeys[1] === 1)))
-    || ((cardTally.ranks[rankKeys[2]] === 2) && ((rankKeys[2] >= 11) || (rankKeys[2] === 1)))
-    || ((cardTally.ranks[rankKeys[3]] === 2) && ((rankKeys[3] >= 11) || (rankKeys[3] === 1))));
+
+  if (rankKeys.length !== 4) return false;
+
+  // check for pairs
+  for (let i = 0; i < rankKeys.length; i += 1) {
+    const rank = 1 * rankKeys[i];
+    if ((cardTally.ranks[rank] === 2)
+      && ((rank >= MIN_RANK_FOR_ONE_PAIR) || rank === 1)) return true;
+  }
+
+  return false;
 };
 
 /**
@@ -285,8 +304,14 @@ const isStraight = (cardTally) => {
   let rankKeys = Object.keys(cardTally.ranks);
   if (rankKeys.length !== 5) return false;
 
+  // sort rank keys array to compare each values
   rankKeys = rankKeys.map(Number).sort((a, b) => a - b);
+
+  // special case of straight to ace
+  if (JSON.stringify(rankKeys) === JSON.stringify([1, 10, 11, 12, 13])) return true;
+
   for (let i = 1; i < rankKeys.length; i += 1) {
+    // compare current value and previous value to confirm consecutive numbers
     if ((rankKeys[i] - rankKeys[i - 1]) !== 1) return false;
   }
 
@@ -329,12 +354,17 @@ const isStraightFlush = (cardTally) => isStraight(cardTally) && isFlush(cardTall
  */
 const isRoyalFlush = (cardTally) => {
   const rankKeys = Object.keys(cardTally.ranks);
-  return isStraightFlush(cardTally)
-    && ((rankKeys[0] >= 10) || (rankKeys[0] === 1))
-    && ((rankKeys[1] >= 10) || (rankKeys[1] === 1))
-    && ((rankKeys[2] >= 10) || (rankKeys[2] === 1))
-    && ((rankKeys[3] >= 10) || (rankKeys[3] === 1))
-    && ((rankKeys[4] >= 10) || (rankKeys[4] === 1));
+
+  // royal flush hand is also a straight flush
+  if (!isStraightFlush(cardTally)) return false;
+
+  // check hand is straight flush with 10, jack, queen, king, ace
+  for (let i = 0; i < rankKeys.length; i += 1) {
+    const rank = 1 * rankKeys[i];
+    if ((rank < 10) && (rank !== 1)) return false;
+  }
+
+  return true;
 };
 
 /**
@@ -347,7 +377,7 @@ const calcHandScore = (cards, gameBet) => {
   const cardTally = tallyCards(cards);
 
   if (isRoyalFlush(cardTally)) {
-    return SCORES.ROYAL_FLUSH * ((gameBet === MAX_BET) ? MAX_MULTIPLIER : MAX_BET);
+    return SCORES.ROYAL_FLUSH * ((gameBet === MAX_BET) ? MAX_MULTIPLIER : gameBet);
   }
   if (isStraightFlush(cardTally)) return SCORES.STRAIGHT_FLUSH * gameBet;
   if (isFourOfAKind(cardTally)) return SCORES.FOUR_OF_A_KIND * gameBet;
@@ -356,7 +386,7 @@ const calcHandScore = (cards, gameBet) => {
   if (isStraight(cardTally)) return SCORES.STRAIGHT * gameBet;
   if (isThreeOfAKind(cardTally)) return SCORES.THREE_OF_A_KIND * gameBet;
   if (isTwoPair(cardTally)) return SCORES.TWO_PAIR * gameBet;
-  if (isOnePair(cardTally)) return SCORES.JACKS_OR_BETTER * gameBet;
+  if (isOnePair(cardTally)) return SCORES.ONE_PAIR * gameBet;
 
   return 0;
 };
