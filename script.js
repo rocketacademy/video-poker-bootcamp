@@ -1,5 +1,5 @@
 // global variables
-let playerCard;
+// let playerCard;
 let gameScore = 100;
 const rankTally = {};
 const suitTally = {};
@@ -42,6 +42,11 @@ document.body.appendChild(betInfo);
 const mainContainer = document.createElement('div');
 mainContainer.classList.add('mainContainer');
 document.body.appendChild(mainContainer);
+
+const scoreContainer = document.createElement('div');
+scoreContainer.classList.add('score-Container');
+scoreContainer.innerText = `${gameScore}`;
+document.body.appendChild(scoreContainer);
 
 const playerdiv = document.createElement('div');
 playerdiv.classList.add('player1container');
@@ -479,8 +484,9 @@ const reinitGame = () => {
   currentBet = 0;
   playerdiv.innerHTML = '';
   gameMode = 'place_bets';
-  tallyHand(rankTally);
-  tallyHand(suitTally);
+  clearTally(rankTally);
+  clearTally(suitTally);
+  scoreContainer.innerText = `${gameScore}`;
   output('Place Your Bets');
   betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
 };
@@ -524,6 +530,7 @@ const betOne = () => {
     gameScore -= 1;
     currentBet += 1;
   }
+  scoreContainer.innerText = `${gameScore}`;
   betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
   gameMode = 'deal_Hand';
   canClick = true;
@@ -535,6 +542,7 @@ const betFive = () => {
     gameScore -= 5;
     currentBet += 5;
   }
+  scoreContainer.innerText = `${gameScore}`;
   betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
   gameMode = 'deal_Hand';
   canClick = true;
