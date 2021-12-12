@@ -9,11 +9,6 @@ body {
   margin-left: 43%;
 }
 
-#deal-button {
-  color: black;
-  margin-left: 50%;
-}
-
 #game-message {
   font-size: 400%;
   font-family: monospace;
@@ -94,4 +89,15 @@ body {
   margin-left: -37px;
   margin-top: 73px;
   font-size: 130%;
+}
+
+.button-cont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+button {
+  border-radius: 10px;
 }

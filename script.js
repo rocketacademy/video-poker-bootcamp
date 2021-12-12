@@ -17,18 +17,58 @@ let cardHeld = false;
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
 let betOneButton = document.createElement("button");
+betOneButton.innerHTML = "BET ONE";
+betOneButton.setAttribute("id", "bet-one");
+
 let betAllButton = document.createElement("button");
+betAllButton.innerHTML = " ALL IN";
+betAllButton.setAttribute("id", "bet-all");
+
+// deal button will be at the start of the game
+let dealButton = document.createElement("button");
+dealButton.setAttribute("id", "deal-button");
+dealButton.innerHTML = "DEAL";
+dealButton.disabled = true;
+
+// creating container for all buttons to be in
+
+const buttonContainer = document.createElement("div");
+buttonContainer.classList.add("button-cont");
+buttonContainer.appendChild(betOneButton);
+buttonContainer.appendChild(betAllButton);
+buttonContainer.appendChild(dealButton);
+
+const buttonFunctions = () => {
+  betAllButton.addEventListener("click", () => {
+    dealButton.disabled = false;
+    betAllButton.disabled = true;
+    betOneButton.disabled = true;
+    bettingMoney += moneyInHand;
+    if (balanceAmount === 0) {
+      dealButton.disabled = false;
+      betAllButton.disabled = true;
+      betOneButton.disabled = true;
+    }
+    gameMessage.innerHTML = `Money in hand: $${balanceAmount} &nbsp Betting: $${bettingMoney}`;
+  });
+  betOneButton.addEventListener("click", () => {
+    dealButton.disabled = false;
+    bettingMoney++;
+    balanceAmount = moneyInHand - bettingMoney;
+    if (balanceAmount === 0) {
+      dealButton.disabled = false;
+      betAllButton.disabled = true;
+      betOneButton.disabled = true;
+    }
+    gameMessage.innerHTML = `Money in hand: $${balanceAmount} &nbsp Betting: $${bettingMoney}`;
+  });
+};
 
 // Removes an element from the document.
 function removeElement(elementId) {
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
 }
-
-// deal button will be at the start of the game
-let dealButton = document.createElement("button");
-dealButton.id = "deal-button";
-dealButton.innerHTML = "DEAL";
 
 // hold button will be on every card
 // hold button will be put on every card
@@ -158,14 +198,15 @@ const playerClick = () => {
     container.appendChild(cardElement);
   }
   calcHandScore(playerHandRank);
-  console.log(playerHandRank);
-  console.log(userPoints);
+  gameMessage.innerHTML = `Money in hand: $${moneyInHand} &nbsp Betting: $${bettingMoney}`;
+  document.body.appendChild(buttonContainer);
 };
 
 const initGame = () => {
   gameMessage.innerHTML = "";
   removeElement("ready-button");
   playerClick();
+  buttonFunctions();
 };
 
 startOfGame();
