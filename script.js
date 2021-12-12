@@ -39,9 +39,13 @@ const betInfo = document.createElement('div');
 betInfo.classList.add('gameInfoContainer');
 document.body.appendChild(betInfo);
 
+const mainContainer = document.createElement('div');
+mainContainer.classList.add('mainContainer');
+document.body.appendChild(mainContainer);
+
 const playerdiv = document.createElement('div');
 playerdiv.classList.add('player1container');
-document.body.appendChild(playerdiv);
+mainContainer.appendChild(playerdiv);
 
 // create the buttons
 const dealBtn = document.createElement('BUTTON');
@@ -66,6 +70,7 @@ buttonsContainer.appendChild(bet1Btn);
 buttonsContainer.appendChild(bet5Btn);
 buttonsContainer.appendChild(dealBtn);
 buttonsContainer.appendChild(swapBtn);
+document.body.appendChild(buttonsContainer);
 
 // helper functions
 // display message using output
@@ -77,6 +82,15 @@ const betOutput = (message) => {
   betInfo.innerText = message;
 };
 
+const insertCoinEffect = () => {
+  const audio = new Audio('sounds/insert-coin.mp3');
+  audio.play();
+};
+
+const flipEffect = () => {
+  const audio = new Audio('sounds/flip-card.mp3');
+  audio.play();
+};
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
 // Shuffle an array of cards
@@ -431,6 +445,7 @@ const dealHand = () => {
   output('Deal Hand! Select Which Cards to Swap!');
   if (canClick === true) {
     console.log(`${gameMode}`);
+    flipEffect();
     if (currentBet >= 1 && gameMode === 'deal_Hand') {
       for (let i = 0; i < maxPlayerHand; i += 1) {
         // playerHand.push(deck.pop());
@@ -450,7 +465,6 @@ const dealHand = () => {
 };
 
 const initGame = () => {
-  document.body.appendChild(buttonsContainer);
   if (gameMode === 'place_bets') {
     output('Place Your Bets');
     betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
@@ -488,6 +502,7 @@ const swapCards = () => {
 
     // clear previous display of player's hand
     playerdiv.innerHTML = '';
+    flipEffect();
     // make the player's cards' display and display them
     for (let i = 0; i < playerHand.length; i += 1) {
       const cardElement = createCard(playerHand[i]);
@@ -505,6 +520,7 @@ const swapCards = () => {
 
 const betOne = () => {
   if (gameMode === 'place_bets') {
+    insertCoinEffect();
     gameScore -= 1;
     currentBet += 1;
   }
@@ -515,6 +531,7 @@ const betOne = () => {
 
 const betFive = () => {
   if (gameMode === 'place_bets') {
+    insertCoinEffect();
     gameScore -= 5;
     currentBet += 5;
   }
