@@ -135,10 +135,10 @@ const makeDeck = () => {
         symbol = '♣';
         cardColor = 'black';
       } else if (currentSuit === 'hearts') {
-        symbol = '♥';
+        symbol = '♥️';
         cardColor = 'red';
       } else if (currentSuit === 'spades') {
-        symbol = '♠';
+        symbol = '♠️';
         cardColor = 'black';
       }
 
@@ -497,9 +497,9 @@ const swapCards = () => {
     calcHandScore(rankTally, suitTally);
     addPoints();
     displayGameResult();
-    // setTimeout(() => {
-    //   reinitGame();
-    // }, 5000);
+    setTimeout(() => {
+      reinitGame();
+    }, 5000);
   }
 };
 

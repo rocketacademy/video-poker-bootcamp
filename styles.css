@@ -1,5 +1,5 @@
 body {
-  background-color: cyan;
+  background-color: #181818;
 }
 .card {
   margin: 10px;
@@ -40,9 +40,6 @@ body {
 .black {
   color: black;
 }
-div {
-  font-size: 20px;
-}
 
 .player1container {
   margin: 0 auto;
@@ -58,6 +55,7 @@ div {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
 }
 
 .btnContainer {
@@ -129,4 +127,10 @@ h1 {
   border-radius: 7px;
   box-shadow: 0 0.2em gray;
   cursor: pointer;
+}
+.sign {
+  width: 25%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
