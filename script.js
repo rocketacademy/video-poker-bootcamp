@@ -7,14 +7,16 @@
 
 let cardInHand = [];
 let userPoints = 0;
-let moneyInHand = 500;
+let moneyInHand = 100;
 let bettingMoney = 0;
 let balanceAmount = 0;
 let container;
 let playerCardHand = [];
 let playerHandRank = [];
+let gameMessage;
 let readyButton = document.createElement("button");
 
+// this function helps remove buttons or other elements
 function removeElement(elementId) {
   // Removes an element from the document.
   let element = document.getElementById(elementId);
@@ -35,7 +37,7 @@ holdButton.innerHTML = "HOLD";
 const startOfGame = () => {
   // DOM Elements
   // game instruction tells user what the game wants you to do
-  let gameMessage = document.createElement("div");
+  gameMessage = document.createElement("div");
   gameMessage.id = "game-message";
   gameMessage.innerHTML = " Y O U &nbsp R E A D Y ?";
   document.body.appendChild(gameMessage);
@@ -117,14 +119,20 @@ const makeDeck = (cardAmount) => {
 const deck = shuffleCards(makeDeck());
 
 const createCard = (cardInfo) => {
+  const innerCard = document.createElement("div")
+  innerCard.class = "inner-card"
+  const backCard = document.createElement("div")
+  backCard.class = ("back-card")
   const suit = document.createElement("div");
-  suit.classList.add("suit", cardInfo.cardColor);
+  suit.classList.add("front-card","suit", cardInfo.cardColor);
   suit.innerText = cardInfo.suit;
   const name = document.createElement("div");
-  name.classList.add("name");
+  name.classList.add("front-card","name");
   name.innerText = cardInfo.name;
   const card = document.createElement("div");
   card.classList.add("card");
+  card.appendChild(innerCard);
+  card.appendChild(backCard);
   card.appendChild(name);
   card.appendChild(suit);
   return card;
@@ -148,47 +156,25 @@ const playerClick = () => {
   }
 };
 
+const calcHandScore = (cardRank) =>{
+	for(i=0; i < cardRank.length; i++){
+		userPoints += cardRank[i];
+	}
+	return userPoints;
+}
+
+
+// initialize the game after clicking ready button
 const initGame = () => {
   removeElement("ready-button");
   containerCreation();
   playerClick();
+  calcHandScore(playerHandRank);
 };
 
 startOfGame();
-/*  // form to take in input and submit button
-  let form = document.createElement("div");
-  form.id = "form";
 
-  let input = document.createElement("input");
-  input.id = "input";
 
-  let submitButton = document.createElement("button");
-  submitButton.id = "submit-button";
-  submitButton.innerHTML = "SUBMIT";
 
-  // append input and submit button into form
-  form.appendChild(input);
-  form.appendChild(submitButton);
-  document.body.appendChild(form);
-  submitButton.addEventListener("click", () => {
-    if (input.value === "") {
-      alert("Field cannot be empty.");
-    }
-    if (
-      input.value !== "" &&
-      mode === "default" &&
-      isNaN(input.value) === true
-    ) {
-      gameMessage.innerHTML = `Hey ${input.value}! <br><br> Welcome to Video Poker. <br><br> Input amount you want to gamble on. <br><br> Your balance now is $${moneyInHand}. `;
-      input.value = "";
-      mode = "started";
-    } else if (mode === "started") {
-      bettingMoney = input.value;
-      balanceAmount = moneyInHand - bettingMoney;
-      gameMessage.innerHTML = `You have chosen to gamble with $${bettingMoney} of your money.<br><br> Your balance is now $${balanceAmount}.<br><br> You may begin.`;
-      form.innerHTML = "";
-    } else if (mode === "default" && isNaN(input.value) === false) {
-      alert("Please enter a valid name.");
-      input.value == "";
-    }
-  }); */
+
+
