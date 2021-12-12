@@ -57,20 +57,19 @@ body {
   width: 60px;
   height: 100px;
   text-align: left;
-  transition: transform 0.8s;
+  transition: transform 0.5s;
   transform-style: preserve-3d;
-}
-
-.card:hover .inner-card {
-  transform: rotateY(180deg);
 }
 
 .back-card,
 .front-card {
+  -webkit-backface-visibility: hidden;
   position: absolute;
   width: 60px;
   height: 100px;
   backface-visibility: hidden;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
 }
 
 .front-card {

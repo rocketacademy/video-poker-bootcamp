@@ -7,7 +7,7 @@
 
 let cardInHand = [];
 let userPoints = 0;
-let moneyInHand = 100;
+let moneyInHand = 200;
 let bettingMoney = 0;
 let balanceAmount = 0;
 let container;
@@ -16,6 +16,7 @@ let playerHandRank = [];
 let cardHeld = false;
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
+let outputMessage = document.createElement("div");
 let betOneButton = document.createElement("button");
 betOneButton.innerHTML = "BET ONE";
 betOneButton.setAttribute("id", "bet-one");
@@ -43,13 +44,13 @@ const buttonFunctions = () => {
     dealButton.disabled = false;
     betAllButton.disabled = true;
     betOneButton.disabled = true;
-    bettingMoney += moneyInHand;
+    bettingMoney = moneyInHand;
     if (balanceAmount === 0) {
       dealButton.disabled = false;
       betAllButton.disabled = true;
       betOneButton.disabled = true;
     }
-    gameMessage.innerHTML = `Money in hand: $${balanceAmount} &nbsp Betting: $${bettingMoney}`;
+    gameMessage.innerHTML = `Money in hand: $${0} &nbsp Betting: $${bettingMoney}`;
   });
   betOneButton.addEventListener("click", () => {
     dealButton.disabled = false;
@@ -62,13 +63,27 @@ const buttonFunctions = () => {
     }
     gameMessage.innerHTML = `Money in hand: $${balanceAmount} &nbsp Betting: $${bettingMoney}`;
   });
+
+  dealButton.addEventListener("click", () => {
+    dealButton.disabled = false;
+    betAllButton.disabled = true;
+    betOneButton.disabled = true;
+    flipCard();
+  });
+};
+
+const flipCard = () => {
+  const flipTheCard = document.getElementsByClassName("inner-card");
+  for (let i = 0; i < flipTheCard.length; i += 1) {
+    flipTheCard.item(i).classList.toggle("front-card");
+  }
 };
 
 // Removes an element from the document.
-function removeElement(elementId) {
+const removeElement = (elementId) => {
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
-}
+};
 
 // hold button will be on every card
 // hold button will be put on every card
@@ -194,7 +209,6 @@ const playerClick = () => {
     playerCardHand.push(playerCard); // for displaying sorted full display cards
     playerHandRank.push(playerCard.rank); // for comparing sorted cards rank
     let cardElement = createCard(playerCard);
-    cardElement.appendChild(holdButton);
     container.appendChild(cardElement);
   }
   calcHandScore(playerHandRank);
