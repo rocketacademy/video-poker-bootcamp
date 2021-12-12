@@ -5,22 +5,26 @@ const initGame = () => {
   document.body.appendChild(overallContainer);
 
   // create card combination container
-  const cardComboContainer = document.createElement('div');
+  cardComboContainer = document.createElement('div');
+  cardComboContainer.innerText =
+    'Container that shows all combination of cards.';
   cardComboContainer.classList.add('card-combintaion-container', 'section');
   overallContainer.appendChild(cardComboContainer);
 
   // create card display container
-  const gameContainer = document.createElement('div');
+  gameContainer = document.createElement('div');
+  gameContainer.innerText = 'Container that shows cards dealt to player.';
   gameContainer.classList.add('game-container', 'section');
   overallContainer.appendChild(gameContainer);
 
   // create output container
-  const outputContainer = document.createElement('div');
+  outputContainer = document.createElement('div');
+  outputContainer.innerText = 'Container that gives instructions to player.';
   outputContainer.classList.add('output-container', 'section');
   overallContainer.appendChild(outputContainer);
 
   // create input container, bet input and submit //
-  const inputContainer = document.createElement('div');
+  inputContainer = document.createElement('div');
   inputContainer.classList.add('input-container');
   overallContainer.appendChild(inputContainer);
   // bet input slider
@@ -38,6 +42,23 @@ const initGame = () => {
   output.setAttribute('for', 'quantity');
   overallContainer.appendChild(output);
 
-  // create deal cards button
+  /**
+   * Variables & functions that make the betting slider function
+   */
+  const rangeInput = document.querySelector('.input-bet');
+  const rangeOutput = document.querySelector('.output');
+
+  const outputDefaultState = () => {
+    rangeOutput.value = rangeInput.value;
+  };
+  rangeInput.addEventListener('input', function () {
+    rangeOutput.value = this.value;
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    outputDefaultState();
+  });
+
+  // creates deal cards button
   dealCardBtn();
 };
+initGame();
