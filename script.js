@@ -422,10 +422,11 @@ const drawCards = (cardElements) => {
   // calculate hand score and update credits
   updateCredits(calcHandScore(board, bet));
 
+  // reset bet
   updateBets(-1 * bet);
 };
 
-module.exports = calcHandScore;
+// module.exports = calcHandScore;
 
 /**
  * Create all the board elements that will go on the screen.
