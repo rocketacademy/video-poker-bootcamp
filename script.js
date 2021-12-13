@@ -160,7 +160,33 @@ const checkStraight = (cardRankTally, checkAce) => {
   return outputvalue;
 };
 
+// Placed after check straight & flush
+const checkOtherCondition = (cardRankTally) => {
+  let outputvalue = "Something went wrong";
+  const cardRankTallyValues = getTallyValues(cardRankTally);
+
+  // cardRankTallyValues.length will never be less than 2
+  if (cardRankTallyValues[0] === 1) {
+    outputvalue = "High Card";
+  } else if (cardRankTallyValues[0] === 2 && cardRankTallyValues[1] === 2) {
+    outputvalue = "2 Pairs";
+  } else if (cardRankTallyValues[0] === 2) {
+    outputvalue = "1 Pair";
+  } else if (cardRankTallyValues[0] === 3 && cardRankTallyValues[1] === 2) {
+    outputvalue = "Full House";
+  } else if (cardRankTallyValues[0] === 3) {
+    outputvalue = "3 of a Kind";
+  } else if (cardRankTallyValues[0] === 4) {
+    outputvalue = "4 of a Kind";
+  }
+
+  return outputvalue;
+};
+
+const checkHighCard = () => {};
+
 const calcHandScore = (hand) => {
+  let outputvalue;
   let cardRankTally = {};
   let cardSuitTally = {};
   let checkAce = false;
@@ -196,13 +222,30 @@ const calcHandScore = (hand) => {
   // console.log(cardRankTallyValues);
   // console.log(cardSuitTallyValues);
 
-  if (checkStraight(cardRankTally, checkAce)) {
+  const prelimCheck = checkOtherCondition(cardRankTally);
+  const straightHand = checkStraight(cardRankTally, checkAce);
+  const flushHand = checkFlush(cardSuitTally);
+
+  if (straightHand && flushHand) {
+    console.log("straight flush");
+  } else if (straightHand) {
     console.log("STRAIGHT FUNCTION IS WORKING");
+  } else if (flushHand) {
+    console.log("FLUSH FUNCTION IS WORKING");
+  } else if (prelimCheck === "High Card") {
+    console.log("high");
+  } else if (prelimCheck === "2 Pairs") {
+    console.log("2 pairs");
+  } else if (prelimCheck === "1 Pair") {
+    console.log("1 pair");
+  } else if (prelimCheck === "Full House") {
+    console.log("full house");
+  } else if (prelimCheck === "3 of a Kind") {
+    console.log("3 of a Kind");
+  } else if (prelimCheck === "4 of a Kind") {
+    console.log("4 of a Kind");
   }
 
-  if (checkFlush(cardSuitTally)) {
-    console.log("FLUSH FUNCTION IS WORKING");
-  }
   // for (k in ) {
   //   if (!obj.hasOwnProperty(k)) continue;
   //   if (obj[k] === "orange") {
@@ -211,32 +254,6 @@ const calcHandScore = (hand) => {
   // }
 };
 
-// // Straight hand
-// const playerHand = [
-//   { rank: 2, suit: "hearts", name: "2" },
-//   { rank: 3, suit: "diamonds", name: "3" },
-//   { rank: 5, suit: "spades", name: "5" },
-//   { rank: 4, suit: "spades", name: "4" },
-//   { rank: 1, suit: "hearts", name: "Ace" },
-// ];
-
-// // Flush hand
-// const playerHand = [
-//   { rank: 2, suit: "hearts", name: "2" },
-//   { rank: 3, suit: "hearts", name: "3" },
-//   { rank: 5, suit: "hearts", name: "5" },
-//   { rank: 10, suit: "hearts", name: "4" },
-//   { rank: 1, suit: "hearts", name: "Ace" },
-// ];
-
-// Straight flush hand
-const playerHand = [
-  { rank: 10, suit: "hearts", name: "10" },
-  { rank: 11, suit: "hearts", name: "J" },
-  { rank: 12, suit: "hearts", name: "Q" },
-  { rank: 13, suit: "hearts", name: "K" },
-  { rank: 1, suit: "hearts", name: "Ace" },
-];
-
+// Refer to testHands.js to whats the current hand
 // calcHandScore returns the number of points a given hand earns.
 const pointsForHand = calcHandScore(playerHand);
