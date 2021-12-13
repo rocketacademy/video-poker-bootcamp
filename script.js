@@ -5,7 +5,6 @@
  * @return number of i that the user scored for the cards in hand
  */
 let pair = false;
-let cardNameTally = {};
 let cardInHand = [];
 let userPoints = 0;
 let moneyInHand = 200;
@@ -26,7 +25,7 @@ betOneButton.innerHTML = "BET ONE";
 betOneButton.setAttribute("id", "bet-one");
 
 let betAllButton = document.createElement("button");
-betAllButton.innerHTML = " ALL IN";
+betAllButton.innerHTML = "MAX BET";
 betAllButton.setAttribute("id", "bet-all");
 
 // deal button will be at the start of the game
@@ -42,82 +41,6 @@ buttonContainer.classList.add("button-cont");
 buttonContainer.appendChild(betOneButton);
 buttonContainer.appendChild(betAllButton);
 buttonContainer.appendChild(dealButton);
-
-const buttonFunctions = () => {
-  document.body.appendChild(outputMessage);
-  betAllButton.addEventListener("click", () => {
-    dealButton.disabled = false;
-    betAllButton.disabled = true;
-    betOneButton.disabled = true;
-    bettingMoney = 5;
-    balanceAmount = moneyInHand - bettingMoney;
-    if (balanceAmount === 0) {
-      dealButton.disabled = false;
-      betAllButton.disabled = true;
-      betOneButton.disabled = true;
-    }
-    outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
-  });
-  betOneButton.addEventListener("click", () => {
-    dealButton.disabled = false;
-    bettingMoney++;
-    balanceAmount = moneyInHand - bettingMoney;
-    if (balanceAmount === 0) {
-      dealButton.disabled = false;
-      betAllButton.disabled = true;
-      betOneButton.disabled = true;
-    }
-    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney}`;
-  });
-
-  dealButton.addEventListener("click", () => {
-    dealButton.disabled = false;
-    betAllButton.disabled = true;
-    betOneButton.disabled = true;
-    flipCard();
-  });
-};
-
-const flipCard = () => {
-  const flipTheCard = document.getElementsByClassName("inner-card");
-  for (let i = 0; i < flipTheCard.length; i += 1) {
-    flipTheCard.item(i).classList.toggle("front-card");
-  }
-  calcHandScore(playerCardHand);
-  console.log(cardNameTally);
-  return outputMessage;
-  /* 
-  outputMessage.innerHTML = `Click on the card to hold.<br>Click on deal when done holding.`; */
-};
-
-// Removes an element from the document.
-const removeElement = (elementId) => {
-  let element = document.getElementById(elementId);
-  element.parentNode.removeChild(element);
-};
-
-// hold button will be on every card
-// hold button will be put on every card
-// when user clicks card, message will show on top of the card to show that it is being held
-// if clicked, cardHeld = true
-// if cardHeld = false, clicking DEAL will replace those unheld cards.
-const holdButton = document.createElement("div");
-holdButton.id = "hold-button";
-/* holdButton.innerHTML = "HOLD"; */
-
-// Inputting username and then amount to wager
-const startOfGame = () => {
-  gameMessage.id = "game-message";
-  gameMessage.innerHTML = " Y O U &nbsp R E A D Y ?";
-  document.body.appendChild(gameMessage);
-
-  // indicate ready to begin
-  readyButton.id = "ready-button";
-  readyButton.innerHTML = "R E A D Y";
-  document.body.appendChild(readyButton);
-  readyButton.addEventListener("click", initGame);
-  removeElement("table");
-};
 
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
@@ -211,6 +134,82 @@ const createCard = (cardInfo) => {
   return card;
 };
 
+const buttonFunctions = () => {
+  document.body.appendChild(outputMessage);
+  betAllButton.addEventListener("click", () => {
+    dealButton.disabled = false;
+    betAllButton.disabled = true;
+    betOneButton.disabled = true;
+    bettingMoney = 5;
+    balanceAmount = moneyInHand - bettingMoney;
+    if (balanceAmount === 0) {
+      dealButton.disabled = false;
+      betAllButton.disabled = true;
+      betOneButton.disabled = true;
+    }
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
+  });
+  betOneButton.addEventListener("click", () => {
+    dealButton.disabled = false;
+    bettingMoney++;
+    balanceAmount = moneyInHand - bettingMoney;
+    if (balanceAmount === 0) {
+      dealButton.disabled = false;
+      betAllButton.disabled = true;
+      betOneButton.disabled = true;
+    }
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney}`;
+  });
+
+  dealButton.addEventListener("click", () => {
+    dealButton.disabled = false;
+    betAllButton.disabled = true;
+    betOneButton.disabled = true;
+    flipCard();
+  });
+};
+
+const flipCard = () => {
+  const flipTheCard = document.getElementsByClassName("inner-card");
+  for (let i = 0; i < flipTheCard.length; i += 1) {
+    flipTheCard.item(i).classList.toggle("front-card");
+  }
+  calcHandScore(playerCardHand);
+
+  return outputMessage;
+  /* 
+  outputMessage.innerHTML = `Click on the card to hold.<br>Click on deal when done holding.`; */
+};
+
+// Removes an element from the document.
+const removeElement = (elementId) => {
+  let element = document.getElementById(elementId);
+  element.parentNode.removeChild(element);
+};
+
+// hold button will be on every card
+// hold button will be put on every card
+// when user clicks card, message will show on top of the card to show that it is being held
+// if clicked, cardHeld = true
+// if cardHeld = false, clicking DEAL will replace those unheld cards.
+const holdButton = document.createElement("div");
+holdButton.id = "hold-button";
+/* holdButton.innerHTML = "HOLD"; */
+
+// Inputting username and then amount to wager
+const startOfGame = () => {
+  gameMessage.id = "game-message";
+  gameMessage.innerHTML = " Y O U &nbsp R E A D Y ?";
+  document.body.appendChild(gameMessage);
+
+  // indicate ready to begin
+  readyButton.id = "ready-button";
+  readyButton.innerHTML = "R E A D Y";
+  document.body.appendChild(readyButton);
+  readyButton.addEventListener("click", initGame);
+  removeElement("table");
+};
+
 // calling 5 cards out onto container
 const playerClick = () => {
   document.body.appendChild(table);
@@ -238,8 +237,17 @@ const initGame = () => {
 startOfGame();
 
 const calcHandScore = (hand) => {
+  let cardNameTally = {};
+  let cardSuitTally = {};
+
   for (let i = 0; i < hand.length; i++) {
-    var cardName = hand[i].name;
+    let cardName = hand[i].name;
+    let cardSuit = hand[i].suit;
+    if (cardSuit in cardSuitTally) {
+      cardSuitTally[cardSuit] += 1;
+    } else {
+      cardSuitTally[cardSuit] = 1;
+    }
     // If we have seen the card name before, increment its count
     if (cardName in cardNameTally) {
       cardNameTally[cardName] += 1;
@@ -249,43 +257,31 @@ const calcHandScore = (hand) => {
       cardNameTally[cardName] = 1;
     }
   }
-  for (let [key, value] of Object.entries(cardNameTally)) {
-    console.log(key === "J" && value >= 1);
-    if (value === 2) {
-      outputMessage.innerHTML = "You have Two Pairs.";
-    } else if (key === "J" && value >= 1) {
-      outputMessage.innerHTML = "You have Jacks.";
+  for (cardName in cardNameTally) {
+    console.log(cardNameTally);
+    console.log(cardSuitTally);
+    if (
+      cardName === "J" &&
+      cardName === "Q" &&
+      cardName === "K" &&
+      cardName === "A" &&
+      cardNameTally[cardName] >= 1
+    ) {
+      outputMessage.innerHTML = "You have Jacks or Better.";
     } else {
       outputMessage.innerHTML = "You have no special combinations.";
     }
     return outputMessage;
   }
-};
-
-/* const generateTable = () => {
-  // creates a <table> element and a <tbody> element
-  var tbl = document.createElement("table");
-  var tblBody = document.createElement("tbody");
-
-  // creating all cells
-  for (var i = 0; i < 10; i++) {
-    // creates a table row
-    var row = document.createElement("tr");
-
-    for (var j = 0; j < 6; j++) {
-      // Create a <td> element and a text node, make the text
-      // node the contents of the <td>, and put the <td> at
-      // the end of the table row
-      var cell = document.createElement("td");
-      row.appendChild(cell);
+  for (cardSuit in cardSuitTally) {
+    if (
+      cardSuit[0] === cardSuit[1] &&
+      cardSuit[1] === cardSuit[2] &&
+      cardSuit[2] === cardSuit[3] &&
+      cardSuit[3] === cardSuit[4] &&
+      cardSuit[4] === cardSuit[5]
+    ) {
+      outputMessage.innerHTML = "You have a Flush.";
     }
-
-    // add the row to the end of the table body
-    tblBody.appendChild(row);
   }
-  // put the <tbody> in the <table>
-  tbl.appendChild(tblBody);
-  // appends <table> into <body>
-  document.body.appendChild(tbl);
-  tbl.setAttribute("border", 2);
-}; */
+};

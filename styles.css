@@ -2,6 +2,7 @@ body {
   background-color: black;
   background-image: url("https://wallpaper-house.com/data/out/7/wallpaper2you_199983.gif");
   background-size: 100%;
+  max-width: 100%;
 }
 
 #header {
