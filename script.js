@@ -1,6 +1,8 @@
 // global variables
 // let playerCard;
 let gameScore = 100;
+const folderPath = './cards';
+
 const rankTally = {};
 const suitTally = {};
 let canClick = false;
@@ -29,6 +31,12 @@ const playerHand = [
     rank: 9, suit: 'spades', symbol: '♠', name: '9',
   },
 ];
+// return filepath of card
+const getFilePathCard = (suit, rank) =>
+{
+  const filePath = `${folderPath}/${suit}\ ${rank}.png`;
+  return filePath;
+};
 
 // game mode = place bets, deal card, swap card, calculate score
 
@@ -80,7 +88,7 @@ document.body.appendChild(buttonsContainer);
 
 const muteBtn = document.querySelector('.mute');
 const bgMusic = new Audio('sounds/casino-bgm.mp3');
-bgMusic.volume = 0.03;
+bgMusic.volume = 0.05;
 
 function playPause() {
   if (bgMusic.paused) {
@@ -210,28 +218,37 @@ const makeDeck = () => {
   return newDeck;
 };
 
+const createCardImg = (cardInfo) => {
+  const cardImg = document.createElement('img');
+  cardImg.src = getFilePathCard(cardInfo.suit, cardInfo.rank);
+  cardImg.classList.add('cardimg');
+  return cardImg;
+};
+
 const deck = shuffleCards(makeDeck());
 
 // function to store the metainfo of the drawn card
 const createCard = (cardInfo) => {
   console.log('card info:', cardInfo);
-  const suit = document.createElement('div');
-  suit.classList.add('suit');
-  suit.innerText = cardInfo.symbol;
+  // const suit = document.createElement('div');
+  // suit.classList.add('suit');
+  // suit.innerText = cardInfo.symbol;
 
-  const name = document.createElement('div');
-  name.classList.add('name');
-  name.innerText = cardInfo.name;
+  // const name = document.createElement('div');
+  // // name.classList.add('name');
+  // name.innerText = cardInfo.name;
 
   const card = document.createElement('div');
+  const cardImage = createCardImg(cardInfo);
   card.classList.add('card');
+  card.appendChild(cardImage);
 
-  if (cardInfo.color === 'red') {
-    card.classList.add('red');
-  }
+  // if (cardInfo.color === 'red') {
+  //   card.classList.add('red');
+  // }
 
-  card.appendChild(name);
-  card.appendChild(suit);
+  // card.appendChild(name);
+  // card.appendChild(suit);
 
   return card;
 };
@@ -518,7 +535,6 @@ const initGame = () => {
 
 const reinitGame = () => {
   canClick = false;
-  canSwap = false;
   // playerHand = [];
   currentBet = 0;
   playerdiv.innerHTML = '';
@@ -559,7 +575,7 @@ const swapCards = () => {
     displayGameResult();
     setTimeout(() => {
       reinitGame();
-    }, 5000);
+    }, 6000);
   }
 };
 
