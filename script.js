@@ -11,6 +11,7 @@ let currentBet = 0;
 let cardsToSwap = [];
 let handScore = 0;
 let pointsWon;
+const mute = true;
 const playerHand = [
   {
     rank: 2, suit: 'spades', symbol: '♠', name: '2',
@@ -77,17 +78,21 @@ buttonsContainer.appendChild(dealBtn);
 buttonsContainer.appendChild(swapBtn);
 document.body.appendChild(buttonsContainer);
 
-const muteBtn = document.createElement('BUTTON');
-muteBtn.classList.add('mute');
-muteBtn.innerHTML = 'MUTE';
-const bgMusic = new Audio('sounds/insert-coin.mp3');
+const muteBtn = document.querySelector('.mute');
+const bgMusic = new Audio('sounds/casino-bgm.mp3');
+bgMusic.volume = 0.03;
 
-const playMusic = () => {
-  muteBtn.classList.toggle('unmute');
-  bgMusic.play();
-};
+function playPause() {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    muteBtn.className = 'unmute';
+  } else {
+    bgMusic.pause();
+    muteBtn.className = 'mute';
+  }
+}
 
-muteBtn.addEventListener('click', playMusic);
+muteBtn.addEventListener('click', playPause);
 
 // helper functions
 // display message using output
@@ -101,6 +106,7 @@ const betOutput = (message) => {
 
 const insertCoinEffect = () => {
   const audio = new Audio('sounds/insert-coin.mp3');
+  audio.volume = 0.5;
   audio.play();
 };
 
