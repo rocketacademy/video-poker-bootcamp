@@ -1,6 +1,8 @@
 body {
   background-color: #181818;
+  border: 5px dashed green;
 }
+
 .card {
   margin: 10px;
   padding: 10px;
@@ -74,6 +76,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 26px;
 }
 
 h1 {
@@ -127,7 +131,7 @@ h1 {
   text-align: center;
   display: inline-block;
   margin: 5px;
-  width: 5.5em;
+  width: 8em;
   font-weight: bold;
   padding: 10px 0 10px 0px;
   background-color: lightgray;
@@ -156,7 +160,8 @@ h1 {
   align-content: center;
   padding: 20px;
   position: absolute;
-  top: 10px;
+  top: 26px;
+  left: 30px;
   font-family: "Press Start 2p";
   font-size: 32px;
 }
@@ -165,4 +170,31 @@ h1 {
   font-family: "Press Start 2p";
   font-size: 16px;
   padding: 10px;
+}
+
+.mute {
+  position: absolute;
+  background-color: #181818;
+  top: 30px;
+  right: 30px;
+  width: 55px;
+  min-height: 50px;
+  border: none;
+  background-image: url("images/mute.png");
+  background-size: cover;
+  cursor: pointer;
+  color: white;
+}
+
+.unmute {
+  position: absolute;
+  background-color: #181818;
+  top: 30px;
+  right: 30px;
+  width: 55px;
+  min-height: 50px;
+  border: none;
+  background-image: url("images/play.png");
+  background-size: cover;
+  cursor: pointer;
 }

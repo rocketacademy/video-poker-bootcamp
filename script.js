@@ -4,7 +4,7 @@ let gameScore = 100;
 const rankTally = {};
 const suitTally = {};
 let canClick = false;
-let canSwap = false;
+// let canSwap = false;
 let gameMode = 'place_bets';
 const maxPlayerHand = 5;
 let currentBet = 0;
@@ -76,6 +76,18 @@ buttonsContainer.appendChild(bet5Btn);
 buttonsContainer.appendChild(dealBtn);
 buttonsContainer.appendChild(swapBtn);
 document.body.appendChild(buttonsContainer);
+
+const muteBtn = document.createElement('BUTTON');
+muteBtn.classList.add('mute');
+muteBtn.innerHTML = 'MUTE';
+const bgMusic = new Audio('sounds/insert-coin.mp3');
+
+const playMusic = () => {
+  muteBtn.classList.toggle('unmute');
+  bgMusic.play();
+};
+
+muteBtn.addEventListener('click', playMusic);
 
 // helper functions
 // display message using output
