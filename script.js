@@ -6,6 +6,7 @@ let deals = 0;
 let playerBet = 0;
 let playerChips = 100;
 let deck;
+let handName;
 
 // DOM elements
 const container = document.getElementById("hand");
@@ -170,17 +171,27 @@ const resetGame = () => {
 const popup = () => {
   const pop = document.createElement("div");
   if (handScore < 0) {
-    pop.innerText = "GAME OVER";
+    pop.innerText = `You got ${handName}! \nGAME OVER!\n `;
   } else {
-    pop.innerText = "YOU WIN";
+    pop.innerText = `You got ${handName}! \nYou Win!\n `;
   }
 
   pop.classList.add("popup");
   document.body.appendChild(pop);
-  setTimeout(function () {
+  const nextGame = document.createElement("button");
+  nextGame.innerText = "Next Game";
+  pop.appendChild(nextGame);
+  nextGame.addEventListener("click", function () {
     pop.remove();
     resetGame();
-  }, 1000);
+  });
+  const endGame = document.createElement("button");
+  endGame.innerText = "End Game";
+  pop.appendChild(endGame);
+  endGame.addEventListener("click", function () {
+    pop.innerHTML = "";
+    pop.innerText = `End Game \n Player Points: ${playerChips}`;
+  });
 };
 
 betOne.addEventListener("click", increaseBet);
@@ -230,7 +241,7 @@ dealButton.addEventListener("click", function () {
 
   if (deals === 2) {
     calcHandScore(hand);
-    setTimeout(popup, 1000);
+    popup();
   }
 });
 

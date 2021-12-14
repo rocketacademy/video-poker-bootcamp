@@ -69,10 +69,12 @@ const pointSelection = (hand) => {
       //check for four of a kind
       if (cardTally[cardName] === 4) {
         handScore = 25;
+        handName = "Four of a Kind";
         break;
         //check for house
       } else if (cardTally[cardName] === 3) {
         handScore = 9;
+        handName = "House";
       }
     }
   } else if (tallyLength === 3) {
@@ -80,10 +82,12 @@ const pointSelection = (hand) => {
       //check for three of a kind
       if (cardTally[cardName] === 3) {
         handScore = 3;
+        handName = "Three of a Kind";
         break;
         //check for 2 pairs
       } else {
         handScore = 2;
+        handName = "Two Pairs";
       }
     }
   } else if (tallyLength === 4) {
@@ -95,9 +99,11 @@ const pointSelection = (hand) => {
       cardTally["jack"] === 2
     ) {
       handScore = 1;
+      handName = "Jacks and Better";
       //check for pairs lesser than jacks
     } else {
       handScore = -1;
+      handName = "Small pair";
     }
   } else if (tallyLength === 5) {
     //check for royal flush
@@ -107,6 +113,7 @@ const pointSelection = (hand) => {
       checkForRoyal(cardTally) === true
     ) {
       handScore = 250;
+      handName = "Royal Flush";
       //check for straight flush
     } else if (
       checkForStraights(hand) === true &&
@@ -114,15 +121,19 @@ const pointSelection = (hand) => {
       checkForRoyal(cardTally) === false
     ) {
       handScore = 50;
+      handName = "Straight Flush";
       //check for straights
     } else if (checkForStraights(hand) === true) {
       handScore = 4;
+      handName = "Straights";
       //check for flush
     } else if (checkForFlush(hand) === true) {
       handScore = 6;
+      handName = "Flush";
       //gameover
     } else {
       handScore = -1;
+      handName = "High Card";
     }
   }
 };
