@@ -124,12 +124,41 @@ const updateInstructions = (instructions) => {
   document.getElementById("instructions").innerHTML = instructions;
 };
 
+const toggleHold = (cardId) => {
+  if (document.getElementById(`hold-${cardId}`).className == "unhold") {
+    document.getElementById(`hold-${cardId}`).className = "hold";
+  } else {
+    document.getElementById(`hold-${cardId}`).className = "unhold";
+  }
+};
+
 const updateCards = () => {
   let counter = 0;
-  let setCards = setInterval((i) => {
-    document.getElementById(
-      "cards"
-    ).innerHTML += `<img src=${stats.hand[counter].pic} class='card' />`;
+  let setCards = setInterval(() => {
+    let card = document.createElement("IMG");
+    card.src = `${stats.hand[counter].pic}`;
+    card.id = `${counter}`
+
+    let cardDiv = document.getElementById(
+      `card-${counter}`
+    );
+
+    card.addEventListener('click', (event) => {
+      toggleHold(event.target.id);
+    });
+
+    cardDiv.appendChild(card);
+
+    let hold = document.createElement("div");
+    hold.classList.add("unhold");
+    hold.id = `hold-${counter}`;
+    hold.innerText = "Hold";
+
+    hold.addEventListener('click', (event) => {
+      toggleHold(event.target.id.split("-")[1]);
+    });
+
+    cardDiv.appendChild(hold);
 
     if (counter == 4) {
       clearInterval(setCards);

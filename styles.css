@@ -19,6 +19,17 @@ body {
   table-layout: auto;
 }
 
+.hold {
+  color: #212529;
+  background: #f7d51d;
+  top: -50%;
+  position: relative;
+}
+
+.unhold {
+  display: none;
+}
+
 #video-poker-machine {
   width: 800px;
   height: 1000px;
