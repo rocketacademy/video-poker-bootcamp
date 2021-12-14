@@ -1,0 +1,34 @@
+1. User places bet (out of 100)
+Have input field and submit button
+
+2. User clicks 'submit' and is dealt 5 random cards
+
+3. User is allowed to keep up to 5 cards, while the rest will be removed from hand and replaced
+
+4. Hand will be checked for winning conditions
+- Royal flush (+30) (DONE)
+10 J(11) Q(12) K(13) A(1) and same suit
+- Straight flush (+25) (DONE)
+5 cards of sequential card rank AND same suit
+if there's Ace, Ace can only be start of flush (e.g. A 2 3 4 5)
+-> must probably use value of A as 1
+- Four of a kind (+20) (DONE)
+4 of the same card rank
+- Full house (+15) (DONE)
+3 of the same card rank + 2 of the same card rank
+- Flush (+10) (DONE)
+5 cards of same card suit
+- Straight (+8)
+5 cards of sequential card rank
+- Three of a kind (+6) (DONE)
+3 of the same card rank
+- Two Pairs (+4) (DONE)
+2 pairs of same card rank
+- One Pair (+2) (DONE)
+1 pair of same card rank
+- High Card (+1) (DONE)
+1 Jack and above card
+
+5. Output winning message
+Calculate points
+Reset game with new points (re-do card deck, clear all card arrays, etc)

@@ -1,0 +1,42 @@
+h1 {
+  text-align: center;
+}
+
+.cardfront {
+  display: inline-block;
+  width: 96%;
+  height: auto;
+  margin: 5px;
+}
+
+.cardtable {
+  width: 650px;
+  height: 250px;
+  padding: 5px;
+  align-items: center;
+  display: inline-block;
+  border-style: solid;
+  border-width: 8px;
+  border-color: brown;
+  background-color: green;
+  border-radius: 5px;
+}
+
+.betinputfield {
+  display: block;
+}
+
+.cardboxelement {
+  display: inline-block;
+  width: 18%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  background: red;
+}
+
+.holdmessagebox {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+}
