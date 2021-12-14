@@ -1,39 +1,11 @@
 /* eslint-disable prefer-const */
 /** GLOBAL VARIABLES */
-let suit1 = '';
-let name1 = '';
 let credits = 100;
 let playerCard = '';
 let handScore = 0;
 let bet = 0;
 let currentGameMode = 'input bet';
-const playerHand = [
-  {
-    name: 'queen',
-    rank: 12,
-    suit: 'hearts',
-  },
-  {
-    name: '7',
-    rank: 7,
-    suit: 'diamonds',
-  },
-  {
-    name: '3',
-    rank: 3,
-    suit: 'spades',
-  },
-  {
-    name: '10',
-    rank: 10,
-    suit: 'spades',
-  },
-  {
-    name: '5',
-    rank: 5,
-    suit: 'clubs',
-  },
-];
+const playerHand = [];
 
 let royalFlush;
 let straightFlush;
@@ -132,10 +104,11 @@ const deck = shuffleCards(makeDeck());
 const output = (message) => {
   gameInfo.innerText = message;
 };
+
 /** Function to create card element */
 const createCardImage = () => {
-  // let suit1 = playerCard.suit;
-  // let name1 = playerCard.name;
+  let suit1 = playerCard.suit;
+  let name1 = playerCard.name;
   const cardImage = document.createElement('img');
   cardImage.src = `../video-poker-bootcamp/media/${suit1}-${name1}.png`;
   cardImage.alt = `${name1} of ${suit1}`;
@@ -146,8 +119,10 @@ const createCardImage = () => {
 /** Function to check winning conditions with same card suit or sequential increase */
 /** which includes royal flush, straight flush, flush, straight */
 const checkSameCardSuits = () => {
+  /** sort player hand in ascending order */
   playerHand.sort((a, b) => a.rank - b.rank);
   let cardSuitTally = {};
+  /** loop to check if there are cards in sequential order */
   let seqCount = 0;
   for (let i = 0; i < playerHand.length - 1; i += 1) {
     if (playerHand[i].rank + 1 === playerHand[i + 1].rank) {
@@ -156,7 +131,7 @@ const checkSameCardSuits = () => {
   }
   console.log('seq count');
   console.log(seqCount);
-
+  /** loop to calc card suit tally */
   for (let i = 0; i < playerHand.length; i += 1) {
     let cardSuit = playerHand[i].suit;
     // If we have seen the card suit before, increment its count
@@ -168,7 +143,9 @@ const checkSameCardSuits = () => {
       cardSuitTally[cardSuit] = 1;
     }
   }
+  /** call values from card suit tally into an array */
   let suitArray = Array.from(Object.values(cardSuitTally));
+  /** sort values in ascending order */
   suitArray.sort((a, b) => a - b);
   console.log('card suit tally values');
   console.log(suitArray);
@@ -187,8 +164,6 @@ const checkSameCardSuits = () => {
     return straight;
   }
 };
-
-/** Function to check winning conditions with sequential cards */
 
 /** Function to check winning conditions with same card name */
 /** which includes four of a kind, three of a kind, full house, two pairs, one pair */
@@ -225,8 +200,6 @@ const checkSameCardNames = () => {
   } else if (nameArray[nameArray.length - 1] === 2) {
     onePair = true;
     return onePair;
-  } else {
-    console.log('card name tally value is 1');
   }
 };
 
@@ -275,6 +248,9 @@ const calcHandScore = () => {
   } else if (highCard) {
     console.log('high card');
     handScore = bet * 1;
+  } else {
+    console.log('lose');
+    handScore = -bet;
   }
 };
 
@@ -293,18 +269,15 @@ const playerClick = () => {
     }
   } else if (currentGameMode === 'deal cards') {
     /** draw cards */
-    for (let i = 0; i < 5; i += 1) {
-      // playerCard = deck.pop();
-      // playerHand.push(playerCard);
-      playerCard = playerHand[i];
+    for (let i = 1; i < 6; i += 1) {
+      playerCard = deck.pop();
+      playerHand.push(playerCard);
       const cardBoxElement = document.createElement('div');
       cardBoxElement.classList.add('cardboxelement');
       cardBoxElement.id = `cardBox${i}`;
       const holdMessageBox = document.createElement('div');
       holdMessageBox.classList.add('holdmessagebox');
       holdMessageBox.text = '';
-      suit1 = playerHand[i].suit;
-      name1 = playerHand[i].name;
       const cardElement = createCardImage();
       cardBoxElement.appendChild(holdMessageBox);
       cardBoxElement.appendChild(cardElement);
@@ -314,6 +287,18 @@ const playerClick = () => {
     calcHandScore();
     console.log(handScore);
     currentGameMode = 'choose hold';
+  } else if (currentGameMode === 'choose hold') {
+    /** let players choose which card they want to hold */
+    currentGameMode = 'redraw and end';
+  } else if (currentGameMode === 'redraw and end') {
+    /** redraw cards
+     * calc hand score again
+     * display winning message
+     * you got a xxx! you win / lose
+     * calculate credits
+     * reset everything so they can input another bet and continue playing
+     * currentgamemode = "input bet"
+    */
   }
 };
 
