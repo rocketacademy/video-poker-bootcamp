@@ -4,7 +4,17 @@
  * @param push cards drawn into cardInHand
  * @return number of i that the user scored for the cards in hand
  */
-let pair = false;
+ 
+// global variables for all winning combos
+let twoPairs = false;
+let threeKinds = false;
+let straight = false;
+let flush = false;
+let fullHouse = false;
+let fourKinds = false;
+let straightFlush = false;
+let royalFlush = false;
+let jackOrBetter = false;
 let cardInHand = [];
 let userPoints = 0;
 let moneyInHand = 200;
@@ -14,6 +24,8 @@ let container;
 let playerCardHand = [];
 let playerHandRank = [];
 let cardHeld = false;
+
+// DOMS
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
 let outputMessage = document.createElement("div");
@@ -174,7 +186,7 @@ const flipCard = () => {
   for (let i = 0; i < flipTheCard.length; i += 1) {
     flipTheCard.item(i).classList.toggle("front-card");
   }
-  calcHandScore(playerCardHand);
+  winningCombos(playerCardHand);
 
   return outputMessage;
   /* 
@@ -237,17 +249,33 @@ const initGame = () => {
 startOfGame();
 
 const calcHandScore = (hand) => {
-  let cardNameTally = {};
-  let cardSuitTally = {};
+	
+}
+	
 
-  for (let i = 0; i < hand.length; i++) {
-    let cardName = hand[i].name;
-    let cardSuit = hand[i].suit;
+
+const winningCombos = (combo) =>{
+	// tally global variables
+	let cardNameTally = {};
+  	let cardSuitTally = {};
+	let cardRankTally = {};
+
+	// for loop to get tally for nameTally and suitTally
+  for (let i = 0; i < combo.length; i++) {
+    let cardName = combo[i].name;
+    let cardSuit = combo[i].suit;
+	let cardRank = combo[i].rank;
+
+	// Tally for card suit
+	// If we have seen the card suit before, increment its count
     if (cardSuit in cardSuitTally) {
       cardSuitTally[cardSuit] += 1;
-    } else {
+    } 
+	// Else, initialise count of this card suit to 1
+	else {
       cardSuitTally[cardSuit] = 1;
     }
+	// Tally for card name
     // If we have seen the card name before, increment its count
     if (cardName in cardNameTally) {
       cardNameTally[cardName] += 1;
@@ -256,10 +284,39 @@ const calcHandScore = (hand) => {
     else {
       cardNameTally[cardName] = 1;
     }
+	// Tally for card suit
+	// If we have seen the card suit before, increment its count
+    if (cardRank in cardRankTally) {
+      cardRankTally[cardRank] += 1;
+    } 
+	// Else, initialise count of this card suit to 1
+	else {
+      cardRankTally[cardRank] = 1;
+
   }
+  }
+  // running for in loop to go through card name combos
   for (cardName in cardNameTally) {
+	  for(cardRank in cardRankTally){
+		  for(j=0;j<cardRankTally.length; j++){
+			  if((cardRankTally[j+1] - cardRankTally[j]) === 1){
+				  straight = true;
+				  outputMessage.innerHTML = "You have a Straight.";
+			  }
+		  }
+	  }
+	  // running for in loop to go through card suit combos like Flush
+  	  for (cardSuit in cardSuitTally) {
+      if (
+      cardSuitTally[cardSuit] === 5
+    ) {
+	  flush = true;
+      outputMessage.innerHTML = "You have a Flush.";
+      }
+    }
     console.log(cardNameTally);
     console.log(cardSuitTally);
+	console.log(cardSuitTally[cardSuit])
     if (
       cardName === "J" &&
       cardName === "Q" &&
@@ -267,21 +324,14 @@ const calcHandScore = (hand) => {
       cardName === "A" &&
       cardNameTally[cardName] >= 1
     ) {
+	  jackOrBetter = true;
       outputMessage.innerHTML = "You have Jacks or Better.";
-    } else {
+    } 
+	// else if(){}
+	
+	else {
       outputMessage.innerHTML = "You have no special combinations.";
     }
     return outputMessage;
-  }
-  for (cardSuit in cardSuitTally) {
-    if (
-      cardSuit[0] === cardSuit[1] &&
-      cardSuit[1] === cardSuit[2] &&
-      cardSuit[2] === cardSuit[3] &&
-      cardSuit[3] === cardSuit[4] &&
-      cardSuit[4] === cardSuit[5]
-    ) {
-      outputMessage.innerHTML = "You have a Flush.";
-    }
   }
 };
