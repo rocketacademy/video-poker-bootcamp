@@ -8,7 +8,7 @@ const whenIncomingRequest = (request, response) => {
   console.log('request url', request.url);
 
   let filepath = `.${request.url}`;
-  if (filepath == './') {
+  if (filepath === './') {
     filepath = './index.html';
   }
   const extname = String(path.extname(filepath)).toLowerCase();

@@ -16,19 +16,25 @@ let pointsWon;
 const mute = true;
 const playerHand = [
   {
-    rank: 2, suit: 'spades', symbol: '♠', name: '2',
+    rank: 2,
+    suit: 'spades',
   },
   {
-    rank: 2, suit: 'spades', symbol: '♠', name: '2',
+    rank: 4,
+    suit: 'hearts',
+  },
+
+  {
+    rank: 6,
+    suit: 'spades',
   },
   {
-    rank: 5, suit: 'spades', symbol: '♠', name: '5',
+    rank: 8,
+    suit: 'spades',
   },
   {
-    rank: 7, suit: 'spades', symbol: '♠', name: '7',
-  },
-  {
-    rank: 9, suit: 'spades', symbol: '♠', name: '9',
+    rank: 11,
+    suit: 'spades',
   },
 ];
 // return filepath of card
@@ -88,7 +94,7 @@ document.body.appendChild(buttonsContainer);
 
 const muteBtn = document.querySelector('.mute');
 const bgMusic = new Audio('sounds/casino-bgm.mp3');
-bgMusic.volume = 0.05;
+bgMusic.volume = 0.1;
 
 function playPause() {
   if (bgMusic.paused) {
@@ -131,6 +137,7 @@ const winSoundEffect = () => {
 
 const loseSoundEffect = () => {
   const audio = new Audio('sounds/lose-sound.mp3');
+  audio.volume = 0.5;
   audio.play();
 };
 
@@ -319,10 +326,8 @@ const checkPair = (rankTally) => {
 };
 
 const checkFullHouse = (rankTally) => {
-  for (rank in rankTally) {
-    if (checkThreeOfKind === true && checkPair === true) {
-      return true;
-    }
+  if (checkThreeOfKind(rankTally) === true && (checkPair(rankTally) === true)) {
+    return true;
   }
   return false;
 };
@@ -339,7 +344,7 @@ const checkTwoPair = (rankTally) => {
   }
   return false;
 };
-
+// function not working for hand with ace;
 const checkStraight = () => {
   let count = 0;
   for (let i = 0; i < (playerHand.length - 1); i += 1) {
@@ -354,8 +359,8 @@ const checkStraight = () => {
   return false;
 };
 
-const checkStraightFlush = (suitTally) => {
-  if (checkFlush(suitTally) && (checkStraight === true)) {
+const checkStraightFlush = (suitTally, rankTally) => {
+  if (checkFlush(suitTally) === true && (checkStraight(rankTally) === true)) {
     return true;
   }
   return false;
@@ -374,7 +379,7 @@ const isRoyalStraight = (rankTally) => {
 };
 
 const checkRoyalFlush = () => {
-  if (isRoyalStraight(rankTally) && checkFlush(suitTally)) {
+  if (isRoyalStraight(rankTally) === true && checkFlush(suitTally) === true) {
     return true;
   }
   return false;
@@ -398,13 +403,13 @@ const calcHandScore = (rankTally, suitTally) => {
     handScore = 6;
     return handScore;
   } if (checkFourOfAKind(rankTally) === true) {
-    handScore = 4;
-    return handScore;
-  } if (checkThreeOfKind(rankTally) === true) {
-    handScore = 3;
+    handScore = 40;
     return handScore;
   } if (checkFullHouse(rankTally) === true) {
-    handScore = 9;
+    handScore = 30;
+    return handScore;
+  } if (checkThreeOfKind(rankTally) === true) {
+    handScore = 20;
     return handScore;
   } if (checkTwoPair(rankTally) === true) {
     handScore = 2;
@@ -444,17 +449,17 @@ const displayGameResult = (rankTally, suitTally) => {
     output('You Win! You got a Flush!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
-  } if (handScore === 4) {
+  } if (handScore === 40) {
     winSoundEffect();
     output('You Win! You got a Four of a Kind!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
-  } if (handScore === 3) {
+  } if (handScore === 20) {
     winSoundEffect();
     output('You Win! You got Three of a Kind!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
-  } if (handScore === 9) {
+  } if (handScore === 30) {
     winSoundEffect();
     output('You Win! You got a Full House!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
@@ -464,7 +469,7 @@ const displayGameResult = (rankTally, suitTally) => {
     output('You Win! You got a Two Pair!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
-  } if (handScore === 6) {
+  } if (handScore === 4) {
     winSoundEffect();
     output('You Win! You got a Straight');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
@@ -573,9 +578,9 @@ const swapCards = () => {
     calcHandScore(rankTally, suitTally);
     addPoints();
     displayGameResult();
-    setTimeout(() => {
-      reinitGame();
-    }, 6000);
+    // setTimeout(() => {
+    //   reinitGame();
+    // }, 6000);
   }
 };
 
