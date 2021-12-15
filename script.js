@@ -56,15 +56,29 @@ const revealCard = (cardElement, cardInfo) => {
 
 /**
  * Update credits after a game.
+ * @param {*} winCredits Winning of the hand
  */
-const updateCredits = (score) => {
-  console.log(`pre credit: ${credit}`);
-  credit += score;
-  console.log(`bet: ${bet} score: ${score}`);
-  console.log(`new credit: ${credit}`);
+const updateCredits = (winCredits) => {
+  credit += winCredits;
 
   const credits = document.querySelector('.credits');
   credits.innerText = `Credits: ${credit}`;
+};
+
+/**
+ * Calculate winnings based on score and bet.
+ * @param {*} score Score of hand
+ * @param {*} gameBet Bet placed for game
+ */
+const calcWinnings = (score, gameBet) => {
+  let winCredits = gameBet;
+
+  // special extra winnings if player gets royal flush and bets max
+  if (score === SCORES.ROYAL_FLUSH) {
+    winCredits = (gameBet === MAX_BET) ? MAX_MULTIPLIER : gameBet;
+  }
+
+  return score * winCredits;
 };
 
 /**
@@ -370,23 +384,20 @@ const isRoyalFlush = (cardTally) => {
 /**
  * Calculate score for the cards in hand.
  * @param {*} cards Array of card objects
- * @param {*} gameBet Current game bet
  * @returns Number of points that the user scored for the cards in their hand
  */
-const calcHandScore = (cards, gameBet) => {
+const calcHandScore = (cards) => {
   const cardTally = tallyCards(cards);
 
-  if (isRoyalFlush(cardTally)) {
-    return SCORES.ROYAL_FLUSH * ((gameBet === MAX_BET) ? MAX_MULTIPLIER : gameBet);
-  }
-  if (isStraightFlush(cardTally)) return SCORES.STRAIGHT_FLUSH * gameBet;
-  if (isFourOfAKind(cardTally)) return SCORES.FOUR_OF_A_KIND * gameBet;
-  if (isFullHouse(cardTally)) return SCORES.FULL_HOUSE * gameBet;
-  if (isFlush(cardTally)) return SCORES.FLUSH * gameBet;
-  if (isStraight(cardTally)) return SCORES.STRAIGHT * gameBet;
-  if (isThreeOfAKind(cardTally)) return SCORES.THREE_OF_A_KIND * gameBet;
-  if (isTwoPair(cardTally)) return SCORES.TWO_PAIR * gameBet;
-  if (isOnePair(cardTally)) return SCORES.ONE_PAIR * gameBet;
+  if (isRoyalFlush(cardTally)) return SCORES.ROYAL_FLUSH;
+  if (isStraightFlush(cardTally)) return SCORES.STRAIGHT_FLUSH;
+  if (isFourOfAKind(cardTally)) return SCORES.FOUR_OF_A_KIND;
+  if (isFullHouse(cardTally)) return SCORES.FULL_HOUSE;
+  if (isFlush(cardTally)) return SCORES.FLUSH;
+  if (isStraight(cardTally)) return SCORES.STRAIGHT;
+  if (isThreeOfAKind(cardTally)) return SCORES.THREE_OF_A_KIND;
+  if (isTwoPair(cardTally)) return SCORES.TWO_PAIR;
+  if (isOnePair(cardTally)) return SCORES.ONE_PAIR;
 
   return 0;
 };
@@ -419,14 +430,12 @@ const drawCards = (cardElements) => {
     }
   }
 
-  // calculate hand score and update credits
-  updateCredits(calcHandScore(board, bet));
+  // calculate hand score, winnings, and update credits
+  updateCredits(calcWinnings(calcHandScore(board), bet));
 
   // reset bet
   updateBets(-1 * bet);
 };
-
-// module.exports = calcHandScore;
 
 /**
  * Create all the board elements that will go on the screen.
@@ -522,3 +531,10 @@ const initGame = () => {
 };
 
 initGame();
+
+/**
+ * This module.exports is needed to run unit tests.
+ * This causes a 'Uncaught ReferenceError: module is not defined'
+ * in the browser but it doesn't stop the web app from working.
+ */
+module.exports = { calcHandScore, calcWinnings };
