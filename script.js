@@ -1,15 +1,9 @@
 /**
  * Global variables
  */
-let overallContainer; // contains all assets
-let gameContainer;
-let cardComboContainer;
-let outputContainer;
-let inputContainer;
+let swapCardsBtn;
 let savedCardsArray = [];
 
-let output;
-let input;
 let betAmount = 0;
 const userHand = [];
 
@@ -18,9 +12,12 @@ let deck = [];
 
 // TODO
 // clicks a button to deal cards
-// user selects which card to keep DOING
+// user selects which card to keep
+// --> cards get saved to savedCardsArray when clicked. Need to create a function that replaces the unclicked cards
 // game replaces the unselected cards, calculateds the handscore, and update total points.
+// game calculates the hand score upon dealt of first hand
 // function that adds card in a loop and adds a click element to change cards.
+// once deal cards is pressed, hide button until end of game
 
 /**
  * function that sums returns the sum of the playing hand
@@ -110,7 +107,7 @@ const randomNumberGenerator = (deckLength) => {
   return Math.floor(Math.random() * deckLength);
 };
 
-/** DOING
+/**
  * function that takes a card object and returns a div to display card
  * adds a function that saves the card to an array when clicked
  * @param {object} cardInfo contains info of the attributes of 1 card
@@ -128,11 +125,6 @@ const makeCard = (cardInfo) => {
   cardName.innerHTML = cardInfo.displayName;
   cardSuit.innerHTML = cardInfo.suitSymbol;
 
-  card.addEventListener('click', () => {
-    card.classList.toggle('clicked');
-    savedCardsArray.push(cardInfo);
-  });
-
   card.appendChild(cardName);
   card.appendChild(cardSuit);
 
@@ -140,20 +132,67 @@ const makeCard = (cardInfo) => {
 };
 
 /** DOING
+ * function to swap cards that are not under holdStatus true
+ */
+const swapCards = () => {
+  swapCardsBtn.addEventListener('click', () => {
+    // saves cards on 'hold' status to an array
+    savedCardsArray = userHand.filter((x) => x.holdStatus === true);
+    console.log(savedCardsArray);
+    const amtOfCardsToFillHand = 5 - savedCardsArray.length;
+    console.log(`amt of cards needed = ${amtOfCardsToFillHand}`);
+    // add x amt of cards into saved hand array to make it 5
+    // TODO keep cards in place after changing them
+    for (let i = 0; i < amtOfCardsToFillHand; i += 1) {
+      const newCard = deck.pop();
+      savedCardsArray.push(newCard);
+    }
+    // makeCards this new array and deal
+    gameContainer.innerText = '';
+    for (let i = 0; i < savedCardsArray.length; i += 1) {
+      const card = savedCardsArray[i];
+      const cardEl = makeCard(card);
+      gameContainer.appendChild(cardEl);
+    }
+    // calculate the score of this card
+  });
+};
+
+/**
  * function to create a button to deal shuffled cards
  * also displays cards in gameContainer
  */
 const dealCardBtn = () => {
-  // button is placed in overall container only FYI
   const btnEl = document.createElement('button');
   btnEl.innerText = 'Deal Cards';
   btnEl.classList.add('btn-deal-cards', 'btn');
-  overallContainer.appendChild(btnEl);
+  buttonsContainer.appendChild(btnEl);
   btnEl.addEventListener('click', () => {
+    gameContainer.innerText = '';
     for (let i = 0; i < 5; i += 1) {
-      userHand.push(deck.pop());
+      const card = deck.pop();
+      card.holdStatus = false;
+      userHand.push(card);
+
       console.log(`${userHand[i].name} of ${userHand[i].suit} dealt`);
       const cardEl = makeCard(userHand[i]);
+
+      // adds the index of the card to saved card array on 1st click
+      let clickedTimes = 0;
+      cardEl.addEventListener('click', () => {
+        cardEl.classList.toggle('clicked');
+        console.log(`cardname: ${card.name}`);
+
+        if (clickedTimes % 2 === 0) {
+          // console.log('clickedTimes = 0');
+          card.holdStatus = true;
+          // removes index of card from array on 2nd click
+        } else if (clickedTimes % 2 === 1) {
+          card.holdStatus = false;
+          // console.log('clickedTimes = 1');
+        }
+        clickedTimes += 1;
+      });
       gameContainer.appendChild(cardEl);
     }
   });
