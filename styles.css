@@ -1,3 +1,9 @@
+@media only screen and (min-width: 768px) {
+  .player1container {
+    width: 50% !important;
+  }
+}
+
 body {
   background-color: #181818;
   border: 5px dashed green;

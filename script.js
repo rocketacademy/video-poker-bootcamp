@@ -6,37 +6,15 @@ const folderPath = './cards';
 const rankTally = {};
 const suitTally = {};
 let canClick = false;
-// let canSwap = false;
+let canSwap = false;
 let gameMode = 'place_bets';
 const maxPlayerHand = 5;
 let currentBet = 0;
 let cardsToSwap = [];
 let handScore = 0;
 let pointsWon;
-const mute = true;
-const playerHand = [
-  {
-    rank: 11,
-    suit: 'hearts',
-  },
-  {
-    rank: 4,
-    suit: 'hearts',
-  },
+const playerHand = [];
 
-  {
-    rank: 11,
-    suit: 'clubs',
-  },
-  {
-    rank: 10,
-    suit: 'clubs',
-  },
-  {
-    rank: 4,
-    suit: 'clubs',
-  },
-];
 // return filepath of card
 const getFilePathCard = (suit, rank) =>
 {
@@ -96,7 +74,7 @@ const muteBtn = document.querySelector('.mute');
 const bgMusic = new Audio('sounds/casino-bgm.mp3');
 bgMusic.volume = 0.1;
 
-function playPause() {
+const playPause = () => {
   if (bgMusic.paused) {
     bgMusic.play();
     muteBtn.className = 'unmute';
@@ -104,7 +82,7 @@ function playPause() {
     bgMusic.pause();
     muteBtn.className = 'mute';
   }
-}
+};
 
 muteBtn.addEventListener('click', playPause);
 
@@ -165,7 +143,7 @@ const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
   // Initialise an array of the 4 suits in our deck. We will loop over this array.
-  const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+  const suits = ['hearts', 'diamond', 'clubs', 'spades'];
   const suitShapes = ['♥', '♦', '♣', '♠'];
   let cardColor = '';
   let symbol;
@@ -490,12 +468,12 @@ const displayGameResult = (rankTally, suitTally) => {
 };
 
 const cardClick = (cardElement, cardToSwap) => {
-  if (canClick === true) {
+  if (canSwap === true) {
     let isCardPresent = false;
     if (cardsToSwap.length > 0) {
       for (let j = 0; j < cardsToSwap.length; j += 1) {
         if (cardToSwap === cardsToSwap[j]) {
-        // if the card is present, removeit from array
+        // if the card is present, remove it from array
           isCardPresent = true;
           cardsToSwap.splice(j, 1); // remove it from array
           j -= 1; // account for the decrease in array length
@@ -511,13 +489,13 @@ const cardClick = (cardElement, cardToSwap) => {
 };
 
 const dealHand = () => {
-  output('Deal Hand! Select Which Cards to Swap!');
   if (canClick === true) {
+    output('Deal Hand! Select Which Cards to Swap!');
     console.log(`${gameMode}`);
     flipEffect();
     if (currentBet >= 1 && gameMode === 'deal_Hand') {
       for (let i = 0; i < maxPlayerHand; i += 1) {
-        // playerHand.push(deck.pop());
+        playerHand.push(deck.pop());
         const cardElement = createCard(playerHand[i]);
         const cardToSwap = playerHand[i];
         cardElement.addEventListener('click', (event) => {
@@ -531,6 +509,8 @@ const dealHand = () => {
       gameMode = 'swap_Cards';
     }
   }
+  canClick = false;
+  canSwap = true;
 };
 
 const initGame = () => {
@@ -581,9 +561,9 @@ const swapCards = () => {
     calcHandScore(rankTally, suitTally);
     addPoints();
     displayGameResult();
-    // setTimeout(() => {
-    //   reinitGame();
-    // }, 6000);
+    setTimeout(() => {
+      reinitGame();
+    }, 6000);
   }
 };
 
