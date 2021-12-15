@@ -33,6 +33,11 @@ body {
   display: inline-block;
 }
 
+.buttons-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .card {
   display: inline-block;
   margin: 10px;
