@@ -5,8 +5,9 @@ let playerCard = '';
 let handScore = 0;
 let bet = 0;
 let currentGameMode = 'input bet';
-const playerHand = [];
-
+let playerHand = [];
+let redrawIndexes = [];
+let deck;
 let royalFlush;
 let straightFlush;
 let fourOfAKind;
@@ -17,6 +18,7 @@ let threeOfAKind;
 let twoPairs;
 let onePair;
 let highCard;
+let winCondition = '';
 
 /** CREATION OF ELEMENTS */
 const gameInfo = document.createElement('div');
@@ -32,11 +34,12 @@ const cardTable = document.createElement('div');
 cardTable.className = 'cardtable';
 
 /** HELPER FUNCTIONS */
-
 /** Function to get random index ranging from 0 (inclusive) to max (exclusive)
  * @param max - max number
 */
-const getRandomIndex = (max) => Math.floor(Math.random() * max);
+function getRandomIndex(max) {
+  return Math.floor(Math.random() * max);
+}
 
 /** Function to shuffle cards
  * @param cards - array of cards
@@ -98,27 +101,65 @@ const makeDeck = () => {
   return newDeck;
 };
 
-const deck = shuffleCards(makeDeck());
-
 /** Function to output message */
 const output = (message) => {
   gameInfo.innerText = message;
 };
 
-/** Function to create card element */
-const createCardImage = () => {
-  let suit1 = playerCard.suit;
-  let name1 = playerCard.name;
-  const cardImage = document.createElement('img');
-  cardImage.src = `../video-poker-bootcamp/media/${suit1}-${name1}.png`;
-  cardImage.alt = `${name1} of ${suit1}`;
-  cardImage.classList.add('cardfront');
-  return cardImage;
+/** Function to select cards to redraw */
+
+/** Function to build card deck elements */
+const buildCardElements = (hand) => {
+  cardTable.innerHTML = '';
+  const redrawIndexArr = [];
+  /** build card elements */
+  for (let i = 0; i < 5; i += 1) {
+    let suit1 = hand[i].suit;
+    let name1 = hand[i].name;
+    /** create box elements first to house 'redraw' message and card image */
+    const cardBoxElement = document.createElement('div');
+    cardBoxElement.className = 'cardboxelement';
+    cardBoxElement.id = `${i}`;
+    /** create image element for each card */
+    const cardElement = document.createElement('img');
+    cardElement.src = `../video-poker-bootcamp/media/${suit1}-${name1}.png`;
+    cardElement.alt = `${name1} of ${suit1}`;
+    cardElement.className = 'cardfront';
+
+    cardBoxElement.addEventListener('click', (e) => {
+      if (e.currentTarget.className === 'cardboxelement') {
+        e.currentTarget.className = 'cardboxredraw';
+        let index = Number(e.currentTarget.id);
+        redrawIndexArr.push(index);
+        redrawIndexArr.sort((a, b) => a - b);
+      } else if (e.currentTarget.className === 'cardboxredraw') {
+        e.currentTarget.className = 'cardboxelement';
+        let index = Number(e.currentTarget.id);
+        document.getElementById(`redrawBox${index}`).innerHTML = '';
+
+        for (let j = 0; j < redrawIndexArr.length; j += 1) {
+          if (redrawIndexArr[j] === index) {
+            redrawIndexArr.splice(j, 1);
+          }
+        }
+      }
+    });
+    redrawIndexes = redrawIndexArr;
+    cardBoxElement.appendChild(cardElement);
+    cardTable.appendChild(cardBoxElement);
+  }
 };
+
+// /** Function for clicking card to redraw */
 
 /** Function to check winning conditions with same card suit or sequential increase */
 /** which includes royal flush, straight flush, flush, straight */
 const checkSameCardSuits = () => {
+  /** reset values for winning conditions */
+  royalFlush = false;
+  straightFlush = false;
+  flush = false;
+  straight = false;
   /** sort player hand in ascending order */
   playerHand.sort((a, b) => a.rank - b.rank);
   let cardSuitTally = {};
@@ -129,8 +170,6 @@ const checkSameCardSuits = () => {
       seqCount += 1;
     }
   }
-  console.log('seq count');
-  console.log(seqCount);
   /** loop to calc card suit tally */
   for (let i = 0; i < playerHand.length; i += 1) {
     let cardSuit = playerHand[i].suit;
@@ -168,6 +207,13 @@ const checkSameCardSuits = () => {
 /** Function to check winning conditions with same card name */
 /** which includes four of a kind, three of a kind, full house, two pairs, one pair */
 const checkSameCardNames = () => {
+  /** reset values for winning conditions */
+  fourOfAKind = false;
+  threeOfAKind = false;
+  fullHouse = false;
+  twoPairs = false;
+  onePair = false;
+
   let cardNameTally = {};
 
   for (let i = 0; i < playerHand.length; i += 1) {
@@ -205,6 +251,7 @@ const checkSameCardNames = () => {
 
 /** Function to check high card */
 const checkHighCard = () => {
+  highCard = false;
   /** check high card */
   for (let i = 0; i < 5; i += 1) {
     if (playerHand[i].rank > 10) {
@@ -220,33 +267,43 @@ const calcHandScore = () => {
   checkHighCard();
   if (royalFlush) {
     console.log('royal flush');
+    winCondition = 'Royal Flush';
     handScore = bet * 30;
   } else if (straightFlush) {
     console.log('straight flush');
+    winCondition = 'Straight Flush';
     handScore = bet * 25;
   } else if (fourOfAKind) {
     console.log('four of a kind');
+    winCondition = 'Four of a Kind';
     handScore = bet * 20;
   } else if (fullHouse) {
     console.log('full house');
+    winCondition = 'Full House';
     handScore = bet * 15;
   } else if (flush) {
     console.log('flush');
+    winCondition = 'Flush';
     handScore = bet * 10;
   } else if (straight) {
     console.log('straight');
+    winCondition = 'Straight';
     handScore = bet * 8;
   } else if (threeOfAKind) {
     console.log('three of a kind');
+    winCondition = 'Three of a Kind';
     handScore = bet * 6;
   } else if (twoPairs) {
     console.log('two pairs');
+    winCondition = 'Two Pairs';
     handScore = bet * 4;
   } else if (onePair) {
     console.log('one pair');
+    winCondition = 'One Pair';
     handScore = bet * 2;
   } else if (highCard) {
     console.log('high card');
+    winCondition = 'High Card';
     handScore = bet * 1;
   } else {
     console.log('lose');
@@ -255,6 +312,7 @@ const calcHandScore = () => {
 };
 
 /** PLAYER ACTION FUNCTION */
+/** Function for when player clicks on submit button */
 const playerClick = () => {
   /** if current game mode is input bet */
   if (currentGameMode === 'input bet') {
@@ -268,37 +326,34 @@ const playerClick = () => {
       output(`You bet ${bet} credits. Click the 'Submit / Deal Cards' button again to deal cards!`);
     }
   } else if (currentGameMode === 'deal cards') {
-    /** draw cards */
-    for (let i = 1; i < 6; i += 1) {
+    deck = shuffleCards(makeDeck());
+    for (let i = 0; i < 5; i += 1) {
       playerCard = deck.pop();
       playerHand.push(playerCard);
-      const cardBoxElement = document.createElement('div');
-      cardBoxElement.classList.add('cardboxelement');
-      cardBoxElement.id = `cardBox${i}`;
-      const holdMessageBox = document.createElement('div');
-      holdMessageBox.classList.add('holdmessagebox');
-      holdMessageBox.text = '';
-      const cardElement = createCardImage();
-      cardBoxElement.appendChild(holdMessageBox);
-      cardBoxElement.appendChild(cardElement);
-      cardTable.appendChild(cardBoxElement);
     }
-    output('Now click on the cards you want to hold, and click the \'Submit / Deal Cards\' button again to re-draw the rest!');
     calcHandScore();
-    console.log(handScore);
-    currentGameMode = 'choose hold';
-  } else if (currentGameMode === 'choose hold') {
-    /** let players choose which card they want to hold */
-    currentGameMode = 'redraw and end';
-  } else if (currentGameMode === 'redraw and end') {
-    /** redraw cards
-     * calc hand score again
-     * display winning message
-     * you got a xxx! you win / lose
-     * calculate credits
-     * reset everything so they can input another bet and continue playing
-     * currentgamemode = "input bet"
-    */
+    buildCardElements(playerHand);
+
+    output('Now click on the cards you want to redraw, and click the \'Submit / Deal Cards\' button again to redraw them!');
+    currentGameMode = 'choose redraw';
+  } else if (currentGameMode === 'choose redraw') {
+    for (let j = 0; j < redrawIndexes.length; j += 1) {
+      let redrawIndex = Number(redrawIndexes[j]);
+      playerCard = deck.pop();
+      playerHand.splice(redrawIndex, 1, playerCard);
+    }
+    calcHandScore();
+    buildCardElements(playerHand);
+    credits += handScore;
+    creditsInfo.innerText = credits;
+    if (handScore > 0) {
+      output(`Congrats! You got ${winCondition}! You have ${credits} credits now. Key in a new bet amount and click 'Submit / Deal Cards' if you'd like to play again!`);
+    } else {
+      output(`Oh man, you didn't win anything. You have ${credits} credits left. Key in a new bet amount and click 'Submit / Deal Cards' to play again!`);
+    }
+    currentGameMode = 'input bet';
+    playerHand = [];
+    redrawIndexes = [];
   }
 };
 

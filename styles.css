@@ -9,9 +9,25 @@ h1 {
   margin: 5px;
 }
 
+.cardback {
+  background-color: black;
+  display: inline-block;
+  width: 96%;
+  height: auto;
+  margin: 5px;
+}
+
+.cardboxredraw {
+  display: inline-block;
+  width: 18%;
+  outline-style: solid;
+  outline-color: yellow;
+  text-align: center;
+}
+
 .cardtable {
-  width: 650px;
-  height: 250px;
+  width: 90%;
+  height: 230px;
   padding: 5px;
   align-items: center;
   display: inline-block;
@@ -29,14 +45,4 @@ h1 {
 .cardboxelement {
   display: inline-block;
   width: 18%;
-  border-style: solid;
-  border-width: 1px;
-  border-color: black;
-  background: red;
-}
-
-.holdmessagebox {
-  color: red;
-  font-size: 14px;
-  text-align: center;
 }
