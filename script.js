@@ -16,8 +16,8 @@ let pointsWon;
 const mute = true;
 const playerHand = [
   {
-    rank: 2,
-    suit: 'spades',
+    rank: 11,
+    suit: 'hearts',
   },
   {
     rank: 4,
@@ -25,16 +25,16 @@ const playerHand = [
   },
 
   {
-    rank: 6,
-    suit: 'spades',
-  },
-  {
-    rank: 8,
-    suit: 'spades',
-  },
-  {
     rank: 11,
-    suit: 'spades',
+    suit: 'clubs',
+  },
+  {
+    rank: 10,
+    suit: 'clubs',
+  },
+  {
+    rank: 4,
+    suit: 'clubs',
   },
 ];
 // return filepath of card
@@ -366,7 +366,7 @@ const checkStraightFlush = (suitTally, rankTally) => {
   return false;
 };
 
-const isRoyalStraight = (rankTally) => {
+const checkRoyalStraight = (rankTally) => {
   if (
     rankTally['1'] === 1
     && rankTally['13'] === 1
@@ -379,7 +379,7 @@ const isRoyalStraight = (rankTally) => {
 };
 
 const checkRoyalFlush = () => {
-  if (isRoyalStraight(rankTally) === true && checkFlush(suitTally) === true) {
+  if (checkRoyalStraight(rankTally) === true && checkFlush(suitTally) === true) {
     return true;
   }
   return false;
@@ -413,6 +413,9 @@ const calcHandScore = (rankTally, suitTally) => {
     return handScore;
   } if (checkTwoPair(rankTally) === true) {
     handScore = 2;
+    return handScore;
+  } if (checkRoyalStraight(rankTally) === true) {
+    handScore = 4;
     return handScore;
   } if (checkStraight(rankTally) === true) {
     handScore = 4;

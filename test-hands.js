@@ -1,4 +1,4 @@
-// straight hand (not working)
+// straight hand (now working)
 const playerHand = [ 
   {
     rank: 13,
