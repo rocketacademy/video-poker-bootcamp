@@ -4,7 +4,7 @@
  * @param push cards drawn into cardInHand
  * @return number of i that the user scored for the cards in hand
  */
- 
+
 // global variables for all winning combos
 let twoPairs = false;
 let threeKinds = false;
@@ -15,7 +15,6 @@ let fourKinds = false;
 let straightFlush = false;
 let royalFlush = false;
 let jackOrBetter = false;
-let cardInHand = [];
 let userPoints = 0;
 let moneyInHand = 200;
 let bettingMoney = 0;
@@ -24,8 +23,26 @@ let container;
 let playerCardHand = [];
 let playerHandRank = [];
 let cardHeld = false;
+let cardName;
+let cardSuit;
+let cardRank;
+let card;
+
+// tally global variables
+let cardNameTally = {};
+let cardSuitTally = {};
+let cardRankInHand = [];
 
 // DOMS
+
+// hold button will be on every card
+// hold button will be put on every card
+// when user clicks card, message will show on top of the card to show that it is being held
+// if clicked, cardHeld = true
+// if cardHeld = false, clicking DEAL will replace those unheld cards.
+let holdButton = document.createElement("button");
+holdButton.id = "hold-button";
+
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
 let outputMessage = document.createElement("div");
@@ -135,7 +152,7 @@ const createCard = (cardInfo) => {
   name.innerText = cardInfo.name;
   const backCard = document.createElement("div");
   backCard.classList.add("back-card");
-  const card = document.createElement("div");
+  card = document.createElement("div");
   card.id = "card";
   card.classList.add("card");
   innerCard.appendChild(name);
@@ -181,32 +198,11 @@ const buttonFunctions = () => {
   });
 };
 
-const flipCard = () => {
-  const flipTheCard = document.getElementsByClassName("inner-card");
-  for (let i = 0; i < flipTheCard.length; i += 1) {
-    flipTheCard.item(i).classList.toggle("front-card");
-  }
-  winningCombos(playerCardHand);
-
-  return outputMessage;
-  /* 
-  outputMessage.innerHTML = `Click on the card to hold.<br>Click on deal when done holding.`; */
-};
-
 // Removes an element from the document.
 const removeElement = (elementId) => {
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
 };
-
-// hold button will be on every card
-// hold button will be put on every card
-// when user clicks card, message will show on top of the card to show that it is being held
-// if clicked, cardHeld = true
-// if cardHeld = false, clicking DEAL will replace those unheld cards.
-const holdButton = document.createElement("div");
-holdButton.id = "hold-button";
-/* holdButton.innerHTML = "HOLD"; */
 
 // Inputting username and then amount to wager
 const startOfGame = () => {
@@ -246,36 +242,41 @@ const initGame = () => {
   buttonFunctions();
 };
 
-startOfGame();
+const flipCard = () => {
+  // tally variables set to empty
+  cardNameTally = {};
+  cardSuitTally = {};
+  cardRankInHand = [];
+  const flipTheCard = document.getElementsByClassName("inner-card");
+  for (let i = 0; i < flipTheCard.length; i += 1) {
+    flipTheCard.item(i).classList.toggle("front-card");
+  }
+  cardTally(playerCardHand);
+  cardClick();
+  holdButton.addEventListener("click", () => {
+    holdButton.innerHTML = "HOLD";
+  });
+  winningCombos();
+  return outputMessage;
+};
 
-const calcHandScore = (hand) => {
-	
-}
-	
+const cardTally = (card) => {
+  // for loop to get tally for nameTally and suitTally
+  for (let i = 0; i < card.length; i++) {
+    cardName = card[i].name;
+    cardSuit = card[i].suit;
+    cardRank = card[i].rank;
 
-
-const winningCombos = (combo) =>{
-	// tally global variables
-	let cardNameTally = {};
-  	let cardSuitTally = {};
-	let cardRankTally = {};
-
-	// for loop to get tally for nameTally and suitTally
-  for (let i = 0; i < combo.length; i++) {
-    let cardName = combo[i].name;
-    let cardSuit = combo[i].suit;
-	let cardRank = combo[i].rank;
-
-	// Tally for card suit
-	// If we have seen the card suit before, increment its count
+    // Tally for card suit
+    // If we have seen the card suit before, increment its count
     if (cardSuit in cardSuitTally) {
       cardSuitTally[cardSuit] += 1;
-    } 
-	// Else, initialise count of this card suit to 1
-	else {
+    }
+    // Else, initialise count of this card suit to 1
+    else {
       cardSuitTally[cardSuit] = 1;
     }
-	// Tally for card name
+    // Tally for card name
     // If we have seen the card name before, increment its count
     if (cardName in cardNameTally) {
       cardNameTally[cardName] += 1;
@@ -284,39 +285,92 @@ const winningCombos = (combo) =>{
     else {
       cardNameTally[cardName] = 1;
     }
-	// Tally for card suit
-	// If we have seen the card suit before, increment its count
-    if (cardRank in cardRankTally) {
-      cardRankTally[cardRank] += 1;
-    } 
-	// Else, initialise count of this card suit to 1
-	else {
-      cardRankTally[cardRank] = 1;
+    cardRankInHand.push(cardRank);
+    console.log(cardNameTally);
+  }
+};
 
+const twoPairsCombo = () => {
+  let pairs = [];
+  let sortedDeck = cardRankInHand.sort();
+  for (i = 0; i < 5; i++) {
+    if (sortedDeck[i] === sortedDeck[i + 1]) {
+      pairs.push(sortedDeck[i]);
+    }
   }
+  if (pairs.length === 2) {
+    twoPairs = true;
   }
-  // running for in loop to go through card name combos
+};
+
+const threeKindsAndFullHouseCombo = () => {
+  let duplicates = [];
   for (cardName in cardNameTally) {
-	  for(cardRank in cardRankTally){
-		  for(j=0;j<cardRankTally.length; j++){
-			  if((cardRankTally[j+1] - cardRankTally[j]) === 1){
-				  straight = true;
-				  outputMessage.innerHTML = "You have a Straight.";
-			  }
-		  }
-	  }
-	  // running for in loop to go through card suit combos like Flush
-  	  for (cardSuit in cardSuitTally) {
-      if (
-      cardSuitTally[cardSuit] === 5
+    if (cardNameTally[cardName] === 3) {
+      duplicates.push(cardName);
+    }
+    if (cardNameTally[cardName] === 2) {
+      duplicates.push(cardName);
+    }
+    if (
+      (duplicates[0] === 3 && duplicates[1] !== 2) ||
+      (duplicates[1] === 3 && duplicates[0] !== 2)
     ) {
-	  flush = true;
-      outputMessage.innerHTML = "You have a Flush.";
+      threeKinds = true;
+    }
+    if (
+      (duplicates[0] === 3 && duplicates[1] === 2) ||
+      (duplicates[1] === 3 && duplicates[0] === 2)
+    ) {
+      fullHouse = true;
+    }
+  }
+};
+
+const fourKindsCombo = () => {
+  for (cardName in cardNameTally) {
+    if (cardNameTally[cardName] === 4) {
+      fourKinds = true;
+    }
+  }
+};
+
+const straightStraightFlushAndRoyalFlushCombo = () => {
+  let count = 0;
+  let sortedDeck = cardRankInHand.sort();
+  console.log(sortedDeck);
+  for (j = 0; j < 5; j++) {
+    if (sortedDeck[j] + 1 === sortedDeck[j + 1]) {
+      count += 1;
+      if (count === 5) {
+        straight = true;
       }
     }
-    console.log(cardNameTally);
-    console.log(cardSuitTally);
-	console.log(cardSuitTally[cardSuit])
+  }
+  for (cardSuit in cardSuitTally) {
+    if (cardSuitTally[cardSuit] === 5) {
+      flush = true;
+    }
+    if (count === 5 && flush === true) {
+      straightFlush = true;
+    }
+  }
+  for (cardName in cardNameTally) {
+    if (
+      cardName == "A" &&
+      cardName == "10" &&
+      cardName == "J" &&
+      cardName == "Q" &&
+      cardName == "K" &&
+      flush == true
+    ) {
+      royalFlush = true;
+    }
+  }
+};
+
+const jackOrBetterCombo = () => {
+  for (cardName in cardNameTally) {
     if (
       cardName === "J" &&
       cardName === "Q" &&
@@ -324,14 +378,44 @@ const winningCombos = (combo) =>{
       cardName === "A" &&
       cardNameTally[cardName] >= 1
     ) {
-	  jackOrBetter = true;
+      jackOrBetter = true;
       outputMessage.innerHTML = "You have Jacks or Better.";
-    } 
-	// else if(){}
-	
-	else {
-      outputMessage.innerHTML = "You have no special combinations.";
     }
-    return outputMessage;
+  }
+};
+
+const cardClick = (event) => {
+  let selectAllCards = document.getElementsByClassName("card");
+  for (i = 0; i < selectAllCards.length; i++) {
+    selectAllCards[i].appendChild(holdButton.cloneNode(true));
+  }
+};
+
+startOfGame();
+
+const winningCombos = () => {
+  twoPairsCombo();
+  threeKindsAndFullHouseCombo();
+  fourKindsCombo();
+  straightStraightFlushAndRoyalFlushCombo();
+  jackOrBetterCombo();
+  if (twoPairs === true) {
+    outputMessage.innerHTML = "You have a Two Pairs.";
+  } else if (threeKinds === true) {
+    outputMessage.innerHTML = "You have Three of a kind.";
+  } else if (fullHouse === true) {
+    outputMessage.innerHTML = "You have a Full House.";
+  } else if (fourKinds === true) {
+    outputMessage.innerHTML = "You have Four of a kind.";
+  } else if (straight === true) {
+    outputMessage.innerHTML = "You have a Straight.";
+  } else if (flush === true) {
+    outputMessage.innerHTML = "You have a Flush.";
+  } else if (straightFlush === true) {
+    outputMessage.innerHTML = "You have a Straight Flush.";
+  } else if (royalFlush === true) {
+    outputMessage.innerHTML = "You have a Royal Flush.";
+  } else {
+    outputMessage.innerHTML = "You have no special combinations.";
   }
 };
