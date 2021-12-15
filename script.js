@@ -20,6 +20,8 @@ const MAX_BET = 5;
 const MAX_MULTIPLIER = 16;
 const MIN_RANK_FOR_ONE_PAIR = 11; // jack or higher
 
+const DELAY_IN_MILLI_SECONDS = 150;
+
 /**
  * Display game state message.
  * @param {*} message Message
@@ -56,13 +58,27 @@ const revealCard = (cardElement, cardInfo) => {
 
 /**
  * Update credits after a game.
- * @param {*} winCredits Winning of the hand
+ * @param {*} creditChange Change of credit
  */
-const updateCredits = (winCredits) => {
-  credit += winCredits;
-
+const updateCredits = (creditChange) => {
   const credits = document.querySelector('.credits');
-  credits.innerText = `Credits: ${credit}`;
+
+  if (creditChange > 0) {
+    const newCredit = credit + creditChange;
+    let addCredit = 0;
+    const creditId = setInterval(() => {
+      if (credit === newCredit) {
+        clearInterval(creditId);
+      } else {
+        credit += 1;
+        addCredit += 1;
+        credits.innerText = `Credits:${credit} Win:${addCredit}`;
+      }
+    }, DELAY_IN_MILLI_SECONDS);
+  } else {
+    credit += creditChange;
+    credits.innerText = `Credits:${credit}`;
+  }
 };
 
 /**
@@ -88,7 +104,7 @@ const calcWinnings = (score, gameBet) => {
 const updateBets = (newBet) => {
   bet += newBet;
   const bets = document.querySelector('.bets');
-  bets.innerText = `Bet: ${bet}`;
+  bets.innerText = `Bet:${bet}`;
 };
 
 /**
@@ -431,7 +447,9 @@ const drawCards = (cardElements) => {
   }
 
   // calculate hand score, winnings, and update credits
-  updateCredits(calcWinnings(calcHandScore(board), bet));
+  const score = calcHandScore(board);
+  const winnings = calcWinnings(score, bet);
+  updateCredits(winnings);
 
   // reset bet
   updateBets(-1 * bet);
@@ -448,23 +466,24 @@ const buildBoardElements = () => {
   // give it a class for CSS purposes
   boardElement.classList.add('board');
 
-  // add area for state of game information
-  const stateOfGameElement = document.createElement('div');
-  stateOfGameElement.classList.add('game-state');
-  stateOfGameElement.innerText = 'Click deal button to start.';
-  boardElement.appendChild(stateOfGameElement);
+  // add area for score guide
+  const scoreGuideElement = document.createElement('div');
+  scoreGuideElement.classList.add('nes-container');
+  scoreGuideElement.classList.add('is-dark');
+  scoreGuideElement.classList.add('with-title');
 
-  // add area for credits
-  const creditsElement = document.createElement('div');
-  creditsElement.classList.add('credits');
-  creditsElement.innerText = `Credits: ${credit}`;
-  boardElement.appendChild(creditsElement);
+  // score guide title
+  const scoreGuideTitleElement = document.createElement('p');
+  scoreGuideTitleElement.classList.add('title');
+  scoreGuideTitleElement.innerText = 'SCORE GUIDE';
+  scoreGuideElement.appendChild(scoreGuideTitleElement);
 
-  // add area for bets
-  const betsElement = document.createElement('div');
-  betsElement.classList.add('bets');
-  betsElement.innerText = `Bet: ${bet}`;
-  boardElement.appendChild(betsElement);
+  // score guide content
+  const scoreGuideContentElement = document.createElement('p');
+  scoreGuideContentElement.innerText = 'Guide';
+  scoreGuideElement.appendChild(scoreGuideContentElement);
+
+  boardElement.appendChild(scoreGuideElement);
 
   // make an element for the cards
   const cardsElement = document.createElement('div');
@@ -489,6 +508,18 @@ const buildBoardElements = () => {
 
   boardElement.appendChild(cardsElement);
 
+  // add area for credits
+  const creditsElement = document.createElement('div');
+  creditsElement.classList.add('credits');
+  creditsElement.innerText = `Credits:${credit}`;
+  boardElement.appendChild(creditsElement);
+
+  // add area for bets
+  const betsElement = document.createElement('div');
+  betsElement.classList.add('bets');
+  betsElement.innerText = `Bet:${bet}`;
+  boardElement.appendChild(betsElement);
+
   // add area for buttons
   const buttonsElement = document.createElement('div');
   buttonsElement.classList.add('buttons');
@@ -496,28 +527,47 @@ const buildBoardElements = () => {
   // add bet button
   const betButtonElement = document.createElement('button');
   betButtonElement.innerText = 'BET';
-  betButtonElement.classList.add('button');
+  betButtonElement.classList.add('nes-btn');
   betButtonElement.addEventListener('click', () => {
     updateCredits(-1);
     updateBets(1);
   });
   buttonsElement.appendChild(betButtonElement);
 
+  // add bet max button
+  const betMaxButtonElement = document.createElement('button');
+  betMaxButtonElement.innerText = `BET ${MAX_BET}`;
+  betMaxButtonElement.classList.add('nes-btn');
+  betMaxButtonElement.addEventListener('click', () => {
+    updateCredits(-1 * MAX_BET);
+    updateBets(MAX_BET);
+  });
+  buttonsElement.appendChild(betMaxButtonElement);
+
   // add deal game button
   const dealButtonElement = document.createElement('button');
   dealButtonElement.innerText = 'DEAL';
-  dealButtonElement.classList.add('button');
-  dealButtonElement.addEventListener('click', () => dealCards(cardsElement.children));
+  dealButtonElement.classList.add('nes-btn');
+  dealButtonElement.addEventListener('click', () => {
+    updateCredits(0);
+    dealCards(cardsElement.children);
+  });
   buttonsElement.appendChild(dealButtonElement);
 
   // add draw game button
   const drawButtonElement = document.createElement('button');
   drawButtonElement.innerText = 'DRAW';
-  drawButtonElement.classList.add('button');
+  drawButtonElement.classList.add('nes-btn');
   drawButtonElement.addEventListener('click', () => drawCards(cardsElement.children));
   buttonsElement.appendChild(drawButtonElement);
 
   boardElement.appendChild(buttonsElement);
+
+  // add area for state of game information
+  const stateOfGameElement = document.createElement('div');
+  stateOfGameElement.classList.add('game-state');
+  stateOfGameElement.innerText = 'Click BET button to start.';
+  boardElement.appendChild(stateOfGameElement);
 
   return boardElement;
 };

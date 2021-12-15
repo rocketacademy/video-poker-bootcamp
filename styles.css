@@ -4,10 +4,14 @@
   box-sizing: border-box;
 }
 
+h1 {
+  text-align: center;
+}
+
 body {
   background-color: pink;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  max-width: 500px;
+  font-family: "Press Start 2P", cursive;
+  max-width: 375px;
 }
 
 .held {
@@ -27,7 +31,9 @@ body {
 }
 
 .card:hover {
-  cursor: grab;
+  cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzElEQVRYR+2X0Q6AIAhF5f8/2jYXZkwEjNSVvVUjDpcrGgT7FUkI2D9xRfQETwNIiWO85wfINfQUEyxBG2ArsLwC0jioGt5zFcwF4OYDPi/mBYKm4t0U8ATgRm3ThFoAqkhNgWkA0jJLvaOVSs7j3qMnSgXWBMiWPXe94QqMBMBc1VZIvaTu5u5pQewq0EqNZvIEMCmxAawK0DNkay9QmfFNAJUXfgGgUkLaE7j/h8fnASkxHTz0DGIBMCnBeeM7AArpUd3mz2x3C7wADglA8BcWMZhZAAAAAElFTkSuQmCC)
+      14 0,
+    pointer;
 }
 
 .name {
@@ -39,9 +45,5 @@ body {
 }
 
 .buttons {
-  margin-bottom: 10px;
-}
-
-.button {
-  margin-right: 10px;
+  display: flex;
 }

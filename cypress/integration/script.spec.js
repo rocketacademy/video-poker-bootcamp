@@ -6,6 +6,18 @@ describe('Unit tests for Video Poker', () => {
       expect(calcHandScore([])).to.eq(0);
     });
 
+    it('random hand score returns 0', () => {
+      const playerHand = [
+        { rank: 2, suit: 'hearts', name: '2' },
+        { rank: 3, suit: 'diamonds', name: '3' },
+        { rank: 5, suit: 'spades', name: '5' },
+        { rank: 7, suit: 'spades', name: '7' },
+        { rank: 9, suit: 'hearts', name: '9' },
+      ];
+
+      expect(calcHandScore(playerHand)).to.eq(0);
+    });
+
     it('one-pair-below-jack hand score returns 0', () => {
       const playerHand = [
         { rank: 2, suit: 'hearts', name: '2' },
