@@ -1,3 +1,13 @@
+let overallContainer; // contains all assets
+let gameContainer;
+let cardComboContainer;
+let outputContainer;
+let inputContainer;
+let buttonsContainer;
+
+let output;
+let input;
+
 const initGame = () => {
   // create overall container
   overallContainer = document.createElement('div');
@@ -23,10 +33,15 @@ const initGame = () => {
   outputContainer.classList.add('output-container', 'section');
   overallContainer.appendChild(outputContainer);
 
-  // create input container, bet input and submit //
+  // buttonsContainer
+  buttonsContainer = document.createElement('div');
+  buttonsContainer.classList.add('buttons-container');
+  overallContainer.appendChild(buttonsContainer);
+
+  // create input container, bet input and submit
   inputContainer = document.createElement('div');
   inputContainer.classList.add('input-container');
-  overallContainer.appendChild(inputContainer);
+  buttonsContainer.appendChild(inputContainer);
   // bet input slider
   input = document.createElement('input');
   input.type = 'range';
@@ -35,12 +50,17 @@ const initGame = () => {
   input.min = 0;
   input.max = 100;
   inputContainer.appendChild(input);
-
-  // output
+  // output for slider
   output = document.createElement('output');
   output.classList.add('output');
   output.setAttribute('for', 'quantity');
-  overallContainer.appendChild(output);
+  inputContainer.appendChild(output);
+
+  // create swap cards button
+  swapCardsBtn = document.createElement('button');
+  swapCardsBtn.innerText = 'Swap Cards';
+  swapCardsBtn.classList.add('btn-swap-cards');
+  buttonsContainer.appendChild(swapCardsBtn);
 
   /**
    * Variables & functions that make the betting slider function
@@ -60,5 +80,6 @@ const initGame = () => {
 
   // creates deal cards button
   dealCardBtn();
+  swapCards();
 };
 initGame();
