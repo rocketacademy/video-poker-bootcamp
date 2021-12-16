@@ -42,6 +42,8 @@ let cardRankInHand = [];
 // if cardHeld = false, clicking DEAL will replace those unheld cards.
 let holdButton = document.createElement("button");
 holdButton.id = "hold-button";
+holdButton.classList.add = "hold-button";
+holdButton.innerHTML = "HOLD";
 
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
@@ -253,9 +255,6 @@ const flipCard = () => {
   }
   cardTally(playerCardHand);
   cardClick();
-  holdButton.addEventListener("click", () => {
-    holdButton.innerHTML = "HOLD";
-  });
   winningCombos();
   return outputMessage;
 };
@@ -286,7 +285,6 @@ const cardTally = (card) => {
       cardNameTally[cardName] = 1;
     }
     cardRankInHand.push(cardRank);
-    console.log(cardNameTally);
   }
 };
 
@@ -384,14 +382,20 @@ const jackOrBetterCombo = () => {
   }
 };
 
-const cardClick = (event) => {
+const cardClick = () => {
   let selectAllCards = document.getElementsByClassName("card");
   for (i = 0; i < selectAllCards.length; i++) {
     selectAllCards[i].appendChild(holdButton.cloneNode(true));
   }
-};
 
-startOfGame();
+  let allHoldButton = document.querySelectorAll("#hold-button");
+  for (const btn of allHoldButton) {
+    btn.addEventListener("click", () => {
+      btn.style.backgroundColor = "white";
+    });
+    console.log(btn[0]);
+  }
+};
 
 const winningCombos = () => {
   twoPairsCombo();
@@ -419,3 +423,5 @@ const winningCombos = () => {
     outputMessage.innerHTML = "You have no special combinations.";
   }
 };
+
+startOfGame();
