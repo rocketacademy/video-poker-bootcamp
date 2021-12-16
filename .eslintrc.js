@@ -22,3 +22,10 @@ module.exports = {
     'no-param-reassign': ['error', { props: false }],
   },
 };
+
+options: {
+    'prefer-const': ['error', {
+      destructuring: 'any',
+      ignoreReadBeforeAssign: false,
+    }],
+  },
