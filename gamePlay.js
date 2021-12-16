@@ -18,7 +18,6 @@ const addPoints = () => {
  * Display the winning message based on the handscore
  * @returns output, betOuput as string
  */
-
 const displayGameResult = () => {
   if (handScore === 800) {
     winSoundEffect();
@@ -97,7 +96,7 @@ const cardClick = (cardElement, cardToSwap) => {
   }
 };
 /**
- * Deals 5 cards from the deck
+ * Deals 5 cards from the deck, when user clicks on a card, it will append the card into array, cardsToSwap
  */
 const dealHand = () => {
   if (canDeal === true) {
@@ -122,7 +121,9 @@ const dealHand = () => {
   canSwap = true;
   gameMode = 'swap_Cards';
 };
-
+/**
+ * Reinitalise the game
+ */
 const reinitGame = () => {
   canDeal = false;
   playerHand = [];
@@ -135,9 +136,12 @@ const reinitGame = () => {
   output('Place Your Bets');
   betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
 };
-
+/**
+ * Swaps the card user has selected. It will then clear
+ * all the cards in playerdiv and draws the rest of the
+ * cards and appends them in playerdiv
+ */
 const swapCards = () => {
-  // exchange the selected cards in playerHand
   if (canSwap === true && gameMode === 'swap_Cards') {
     output('Pick Which Cards to Swap!');
     for (let i = 0; i < playerHand.length; i += 1) {
@@ -148,13 +152,11 @@ const swapCards = () => {
         }
       }
     }
-    // empty cardsToExchange array since we do not need the cards inside anymore
+  
     cardsToSwap = [];
 
-    // clear previous display of player's hand
     playerdiv.innerHTML = '';
     flipEffect();
-    // make the player's cards' display and display them
     for (let i = 0; i < playerHand.length; i += 1) {
       const cardElement = createCard(playerHand[i]);
       playerdiv.appendChild(cardElement);
@@ -169,7 +171,9 @@ const swapCards = () => {
   }
   canSwap = false;
 };
-
+/**
+ * Increments 1 to current bet and deducts from gameScore
+ */
 const betOne = () => {
   if (gameMode === 'place_bets') {
     insertCoinEffect();
@@ -181,7 +185,9 @@ const betOne = () => {
   gameMode = 'deal_Hand';
   canDeal = true;
 };
-
+/**
+ * Increments 5 to current bet and deducts from gameScore
+ */
 const betFive = () => {
   if (gameMode === 'place_bets') {
     insertCoinEffect();

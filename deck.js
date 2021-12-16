@@ -1,50 +1,53 @@
-// return filepath of card
+/**
+ * Returns the file path based on the suit and rank of card
+ * @param {key} suit of the card
+ * @param {key} rank of the card
+ * @returns 
+ */
 const getFilePathCard = (suit, rank) =>
 {
   const filePath = `${folderPath}/${suit}\ ${rank}.png`;
   return filePath;
 };
-
+/**
+ * Generates a random number
+ * @param {number} max 
+ * @returns a random number
+ */
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
-
-// Shuffle an array of cards
+/**
+ * Shuffles the deck by using getRandomIndex
+ * @param {array} deck of cards 
+ * @returns a shuffled deck
+ */
 const shuffleCards = (cards) => {
   // Loop over the card deck array once
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
-    // Select a random index in the deck
     const randomIndex = getRandomIndex(cards.length);
-    // Select the card that corresponds to randomIndex
     const randomCard = cards[randomIndex];
-    // Select the card that corresponds to currentIndex
     const currentCard = cards[currentIndex];
-    // Swap positions of randomCard and currentCard in the deck
+
     cards[currentIndex] = randomCard;
     cards[randomIndex] = currentCard;
   }
-  // Return the shuffled deck
   return cards;
 };
-
+/**
+ * Generates a deck of cards based on suits and rank
+ * @returns a deck of cards
+ */
 const makeDeck = () => {
-  // Initialise an empty deck array
   const newDeck = [];
-  // Initialise an array of the 4 suits in our deck. We will loop over this array.
   const suits = ['hearts', 'diamond', 'clubs', 'spades'];
   let cardColor = '';
   let symbol;
-  // Loop over the suits array
   for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
-    // Store the current suit in a variable
     const currentSuit = suits[suitIndex];
 
-    // Loop from 1 to 13 to create all cards for a given suit
-    // Notice rankCounter starts at 1 and not 0, and ends at 13 and not 12.
-    // This is an example of a loop without an array.
     for (let rankCounter = 1; rankCounter <= 13; rankCounter += 1) {
-      // By default, the card name is the same as rankCounter
+ 
       let cardName = `${rankCounter}`;
 
-      // If rank is 1, 11, 12, or 13, set cardName to the ace or face card's name
       if (cardName === '1') {
         cardName = 'A';
       } else if (cardName === '11') {
@@ -69,7 +72,6 @@ const makeDeck = () => {
         cardColor = 'black';
       }
 
-      // Create a new card with the current name, suit, and rank
       const card = {
         name: cardName,
         suit: currentSuit,
@@ -79,15 +81,16 @@ const makeDeck = () => {
       };
       console.log(card);
 
-      // Add the new card to the deck
       newDeck.push(card);
     }
   }
-
-  // Return the completed card deck
   return newDeck;
 };
-
+/**
+ * Returns the correct card image based on the card info
+ * @param {object} cardInfo 
+ * @returns file path of the card image
+ */
 const createCardImg = (cardInfo) => {
   const cardImg = document.createElement('img');
   cardImg.src = getFilePathCard(cardInfo.suit, cardInfo.rank);
@@ -95,9 +98,11 @@ const createCardImg = (cardInfo) => {
   return cardImg;
 };
 
-const deck = shuffleCards(makeDeck());
-
-// function to store the metainfo of the drawn card
+/**
+ * Appends the card image into the card object
+ * @param {object} cardInfo 
+ * @returns the card object with the correct card image
+ */
 const createCard = (cardInfo) => {
   console.log('card info:', cardInfo);
 
@@ -108,3 +113,5 @@ const createCard = (cardInfo) => {
 
   return card;
 };
+
+let deck = shuffleCards(makeDeck());

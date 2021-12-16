@@ -1,3 +1,7 @@
+/**
+ * Calculates the total number of ranks and suits and push it to rankTally and suitTally
+ * @returns array containing the objects rankTally & suitTally
+ */
 const tallyHand = () => {
   for (let i = 0; i < playerHand.length; i += 1)
   {
@@ -18,13 +22,19 @@ const tallyHand = () => {
   }
   return [rankTally, suitTally];
 };
-// helper function to clear the tally
-
+/**
+ * Deletes the values for each key in the object
+ * @param {object} 
+ */
 const clearTally = (object) => {
   Object.keys(object).forEach((key) => delete object[key]);
 };
 
-// helper function to check for each winning condition
+/**
+ * Checks the hand for flush
+ * @param {Object} suitTally 
+ * @returns either true or false
+ */
 
 const checkFlush = (suitTally) => {
   for (suit in suitTally) {
@@ -35,6 +45,11 @@ const checkFlush = (suitTally) => {
   return false;
 };
 
+/**
+ * Checks the hand for four of a kind
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
 const checkFourOfAKind = (rankTally) => {
   for (rank in rankTally) {
     if (rankTally[rank] === 4) {
@@ -44,6 +59,11 @@ const checkFourOfAKind = (rankTally) => {
   return false;
 };
 
+/**
+ * Checks the hand for three of kind
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
 const checkThreeOfKind = (rankTally) => {
   for (rank in rankTally) {
     if (rankTally[rank] === 3) {
@@ -52,7 +72,11 @@ const checkThreeOfKind = (rankTally) => {
   }
   return false;
 };
-
+/**
+ * Checks hand for a pair
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
 const checkPair = (rankTally) => {
   for (rank in rankTally) {
     if (rankTally[rank] === 2) {
@@ -61,14 +85,22 @@ const checkPair = (rankTally) => {
   }
   return false;
 };
-
+/**
+ * Checks hand for full house
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
 const checkFullHouse = (rankTally) => {
   if (checkThreeOfKind(rankTally) === true && (checkPair(rankTally) === true)) {
     return true;
   }
   return false;
 };
-
+/**
+ * Checks hand for two pair
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
 const checkTwoPair = (rankTally) => {
   let pairCount = 0;
   for (rank in rankTally) {
@@ -81,7 +113,11 @@ const checkTwoPair = (rankTally) => {
   }
   return false;
 };
-
+/**
+ * Checks hand for straight
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
 const checkStraight = () => {
   let count = 0;
   for (let i = 0; i < (playerHand.length - 1); i += 1) {
@@ -92,17 +128,25 @@ const checkStraight = () => {
   if (count === 4) {
     return true;
   }
-
   return false;
 };
-
+/**
+ * Checks hand for straight flush
+ * @param {object} suitTally 
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
 const checkStraightFlush = (suitTally, rankTally) => {
   if (checkFlush(suitTally) === true && (checkStraight(rankTally) === true)) {
     return true;
   }
   return false;
 };
-
+/**
+ * Checks hand for Royal Straight 
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
 const checkRoyalStraight = (rankTally) => {
   if (
     rankTally['1'] === 1
@@ -115,14 +159,24 @@ const checkRoyalStraight = (rankTally) => {
   return false;
 };
 
-const checkRoyalFlush = () => {
+/**
+ * Checks hand for Royal Flush
+ * @param {object} rankTally 
+ * @param {object} suitTally 
+ * @returns either true or false
+ */
+const checkRoyalFlush = (rankTally,suitTally) => {
   if (checkRoyalStraight(rankTally) === true && checkFlush(suitTally) === true) {
     return true;
   }
   return false;
 };
-
-const checkJacksOrBetter = () => {
+/**
+ * Checks hand for Jacks or better
+ * @param {object} rankTally 
+ * @returns either true or false
+ */
+const checkJacksOrBetter = (rankTally) => {
   if (rankTally['11'] === 2 || rankTally['12'] === 2 || rankTally['13'] === 2 || rankTally['1'] === 2) {
     return true;
   }
@@ -171,7 +225,3 @@ const calcHandScore = (rankTally, suitTally) => {
   handScore = 0;
   return handScore;
 };
-/**
- * Calculates the total points won
- * @returns pointsWon as a number
- */
