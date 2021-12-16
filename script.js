@@ -1,11 +1,9 @@
 // global variables
-// let playerCard;
 let gameScore = 100;
 const folderPath = './cards';
-
 const rankTally = {};
 const suitTally = {};
-let canClick = false;
+let canDeal = false;
 let canSwap = false;
 let gameMode = 'place_bets';
 const maxPlayerHand = 5;
@@ -13,7 +11,7 @@ let currentBet = 0;
 let cardsToSwap = [];
 let handScore = 0;
 let pointsWon;
-const playerHand = [];
+let playerHand = [];
 
 // return filepath of card
 const getFilePathCard = (suit, rank) =>
@@ -144,7 +142,6 @@ const makeDeck = () => {
   const newDeck = [];
   // Initialise an array of the 4 suits in our deck. We will loop over this array.
   const suits = ['hearts', 'diamond', 'clubs', 'spades'];
-  const suitShapes = ['♥', '♦', '♣', '♠'];
   let cardColor = '';
   let symbol;
   // Loop over the suits array
@@ -215,25 +212,11 @@ const deck = shuffleCards(makeDeck());
 // function to store the metainfo of the drawn card
 const createCard = (cardInfo) => {
   console.log('card info:', cardInfo);
-  // const suit = document.createElement('div');
-  // suit.classList.add('suit');
-  // suit.innerText = cardInfo.symbol;
-
-  // const name = document.createElement('div');
-  // // name.classList.add('name');
-  // name.innerText = cardInfo.name;
 
   const card = document.createElement('div');
   const cardImage = createCardImg(cardInfo);
   card.classList.add('card');
   card.appendChild(cardImage);
-
-  // if (cardInfo.color === 'red') {
-  //   card.classList.add('red');
-  // }
-
-  // card.appendChild(name);
-  // card.appendChild(suit);
 
   return card;
 };
@@ -370,6 +353,13 @@ const checkJacksOrBetter = () => {
   return false;
 };
 
+/**
+ * Calculates the handscore from the hand
+ * @param {object} rankTally - key: rank, value: number of cards with rank
+ * @param {object} suitTally - key: suit, value: number of cars with suit
+ * @returns handscore as number
+ */
+
 const calcHandScore = (rankTally, suitTally) => {
   if (checkRoyalFlush(rankTally, suitTally) === true) {
     handScore = 800;
@@ -381,13 +371,13 @@ const calcHandScore = (rankTally, suitTally) => {
     handScore = 6;
     return handScore;
   } if (checkFourOfAKind(rankTally) === true) {
-    handScore = 40;
+    handScore = 25;
     return handScore;
   } if (checkFullHouse(rankTally) === true) {
-    handScore = 30;
+    handScore = 9;
     return handScore;
   } if (checkThreeOfKind(rankTally) === true) {
-    handScore = 20;
+    handScore = 3;
     return handScore;
   } if (checkTwoPair(rankTally) === true) {
     handScore = 2;
@@ -405,16 +395,28 @@ const calcHandScore = (rankTally, suitTally) => {
   handScore = 0;
   return handScore;
 };
-
+/**
+ * Calculates the total points won
+ * @returns pointsWon as a number
+ */
 const calcPointsWon = () => {
   pointsWon = currentBet * handScore;
   return pointsWon;
 };
+/**
+ * Adds the points won into gameScore
+ * @returns gameScore as a number
+ */
 const addPoints = () => {
   gameScore += calcPointsWon();
+  return gameScore;
 };
+/**
+ * Display the winning message based on the handscore
+ * @returns output, betOuput as string
+ */
 
-const displayGameResult = (rankTally, suitTally) => {
+const displayGameResult = () => {
   if (handScore === 800) {
     winSoundEffect();
     output('You Win! You got a Royal Flush!');
@@ -430,17 +432,17 @@ const displayGameResult = (rankTally, suitTally) => {
     output('You Win! You got a Flush!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
-  } if (handScore === 40) {
+  } if (handScore === 25) {
     winSoundEffect();
     output('You Win! You got a Four of a Kind!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
-  } if (handScore === 20) {
+  } if (handScore === 3) {
     winSoundEffect();
     output('You Win! You got Three of a Kind!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
     return (output, betOutput);
-  } if (handScore === 30) {
+  } if (handScore === 9) {
     winSoundEffect();
     output('You Win! You got a Full House!');
     betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
@@ -466,7 +468,11 @@ const displayGameResult = (rankTally, suitTally) => {
   betOutput(`You have ${gameScore} Coins! You won ${pointsWon} coins`);
   return (output, betOutput);
 };
-
+/**
+ * Adds the clicked card into cardsToSwap array
+ * @param {object} cardElement - div with the image of the card
+ * @param {array} cardToSwap - array with the cards clicked
+ */
 const cardClick = (cardElement, cardToSwap) => {
   if (canSwap === true) {
     let isCardPresent = false;
@@ -487,9 +493,11 @@ const cardClick = (cardElement, cardToSwap) => {
     }
   }
 };
-
+/**
+ * Deals 5 cards from the deck
+ */
 const dealHand = () => {
-  if (canClick === true) {
+  if (canDeal === true) {
     output('Deal Hand! Select Which Cards to Swap!');
     console.log(`${gameMode}`);
     flipEffect();
@@ -499,18 +507,17 @@ const dealHand = () => {
         const cardElement = createCard(playerHand[i]);
         const cardToSwap = playerHand[i];
         cardElement.addEventListener('click', (event) => {
-        // if (canClick === true) {
+          // if (canDeal === true) {
           cardClick(event.currentTarget, cardToSwap);
-        // }
+          // }
         });
         playerdiv.appendChild(cardElement);
       }
-      // tallyHand(playerHand);
-      gameMode = 'swap_Cards';
     }
   }
-  canClick = false;
+  canDeal = false;
   canSwap = true;
+  gameMode = 'swap_Cards';
 };
 
 const initGame = () => {
@@ -522,8 +529,8 @@ const initGame = () => {
 };
 
 const reinitGame = () => {
-  canClick = false;
-  // playerHand = [];
+  canDeal = false;
+  playerHand = [];
   currentBet = 0;
   playerdiv.innerHTML = '';
   gameMode = 'place_bets';
@@ -536,7 +543,7 @@ const reinitGame = () => {
 
 const swapCards = () => {
   // exchange the selected cards in playerHand
-  if (gameMode === 'swap_Cards') {
+  if (canSwap === true && gameMode === 'swap_Cards') {
     output('Pick Which Cards to Swap!');
     for (let i = 0; i < playerHand.length; i += 1) {
       for (let j = 0; j < cardsToSwap.length; j += 1) {
@@ -565,6 +572,7 @@ const swapCards = () => {
       reinitGame();
     }, 6000);
   }
+  canSwap = false;
 };
 
 const betOne = () => {
@@ -576,7 +584,7 @@ const betOne = () => {
   scoreContainer.innerText = `${gameScore}`;
   betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
   gameMode = 'deal_Hand';
-  canClick = true;
+  canDeal = true;
 };
 
 const betFive = () => {
@@ -588,7 +596,7 @@ const betFive = () => {
   scoreContainer.innerText = `${gameScore}`;
   betOutput(`You have ${gameScore} Coins! Your Bet is ${currentBet}`);
   gameMode = 'deal_Hand';
-  canClick = true;
+  canDeal = true;
 };
 
 dealBtn.addEventListener('click', dealHand);
