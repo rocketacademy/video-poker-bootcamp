@@ -44,6 +44,7 @@ let holdButton = document.createElement("button");
 holdButton.id = "hold-button";
 holdButton.classList.add = "hold-button";
 holdButton.innerHTML = "HOLD";
+holdButton.disabled = true;
 
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
@@ -65,6 +66,11 @@ dealButton.setAttribute("id", "deal-button");
 dealButton.innerHTML = "DEAL";
 dealButton.disabled = true;
 
+// deal button will be at the end of the round
+let finalDealButton = document.createElement("button");
+finalDealButton.setAttribute("id", "finaldeal-button");
+finalDealButton.style.display = "none";
+
 // creating container for all buttons to be in
 
 const buttonContainer = document.createElement("div");
@@ -72,6 +78,7 @@ buttonContainer.classList.add("button-cont");
 buttonContainer.appendChild(betOneButton);
 buttonContainer.appendChild(betAllButton);
 buttonContainer.appendChild(dealButton);
+buttonContainer.appendChild(finalDealButton);
 
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
@@ -193,9 +200,14 @@ const buttonFunctions = () => {
   });
 
   dealButton.addEventListener("click", () => {
-    dealButton.disabled = false;
-    betAllButton.disabled = true;
-    betOneButton.disabled = true;
+    // dealButton.disabled = true;;
+    // betAllButton.disabled = true;
+    // betOneButton.disabled = true;
+	finalDealButton.style.display= "";
+	finalDealButton.innerHTML = "LOCK IT IN";
+	removeElement("deal-button")
+	removeElement("bet-one")
+	removeElement("bet-all")	
     flipCard();
   });
 };
@@ -204,9 +216,9 @@ const buttonFunctions = () => {
 const removeElement = (elementId) => {
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
-};
+};	
 
-// Inputting username and then amount to wager
+// Inputting amount to wager
 const startOfGame = () => {
   gameMessage.id = "game-message";
   gameMessage.innerHTML = " Y O U &nbsp R E A D Y ?";
@@ -253,11 +265,23 @@ const flipCard = () => {
   for (let i = 0; i < flipTheCard.length; i += 1) {
     flipTheCard.item(i).classList.toggle("front-card");
   }
-  cardTally(playerCardHand);
   cardClick();
+  
+};
+
+const secondFlipCard = () => {
+  // tally variables set to empty
+  cardNameTally = {};
+  cardSuitTally = {};
+  cardRankInHand = [];
+  const flipTheCard = document.getElementsByClassName("inner-card");
+  for (let i = 0; i < flipTheCard.length; i += 1) {
+    flipTheCard.item(i).classList.toggle("front-card");
+  }
+  cardTally(playerCardHand);
   winningCombos();
   return outputMessage;
-};
+ }
 
 const cardTally = (card) => {
   // for loop to get tally for nameTally and suitTally
@@ -393,7 +417,6 @@ const cardClick = () => {
     btn.addEventListener("click", () => {
       btn.style.backgroundColor = "white";
     });
-    console.log(btn[0]);
   }
 };
 
