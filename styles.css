@@ -1,0 +1,81 @@
+img {
+  max-width: 100%;
+}
+
+.playerCardsDiv {
+  background-color: yellow;
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
+  margin: auto;
+  padding: 5px;
+}
+
+.game-info {
+  background-color: slateblue;
+  display: flex;
+  width: fit-content;
+  margin: 20px auto auto auto;
+}
+
+.card {
+  display: flex;
+  height: auto;
+  width: auto;
+  margin: 5px;
+}
+
+.selected-card {
+  border: blueviolet 2px solid;
+}
+
+.scoreBox {
+  color: green;
+  background-color: red;
+  width: fit-content;
+  display: inline;
+  padding: 10px;
+}
+
+.bettingBox {
+  color: black;
+  background-color: indianred;
+  width: fit-content;
+  display: inline;
+  padding: 10px;
+}
+
+.winning-message {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 5rem;
+  flex-direction: column;
+}
+
+.restartButton {
+  width: fit-content;
+  height: fit-content;
+  font-size: 3rem;
+  background-color: white;
+  border: 1px solid black;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+}
+
+.restartButton:hover {
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+
+.winning-message.show {
+  display: flex;
+}
