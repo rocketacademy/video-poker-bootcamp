@@ -17,19 +17,20 @@ const initGame = () => {
   // create card combination container
   cardComboContainer = document.createElement('div');
   cardComboContainer.innerText =
-    'Container that shows all combination of cards.';
+    '<cardComboContainer> that shows all combination of cards.';
   cardComboContainer.classList.add('card-combintaion-container', 'section');
   overallContainer.appendChild(cardComboContainer);
 
   // create card display container
   gameContainer = document.createElement('div');
-  gameContainer.innerText = 'Container that shows cards dealt to player.';
+  gameContainer.innerText = '<gameContainer> that shows cards dealt to player.';
   gameContainer.classList.add('game-container', 'section');
   overallContainer.appendChild(gameContainer);
 
   // create output container
   outputContainer = document.createElement('div');
-  outputContainer.innerText = 'Container that gives instructions to player.';
+  outputContainer.innerText =
+    '<outputContainer> that gives instructions to player.';
   outputContainer.classList.add('output-container', 'section');
   overallContainer.appendChild(outputContainer);
 
