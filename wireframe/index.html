@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokermon</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background-color: #16d6fb;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+      }
+      img {
+        width: 300px;
+        display: block;
+        margin: 0 auto;
+      }
+      div {
+        display: inline-block;
+      }
+      label {
+        position: relative;
+        left: -10px;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="../assets/pokermon-logo.png" alt="Pokermon" />
+    <div>
+      <i class="nes-pokeball"></i>
+    </div>
+    <label class="nes-pointer">
+      <input type="radio" class="nes-radio" name="start" id="start" checked />
+      <span>Start</span>
+    </label>
+    <audio
+      id="audio"
+      class="audio"
+      src="../assets/pokemon-notification.mp3"
+    ></audio>
+    <script>
+      const start = document.getElementById("start");
+      start.onclick = () => {
+        document.getElementById("audio").play();
+        setTimeout(() => {
+          window.location.href = "game.html";
+        }, 3000);
+      };
+    </script>
+  </body>
+</html>

@@ -20,7 +20,8 @@ const MAX_BET = 5;
 const MAX_MULTIPLIER = 16;
 const MIN_RANK_FOR_ONE_PAIR = 11; // jack or higher
 
-const DELAY_IN_MILLI_SECONDS = 150;
+const NUMBERS_DELAY_IN_MILLI_SECONDS = 150;
+const TEXT_DELAY_IN_MILLI_SECONDS = 100;
 
 /**
  * Display game state message.
@@ -28,9 +29,18 @@ const DELAY_IN_MILLI_SECONDS = 150;
  * @param {*} color Color of message text
  */
 const displayMessage = (message, color = 'black') => {
-  const gameState = document.getElementById('game-state');
-  gameState.innerText = message;
-  gameState.style.color = color;
+  const baloonMessage = document.querySelector('.baloon-message');
+  let subStringLength = 0;
+
+  const messageId = setInterval(() => {
+    if (subStringLength === message.length) {
+      clearInterval(messageId);
+    } else {
+      subStringLength += 1;
+      baloonMessage.innerText = message.substring(0, subStringLength);
+      baloonMessage.style.color = color;
+    }
+  }, TEXT_DELAY_IN_MILLI_SECONDS);
 };
 
 /**
@@ -74,7 +84,7 @@ const updateCredits = (creditChange) => {
         addCredit += 1;
         credits.innerText = `Credits:${credit} Win:${addCredit}`;
       }
-    }, DELAY_IN_MILLI_SECONDS);
+    }, NUMBERS_DELAY_IN_MILLI_SECONDS);
   } else {
     credit += creditChange;
     credits.innerText = `Credits:${credit}`;
@@ -469,18 +479,9 @@ const buildBoardElements = () => {
   // add area for score guide
   const scoreGuideElement = document.createElement('div');
   scoreGuideElement.classList.add('nes-container');
-  scoreGuideElement.classList.add('is-dark');
-  scoreGuideElement.classList.add('with-title');
-
-  // score guide title
-  const scoreGuideTitleElement = document.createElement('p');
-  scoreGuideTitleElement.classList.add('title');
-  scoreGuideTitleElement.innerText = 'SCORE GUIDE';
-  scoreGuideElement.appendChild(scoreGuideTitleElement);
 
   // score guide content
   const scoreGuideContentElement = document.createElement('p');
-  scoreGuideContentElement.innerText = 'Guide';
   scoreGuideElement.appendChild(scoreGuideContentElement);
 
   boardElement.appendChild(scoreGuideElement);
@@ -564,9 +565,27 @@ const buildBoardElements = () => {
   boardElement.appendChild(buttonsElement);
 
   // add area for state of game information
-  const stateOfGameElement = document.createElement('div');
+  const stateOfGameElement = document.createElement('section');
+  stateOfGameElement.classList.add('message');
   stateOfGameElement.classList.add('game-state');
-  stateOfGameElement.innerText = 'Click BET button to start.';
+
+  // add area for game information baloon
+  const gameStateBubbleElement = document.createElement('div');
+  gameStateBubbleElement.classList.add('nes-balloon');
+  gameStateBubbleElement.classList.add('from-right');
+  gameStateBubbleElement.classList.add('baloon');
+
+  const bubbleContentElement = document.createElement('p');
+  bubbleContentElement.classList.add('baloon-message');
+  gameStateBubbleElement.appendChild(bubbleContentElement);
+
+  stateOfGameElement.appendChild(gameStateBubbleElement);
+
+  // add area for game host
+  const hostElement = document.createElement('i');
+  hostElement.classList.add('nes-bulbasaur');
+  stateOfGameElement.appendChild(hostElement);
+
   boardElement.appendChild(stateOfGameElement);
 
   return boardElement;
@@ -578,6 +597,8 @@ const buildBoardElements = () => {
 const initGame = () => {
   const boardEl = buildBoardElements(board);
   document.body.appendChild(boardEl);
+
+  displayMessage('Click BET button to start.');
 };
 
 initGame();
