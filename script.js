@@ -3,9 +3,9 @@
  */
 let swapCardsBtn;
 let savedCardsArray = [];
+let userHand = [];
 
 let betAmount = 0;
-const userHand = [];
 
 const userPoints = 100;
 let deck = [];
@@ -19,13 +19,47 @@ let deck = [];
 // function that adds card in a loop and adds a click element to change cards.
 // once deal cards is pressed, hide button until end of game
 
-/**
+/** DOING
  * function that sums returns the sum of the playing hand
  * @param {array} cardHand the user's current playing hand
  * @returns {number} sum of scores from the user's playing hand
  */
 const calcHandScore = (cardHand) => {
-  return 1;
+  // 1 pair
+  // 2 pair
+  // 3 of a kind
+  // straight
+  // flush
+  // full house
+  // 4 of a kind
+  // straight flush
+  // 5 of a kind
+  let counter = 0;
+  // iterate through the userHand or savedCardArray
+  for (const [i, { rank, suit }] of Object.entries(cardHand)) {
+    let index = Number(i);
+    // check for 5 of a kind
+    if (rank === cardHand[0].rank) {
+      counter += 1;
+      if (counter === 5) {
+        // console.log(`5 of a kind!`);
+        outputContainer.innerText = '5 of a kind!';
+        counter = 0;
+      }
+    }
+    counter = 0; // add counter here to ensure counter = 0
+    // check for straight flush BUG
+    if (
+      suit === cardHand[0].suit &&
+      // check for sequential numbers
+      (index === cardHand.length - 1 || rank < cardHand[index + 1].rank)
+    ) {
+      counter += 1;
+      if (counter === 5) {
+        console.log(`Straight flush!`);
+      }
+    }
+  }
 };
 
 //////////////////////
@@ -131,7 +165,7 @@ const makeCard = (cardInfo) => {
   return card;
 };
 
-/** DOING
+/**
  * function to swap cards that are not under holdStatus true
  */
 const swapCards = () => {
@@ -156,6 +190,8 @@ const swapCards = () => {
     }
     // calculate the score of this card
   });
+  // empties savedCardsArray
+  savedCardsArray = [];
 };
 
 /**
@@ -168,6 +204,9 @@ const dealCardBtn = () => {
   btnEl.classList.add('btn-deal-cards', 'btn');
   buttonsContainer.appendChild(btnEl);
   btnEl.addEventListener('click', () => {
+    // empties user hand array
+    userHand = [];
+
     gameContainer.innerText = '';
     for (let i = 0; i < 5; i += 1) {
       const card = deck.pop();
