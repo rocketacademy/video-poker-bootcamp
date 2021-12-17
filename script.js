@@ -24,6 +24,11 @@ let deck = [];
  * @param {array} cardHand the user's current playing hand
  * @returns {number} sum of scores from the user's playing hand
  */
+
+//////////////////////////////////
+// Calculate Handscore function //
+//////////////////////////////////
+
 const calcHandScore = (cardHand) => {
   // 1 pair
   // 2 pair
@@ -34,6 +39,12 @@ const calcHandScore = (cardHand) => {
   // 4 of a kind
   // straight flush
   // 5 of a kind
+
+  fiveOfAKind(cardHand);
+  straightFlush(cardHand);
+};
+
+const fiveOfAKind = (cardHand) => {
   let counter = 0;
   // iterate through the userHand or savedCardArray
   for (const [i, { rank, suit }] of Object.entries(cardHand)) {
@@ -43,20 +54,33 @@ const calcHandScore = (cardHand) => {
       counter += 1;
       if (counter === 5) {
         // console.log(`5 of a kind!`);
-        outputContainer.innerText = '5 of a kind!';
+        outputContainer.innerText = '5 of a kind! 😍';
         counter = 0;
       }
     }
-    counter = 0; // add counter here to ensure counter = 0
-    // check for straight flush BUG
-    if (
-      suit === cardHand[0].suit &&
-      // check for sequential numbers
-      (index === cardHand.length - 1 || rank < cardHand[index + 1].rank)
-    ) {
-      counter += 1;
-      if (counter === 5) {
-        console.log(`Straight flush!`);
+  }
+};
+
+const straightFlush = (cardHand) => {
+  let counter = 0;
+
+  // sort the cards in hand (ascending) according to rank DOING
+
+  console.log(cardHand);
+  // iterate through the userHand or savedCardArray
+  for (const [i, { rank, suit }] of Object.entries(cardHand)) {
+    // check for straight flush
+    let index = Number(i);
+
+    // check if suits are all the same
+    if (suit === cardHand[0].suit) {
+      // check if cards are in ascending order
+      if (index === cardHand.length - 1 || rank < cardHand[index + 1].rank) {
+        console.log(rank);
+        counter += 1;
+        if (counter === 5) {
+          outputContainer.innerText = 'Straight Flush! 🙌';
+        }
       }
     }
   }
