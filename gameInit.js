@@ -1,6 +1,6 @@
 // global variables
 let gameScore = 100;
-const folderPath = './images/cards';
+const folderPath = 'https://github.com/gysiang/video-poker-bootcamp/blob/fb26af0cd5b830b12a16fb7182f212d82780f9fa/images/cards';
 let rankTally = {};
 let suitTally = {};
 let canDeal = false;
