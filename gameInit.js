@@ -1,6 +1,6 @@
 // global variables
 let gameScore = 100;
-const folderPath = './cards';
+const folderPath = './images/cards';
 let rankTally = {};
 let suitTally = {};
 let canDeal = false;
