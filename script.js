@@ -10,10 +10,10 @@ let betAmount = 0;
 // combintaions met
 let fiveOfAKind = 0;
 let straightFlush = 0;
+let quads = 0;
 let fullHouse = 0;
 let straights = 0;
 let flush = 0;
-let quads = 0;
 let thriples = 0;
 let doublePairs = 0;
 let pairs = 0;
@@ -22,15 +22,17 @@ const userPoints = 100;
 let deck = [];
 
 // TODO
-// clicks a button to deal cards
-// user selects which card to keep
-// --> cards get saved to savedCardsArray when clicked. Need to create a function that replaces the unclicked cards
-// game replaces the unselected cards, calculateds the handscore, and update total points.
-// game calculates the hand score upon dealt of first hand
-// function that adds card in a loop and adds a click element to change cards.
-// once deal cards is pressed, hide button until end of game
+// clicks a button to deal cards DONE
+// user selects which card to keep DONE
+// --> cards get saved to savedCardsArray when clicked. Need to create a function that replaces the unclicked cards DONE
+// game calculates the hand score upon dealt of first hand DONE
+// function that adds card in a loop and adds a click element to change cards. DONE
+// game replaces the unselected cards, calculates the handscore, and update total points. DOING
+// come up with point system DOING
+// once deal cards is pressed, hide button until end of game DOING
+// add output container instructions DOING
 
-/** DOING
+/**
  * function that sums returns the sum of the playing hand
  * @param {array} cardHand the user's current playing hand
  * @returns {number} sum of scores from the user's playing hand
@@ -42,46 +44,46 @@ let deck = [];
 
 const calcHandScore = (cardHand) => {
   // 1 pair DONE
-  // 2 pair
+  // 2 pair DONE
   // 3 of a kind DONE
   // straight DONE
   // flush DONE
   // full house DONE
   // 4 of a kind DONE
   // straight flush DONE
-  // 5 of a kind DONE
+  // 5 of a kind
 
   checkForStraight(cardHand);
   checkForFlush(cardHand);
   quadsThriplesPairsFullHouse(cardHand);
-  checkForFiveOfAKind(cardHand);
+  // checkForFiveOfAKind(cardHand);
   checkForStraightFlush(cardHand);
 
-  checkIfHitCombo();
+  checkIfHitCombo(); // logs the combo hit in console
 };
 
-const checkForFiveOfAKind = (cardHand) => {
-  let counter = 0;
-  // iterate through the userHand or savedCardArray
-  for (const [i, { rank, suit }] of Object.entries(cardHand)) {
-    let index = Number(i);
-    // check for 5 of a kind
-    if (rank === cardHand[0].rank) {
-      counter += 1;
-      if (counter === 5) {
-        console.log(`5 of a kind!`);
-        counter = 0;
-        fiveOfAKind = 1;
-      }
-    }
-  }
-};
+// const checkForFiveOfAKind = (cardHand) => {
+//   let counter = 0;
+//   // iterate through the userHand or savedCardArray
+//   for (const [i, { rank, suit }] of Object.entries(cardHand)) {
+//     let index = Number(i);
+//     // check for 5 of a kind
+//     if (rank === cardHand[0].rank) {
+//       counter += 1;
+//       if (counter === 5) {
+//         console.log(`5 of a kind!`);
+//         counter = 0;
+//         fiveOfAKind = 1;
+//       }
+//     }
+//   }
+// };
 
 const checkForStraightFlush = (cardHand) => {
   // check if straight and flush are true;
 
-  if (straights && flush === 1) {
-    console.log('flush!');
+  if (straights === 1 && flush === 1) {
+    straightFlush = 1;
   }
 };
 
@@ -103,7 +105,7 @@ const checkForFlush = (cardHand) => {
 };
 
 const checkForStraight = (cardHand) => {
-  // check if the cards are in running order DOING
+  // check if the cards are in running order
 
   // sort the cards to be in descending order
   const sortedHand = [...cardHand].sort((a, b) => b.rank - a.rank);
@@ -122,7 +124,6 @@ const checkForStraight = (cardHand) => {
   }
 };
 
-// TODO 2 pair (set a counter)
 const quadsThriplesPairsFullHouse = (cardHand) => {
   let cardTally = {};
   for (const [i, { rank, suit }] of Object.entries(cardHand)) {
@@ -132,29 +133,34 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
       cardTally[rank] = 1;
     }
   }
-  // console.log(cardTally);
+  console.log(cardTally);
 
   let card4x = false;
   let card3x = false;
   let card2x = false;
   let card3x2x = false;
 
-  for (const i of Object.keys(cardTally)) {
-    for (const j of Object.values(cardTally)) {
-      if (j === 4) {
-        card4x = true;
-      }
-      if (j === 2) {
-        card2x = true;
-      }
-      if (j === 3) {
-        card3x = true;
-      }
-      if (card3x === true && card2x === true) {
-        card3x2x = true;
+  // for (const i of Object.keys(cardTally)) {
+  let counterForPairs = 0;
+  for (const j of Object.values(cardTally)) {
+    if (j === 4) {
+      card4x = true;
+    }
+    if (j === 2) {
+      card2x = true;
+      counterForPairs += 1;
+      if (counterForPairs === 2) {
+        doublePairs = 1;
       }
     }
+    if (j === 3) {
+      card3x = true;
+    }
+    if (card3x === true && card2x === true) {
+      card3x2x = true;
+    }
   }
+  // }
   if (card4x === true) {
     quads = 1;
   } else if (card3x2x === true) {
@@ -295,6 +301,7 @@ const swapCards = () => {
       gameContainer.appendChild(cardEl);
     }
     // calculate the score of this card
+    calcHandScore(savedCardsArray);
   });
   // empties savedCardsArray
   savedCardsArray = [];
@@ -340,12 +347,13 @@ const dealCardBtn = () => {
       });
       gameContainer.appendChild(cardEl);
     }
+    calcHandScore(userHand);
   });
 };
 
 const checkIfHitCombo = () => {
   console.log(
-    `fiveOfAKind: ${fiveOfAKind}, straightFlush: ${straightFlush}, fullHouse: ${fullHouse}, straights: ${straights}, flush: ${flush}, quads: ${quads}, thriples: ${thriples}, 2xPairs: ${doublePairs}, pairs: ${pairs}`
+    `fiveOfAKind: ${fiveOfAKind}, straightFlush: ${straightFlush}, quads: ${quads}, fullHouse: ${fullHouse}, straights: ${straights}, flush: ${flush}, thriples: ${thriples}, 2xPairs: ${doublePairs}, pairs: ${pairs}`
   );
 };
 
