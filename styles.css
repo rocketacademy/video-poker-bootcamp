@@ -85,6 +85,7 @@ body {
   backface-visibility: hidden;
   transition: transform 0.1s;
   transform-style: preserve-3d;
+  margin-top: -3px;
 }
 
 .front-card {
@@ -101,7 +102,7 @@ body {
 
 .suit {
   margin-left: -37px;
-  margin-top: 73px;
+  margin-top: 80px;
   font-size: 130%;
 }
 
@@ -145,10 +146,12 @@ td {
 }
 
 #hold-button {
+  position: relative;
   width: 60px;
   height: 20px;
   color: rgb(250, 9, 9);
   background-color: rgba(255, 255, 255, 0.568);
   border: 0cm;
   margin-top: 130px;
+  z-index: 20;
 }

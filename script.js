@@ -86,7 +86,6 @@ const makeDeck = (cardAmount) => {
         suit: currentSuit,
         rank: rankCounter,
         cardColor: color,
-        cardHeld: false,
       };
 
       // add the card to the deck
@@ -125,6 +124,11 @@ let finalDealButton = document.createElement("button");
 finalDealButton.setAttribute("id", "finaldeal-button");
 finalDealButton.style.display = "none";
 
+const holdButton = document.createElement("button");
+holdButton.id = "hold-button";
+holdButton.classList.add = "hold-button";
+holdButton.innerHTML = "HOLD";
+
 // CONTAINER FOR ALL BUTTONS //
 const buttonContainer = document.createElement("div");
 buttonContainer.classList.add("button-cont");
@@ -133,6 +137,7 @@ buttonContainer.appendChild(betAllButton);
 buttonContainer.appendChild(dealButton);
 buttonContainer.appendChild(finalDealButton);
 
+// FUNCTIONS FOR SOME OF THE BUTTONS CREATED //
 const buttonFunctions = () => {
   document.body.appendChild(outputMessage);
   betAllButton.addEventListener("click", () => {
@@ -186,14 +191,10 @@ const createCard = (cardInfo) => {
   name.innerText = cardInfo.name;
   const backCard = document.createElement("div");
   backCard.classList.add("back-card");
-  const holdButton = document.createElement("button");
-  holdButton.id = "hold-button";
-  holdButton.classList.add = "hold-button";
-  holdButton.innerHTML = "HOLD";
   card = document.createElement("div");
   card.id = "card";
   card.classList.add("card");
-  innerCard.appendChild(holdButton);
+
   innerCard.appendChild(name);
   innerCard.appendChild(suit);
   innerCard.appendChild(backCard);
@@ -201,13 +202,13 @@ const createCard = (cardInfo) => {
   return card;
 };
 
-// Removes an element from the document.
+// REMOVE ELEMENTS IN HTML USING ELEMENT IDS //
 const removeElement = (elementId) => {
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
 };
 
-// Inputting amount to wager
+// SHOWN AT THE START OF THE GAME PAGE //
 const startOfGame = () => {
   gameMessage.id = "game-message";
   gameMessage.innerHTML = " Y O U &nbsp R E A D Y ?";
@@ -220,6 +221,9 @@ const startOfGame = () => {
   readyButton.addEventListener("click", initGame);
   removeElement("table");
 };
+
+// AFTER READY BUTTON IS CLICKED, GAME INITILIAZED //
+// RUNS playerClick() & buttonFunctions() //
 const initGame = () => {
   gameMessage.innerHTML = "";
   removeElement("ready-button");
@@ -227,64 +231,12 @@ const initGame = () => {
   buttonFunctions();
 };
 
-// calling 5 cards out onto container
-const playerClick = () => {
-  document.body.appendChild(table);
-  container = document.createElement("div");
-  container.classList.add("container");
-  document.body.appendChild(container);
-  for (i = 0; i < 5; i++) {
-    playerCard = deck.pop();
-    playerCardHand.push(playerCard); // for displaying sorted full display cards
-    playerHandRank.push(playerCard.rank); // for comparing sorted cards rank
-    let cardElement = createCard(playerCard);
-    container.appendChild(cardElement);
-  }
-
-  document.body.appendChild(buttonContainer);
-};
-
-/*
- * A function that flips the cards when deal button is pressed for the first time
- * @param cardNameTally set to empty to give a fresh start
- * @param cardSuitTally set to empty to give a fresh start
- * @param cardRankInHand set to empty to give a fresh start
- * @return the flipped card of the front side with the card elements on it
+/* A function that tallies the cards by name,suit and rank.
+ * @param cardSuitTally tallies cards by suit
+ * @param cardNameTally tallies cards by name
+ * @param cardRankInHand push card ranks into array
+ * returns objects and arrays
  */
-
-const flipCard = () => {
-  /*   // tally variables set to empty
-  cardNameTally = {};
-  cardSuitTally = {};
-  cardRankInHand = []; */
-  const flipTheCard = document.getElementsByClassName("inner-card");
-  for (let i = 0; i < flipTheCard.length; i += 1) {
-    flipTheCard.item(i).classList.toggle("front-card");
-  }
-};
-
-/*
- * A function that flips the cards when deal button is pressed for the second time
- * after the player has chosen which card wants to be held or changed
- * @param cardNameTally set to empty to give a fresh start
- * @param cardSuitTally set to empty to give a fresh start
- * @param cardRankInHand set to empty to give a fresh start
- * @return the flipped card of the front side with the card elements on it
- */
-const secondFlipCard = () => {
-  // tally variables set to empty
-  cardNameTally = {};
-  cardSuitTally = {};
-  cardRankInHand = [];
-  const flipTheCard = document.getElementsByClassName("inner-card");
-  for (let i = 0; i < flipTheCard.length; i += 1) {
-    flipTheCard.item(i).classList.toggle("front-card");
-  }
-  cardTally(playerCardHand);
-  winningCombos();
-  return outputMessage;
-};
-
 const cardTally = (card) => {
   // for loop to get tally for nameTally and suitTally
   for (let i = 0; i < card.length; i++) {
@@ -313,8 +265,76 @@ const cardTally = (card) => {
     cardRankInHand.push(cardRank);
   }
 };
-/*
- * A function that goes through cardRankInHand and sorts them
+
+// CALLING OUT 5 CARDS INTO CONTAINER TO BE DISPLAYED FOR THE FIRST FLIP CARD //
+const playerClick = () => {
+  document.body.appendChild(table);
+  container = document.createElement("div");
+  container.classList.add("container");
+  document.body.appendChild(container);
+  for (i = 0; i < 5; i++) {
+    playerCard = deck.pop();
+    // Displaying sorted full display cards
+    playerCardHand.push(playerCard);
+    // For comparing sorted cards rank later on
+    playerHandRank.push(playerCard.rank);
+    let cardElement = createCard(playerCard);
+    container.appendChild(cardElement);
+  }
+
+  document.body.appendChild(buttonContainer);
+};
+
+const cardClick = () => {
+  let selectAllCards = document.getElementsByClassName("card");
+  for (i = 0; i < selectAllCards.length; i++) {
+    selectAllCards[i].appendChild(holdButton.cloneNode(true));
+  }
+
+  let allHoldButton = document.querySelectorAll("#hold-button");
+  for (const btn of allHoldButton) {
+    btn.addEventListener("click", () => {
+      btn.style.backgroundColor = "white";
+    });
+  }
+};
+
+/* A function that flips the cards when deal button is pressed for the first time
+ * @param cardNameTally set to empty to give a fresh start
+ * @param cardSuitTally set to empty to give a fresh start
+ * @param cardRankInHand set to empty to give a fresh start
+ * @return the flipped card of the front side with the card elements on it
+ */
+const flipCard = () => {
+  const flipTheCard = document.getElementsByClassName("inner-card");
+  for (let i = 0; i < flipTheCard.length; i += 1) {
+    flipTheCard.item(i).classList.toggle("front-card");
+  }
+  cardClick();
+};
+
+/* A function that flips the cards when deal button is pressed for the second time
+ * after the player has chosen which card wants to be held or changed
+ * @param cardNameTally set to empty to give a fresh start
+ * @param cardSuitTally set to empty to give a fresh start
+ * @param cardRankInHand set to empty to give a fresh start
+ * @return the flipped card of the front side with the card elements on it
+ */
+const secondFlipCard = () => {
+  /*   // tally variables set to empty
+  cardNameTally = {};
+  cardSuitTally = {};
+  cardRankInHand = []; */
+  const flipTheCard = document.getElementsByClassName("inner-card");
+  for (let i = 0; i < flipTheCard.length; i += 1) {
+    flipTheCard.item(i).classList.toggle("front-card");
+  }
+  cardTally(playerCardHand);
+  winningCombos();
+  return outputMessage;
+};
+
+/* A function that goes through cardRankInHand and sorts them
  * @return true/false if hand has two pairs in it
  */
 const twoPairsCombo = () => {
@@ -329,8 +349,8 @@ const twoPairsCombo = () => {
     twoPairs = true;
   }
 };
-/*
- * A function that goes through cardNameTally to see if there are any three of the same card name and full house combos
+
+/* A function that goes through cardNameTally to see if there are any three of the same card name and full house combos
  * @return true/false if hand has threes or full houses
  */
 const threeKindsAndFullHouseCombo = () => {
@@ -356,8 +376,8 @@ const threeKindsAndFullHouseCombo = () => {
     }
   }
 };
-/*
- * A function that goes through cardNameTally to see if there are four of the same card name
+
+/* A function that goes through cardNameTally to see if there are four of the same card name
  * @return true/false if hand has four of a kind in it
  */
 const fourKindsCombo = () => {
@@ -367,8 +387,8 @@ const fourKindsCombo = () => {
     }
   }
 };
-/*
- * A function that goes through cardSuitTally and cardRankInHand
+
+/* A function that goes through cardSuitTally and cardRankInHand
  *  and sorts them. This is to see if there are card ranks that
  * are in proper numerical order of difference 1 OR if they have
  *  the same suit OR both.
@@ -407,8 +427,8 @@ const straightStraightFlushAndRoyalFlushCombo = () => {
     }
   }
 };
-/*
- * A function that goes through all different combo functions to
+
+/* A function that goes through all different combo functions to
  * see if hand has at least Jack or better in it
  * @return true/false if hand has Jack or better in it
  */
@@ -427,8 +447,7 @@ const jackOrBetterCombo = () => {
   }
 };
 
-/*
- * A function that goes through all different combo functions to
+/* A function that goes through all different combo functions to
  * see if hand has any of it
  * @return an output message of what combination you have in hand
  */
@@ -460,25 +479,3 @@ const winningCombos = () => {
 };
 
 startOfGame();
-
-/* 
-const cardClick = () => {
-  let selectAllCards = document.getElementsByClassName("card");
-  for (i = 0; i < selectAllCards.length; i++) {
-    selectAllCards[i].appendChild(holdButton.cloneNode(true));
-  }
-
-  let allHoldButton = document.querySelectorAll("#hold-button");
-  for (const btn of allHoldButton) {
-    btn.addEventListener("click", () => {
-      btn.style.backgroundColor = "white";
-    });
-  }
-  for (j = 0; j < selectAllCards.length; j++) {
-    for (const btnStyle of allHoldButton) {
-      if (btnStyle.style.backgroundColor === "white") {
-        return (cardHeld = true);
-      }
-    }
-  }
-}; */
