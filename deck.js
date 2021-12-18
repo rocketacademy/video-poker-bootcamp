@@ -6,7 +6,7 @@
  */
 const getFilePathCard = (suit, rank) =>
 {
-  const filePath = `${folderPath}/${suit}\ ${rank}.png`;
+  const filePath = `${folderPath}/${suit}${rank}.png`;
   return filePath;
 };
 /**
