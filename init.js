@@ -39,28 +39,30 @@ const initGame = () => {
   buttonsContainer.classList.add('buttons-container');
   overallContainer.appendChild(buttonsContainer);
 
-  // create input container, bet input and submit
-  inputContainer = document.createElement('div');
-  inputContainer.classList.add('input-container');
-  buttonsContainer.appendChild(inputContainer);
+  // // create input container, bet input and submit
+  // inputContainer = document.createElement('div');
+  // inputContainer.classList.add('input-container');
+  // buttonsContainer.appendChild(inputContainer);
+
+  /** removed input slider */
   // bet input slider
-  input = document.createElement('input');
-  input.type = 'range';
-  input.name = 'quantity';
-  input.classList.add('input-bet');
-  input.min = 0;
-  input.max = 100;
-  inputContainer.appendChild(input);
-  // output for slider
-  output = document.createElement('output');
-  output.classList.add('output');
-  output.setAttribute('for', 'quantity');
-  inputContainer.appendChild(output);
+  // input = document.createElement('input');
+  // input.type = 'range';
+  // input.name = 'quantity';
+  // input.classList.add('input-bet');
+  // input.min = 0;
+  // input.max = 100;
+  // inputContainer.appendChild(input);
+  // // output for slider
+  // output = document.createElement('output');
+  // output.classList.add('output');
+  // output.setAttribute('for', 'quantity');
+  // inputContainer.appendChild(output);
 
   // create swap cards button
   swapCardsBtn = document.createElement('button');
   swapCardsBtn.innerText = 'Swap Cards';
-  swapCardsBtn.classList.add('btn-swap-cards');
+  swapCardsBtn.classList.add('btn-swap-cards', 'btn');
   buttonsContainer.appendChild(swapCardsBtn);
 
   /**
@@ -69,15 +71,16 @@ const initGame = () => {
   const rangeInput = document.querySelector('.input-bet');
   const rangeOutput = document.querySelector('.output');
 
-  const outputDefaultState = () => {
-    rangeOutput.value = rangeInput.value;
-  };
-  rangeInput.addEventListener('input', function () {
-    rangeOutput.value = this.value;
-  });
-  document.addEventListener('DOMContentLoaded', function () {
-    outputDefaultState();
-  });
+  /** logic for input slider */
+  // const outputDefaultState = () => {
+  //   rangeOutput.value = rangeInput.value;
+  // };
+  // rangeInput.addEventListener('input', function () {
+  //   rangeOutput.value = this.value;
+  // });
+  // document.addEventListener('DOMContentLoaded', function () {
+  //   outputDefaultState();
+  // });
 
   // creates deal cards button
   dealCardBtn();
