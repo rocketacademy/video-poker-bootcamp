@@ -1,0 +1,211 @@
+@media only screen and (min-width: 768px) {
+  .player1container {
+    width: 50% !important;
+  }
+}
+
+body {
+  background-color: #181818;
+  border: 5px dashed green;
+}
+
+.card {
+  margin: 10px;
+  /* width: var(--card-width);
+  height: var(--card-height); */
+  text-align: center;
+  /* border-radius: 8px; */
+  /* border: 1px black solid; */
+  display: inline-block;
+}
+
+.card:hover {
+  transform: scale(1.2);
+}
+
+.card.cardSwap {
+  height: 52%;
+}
+
+.cardimg {
+  width: var(--card-width);
+  height: var(--card-height);
+}
+
+.cardSwap {
+  /* width: var(--card-width);
+  height: var(--card-height); */
+  border-radius: 5px;
+  border: 3px double yellow;
+  display: inline-block;
+}
+.suit {
+  margin: 5px;
+  font-size: 20px;
+}
+
+.name {
+  margin: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.red {
+  color: red;
+}
+.black {
+  color: black;
+}
+
+.player1container {
+  background-color: green;
+  border: 0.7em solid rgb(109, 77, 8);
+  border-radius: 40%;
+  padding: 5px;
+  margin: 5px;
+  min-height: 160px;
+  width: 68%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.mainContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+.gameInfoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 26px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.video-game-button {
+  font-family: "Press Start 2p";
+  text-shadow: 1px 1px pink, -1px -1px maroon;
+  line-height: 2.5em;
+  text-align: center;
+  display: inline-block;
+  width: 8.5em;
+  -webkit-border-radius: 0.75em;
+  -moz-border-radius: 0.75em;
+  -o-border-radius: 0.75em;
+  border-radius: 0.75em;
+  background-color: red;
+  -webkit-box-shadow: 0 0.2em maroon;
+  -moz-box-shadow: 0 0.2em maroon;
+  -o-box-shadow: 0 0.2em maroon;
+  box-shadow: 0 0.2em maroon;
+  color: red;
+  margin: 5px;
+  background-color: red;
+  background-image: -o-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+  background-image: -moz-linear-gradient(
+    left top,
+    pink 3%,
+    red 22%,
+    maroon 99%
+  );
+  background-image: -webkit-linear-gradient(
+    left top,
+    pink 3%,
+    red 22%,
+    maroon 99%
+  );
+  background-image: linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+  cursor: pointer;
+  padding-left: 5px;
+}
+.video-game-button:active,
+.start-btn:active {
+  box-shadow: none;
+  position: relative;
+  top: 0.2em;
+}
+.start-btn {
+  font-family: "Press Start 2p";
+  text-align: center;
+  display: inline-block;
+  margin: 5px;
+  width: 8em;
+  font-weight: bold;
+  padding: 10px 0 10px 0px;
+  background-color: lightgray;
+  text-shadow: -1px -1px black, 1px 1px white;
+  color: gray;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -o-border-radius: 7px;
+  border-radius: 7px;
+  box-shadow: 0 0.2em gray;
+  cursor: pointer;
+}
+.sign {
+  width: 25%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.score-Container {
+  color: white;
+  background-color: green;
+  border: 4px dashed yellow;
+  border-radius: 10px;
+  display: flex;
+  align-content: center;
+  padding: 20px;
+  position: absolute;
+  top: 26px;
+  left: 30px;
+  font-family: "Press Start 2p";
+  font-size: 32px;
+}
+
+.gameInfoContainer {
+  font-family: "Press Start 2p";
+  font-size: 16px;
+  padding: 10px;
+}
+
+.mute {
+  position: absolute;
+  background-color: #181818;
+  top: 30px;
+  right: 30px;
+  width: 55px;
+  min-height: 50px;
+  border: none;
+  background-image: url("images/mute.png");
+  background-size: cover;
+  cursor: pointer;
+  color: white;
+}
+
+.unmute {
+  position: absolute;
+  background-color: #181818;
+  top: 30px;
+  right: 30px;
+  width: 55px;
+  min-height: 50px;
+  border: none;
+  background-image: url("images/play.png");
+  background-size: cover;
+  cursor: pointer;
+}
