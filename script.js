@@ -20,18 +20,62 @@ let onePair;
 let highCard;
 let winCondition = '';
 
+const winningInfoArr = [
+  ['Royal Flush', '+ bet x30'],
+  ['Straight Flush', '+ bet x25'],
+  ['Four of a Kind', '+ bet x20'],
+  ['Full House', '+ bet x15'],
+  ['Flush', '+ bet x10'],
+  ['Straight', '+ bet x8'],
+  ['Three of a Kind', '+ bet x6'],
+  ['Two Pairs', '+ bet x4'],
+  ['One Pair', '+ bet x2'],
+  ['High Card', '+ bet x1'],
+];
+
 /** CREATION OF ELEMENTS */
-const gameInfo = document.createElement('div');
-const winningInfo = document.createElement('table');
-const creditsInfo = document.createElement('div');
-creditsInfo.innerText = credits;
-const betInputField = document.createElement('input');
-betInputField.className = 'betinputfield';
-const submitButton = document.createElement('button');
-submitButton.innerText = 'Submit / Deal Cards';
+const gameHeader = document.createElement('div');
+gameHeader.className = 'game-header';
+const gameTitle = document.createElement('h1');
+gameTitle.innerHTML = 'Video Poker Game';
+const pokerCardsGif = document.createElement('img');
+pokerCardsGif.src = '../video-poker-bootcamp/media/poker-cards-gif.gif';
+
+const gameInfo = document.createElement('p');
+gameInfo.className = 'game-info';
+
+const gameBody = document.createElement('div');
+gameBody.className = 'game-body';
+
+const winningInfoTable = document.createElement('table');
+winningInfoTable.className = 'winning-info-table';
 
 const cardTable = document.createElement('div');
-cardTable.className = 'cardtable';
+cardTable.className = 'card-table';
+
+const gameFooter = document.createElement('div');
+gameFooter.className = 'game-footer';
+
+const gameFooter1 = document.createElement('div');
+gameFooter1.className = 'game-footer-1';
+
+const creditsText = document.createElement('p');
+creditsText.innerText = 'Credits:';
+const creditsInfo = document.createElement('p');
+creditsInfo.innerText = credits;
+
+const gameFooter2 = document.createElement('div');
+gameFooter2.className = 'game-footer-2';
+
+const betText = document.createElement('p');
+betText.innerText = 'Bet Amount:';
+
+const betInputField = document.createElement('input');
+betInputField.disabled = false;
+betInputField.placeholder = 'Enter Bet Amount';
+
+const submitButton = document.createElement('button');
+submitButton.innerText = 'Submit / Deal Cards';
 
 /** HELPER FUNCTIONS */
 /** Function to get random index ranging from 0 (inclusive) to max (exclusive)
@@ -40,6 +84,17 @@ cardTable.className = 'cardtable';
 function getRandomIndex(max) {
   return Math.floor(Math.random() * max);
 }
+
+/** Function to create table element from array */
+const createTable = (array, tableObj) => {
+  for (let i = 0; i < array.length; i += 1) {
+    let newRow = tableObj.insertRow(tableObj.length);
+    for (let j = 0; j < array[i].length; j += 1) {
+      let cell = newRow.insertCell(j);
+      cell.innerHTML = array[i][j];
+    }
+  }
+};
 
 /** Function to shuffle cards
  * @param cards - array of cards
@@ -118,28 +173,29 @@ const buildCardElements = (hand) => {
     let name1 = hand[i].name;
     /** create box elements first to house 'redraw' message and card image */
     const cardBoxElement = document.createElement('div');
-    cardBoxElement.className = 'cardboxelement';
+    cardBoxElement.className = 'card-box-element';
     cardBoxElement.id = `${i}`;
     /** create image element for each card */
     const cardElement = document.createElement('img');
     cardElement.src = `../video-poker-bootcamp/media/${suit1}-${name1}.png`;
     cardElement.alt = `${name1} of ${suit1}`;
-    cardElement.className = 'cardfront';
+    cardElement.className = 'card-element';
 
     cardBoxElement.addEventListener('click', (e) => {
-      if (e.currentTarget.className === 'cardboxelement') {
-        e.currentTarget.className = 'cardboxredraw';
+      if (e.currentTarget.className === 'card-box-element') {
+        e.currentTarget.className = 'card-box-redraw';
         let index = Number(e.currentTarget.id);
         redrawIndexArr.push(index);
         redrawIndexArr.sort((a, b) => a - b);
-      } else if (e.currentTarget.className === 'cardboxredraw') {
-        e.currentTarget.className = 'cardboxelement';
+        console.log(redrawIndexArr);
+      } else if (e.currentTarget.className === 'card-box-redraw') {
+        e.currentTarget.className = 'card-box-element';
         let index = Number(e.currentTarget.id);
-        document.getElementById(`redrawBox${index}`).innerHTML = '';
-
+        console.log(redrawIndexArr);
         for (let j = 0; j < redrawIndexArr.length; j += 1) {
           if (redrawIndexArr[j] === index) {
             redrawIndexArr.splice(j, 1);
+            console.log(redrawIndexArr);
           }
         }
       }
@@ -316,11 +372,13 @@ const calcHandScore = () => {
 const playerClick = () => {
   /** if current game mode is input bet */
   if (currentGameMode === 'input bet') {
+    betInputField.disabled = false;
     let betInput = betInputField.value;
     /** check if bet input is valid */
     if (betInput === '' || isNaN(betInput)) {
       output('You gotta type a number!');
     } else if (betInput !== '') {
+      betInputField.disabled = true;
       currentGameMode = 'deal cards';
       bet = betInput;
       output(`You bet ${bet} credits. Click the 'Submit / Deal Cards' button again to deal cards!`);
@@ -354,20 +412,41 @@ const playerClick = () => {
     currentGameMode = 'input bet';
     playerHand = [];
     redrawIndexes = [];
+    betInputField.disabled = false;
+    betInputField.placeholder = 'Enter Bet Amount';
   }
 };
 
 /** GAME INITIALISATION */
 const initGame = () => {
-  /** game instructions */
-  output('Welcome to Video Poker Game!');
+  /** Display welcome message */
+  output('Welcome! Start by setting a bet amount!');
+
+  /** Append all the elements */
+  gameHeader.appendChild(gameTitle);
+  gameHeader.appendChild(pokerCardsGif);
+  document.body.appendChild(gameHeader);
+
   document.body.appendChild(gameInfo);
 
-  document.body.appendChild(cardTable);
+  document.body.appendChild(gameBody);
+  createTable(winningInfoArr, winningInfoTable);
+  gameBody.appendChild(winningInfoTable);
+  gameBody.appendChild(cardTable);
 
-  document.body.appendChild(betInputField);
-  document.body.appendChild(submitButton);
-  document.body.appendChild(creditsInfo);
+  gameFooter1.appendChild(creditsText);
+  gameFooter1.appendChild(creditsInfo);
+
+  gameFooter2.appendChild(betText);
+  gameFooter2.appendChild(betInputField);
+  gameFooter2.appendChild(submitButton);
+
+  gameFooter.appendChild(gameFooter1);
+  gameFooter.appendChild(gameFooter2);
+
+  document.body.appendChild(gameFooter);
+
+  /** Add event listener to submit button for player to click and play :) */
   submitButton.addEventListener('click', playerClick);
 };
 

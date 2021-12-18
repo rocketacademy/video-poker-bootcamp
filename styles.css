@@ -1,48 +1,132 @@
-h1 {
-  text-align: center;
-}
-
-.cardfront {
-  display: inline-block;
-  width: 96%;
-  height: auto;
-  margin: 5px;
-}
-
-.cardback {
-  background-color: black;
-  display: inline-block;
-  width: 96%;
-  height: auto;
-  margin: 5px;
-}
-
-.cardboxredraw {
-  display: inline-block;
-  width: 18%;
-  outline-style: solid;
-  outline-color: yellow;
-  text-align: center;
-}
-
-.cardtable {
-  width: 90%;
-  height: 230px;
-  padding: 5px;
-  align-items: center;
-  display: inline-block;
-  border-style: solid;
-  border-width: 8px;
-  border-color: brown;
+body {
+  font-family: "Rubik", sans-serif;
   background-color: green;
-  border-radius: 5px;
+  text-align: center;
+  align-items: center;
 }
 
-.betinputfield {
+.game-header {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-header > h1 {
+  text-align: center;
+}
+
+.game-header > img {
+  height: 65px;
+  width: 80px;
+  margin: 0px 10px 0px 15px;
+}
+
+.game-info {
   display: block;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 0;
 }
 
-.cardboxelement {
-  display: inline-block;
-  width: 18%;
+.game-body {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 800px;
+  height: fit-content;
+  max-height: 60vh;
+  margin: 0 auto;
+}
+
+.game-body > table,
+td {
+  text-align: left;
+  font-size: 14px;
+  margin: 0px 10px 10px 0px;
+  background-color: lightgrey;
+  border: 0.5px solid #2f3640;
+}
+
+.game-footer {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 800px;
+  min-height: 50px;
+  align-items: center;
+}
+
+.game-footer-1 {
+  height: fit-content;
+  display: flex;
+  background-color: pink;
+}
+
+.game-footer-1 > p {
+  margin: 8px;
+}
+
+.game-footer-2 {
+  height: fit-content;
+  display: flex;
+  align-items: center;
+}
+
+.game-footer-2 > input {
+  font-family: "Rubik", sans-serif;
+  font-size: 16px;
+  padding: 5px;
+  width: 150px;
+  margin: 5px;
+}
+
+.game-footer-2 > button {
+  margin: 5px;
+  border-radius: 15px;
+  font-size: 16px;
+  height: fit-content;
+  padding: 5px;
+  font-family: "Rubik", sans-serif;
+}
+
+.game-footer-2 > p {
+  align-content: center;
+  margin-right: 8px;
+}
+
+.card-table {
+  width: 100vw;
+  max-width: 600px;
+  min-height: 31vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../video-poker-bootcamp/media/poker-table.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.card-element {
+  width: 96%;
+  height: auto;
+  margin: 5px;
+}
+
+.card-box-redraw {
+  display: flex;
+  width: 15%;
+  justify-content: center;
+  text-align: center;
+  background-color: grey;
+  opacity: 0.2;
+}
+
+.card-box-element {
+  display: flex;
+  width: 15%;
+  justify-content: center;
 }
