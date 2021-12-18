@@ -7,6 +7,17 @@ let userHand = [];
 
 let betAmount = 0;
 
+// combintaions met
+let fiveOfAKind = 0;
+let straightFlush = 0;
+let fullHouse = 0;
+let straights = 0;
+let flush = 0;
+let quads = 0;
+let thriples = 0;
+let doublePairs = 0;
+let pairs = 0;
+
 const userPoints = 100;
 let deck = [];
 
@@ -30,21 +41,26 @@ let deck = [];
 //////////////////////////////////
 
 const calcHandScore = (cardHand) => {
-  // 1 pair
+  // 1 pair DONE
   // 2 pair
-  // 3 of a kind
-  // straight
-  // flush
-  // full house
-  // 4 of a kind
-  // straight flush
-  // 5 of a kind
+  // 3 of a kind DONE
+  // straight DONE
+  // flush DONE
+  // full house DONE
+  // 4 of a kind DONE
+  // straight flush DONE
+  // 5 of a kind DONE
 
-  fiveOfAKind(cardHand);
-  straightFlush(cardHand);
+  checkForStraight(cardHand);
+  checkForFlush(cardHand);
+  quadsThriplesPairsFullHouse(cardHand);
+  checkForFiveOfAKind(cardHand);
+  checkForStraightFlush(cardHand);
+
+  checkIfHitCombo();
 };
 
-const fiveOfAKind = (cardHand) => {
+const checkForFiveOfAKind = (cardHand) => {
   let counter = 0;
   // iterate through the userHand or savedCardArray
   for (const [i, { rank, suit }] of Object.entries(cardHand)) {
@@ -53,37 +69,104 @@ const fiveOfAKind = (cardHand) => {
     if (rank === cardHand[0].rank) {
       counter += 1;
       if (counter === 5) {
-        // console.log(`5 of a kind!`);
-        outputContainer.innerText = '5 of a kind! 😍';
+        console.log(`5 of a kind!`);
         counter = 0;
+        fiveOfAKind = 1;
       }
     }
   }
 };
 
-const straightFlush = (cardHand) => {
+const checkForStraightFlush = (cardHand) => {
+  // check if straight and flush are true;
+
+  if (straights && flush === 1) {
+    console.log('flush!');
+  }
+};
+
+const checkForFlush = (cardHand) => {
+  // check if all the suits are the same
+  let suitTally = {};
+  for (const [i, { suit }] of Object.entries(cardHand)) {
+    // check if all the suits are the same
+    if (suit in suitTally) {
+      suitTally[suit] += 1;
+    } else {
+      suitTally[suit] = 1;
+    }
+  }
+  if (Object.keys(suitTally).length === 1) {
+    flush = 1;
+    return true;
+  }
+};
+
+const checkForStraight = (cardHand) => {
+  // check if the cards are in running order DOING
+
+  // sort the cards to be in descending order
+  const sortedHand = [...cardHand].sort((a, b) => b.rank - a.rank);
+  // console.log(sortedHand);
+
+  // loop through the sortedHand to check if the difference between
+  // each card is 1
   let counter = 0;
-
-  // sort the cards in hand (ascending) according to rank DOING
-
-  console.log(cardHand);
-  // iterate through the userHand or savedCardArray
-  for (const [i, { rank, suit }] of Object.entries(cardHand)) {
-    // check for straight flush
-    let index = Number(i);
-
-    // check if suits are all the same
-    if (suit === cardHand[0].suit) {
-      // check if cards are in ascending order
-      if (index === cardHand.length - 1 || rank < cardHand[index + 1].rank) {
-        console.log(rank);
-        counter += 1;
-        if (counter === 5) {
-          outputContainer.innerText = 'Straight Flush! 🙌';
-        }
+  for (let i = 0; i < sortedHand.length - 1; i += 1) {
+    if (sortedHand[i].rank - sortedHand[i + 1].rank === 1) {
+      counter += 1;
+      if (counter === 4) {
+        straights = 1;
       }
     }
   }
+};
+
+// TODO 2 pair (set a counter)
+const quadsThriplesPairsFullHouse = (cardHand) => {
+  let cardTally = {};
+  for (const [i, { rank, suit }] of Object.entries(cardHand)) {
+    if (rank in cardTally) {
+      cardTally[rank] += 1;
+    } else {
+      cardTally[rank] = 1;
+    }
+  }
+  // console.log(cardTally);
+
+  let card4x = false;
+  let card3x = false;
+  let card2x = false;
+  let card3x2x = false;
+
+  for (const i of Object.keys(cardTally)) {
+    for (const j of Object.values(cardTally)) {
+      if (j === 4) {
+        card4x = true;
+      }
+      if (j === 2) {
+        card2x = true;
+      }
+      if (j === 3) {
+        card3x = true;
+      }
+      if (card3x === true && card2x === true) {
+        card3x2x = true;
+      }
+    }
+  }
+  if (card4x === true) {
+    quads = 1;
+  } else if (card3x2x === true) {
+    fullHouse = 1;
+  } else if (card3x === true) {
+    thriples = 1;
+  } else if (card2x === true) {
+    pairs = 1;
+  }
+  // console.log(
+  //   `card4x: ${card4x}, card3x: ${card3x}, card2x: ${card2x}, card3x2x: ${card3x2x}`
+  // );
 };
 
 //////////////////////
@@ -200,7 +283,6 @@ const swapCards = () => {
     const amtOfCardsToFillHand = 5 - savedCardsArray.length;
     console.log(`amt of cards needed = ${amtOfCardsToFillHand}`);
     // add x amt of cards into saved hand array to make it 5
-    // TODO keep cards in place after changing them
     for (let i = 0; i < amtOfCardsToFillHand; i += 1) {
       const newCard = deck.pop();
       savedCardsArray.push(newCard);
@@ -259,6 +341,12 @@ const dealCardBtn = () => {
       gameContainer.appendChild(cardEl);
     }
   });
+};
+
+const checkIfHitCombo = () => {
+  console.log(
+    `fiveOfAKind: ${fiveOfAKind}, straightFlush: ${straightFlush}, fullHouse: ${fullHouse}, straights: ${straights}, flush: ${flush}, quads: ${quads}, thriples: ${thriples}, 2xPairs: ${doublePairs}, pairs: ${pairs}`
+  );
 };
 
 /**
