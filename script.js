@@ -1,11 +1,4 @@
-/*
- * A function that returns a fixed number of i
- * @param cardInHand = [] to store all cards drawn
- * @param push cards drawn into cardInHand
- * @return number of i that the user scored for the cards in hand
- */
-
-// global variables for all winning combos
+// GLOBAL VARIABLES //
 let twoPairs = false;
 let threeKinds = false;
 let straight = false;
@@ -28,62 +21,15 @@ let cardSuit;
 let cardRank;
 let card;
 
-// tally global variables
+// GLOBAL VARIABLES FOR CARD TALLY //
 let cardNameTally = {};
 let cardSuitTally = {};
 let cardRankInHand = [];
 
-// DOMS
-
-// hold button will be on every card
-// hold button will be put on every card
-// when user clicks card, message will show on top of the card to show that it is being held
-// if clicked, cardHeld = true
-// if cardHeld = false, clicking DEAL will replace those unheld cards.
-let holdButton = document.createElement("button");
-holdButton.id = "hold-button";
-holdButton.classList.add = "hold-button";
-holdButton.innerHTML = "HOLD";
-holdButton.disabled = true;
-
-let readyButton = document.createElement("button");
-let gameMessage = document.createElement("div");
-let outputMessage = document.createElement("div");
-outputMessage.id = "output-message";
-let table = document.getElementById("table");
-
-let betOneButton = document.createElement("button");
-betOneButton.innerHTML = "BET ONE";
-betOneButton.setAttribute("id", "bet-one");
-
-let betAllButton = document.createElement("button");
-betAllButton.innerHTML = "MAX BET";
-betAllButton.setAttribute("id", "bet-all");
-
-// deal button will be at the start of the game
-let dealButton = document.createElement("button");
-dealButton.setAttribute("id", "deal-button");
-dealButton.innerHTML = "DEAL";
-dealButton.disabled = true;
-
-// deal button will be at the end of the round
-let finalDealButton = document.createElement("button");
-finalDealButton.setAttribute("id", "finaldeal-button");
-finalDealButton.style.display = "none";
-
-// creating container for all buttons to be in
-
-const buttonContainer = document.createElement("div");
-buttonContainer.classList.add("button-cont");
-buttonContainer.appendChild(betOneButton);
-buttonContainer.appendChild(betAllButton);
-buttonContainer.appendChild(dealButton);
-buttonContainer.appendChild(finalDealButton);
-
-// Get a random index ranging from 0 (inclusive) to max (exclusive).
+// GET A RANDOM INDEX RANGING FROM 0 (INCLUSIVE) TO MAX (EXCLUSIVE) //
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
-// Shuffle an array of cards
+// CREATE A SHUFFLE AN ARRAY OF CARDS FUNCTION //
 const shuffleCards = (cards) => {
   // Loop over the card deck array once
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
@@ -101,6 +47,7 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
+// GENERATE 52 CARDS //
 const makeDeck = (cardAmount) => {
   // create the empty deck at the beginning
   const newDeck = [];
@@ -139,6 +86,7 @@ const makeDeck = (cardAmount) => {
         suit: currentSuit,
         rank: rankCounter,
         cardColor: color,
+        cardHeld: false,
       };
 
       // add the card to the deck
@@ -148,8 +96,85 @@ const makeDeck = (cardAmount) => {
   return newDeck;
 };
 
+// SHUFFLE ALL 52 CARDS //
 const deck = shuffleCards(makeDeck());
 
+// DOCUMENT OBJECT MODEL GLOBAL VARIABLES //
+let readyButton = document.createElement("button");
+let gameMessage = document.createElement("div");
+let dealButton = document.createElement("button");
+dealButton.setAttribute("id", "deal-button");
+dealButton.innerHTML = "DEAL";
+dealButton.disabled = true;
+let outputMessage = document.createElement("div");
+outputMessage.id = "output-message";
+let table = document.getElementById("table");
+
+// BET ONCE BUTTON //
+let betOneButton = document.createElement("button");
+betOneButton.innerHTML = "BET ONE";
+betOneButton.setAttribute("id", "bet-one");
+
+// BET ALL BUTTON //
+let betAllButton = document.createElement("button");
+betAllButton.innerHTML = "MAX BET";
+betAllButton.setAttribute("id", "bet-all");
+
+// FINAL DEAL BUTTON AFTER CHOOSING CARDS TO BE HELD //
+let finalDealButton = document.createElement("button");
+finalDealButton.setAttribute("id", "finaldeal-button");
+finalDealButton.style.display = "none";
+
+// CONTAINER FOR ALL BUTTONS //
+const buttonContainer = document.createElement("div");
+buttonContainer.classList.add("button-cont");
+buttonContainer.appendChild(betOneButton);
+buttonContainer.appendChild(betAllButton);
+buttonContainer.appendChild(dealButton);
+buttonContainer.appendChild(finalDealButton);
+
+const buttonFunctions = () => {
+  document.body.appendChild(outputMessage);
+  betAllButton.addEventListener("click", () => {
+    dealButton.disabled = false;
+    betAllButton.disabled = true;
+    betOneButton.disabled = true;
+    bettingMoney = 5;
+    balanceAmount = moneyInHand - bettingMoney;
+    dealButton.disabled = false;
+    betAllButton.disabled = true;
+    betOneButton.disabled = true;
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
+  });
+  betOneButton.addEventListener("click", () => {
+    dealButton.disabled = false;
+    bettingMoney++;
+    balanceAmount = moneyInHand - bettingMoney;
+
+    if (bettingMoney === 5) {
+      dealButton.disabled = false;
+      betAllButton.disabled = true;
+      betOneButton.disabled = true;
+    }
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney}`;
+  });
+
+  dealButton.addEventListener("click", () => {
+    finalDealButton.style.display = "";
+    finalDealButton.innerHTML = "LOCK IT IN";
+    removeElement("deal-button");
+    removeElement("bet-one");
+    removeElement("bet-all");
+    flipCard();
+  });
+
+  finalDealButton.addEventListener("click", () => {
+    removeElement("finaldeal-button");
+    secondFlipCard();
+  });
+};
+
+// CREATE CARD USING DOM //
 const createCard = (cardInfo) => {
   const innerCard = document.createElement("div");
   innerCard.classList.add("inner-card");
@@ -161,62 +186,26 @@ const createCard = (cardInfo) => {
   name.innerText = cardInfo.name;
   const backCard = document.createElement("div");
   backCard.classList.add("back-card");
+  const holdButton = document.createElement("button");
+  holdButton.id = "hold-button";
+  holdButton.classList.add = "hold-button";
+  holdButton.innerHTML = "HOLD";
   card = document.createElement("div");
   card.id = "card";
   card.classList.add("card");
+  innerCard.appendChild(holdButton);
   innerCard.appendChild(name);
   innerCard.appendChild(suit);
   innerCard.appendChild(backCard);
   card.appendChild(innerCard);
-
   return card;
-};
-
-const buttonFunctions = () => {
-  document.body.appendChild(outputMessage);
-  betAllButton.addEventListener("click", () => {
-    dealButton.disabled = false;
-    betAllButton.disabled = true;
-    betOneButton.disabled = true;
-    bettingMoney = 5;
-    balanceAmount = moneyInHand - bettingMoney;
-    if (balanceAmount === 0) {
-      dealButton.disabled = false;
-      betAllButton.disabled = true;
-      betOneButton.disabled = true;
-    }
-    outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
-  });
-  betOneButton.addEventListener("click", () => {
-    dealButton.disabled = false;
-    bettingMoney++;
-    balanceAmount = moneyInHand - bettingMoney;
-    if (balanceAmount === 0) {
-      dealButton.disabled = false;
-      betAllButton.disabled = true;
-      betOneButton.disabled = true;
-    }
-    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney}`;
-  });
-
-  dealButton.addEventListener("click", () => {
-    // dealButton.disabled = true;;
-    // betAllButton.disabled = true;
-    // betOneButton.disabled = true;
-	finalDealButton.style.display= "";
-	finalDealButton.innerHTML = "LOCK IT IN";
-	removeElement("deal-button")
-	removeElement("bet-one")
-	removeElement("bet-all")	
-    flipCard();
-  });
 };
 
 // Removes an element from the document.
 const removeElement = (elementId) => {
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
-};	
+};
 
 // Inputting amount to wager
 const startOfGame = () => {
@@ -230,6 +219,12 @@ const startOfGame = () => {
   document.body.appendChild(readyButton);
   readyButton.addEventListener("click", initGame);
   removeElement("table");
+};
+const initGame = () => {
+  gameMessage.innerHTML = "";
+  removeElement("ready-button");
+  playerClick();
+  buttonFunctions();
 };
 
 // calling 5 cards out onto container
@@ -249,26 +244,33 @@ const playerClick = () => {
   document.body.appendChild(buttonContainer);
 };
 
-const initGame = () => {
-  gameMessage.innerHTML = "";
-  removeElement("ready-button");
-  playerClick();
-  buttonFunctions();
-};
+/*
+ * A function that flips the cards when deal button is pressed for the first time
+ * @param cardNameTally set to empty to give a fresh start
+ * @param cardSuitTally set to empty to give a fresh start
+ * @param cardRankInHand set to empty to give a fresh start
+ * @return the flipped card of the front side with the card elements on it
+ */
 
 const flipCard = () => {
-  // tally variables set to empty
+  /*   // tally variables set to empty
   cardNameTally = {};
   cardSuitTally = {};
-  cardRankInHand = [];
+  cardRankInHand = []; */
   const flipTheCard = document.getElementsByClassName("inner-card");
   for (let i = 0; i < flipTheCard.length; i += 1) {
     flipTheCard.item(i).classList.toggle("front-card");
   }
-  cardClick();
-  
 };
 
+/*
+ * A function that flips the cards when deal button is pressed for the second time
+ * after the player has chosen which card wants to be held or changed
+ * @param cardNameTally set to empty to give a fresh start
+ * @param cardSuitTally set to empty to give a fresh start
+ * @param cardRankInHand set to empty to give a fresh start
+ * @return the flipped card of the front side with the card elements on it
+ */
 const secondFlipCard = () => {
   // tally variables set to empty
   cardNameTally = {};
@@ -281,7 +283,7 @@ const secondFlipCard = () => {
   cardTally(playerCardHand);
   winningCombos();
   return outputMessage;
- }
+};
 
 const cardTally = (card) => {
   // for loop to get tally for nameTally and suitTally
@@ -311,7 +313,10 @@ const cardTally = (card) => {
     cardRankInHand.push(cardRank);
   }
 };
-
+/*
+ * A function that goes through cardRankInHand and sorts them
+ * @return true/false if hand has two pairs in it
+ */
 const twoPairsCombo = () => {
   let pairs = [];
   let sortedDeck = cardRankInHand.sort();
@@ -324,7 +329,10 @@ const twoPairsCombo = () => {
     twoPairs = true;
   }
 };
-
+/*
+ * A function that goes through cardNameTally to see if there are any three of the same card name and full house combos
+ * @return true/false if hand has threes or full houses
+ */
 const threeKindsAndFullHouseCombo = () => {
   let duplicates = [];
   for (cardName in cardNameTally) {
@@ -348,7 +356,10 @@ const threeKindsAndFullHouseCombo = () => {
     }
   }
 };
-
+/*
+ * A function that goes through cardNameTally to see if there are four of the same card name
+ * @return true/false if hand has four of a kind in it
+ */
 const fourKindsCombo = () => {
   for (cardName in cardNameTally) {
     if (cardNameTally[cardName] === 4) {
@@ -356,7 +367,13 @@ const fourKindsCombo = () => {
     }
   }
 };
-
+/*
+ * A function that goes through cardSuitTally and cardRankInHand
+ *  and sorts them. This is to see if there are card ranks that
+ * are in proper numerical order of difference 1 OR if they have
+ *  the same suit OR both.
+ * @return true/false if hand has said combos or not.
+ */
 const straightStraightFlushAndRoyalFlushCombo = () => {
   let count = 0;
   let sortedDeck = cardRankInHand.sort();
@@ -390,7 +407,11 @@ const straightStraightFlushAndRoyalFlushCombo = () => {
     }
   }
 };
-
+/*
+ * A function that goes through all different combo functions to
+ * see if hand has at least Jack or better in it
+ * @return true/false if hand has Jack or better in it
+ */
 const jackOrBetterCombo = () => {
   for (cardName in cardNameTally) {
     if (
@@ -406,20 +427,11 @@ const jackOrBetterCombo = () => {
   }
 };
 
-const cardClick = () => {
-  let selectAllCards = document.getElementsByClassName("card");
-  for (i = 0; i < selectAllCards.length; i++) {
-    selectAllCards[i].appendChild(holdButton.cloneNode(true));
-  }
-
-  let allHoldButton = document.querySelectorAll("#hold-button");
-  for (const btn of allHoldButton) {
-    btn.addEventListener("click", () => {
-      btn.style.backgroundColor = "white";
-    });
-  }
-};
-
+/*
+ * A function that goes through all different combo functions to
+ * see if hand has any of it
+ * @return an output message of what combination you have in hand
+ */
 const winningCombos = () => {
   twoPairsCombo();
   threeKindsAndFullHouseCombo();
@@ -448,3 +460,25 @@ const winningCombos = () => {
 };
 
 startOfGame();
+
+/* 
+const cardClick = () => {
+  let selectAllCards = document.getElementsByClassName("card");
+  for (i = 0; i < selectAllCards.length; i++) {
+    selectAllCards[i].appendChild(holdButton.cloneNode(true));
+  }
+
+  let allHoldButton = document.querySelectorAll("#hold-button");
+  for (const btn of allHoldButton) {
+    btn.addEventListener("click", () => {
+      btn.style.backgroundColor = "white";
+    });
+  }
+  for (j = 0; j < selectAllCards.length; j++) {
+    for (const btnStyle of allHoldButton) {
+      if (btnStyle.style.backgroundColor === "white") {
+        return (cardHeld = true);
+      }
+    }
+  }
+}; */

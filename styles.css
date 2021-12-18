@@ -48,6 +48,7 @@ body {
   margin-top: 28px;
   justify-content: center;
   align-items: center;
+  height: 200px;
 }
 
 .card {
@@ -67,6 +68,7 @@ body {
 
 .inner-card {
   position: relative;
+  margin-top: -22px;
   width: 60px;
   height: 100px;
   text-align: left;
@@ -148,5 +150,5 @@ td {
   color: rgb(250, 9, 9);
   background-color: rgba(255, 255, 255, 0.568);
   border: 0cm;
-  margin-top: -27px;
+  margin-top: 130px;
 }
