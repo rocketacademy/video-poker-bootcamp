@@ -124,8 +124,17 @@ const calcHandScore = (hand) => {
         isStraightCheck += 1;
       }
     }
+    if (
+      rankList[0] === 1 &&
+      rankList[1] === 10 &&
+      rankList[2] === 11 &&
+      rankList[3] === 12 &&
+      rankList[4] === 13
+    ) {
+      return "BROADWAY";
+    }
     if (isStraightCheck === 4) {
-      return true;
+      return "STRAIGHT";
     }
   };
 
@@ -192,6 +201,10 @@ const calcHandScore = (hand) => {
     }
   }
 
+  if (isFlush(cardSuitTally) && isStraight(hand) === "BROADWAY") {
+    return "ROYAL FLUSH";
+  }
+
   if (isFlush(cardSuitTally) && isStraight(hand)) {
     return "STRAIGHT FLUSH";
   }
@@ -208,7 +221,7 @@ const calcHandScore = (hand) => {
     return "FLUSH";
   }
 
-  if (isStraight(hand)) {
+  if (isStraight(hand) === "BROADWAY" || isStraight(hand) === "STRAIGHT") {
     return "STRAIGHT";
   }
 
@@ -237,7 +250,7 @@ const printDecision = () => {
   }
 };
 
-const printResult = () => {
+const printResultHand = () => {
   for (let i = 0; i < 5; i += 1) {
     if (handClickTracker[i] === REPLACE) {
       let newCard = deck.pop();
@@ -252,6 +265,41 @@ const printResult = () => {
     handElement.appendChild(cardElement);
   }
   cardContainer.appendChild(handElement);
+};
+
+const givePayout = (result) => {
+  let payAmount = 0;
+  if (result === "ROYAL FLUSH") {
+    payAmount = 250;
+  }
+
+  if (result === "STRAIGHT FLUSH") {
+    payAmount = 50;
+  }
+
+  if (result === "4 OF A KIND") {
+    payAmount = 25;
+  }
+  if (result === "FULL HOUSE") {
+    payAmount = 9;
+  }
+  if (result === "FLUSH") {
+    payAmount = 6;
+  }
+  if (result === "STRAIGHT") {
+    payAmount = 4;
+  }
+  if (result === "3 OF A KIND") {
+    payAmount = 3;
+  }
+  if (result === "2 PAIRS") {
+    payAmount = 2;
+  }
+  if (result === "PAIR OF JACKS") {
+    payAmount = 1;
+  }
+  payAmount *= betAmount;
+  credits += payAmount;
 };
 
 const cardClick = (cardElement, i) => {
@@ -356,7 +404,7 @@ document.body.appendChild(decisionContainer);
 
 //Credits tracker container
 let creditsInfo = document.createElement("div");
-creditsInfo.innerText = "Credits: 100";
+creditsInfo.innerText = "Bet: 0 Credits: 100";
 creditsInfo.className = "credits-tracker";
 document.body.appendChild(creditsInfo);
 
@@ -380,10 +428,20 @@ const output = (message) => {
 
 const KEEP = "keep";
 const REPLACE = "replace";
+let betAmount = 0;
+let credits = 100;
 let deck;
 let hand;
 let handClickTracker = [REPLACE, REPLACE, REPLACE, REPLACE, REPLACE];
 let gameMode = "first-draw"; // "calc-score" //"end-round"
+
+betButton.addEventListener("click", () => {
+  if (betAmount < 5 && gameMode === "first-draw") {
+    betAmount += 1;
+    credits -= 1;
+    creditsInfo.innerText = `Bet: ${betAmount} Credits: ${credits}`;
+  }
+});
 
 dealButton.addEventListener("click", () => {
   // buildCardElements();
@@ -410,10 +468,16 @@ dealButton.addEventListener("click", () => {
   if (gameMode === "calc-score") {
     decisionContainer.innerHTML = "";
     gameMode = "end-round";
-    printResult();
-
-    gameInfo.innerText = calcHandScore(hand);
+    //FOR TEST HANDS
+    // hand = teststraight;
+    // handClickTracker = [KEEP, KEEP, KEEP, KEEP, KEEP];
+    printResultHand();
+    let handResult = calcHandScore(hand);
+    givePayout(handResult);
+    gameInfo.innerText = handResult;
     gameMode = "first-draw";
+    betAmount = 0;
+    creditsInfo.innerText = `Bet: ${betAmount} Credits: ${credits} - Place bet and deal again to play`;
     return;
   }
 });

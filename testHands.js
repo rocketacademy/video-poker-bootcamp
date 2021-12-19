@@ -79,6 +79,14 @@ const testsf = [
   testDeck[36],
 ];
 
+const testrf = [
+  testDeck[9],
+  testDeck[11],
+  testDeck[12],
+  testDeck[10],
+  testDeck[0],
+];
+
 const testfourk = [
   testDeck[14],
   testDeck[4],
