@@ -237,7 +237,7 @@ const calcHandScore = (hand) => {
     return "PAIR OF JACKS";
   }
 
-  return "Did not win anything";
+  return "NIL";
 };
 
 const printDecision = () => {
@@ -271,6 +271,9 @@ const givePayout = (result) => {
   let payAmount = 0;
   if (result === "ROYAL FLUSH") {
     payAmount = 250;
+    if (betAmount === 5) {
+      payAmount = 800;
+    }
   }
 
   if (result === "STRAIGHT FLUSH") {
@@ -299,7 +302,9 @@ const givePayout = (result) => {
     payAmount = 1;
   }
   payAmount *= betAmount;
+
   credits += payAmount;
+  return payAmount;
 };
 
 const cardClick = (cardElement, i) => {
@@ -387,6 +392,78 @@ const indexPossibilities = (numToReplace) => {
   return combis;
 };
 
+const findProbabilities = () => {
+  let numToReplace = 0;
+  let indexToReplace = [];
+  for (let i = 0; i < 5; i += 1) {
+    if (handClickTracker[i] === REPLACE) {
+      indexToReplace.push(i);
+      numToReplace += 1;
+      // let newCard = deck.pop();
+      // hand[i] = newCard;
+    }
+  }
+  let deckIndices = indexPossibilities(numToReplace);
+  let allPossibleHands = [];
+  if (numToReplace === 0) {
+    allPossibleHands.push(hand);
+  }
+  for (let i = 0; i < deckIndices.length; i += 1) {
+    let possibleHand = [...hand];
+    for (let j = 0; j < indexToReplace.length; j += 1) {
+      possibleHand[indexToReplace[j]] = deck[deckIndices[i][j]];
+    }
+    allPossibleHands.push(possibleHand);
+  }
+  const resultsList = [
+    "ROYAL FLUSH",
+    "STRAIGHT FLUSH",
+    "4 OF A KIND",
+    "FULL HOUSE",
+    "FLUSH",
+    "STRAIGHT",
+    "3 OF A KIND",
+    "2 PAIRS",
+    "PAIR OF JACKS",
+    "NIL",
+  ];
+  let winningHandsTally = {};
+  winningHandsTally["TOTAL"] = allPossibleHands.length;
+
+  for (let i = 0; i < resultsList.length; i += 1) {
+    winningHandsTally[resultsList[i]] = 0;
+  }
+  for (let i = 0; i < allPossibleHands.length; i += 1) {
+    let result = calcHandScore(allPossibleHands[i]);
+    winningHandsTally[result] += 1;
+  }
+
+  return winningHandsTally;
+};
+
+const printProbabilities = (probTally) => {
+  const total = probTally["TOTAL"];
+  let outputString = `TOTAL POSSIBLE HAND COMBIS: ${total}<br><br>`;
+  const resultsList = [
+    "ROYAL FLUSH",
+    "STRAIGHT FLUSH",
+    "4 OF A KIND",
+    "FULL HOUSE",
+    "FLUSH",
+    "STRAIGHT",
+    "3 OF A KIND",
+    "2 PAIRS",
+    "PAIR OF JACKS",
+    "NIL",
+  ];
+  for (let i = 0; i < resultsList.length; i += 1) {
+    let probPct = (100 * probTally[resultsList[i]]) / total;
+    let probDisplay = probPct.toFixed(5);
+    outputString += `${resultsList[i]}: ${probDisplay}%<br>`;
+  }
+  probContainer.innerHTML = outputString;
+};
+
 //1. Game info message
 let gameInfo = document.createElement("div");
 gameInfo.innerText = "Video Poker - Click Deal to start";
@@ -415,10 +492,21 @@ let dealButton = document.createElement("button");
 dealButton.innerText = "Deal";
 
 let betButton = document.createElement("button");
-betButton.innerText = "Bet 1";
+betButton.innerText = "Bet +1";
+
+let probButton = document.createElement("button");
+probButton.innerText = "Calculate Probabilities";
+
 buttonsContainer.appendChild(betButton);
 buttonsContainer.appendChild(dealButton);
+buttonsContainer.appendChild(probButton);
 document.body.appendChild(buttonsContainer);
+
+let probContainer = document.createElement("div");
+probContainer.classList.add("game-info");
+document.body.appendChild(probContainer);
+// probText = `hello <br> did br work`;
+// probContainer.innerHTML = probText;
 
 const output = (message) => {
   gameInfo.innerText = message;
@@ -443,12 +531,16 @@ betButton.addEventListener("click", () => {
   }
 });
 
+probButton.addEventListener("click", () => {
+  printProbabilities(findProbabilities());
+});
+
 dealButton.addEventListener("click", () => {
   // buildCardElements();
 
   if (gameMode === "first-draw") {
     dealFirstHands();
-    gameInfo.innerText = "Select cards you want to replace";
+    gameInfo.innerText = "Select cards you want to keep then deal again";
     cardContainer.innerHTML = "";
     const handElement = document.createElement("div");
     for (let i = 0; i < 5; i += 1) {
@@ -469,7 +561,7 @@ dealButton.addEventListener("click", () => {
     decisionContainer.innerHTML = "";
     gameMode = "end-round";
     //FOR TEST HANDS
-    // hand = teststraight;
+    // hand = testrf;
     // handClickTracker = [KEEP, KEEP, KEEP, KEEP, KEEP];
     printResultHand();
     let handResult = calcHandScore(hand);
