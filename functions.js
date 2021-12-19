@@ -229,9 +229,9 @@ const calcHandScore = (hand) => {
   if (straightHand && flushHand) {
     console.log("straight flush");
   } else if (straightHand) {
-    console.log("STRAIGHT FUNCTION IS WORKING");
+    console.log("straight");
   } else if (flushHand) {
-    console.log("FLUSH FUNCTION IS WORKING");
+    console.log("flush");
   } else if (prelimCheck === "High Card") {
     console.log("high");
   } else if (prelimCheck === "2 Pairs") {

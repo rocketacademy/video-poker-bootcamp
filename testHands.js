@@ -7,23 +7,23 @@
 //   { rank: 1, suit: "hearts", name: "Ace" },
 // ];
 
-// // Flush hand
-// const playerHand = [
-//   { rank: 2, suit: "hearts", name: "2" },
-//   { rank: 3, suit: "hearts", name: "3" },
-//   { rank: 5, suit: "hearts", name: "5" },
-//   { rank: 10, suit: "hearts", name: "4" },
-//   { rank: 1, suit: "hearts", name: "Ace" },
-// ];
-
-// Straight flush hand
+// Flush hand
 const playerHand = [
-  { rank: 10, suit: "hearts", name: "10" },
-  { rank: 11, suit: "hearts", name: "J" },
-  { rank: 12, suit: "hearts", name: "Q" },
-  { rank: 13, suit: "hearts", name: "K" },
+  { rank: 2, suit: "hearts", name: "2" },
+  { rank: 3, suit: "hearts", name: "3" },
+  { rank: 5, suit: "hearts", name: "5" },
+  { rank: 10, suit: "hearts", name: "4" },
   { rank: 1, suit: "hearts", name: "Ace" },
 ];
+
+// // Straight flush hand
+// const playerHand = [
+//   { rank: 10, suit: "hearts", name: "10" },
+//   { rank: 11, suit: "hearts", name: "J" },
+//   { rank: 12, suit: "hearts", name: "Q" },
+//   { rank: 13, suit: "hearts", name: "K" },
+//   { rank: 1, suit: "hearts", name: "Ace" },
+// ];
 
 // // Full house
 // const playerHand = [
