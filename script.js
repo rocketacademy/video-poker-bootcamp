@@ -250,6 +250,16 @@ const printDecision = () => {
   }
 };
 
+const revealAdvice = (decisionTracker) => {
+  probContainer.innerHTML = "";
+  for (let i = 0; i < 5; i += 1) {
+    const decision = document.createElement("div");
+    decision.innerText = decisionTracker[i];
+    decision.className = "decision";
+    probContainer.appendChild(decision);
+  }
+};
+
 const printResultHand = () => {
   for (let i = 0; i < 5; i += 1) {
     if (handClickTracker[i] === REPLACE) {
@@ -267,7 +277,7 @@ const printResultHand = () => {
   cardContainer.appendChild(handElement);
 };
 
-const givePayout = (result) => {
+const findPayout = (result) => {
   let payAmount = 0;
   if (result === "ROYAL FLUSH") {
     payAmount = 250;
@@ -303,8 +313,11 @@ const givePayout = (result) => {
   }
   payAmount *= betAmount;
 
-  credits += payAmount;
   return payAmount;
+};
+
+const givePayout = (payAmount) => {
+  credits += payAmount;
 };
 
 const cardClick = (cardElement, i) => {
@@ -342,34 +355,34 @@ const cardClick = (cardElement, i) => {
   }
 };
 
-const indexPossibilities = (numToReplace) => {
+const indexPossibilities = (numToReplace, listLength) => {
   let combis = [];
   if (numToReplace === 1) {
-    for (let i = 0; i < 47; i += 1) {
+    for (let i = 0; i < listLength; i += 1) {
       combis.push([i]);
     }
   }
   if (numToReplace === 2) {
-    for (let i = 0; i < 47; i += 1) {
-      for (let j = i + 1; j < 47; j += 1) {
+    for (let i = 0; i < listLength; i += 1) {
+      for (let j = i + 1; j < listLength; j += 1) {
         combis.push([i, j]);
       }
     }
   }
   if (numToReplace === 3) {
-    for (let i = 0; i < 47; i += 1) {
-      for (let j = i + 1; j < 47; j += 1) {
-        for (let k = j + 1; k < 47; k += 1) {
+    for (let i = 0; i < listLength; i += 1) {
+      for (let j = i + 1; j < listLength; j += 1) {
+        for (let k = j + 1; k < listLength; k += 1) {
           combis.push([i, j, k]);
         }
       }
     }
   }
   if (numToReplace === 4) {
-    for (let i = 0; i < 47; i += 1) {
-      for (let j = i + 1; j < 47; j += 1) {
-        for (let k = j + 1; k < 47; k += 1) {
-          for (let l = k + 1; l < 47; l += 1) {
+    for (let i = 0; i < listLength; i += 1) {
+      for (let j = i + 1; j < listLength; j += 1) {
+        for (let k = j + 1; k < listLength; k += 1) {
+          for (let l = k + 1; l < listLength; l += 1) {
             combis.push([i, j, k, l]);
           }
         }
@@ -377,11 +390,11 @@ const indexPossibilities = (numToReplace) => {
     }
   }
   if (numToReplace === 5) {
-    for (let i = 0; i < 47; i += 1) {
-      for (let j = i + 1; j < 47; j += 1) {
-        for (let k = j + 1; k < 47; k += 1) {
-          for (let l = k + 1; l < 47; l += 1) {
-            for (let m = l + 1; m < 47; m += 1) {
+    for (let i = 0; i < listLength; i += 1) {
+      for (let j = i + 1; j < listLength; j += 1) {
+        for (let k = j + 1; k < listLength; k += 1) {
+          for (let l = k + 1; l < listLength; l += 1) {
+            for (let m = l + 1; m < listLength; m += 1) {
               combis.push([i, j, k, l, m]);
             }
           }
@@ -392,18 +405,18 @@ const indexPossibilities = (numToReplace) => {
   return combis;
 };
 
-const findProbabilities = () => {
+const findProbabilities = (decisionTracker) => {
   let numToReplace = 0;
   let indexToReplace = [];
   for (let i = 0; i < 5; i += 1) {
-    if (handClickTracker[i] === REPLACE) {
+    if (decisionTracker[i] === REPLACE) {
       indexToReplace.push(i);
       numToReplace += 1;
       // let newCard = deck.pop();
       // hand[i] = newCard;
     }
   }
-  let deckIndices = indexPossibilities(numToReplace);
+  let deckIndices = indexPossibilities(numToReplace, 47);
   let allPossibleHands = [];
   if (numToReplace === 0) {
     allPossibleHands.push(hand);
@@ -441,8 +454,9 @@ const findProbabilities = () => {
   return winningHandsTally;
 };
 
-const printProbabilities = (probTally) => {
+const expectedProbabilities = (probTally) => {
   const total = probTally["TOTAL"];
+  let expectedPayout = 0;
   let outputString = `TOTAL POSSIBLE HAND COMBIS: ${total}<br><br>`;
   const resultsList = [
     "ROYAL FLUSH",
@@ -458,10 +472,46 @@ const printProbabilities = (probTally) => {
   ];
   for (let i = 0; i < resultsList.length; i += 1) {
     let probPct = (100 * probTally[resultsList[i]]) / total;
-    let probDisplay = probPct.toFixed(5);
-    outputString += `${resultsList[i]}: ${probDisplay}%<br>`;
+    expectedPayout += (probPct * findPayout(resultsList[i])) / 100;
+    outputString += `${resultsList[i]}: ${probPct.toFixed(5)}%<br>`;
   }
-  probContainer.innerHTML = outputString;
+  outputString += `<br>EXPECTED PAYOUT: ${expectedPayout.toFixed(5)}`;
+
+  // probContainer.innerHTML = outputString;
+
+  return [outputString, expectedPayout];
+};
+
+const giveSelectionAdvice = () => {
+  let expectedPayoutList = [];
+  const sampleSelection = [REPLACE, REPLACE, REPLACE, REPLACE, REPLACE];
+  let sampleSelectionList = [];
+  sampleSelectionList.push(sampleSelection);
+  for (let i = 1; i <= 5; i += 1) {
+    let indexToKeep = indexPossibilities(i, 5);
+
+    for (let j = 0; j < indexToKeep.length; j += 1) {
+      let possibleSelection = [...sampleSelection];
+      for (let k = 0; k < indexToKeep[j].length; k += 1) {
+        possibleSelection[indexToKeep[j][k]] = KEEP;
+      }
+      sampleSelectionList.push(possibleSelection);
+    }
+  }
+  for (let i = 0; i < sampleSelectionList.length; i += 1) {
+    expectedPayoutList.push({
+      choices: sampleSelectionList[i],
+      value: expectedProbabilities(
+        findProbabilities(sampleSelectionList[i])
+      )[1],
+    });
+  }
+
+  expectedPayoutList.sort(function (a, b) {
+    return b.value - a.value;
+  });
+
+  return expectedPayoutList[0].choices;
 };
 
 //1. Game info message
@@ -497,9 +547,13 @@ betButton.innerText = "Bet +1";
 let probButton = document.createElement("button");
 probButton.innerText = "Calculate Probabilities";
 
+let adviceButton = document.createElement("button");
+adviceButton.innerText = "Seek Advice";
+
 buttonsContainer.appendChild(betButton);
 buttonsContainer.appendChild(dealButton);
 buttonsContainer.appendChild(probButton);
+buttonsContainer.appendChild(adviceButton);
 document.body.appendChild(buttonsContainer);
 
 let probContainer = document.createElement("div");
@@ -532,7 +586,19 @@ betButton.addEventListener("click", () => {
 });
 
 probButton.addEventListener("click", () => {
-  printProbabilities(findProbabilities());
+  if (gameMode === "calc-score") {
+    // const drStrangeImage =
+    //   '<img src="https://c.tenor.com/nDhUSRc7Q-8AAAAd/timeline-doctor-strange.gif"/>';
+    probContainer.innerHTML = `Calculating...`;
+
+    setTimeout(() => {
+      let outputList = expectedProbabilities(
+        findProbabilities(handClickTracker)
+      );
+      let outputString = outputList[0];
+      probContainer.innerHTML = outputString;
+    }, 1);
+  }
 });
 
 dealButton.addEventListener("click", () => {
@@ -565,11 +631,24 @@ dealButton.addEventListener("click", () => {
     // handClickTracker = [KEEP, KEEP, KEEP, KEEP, KEEP];
     printResultHand();
     let handResult = calcHandScore(hand);
-    givePayout(handResult);
+    givePayout(findPayout(handResult));
     gameInfo.innerText = handResult;
     gameMode = "first-draw";
     betAmount = 0;
     creditsInfo.innerText = `Bet: ${betAmount} Credits: ${credits} - Place bet and deal again to play`;
     return;
+  }
+});
+
+adviceButton.addEventListener("click", () => {
+  if (gameMode === "calc-score") {
+    // const drStrangeImage =
+    //   '<img src="https://c.tenor.com/nDhUSRc7Q-8AAAAd/timeline-doctor-strange.gif"/>';
+    probContainer.innerHTML = `Thinking...`;
+
+    setTimeout(() => {
+      //store this to global variable, no need rethinking
+      revealAdvice(giveSelectionAdvice());
+    }, 1);
   }
 });
