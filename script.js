@@ -5,27 +5,19 @@ let savedCardsArray = [];
 let userHand = [];
 let gameMode = 'bet';
 
-let betAmount = 0;
+let betAmount = 4;
 
 const combosMet = {
   royalFlush: 0,
   straightFlush: 0,
   quads: 0,
   fullHouse: 0,
-  straights: 0,
   flush: 0,
+  straights: 0,
   thriples: 0,
-  doublePairs: 0,
+  twoPair: 0,
   pairs: 0,
-};
-
-const bestComboAchieved = () => {
-  for (let [combo, j] of Object.entries(combosMet)) {
-    if (j === 1) {
-      console.log(combo);
-      break;
-    }
-  }
+  highCard: 1,
 };
 
 let credits = 100;
@@ -35,12 +27,14 @@ let deck = [];
 const comboPoints = {
   royalFlush: [250, 500, 750, 1000, 4000],
   straightFlush: [50, 100, 150, 200, 250],
-  fourOfAKind: [25, 50, 75, 100, 125],
+  quads: [25, 50, 75, 100, 125],
   fullHouse: [9, 18, 27, 36, 45],
   flush: [6, 12, 18, 24, 30],
-  straight: [4, 8, 12, 16, 20],
-  threeOfAKind: [3, 6, 9, 12, 15],
+  straights: [4, 8, 12, 16, 20],
+  thriples: [3, 6, 9, 12, 15],
   twoPair: [2, 4, 6, 8, 10],
+  pairs: [0, 0, 0, 0, 0],
+  highCard: [0, 0, 0, 0, 0],
 };
 
 // TODO
@@ -51,9 +45,10 @@ const comboPoints = {
 // function that adds card in a loop and adds a click element to change cards. DONE
 // create status box to track: credits DONE
 // add royal flush DONE
-// come up with point system
-// game calculates the handscore, and update total points.
-// add output container instructions, output final combo.
+// come up with point system DONE
+// game calculates the handscore, and update total points. DONE
+// add output container instructions, output final combo. DOING
+// CSS
 
 ///////////////////////////////////
 // Calculate handscore functions //
@@ -120,7 +115,7 @@ const checkForRoyalFlush = (cardHand) => {
   }
 };
 
-const checkForStraightFlush = (cardHand) => {
+const checkForStraightFlush = () => {
   // check if straight and flush are true;
 
   if (combosMet.straights === 1 && combosMet.flush === 1) {
@@ -174,7 +169,7 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
       cardTally[rank] = 1;
     }
   }
-  // console.log(cardTally);
+  console.log(cardTally);
 
   let card4x = false;
   let card3x = false;
@@ -184,6 +179,7 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
   // for (const i of Object.keys(cardTally)) {
   let counterForPairs = 0;
   for (const j of Object.values(cardTally)) {
+    console.log(j);
     if (j === 4) {
       card4x = true;
     }
@@ -191,7 +187,7 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
       card2x = true;
       counterForPairs += 1;
       if (counterForPairs === 2) {
-        combosMet.doublePairs = 1;
+        combosMet.twoPair = 1;
       }
     }
     if (j === 3) {
@@ -220,39 +216,46 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
 // helper functions //
 //////////////////////
 
-// points system DOING
-// based on the bet amount, iterate on nth value in the object "comboPoints" and add that value to the credits.
-
-const calcPointsToAdd = () => {
-  // check betAmount
-  // check which is the highest combo attained
+/**
+ * function to check the highest ranked combo attained
+ * @returns the highest combo
+ */
+const bestComboAchieved = () => {
+  for (let [combo, j] of Object.entries(combosMet)) {
+    if (j === 1) {
+      return combo;
+    }
+  }
 };
 
-/*
-let fiveOfAKind = 0;
-let royalFlush = 0;
-let straightFlush = 0;
-let quads = 0;
-let fullHouse = 0;
-let straights = 0;
-let flush = 0;
-let thriples = 0;
-let doublePairs = 0;
-let pairs = 0;
-*/
+// points system
+// based on the bet amount, iterate on nth value in the object "comboPoints" and add that value to the credits.
+const calcPointsToAdd = () => {
+  // check which is the highest combo attained
+  const bestCombo = bestComboAchieved();
+
+  // check betAmount
+  const bet = betAmount - 1;
+
+  // search the comboPoints object using combo name and betAmount as the array index
+  const pointsToAdd = comboPoints[bestCombo][bet];
+  // console.log(bestCombo);
+  // console.log(pointsToAdd);
+
+  // updates credits with winnings
+  credits += pointsToAdd;
+  return pointsToAdd;
+};
 
 /**
  * function to update credits in HTML
  */
-const updateCredits = () => {
+const updateCredits = (points) => {
   const creditsContainer = document.querySelector('.status-container');
   creditsContainer.innerText = `Total Credits: ${credits}`;
 };
 
 const checkIfHitCombo = () => {
-  // console.log(
-  //   `FIVEOFAKIND: ${fiveOfAKind}, ROYALFLUSH: ${royalFlush}, STRAIGHTFLUSH: ${straightFlush}, QUADS: ${quads}, FULLHOUSE: ${fullHouse}, STRAIGHTS: ${straights}, FLUSH: ${flush}, THRIPLES: ${thriples}, 2xPAIRS: ${doublePairs}, 1xPAIRS: ${pairs}`
-  // );
   console.log(combosMet);
 };
 
