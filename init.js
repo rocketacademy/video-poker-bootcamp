@@ -1,9 +1,14 @@
 let overallContainer; // contains all assets
 let gameContainer;
 let cardComboContainer;
+let statusContainer;
 let outputContainer;
 let inputContainer;
 let buttonsContainer;
+let betOneBtn;
+let betFiveBtn;
+let swapCardsBtn;
+let dealCardsBtn;
 
 let output;
 let input;
@@ -34,6 +39,13 @@ const initGame = () => {
   outputContainer.classList.add('output-container', 'section');
   overallContainer.appendChild(outputContainer);
 
+  // create status container
+  // tracks credits, bet amount
+  statusContainer = document.createElement('div');
+  statusContainer.classList.add('status-container', 'section');
+  statusContainer.innerText = 'Total Credits: 100';
+  overallContainer.appendChild(statusContainer);
+
   // buttonsContainer
   buttonsContainer = document.createElement('div');
   buttonsContainer.classList.add('buttons-container');
@@ -59,6 +71,24 @@ const initGame = () => {
   // output.setAttribute('for', 'quantity');
   // inputContainer.appendChild(output);
 
+  // create bet one button
+  betOneBtn = document.createElement('button');
+  betOneBtn.classList.add('btn', 'betOneBtn');
+  betOneBtn.innerText = 'Bet One';
+  buttonsContainer.appendChild(betOneBtn);
+
+  // create bet five button
+  betFiveBtn = document.createElement('button');
+  betFiveBtn.classList.add('btn', 'betFiveBtn');
+  betFiveBtn.innerText = 'Bet Five';
+  buttonsContainer.appendChild(betFiveBtn);
+
+  // create deal cards button
+  dealCardsBtn = document.createElement('button');
+  dealCardsBtn.innerText = 'Deal Cards';
+  dealCardsBtn.classList.add('btn-deal-cards', 'btn');
+  buttonsContainer.appendChild(dealCardsBtn);
+
   // create swap cards button
   swapCardsBtn = document.createElement('button');
   swapCardsBtn.innerText = 'Swap Cards';
@@ -81,9 +111,6 @@ const initGame = () => {
   // document.addEventListener('DOMContentLoaded', function () {
   //   outputDefaultState();
   // });
-
-  // creates deal cards button
-  dealCardBtn();
-  swapCards();
 };
+
 initGame();
