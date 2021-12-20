@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Video Poker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <h1 id="header">Video Poker</h1>
+    <!-- Import program logic -->
+    <div class="reference-table" id="reference-table"></div>
+    <div class="user-hand" id="user-hand"></div>
+    <div class="action-output-cluster" id= "action-output-cluster">
+        <div class="box" id="credits-bets">
+            <span class="multi-column" id="credits"></span>
+            <span class="multi-column" id="bets"></span>
+        </div>
+        <div class="box" id="output-box">
+            <span class="single-column" id="output"></span>
+        </div>
+        <div class="box" id="action-buttons">
+            <button class="column-button" id="start-button"> START </Button>
+            <button class="column-button" id="show-hand-button"> SHOW HAND </Button>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="createDeck.js"></script>
+    <script type="module" src="checkStates.js"></script>
+
+</body>
+
+</html>
