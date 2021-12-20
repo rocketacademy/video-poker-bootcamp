@@ -2,11 +2,13 @@
  * function to bet one credit
  */
 betOneBtn.addEventListener('click', () => {
-  if (gameMode === 'bet') {
-    credits -= 1;
-    betAmount += 1;
-    updateCredits();
-    if (betAmount >= 5) {
+  if (gameMode === 'bet' || gameMode === 'deal') {
+    if (betAmount < 5) {
+      credits -= 1;
+      betAmount += 1;
+      updateCredits();
+    }
+    if (betAmount === 5) {
       gameMode = 'deal';
     }
   }
@@ -18,7 +20,7 @@ betOneBtn.addEventListener('click', () => {
 betFiveBtn.addEventListener('click', () => {
   if (gameMode === 'bet') {
     credits -= 5;
-    betAmount += 5;
+    betAmount = 5;
     updateCredits();
     gameMode = 'deal';
   }
@@ -60,9 +62,9 @@ dealCardsBtn.addEventListener('click', () => {
       });
       gameContainer.appendChild(cardEl);
     }
-    calcHandScore(userHand);
+    // calcHandScore(userHand);
+    gameMode = 'swap';
   }
-  gameMode = 'swap';
 });
 
 /**
@@ -91,5 +93,9 @@ swapCardsBtn.addEventListener('click', () => {
     calcHandScore(savedCardsArray);
     // empties savedCardsArray
     savedCardsArray = [];
+    // calculates credits & add them to credits
+    calcPointsToAdd();
+    // updates credits in HTML
+    updateCredits();
   }
 });
