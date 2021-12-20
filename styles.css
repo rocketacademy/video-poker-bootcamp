@@ -4,16 +4,30 @@
   box-sizing: border-box;
 }
 
-h1 {
-  text-align: center;
+body {
+  font-family: "Press Start 2P", cursive;
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #16d6fb;
+  display: flex;
+  flex-direction: column;
 }
 
-body {
-  /* background-color: royalblue !important;
-  color: white !important; */
-  font-family: "Press Start 2P", cursive;
-  font-size: 16px !important;
-  max-width: 375px;
+h1 {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 5px solid black;
+  background-color: #ffcc00;
+  height: 70px;
+  align-items: center;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  padding: 0.1rem;
 }
 
 .held {
@@ -21,11 +35,11 @@ body {
 }
 
 .card {
-  margin: 0 10px 10px 10px;
-  padding: 0 10px 10px 10px;
-  background-color: #b0916e;
-  width: 50px;
-  height: 80px;
+  margin: 0 5px 5px 5px;
+  padding: 0 5px 5px 5px;
+  background-color: #4dad5b;
+  width: 84px;
+  height: 144px;
   text-align: center;
   border-radius: 8px;
   display: inline-block;
@@ -38,22 +52,82 @@ body {
     pointer;
 }
 
-.name {
-  margin-bottom: 10px;
+.card-back {
+  width: 42px;
+  height: 42px;
 }
 
-.game-state {
-  margin-bottom: 10px;
+.container {
+  padding: 1rem;
+}
+
+.game-info {
   display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 10px;
+}
+
+.guide-buttons {
+  display: flex;
+  justify-content: space-around;
 }
 
 .buttons {
   display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background-color: #0075be;
 }
 
-.baloon {
-  width: 100%;
-  height: 78px;
+.balloon {
+  padding: 10px;
+  display: block;
+}
+
+.balloon-message {
+  height: 50px;
+}
+
+.wins {
+  display: block;
+  margin-top: 1.5rem;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 5% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  max-width: 450px;
+  width: 90%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
 }

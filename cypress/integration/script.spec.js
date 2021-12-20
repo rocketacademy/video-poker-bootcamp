@@ -78,6 +78,18 @@ describe('Unit tests for Video Poker', () => {
       expect(calcHandScore(playerHand)).to.eq(3);
     });
 
+    it('three-of-a-kind-king hand score returns 3', () => {
+      const playerHand = [
+        { rank: 10, suit: 'hearts', name: '10' },
+        { rank: 13, suit: 'hearts', name: 'king' },
+        { rank: 12, suit: 'diamonds', name: 'queen' },
+        { rank: 13, suit: 'spades', name: 'king' },
+        { rank: 13, suit: 'clubs', name: 'king' },
+      ];
+
+      expect(calcHandScore(playerHand)).to.eq(3);
+    });
+
     it('straight-to-five hand score returns 4', () => {
       const playerHand = [
         { rank: 1, suit: 'hearts', name: '1' },

@@ -14,6 +14,8 @@ let board = [];
 let deck;
 let credit = 100;
 let bet = 0;
+let messageId;
+let delayedMessageId;
 
 const NUMBER_OF_CARDS = 5;
 const MAX_BET = 5;
@@ -22,6 +24,23 @@ const MIN_RANK_FOR_ONE_PAIR = 11; // jack or higher
 
 const NUMBERS_DELAY_IN_MILLI_SECONDS = 150;
 const TEXT_DELAY_IN_MILLI_SECONDS = 100;
+const NEW_TEXT_DELAY_IN_MILLI_SECONDS = 4000;
+
+/**
+ * Start/stop audio when speaker icon clicked.
+ */
+const playAudio = () => {
+  const audio = document.querySelector('.audio');
+  const speaker = document.getElementById('speaker');
+
+  if (audio.paused) {
+    speaker.src = './assets/speaker.png';
+    audio.play();
+  } else {
+    speaker.src = './assets/speaker-mute.png';
+    audio.pause();
+  }
+};
 
 /**
  * Display game state message.
@@ -29,16 +48,20 @@ const TEXT_DELAY_IN_MILLI_SECONDS = 100;
  * @param {*} color Color of message text
  */
 const displayMessage = (message, color = 'black') => {
-  const baloonMessage = document.querySelector('.baloon-message');
+  const balloonMessage = document.querySelector('.balloon-message');
   let subStringLength = 0;
 
-  const messageId = setInterval(() => {
+  // clear existing delayed messages
+  clearInterval(messageId);
+  clearTimeout(delayedMessageId);
+
+  messageId = setInterval(() => {
     if (subStringLength === message.length) {
       clearInterval(messageId);
     } else {
       subStringLength += 1;
-      baloonMessage.innerText = message.substring(0, subStringLength);
-      baloonMessage.style.color = color;
+      balloonMessage.innerText = message.substring(0, subStringLength);
+      balloonMessage.style.color = color;
     }
   }, TEXT_DELAY_IN_MILLI_SECONDS);
 };
@@ -67,6 +90,19 @@ const revealCard = (cardElement, cardInfo) => {
 };
 
 /**
+ * Update wins info.
+ * @param {*} creditWin Credits won
+ */
+const updateWins = (creditWin) => {
+  const wins = document.querySelector('.wins');
+  if (creditWin === 0) {
+    wins.innerText = '';
+  } else {
+    wins.innerText = `Win:${creditWin}`;
+  }
+};
+
+/**
  * Update credits after a game.
  * @param {*} creditChange Change of credit
  */
@@ -82,7 +118,8 @@ const updateCredits = (creditChange) => {
       } else {
         credit += 1;
         addCredit += 1;
-        credits.innerText = `Credits:${credit} Win:${addCredit}`;
+        credits.innerText = `Credits:${credit}`;
+        updateWins(addCredit);
       }
     }, NUMBERS_DELAY_IN_MILLI_SECONDS);
   } else {
@@ -325,7 +362,9 @@ const isTwoPair = (cardTally) => {
 const isThreeOfAKind = (cardTally) => {
   const rankKeys = Object.keys(cardTally.ranks);
   return (rankKeys.length === 3)
-    && ((cardTally.ranks[rankKeys[0]] === 3) || (cardTally.ranks[rankKeys[1]] === 3));
+    && ((cardTally.ranks[rankKeys[0]] === 3)
+    || (cardTally.ranks[rankKeys[1]] === 3) 
+    || (cardTally.ranks[rankKeys[2]] === 3));
 };
 
 /**
@@ -466,6 +505,151 @@ const drawCards = (cardElements) => {
 };
 
 /**
+ * Buttons colors based on nes button types.
+ */
+const buttonColorsByType = {
+  bet: 'is-primary',
+  bet_max: 'is-warning',
+  deal: 'is-error',
+  draw: 'is-error',
+};
+
+/**
+ * Enable or disable buttons.
+ * @param {*} buttonsGroup Bet/Deal/Draw buttons
+ */
+const setButtons = (buttonsGroup) => {
+  const buttons = document.querySelectorAll('.buttons > .nes-btn');
+  buttons.forEach((button) => {
+    if (((buttonsGroup === 'bet') && button.id.includes('bet'))
+      || ((buttonsGroup === 'deal') && !button.id.includes('draw'))
+      || ((buttonsGroup === 'draw') && button.id.includes('draw'))) {
+      button.classList.remove('is-disabled');
+      button.classList.add(buttonColorsByType[button.id]);
+    } else {
+      button.classList.add('is-disabled');
+      button.classList.remove('is-primary');
+      button.classList.remove('is-warning');
+      button.classList.remove('is-error');
+    }
+  });
+};
+
+/**
+ * Handle BET button click.
+ */
+const betClick = () => {
+  if (bet === 0) {
+    displayMessage('Click DEAL button to play.');
+  }
+  updateWins(0);
+  updateCredits(-1);
+  updateBets(1);
+  setButtons('deal');
+};
+
+/**
+ * Handle BET MAX button click.
+ */
+const betMaxClick = () => {
+  if (bet === 0) {
+    displayMessage('Click DEAL button to play.');
+  }
+  updateWins(0);
+  updateCredits(-1 * MAX_BET);
+  updateBets(MAX_BET);
+  setButtons('deal');
+};
+
+/**
+ * Handle DEAL button click.
+ * @param {*} cardsElement Cards
+ */
+const dealClick = (cardsElement) => {
+  displayMessage('Select cards to keep ...');
+  delayedMessageId = setTimeout(() => {
+    displayMessage('and click DRAW to replace the rest.');
+  }, NEW_TEXT_DELAY_IN_MILLI_SECONDS);
+  updateCredits(0);
+  dealCards(cardsElement.children);
+  setButtons('draw');
+};
+
+/**
+ * Handle DRAW button click.
+ * @param {*} cardsElement Cards
+ */
+const drawClick = (cardsElement) => {
+  displayMessage('Click BET button to play again.');
+  drawCards(cardsElement.children);
+  setButtons('bet');
+};
+
+/**
+ * Create the game state elements that will go on the screen.
+ * @returns The game state elements
+ */
+const buildGameStateElements = () => {
+  // add game state container
+  const stateOfGameContainerElement = document.createElement('section');
+  stateOfGameContainerElement.classList.add('container');
+
+  // add area for state of game information
+  const stateOfGameElement = document.createElement('section');
+  stateOfGameElement.classList.add('message');
+  stateOfGameElement.classList.add('game-state');
+
+  // add area for game information balloon
+  const balloonElement = document.createElement('div');
+  balloonElement.classList.add('nes-balloon');
+  balloonElement.classList.add('from-right');
+  balloonElement.classList.add('balloon');
+
+  // create paragraph for balloon message
+  const balloonMessageElement = document.createElement('p');
+  balloonMessageElement.classList.add('balloon-message');
+  balloonElement.appendChild(balloonMessageElement);
+
+  // add area for game information: credits, bet, and win
+  const gameInfoContainerElement = document.createElement('div');
+  gameInfoContainerElement.classList.add('game-info');
+
+  const gameInfoElement = document.createElement('div');
+
+  // add area for credits
+  const creditsElement = document.createElement('div');
+  creditsElement.classList.add('credits');
+  creditsElement.innerText = `Credits:${credit}`;
+  gameInfoElement.appendChild(creditsElement);
+
+  // add area for bets
+  const betsElement = document.createElement('div');
+  betsElement.classList.add('bets');
+  betsElement.innerText = `Bet:${bet}`;
+  gameInfoElement.appendChild(betsElement);
+
+  // add area for wins
+  const winsElement = document.createElement('div');
+  winsElement.classList.add('wins');
+  gameInfoElement.appendChild(winsElement);
+
+  gameInfoContainerElement.appendChild(gameInfoElement);
+
+  // add area for game host image
+  const hostElement = document.createElement('i');
+  hostElement.classList.add('nes-bulbasaur');
+  gameInfoContainerElement.appendChild(hostElement);
+
+  // add balloon and game state to main container
+  stateOfGameElement.appendChild(balloonElement);
+  stateOfGameElement.appendChild(gameInfoContainerElement);
+
+  stateOfGameContainerElement.appendChild(stateOfGameElement);
+
+  return stateOfGameContainerElement;
+};
+
+/**
  * Create all the board elements that will go on the screen.
  * @returns The built board
  */
@@ -476,15 +660,8 @@ const buildBoardElements = () => {
   // give it a class for CSS purposes
   boardElement.classList.add('board');
 
-  // add area for score guide
-  const scoreGuideElement = document.createElement('div');
-  scoreGuideElement.classList.add('nes-container');
-
-  // score guide content
-  const scoreGuideContentElement = document.createElement('p');
-  scoreGuideElement.appendChild(scoreGuideContentElement);
-
-  boardElement.appendChild(scoreGuideElement);
+  // build game state elements
+  boardElement.appendChild(buildGameStateElements());
 
   // make an element for the cards
   const cardsElement = document.createElement('div');
@@ -509,84 +686,47 @@ const buildBoardElements = () => {
 
   boardElement.appendChild(cardsElement);
 
-  // add area for credits
-  const creditsElement = document.createElement('div');
-  creditsElement.classList.add('credits');
-  creditsElement.innerText = `Credits:${credit}`;
-  boardElement.appendChild(creditsElement);
-
-  // add area for bets
-  const betsElement = document.createElement('div');
-  betsElement.classList.add('bets');
-  betsElement.innerText = `Bet:${bet}`;
-  boardElement.appendChild(betsElement);
-
   // add area for buttons
   const buttonsElement = document.createElement('div');
   buttonsElement.classList.add('buttons');
 
   // add bet button
   const betButtonElement = document.createElement('button');
+  betButtonElement.id = 'bet';
   betButtonElement.innerText = 'BET';
   betButtonElement.classList.add('nes-btn');
-  betButtonElement.addEventListener('click', () => {
-    updateCredits(-1);
-    updateBets(1);
-  });
+  betButtonElement.classList.add('is-primary');
+  betButtonElement.addEventListener('click', () => betClick());
   buttonsElement.appendChild(betButtonElement);
 
   // add bet max button
   const betMaxButtonElement = document.createElement('button');
+  betMaxButtonElement.id = 'bet_max';
   betMaxButtonElement.innerText = `BET ${MAX_BET}`;
   betMaxButtonElement.classList.add('nes-btn');
-  betMaxButtonElement.addEventListener('click', () => {
-    updateCredits(-1 * MAX_BET);
-    updateBets(MAX_BET);
-  });
+  betMaxButtonElement.classList.add('is-warning');
+  betMaxButtonElement.addEventListener('click', () => betMaxClick());
   buttonsElement.appendChild(betMaxButtonElement);
 
   // add deal game button
   const dealButtonElement = document.createElement('button');
+  dealButtonElement.id = 'deal';
   dealButtonElement.innerText = 'DEAL';
   dealButtonElement.classList.add('nes-btn');
-  dealButtonElement.addEventListener('click', () => {
-    updateCredits(0);
-    dealCards(cardsElement.children);
-  });
+  dealButtonElement.classList.add('is-disabled');
+  dealButtonElement.addEventListener('click', () => dealClick(cardsElement));
   buttonsElement.appendChild(dealButtonElement);
 
   // add draw game button
   const drawButtonElement = document.createElement('button');
+  drawButtonElement.id = 'draw';
   drawButtonElement.innerText = 'DRAW';
   drawButtonElement.classList.add('nes-btn');
-  drawButtonElement.addEventListener('click', () => drawCards(cardsElement.children));
+  drawButtonElement.classList.add('is-disabled');
+  drawButtonElement.addEventListener('click', () => drawClick(cardsElement));
   buttonsElement.appendChild(drawButtonElement);
 
   boardElement.appendChild(buttonsElement);
-
-  // add area for state of game information
-  const stateOfGameElement = document.createElement('section');
-  stateOfGameElement.classList.add('message');
-  stateOfGameElement.classList.add('game-state');
-
-  // add area for game information baloon
-  const gameStateBubbleElement = document.createElement('div');
-  gameStateBubbleElement.classList.add('nes-balloon');
-  gameStateBubbleElement.classList.add('from-right');
-  gameStateBubbleElement.classList.add('baloon');
-
-  const bubbleContentElement = document.createElement('p');
-  bubbleContentElement.classList.add('baloon-message');
-  gameStateBubbleElement.appendChild(bubbleContentElement);
-
-  stateOfGameElement.appendChild(gameStateBubbleElement);
-
-  // add area for game host
-  const hostElement = document.createElement('i');
-  hostElement.classList.add('nes-bulbasaur');
-  stateOfGameElement.appendChild(hostElement);
-
-  boardElement.appendChild(stateOfGameElement);
 
   return boardElement;
 };

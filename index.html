@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokermon</title>
-    <link rel="stylesheet" href="styles.css" />
     <link
       href="https://fonts.googleapis.com/css?family=Press+Start+2P"
       rel="stylesheet"
@@ -11,15 +13,60 @@
       href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css"
       rel="stylesheet"
     />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <style>
+      body {
+        background-color: #16d6fb;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+      }
+      .title-description {
+        font-size: 12px;
+        margin-bottom: 1rem;
+      }
+      img {
+        width: 300px;
+        display: block;
+        margin: 0 auto;
+      }
+      i {
+        margin-bottom: 1rem;
+      }
+      div {
+        display: inline-block;
+      }
+      label {
+        position: relative;
+        left: -10px;
+      }
+    </style>
   </head>
-
   <body>
-    <h1 id="header">Pokermon ?</h1>
-    <!-- Import program logic -->
-    <script src="script.js"></script>
+    <img src="./assets/pokermon-logo.png" alt="Pokermon" />
+    <span class="nes-text title-description">Pokemon Video Poker</span>
+    <div>
+      <i class="nes-pokeball"></i>
+    </div>
+    <label class="nes-pointer">
+      <input type="radio" class="nes-radio" name="start" id="start" checked />
+      <span class="nes-text start">Start</span>
+    </label>
+    <audio
+      id="audio"
+      class="audio"
+      src="./assets/pokemon-notification.mp3"
+    ></audio>
+    <script>
+      const start = document.getElementById("start");
+      start.onclick = () => {
+        document.getElementById("audio").play();
+        setTimeout(() => {
+          window.location.href = "game.html";
+        }, 3000);
+      };
+    </script>
   </body>
 </html>
