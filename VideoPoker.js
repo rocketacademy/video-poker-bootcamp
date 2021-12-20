@@ -542,7 +542,6 @@
             } else {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `BETTER LUCK NEXT TIME!`
-                playerScore -= betAmount
             }
         }
       }
