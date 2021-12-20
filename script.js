@@ -22,7 +22,7 @@ let pairs = 0;
 let credits = 100;
 let deck = [];
 
-// An object that contains the point / score system of the game
+// An object that contains the points system of the game
 const comboPoints = {
   royalFlush: [250, 500, 750, 1000, 4000],
   straightFlush: [50, 100, 150, 200, 250],
@@ -41,20 +41,19 @@ const comboPoints = {
 // game calculates the hand score upon dealt of first hand DONE
 // function that adds card in a loop and adds a click element to change cards. DONE
 // create status box to track: credits DONE
-// add royal flush
+// add royal flush DONE
 // come up with point system
 // game calculates the handscore, and update total points.
 // add output container instructions, output final combo.
 
+///////////////////////////////////
+// Calculate handscore functions //
+///////////////////////////////////
+
 /**
  * function that sums returns the sum of the playing hand
  * @param {array} cardHand the user's current playing hand
- * @returns {number} sum of scores from the user's playing hand
  */
-
-//////////////////////////////////
-// Calculate Handscore function //
-//////////////////////////////////
 
 const calcHandScore = (cardHand) => {
   // 1 pair DONE
@@ -76,23 +75,6 @@ const calcHandScore = (cardHand) => {
 
   checkIfHitCombo(); // logs the combo hit in console
 };
-
-// const checkForFiveOfAKind = (cardHand) => {
-//   let counter = 0;
-//   // iterate through the userHand or savedCardArray
-//   for (const [i, { rank, suit }] of Object.entries(cardHand)) {
-//     let index = Number(i);
-//     // check for 5 of a kind
-//     if (rank === cardHand[0].rank) {
-//       counter += 1;
-//       if (counter === 5) {
-//         console.log(`5 of a kind!`);
-//         counter = 0;
-//         fiveOfAKind = 1;
-//       }
-//     }
-//   }
-// };
 
 const checkForRoyalFlush = (cardHand) => {
   // check if suits are the same
@@ -124,7 +106,6 @@ const checkForRoyalFlush = (cardHand) => {
       }
     }
     if ((ace, king, queen, jack, numTen === 1)) {
-      console.log('royal flush');
       royalFlush = 1;
     }
   }
@@ -184,7 +165,7 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
       cardTally[rank] = 1;
     }
   }
-  console.log(cardTally);
+  // console.log(cardTally);
 
   let card4x = false;
   let card3x = false;
@@ -243,7 +224,7 @@ const updateCredits = () => {
 
 const checkIfHitCombo = () => {
   console.log(
-    `fiveOfAKind: ${fiveOfAKind}, royalFlush: ${royalFlush}, straightFlush: ${straightFlush}, quads: ${quads}, fullHouse: ${fullHouse}, straights: ${straights}, flush: ${flush}, thriples: ${thriples}, 2xPairs: ${doublePairs}, pairs: ${pairs}`
+    `FIVEOFAKIND: ${fiveOfAKind}, ROYALFLUSH: ${royalFlush}, STRAIGHTFLUSH: ${straightFlush}, QUADS: ${quads}, FULLHOUSE: ${fullHouse}, STRAIGHTS: ${straights}, FLUSH: ${flush}, THRIPLES: ${thriples}, 2xPAIRS: ${doublePairs}, 1xPAIRS: ${pairs}`
   );
 };
 
