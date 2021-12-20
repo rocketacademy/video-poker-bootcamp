@@ -1,14 +1,15 @@
 /**
  * Global variables
  */
-let swapCardsBtn;
 let savedCardsArray = [];
 let userHand = [];
+let gameMode = 'bet';
 
 let betAmount = 0;
 
-// combintaions met
+// combinations met
 let fiveOfAKind = 0;
+let royalFlush = 0;
 let straightFlush = 0;
 let quads = 0;
 let fullHouse = 0;
@@ -18,8 +19,20 @@ let thriples = 0;
 let doublePairs = 0;
 let pairs = 0;
 
-const userPoints = 100;
+let credits = 100;
 let deck = [];
+
+// An object that contains the point / score system of the game
+const comboPoints = {
+  royalFlush: [250, 500, 750, 1000, 4000],
+  straightFlush: [50, 100, 150, 200, 250],
+  fourOfAKind: [25, 50, 75, 100, 125],
+  fullHouse: [9, 18, 27, 36, 45],
+  flush: [6, 12, 18, 24, 30],
+  straight: [4, 8, 12, 16, 20],
+  threeOfAKind: [3, 6, 9, 12, 15],
+  twoPair: [2, 4, 6, 8, 10],
+};
 
 // TODO
 // clicks a button to deal cards DONE
@@ -27,10 +40,11 @@ let deck = [];
 // --> cards get saved to savedCardsArray when clicked. Need to create a function that replaces the unclicked cards DONE
 // game calculates the hand score upon dealt of first hand DONE
 // function that adds card in a loop and adds a click element to change cards. DONE
-// game replaces the unselected cards, calculates the handscore, and update total points. DOING
-// come up with point system DOING
-// once deal cards is pressed, hide button until end of game DOING
-// add output container instructions DOING
+// create status box to track: credits DONE
+// add royal flush
+// come up with point system
+// game calculates the handscore, and update total points.
+// add output container instructions, output final combo.
 
 /**
  * function that sums returns the sum of the playing hand
@@ -51,12 +65,13 @@ const calcHandScore = (cardHand) => {
   // full house DONE
   // 4 of a kind DONE
   // straight flush DONE
+  // royal flush DOING
   // 5 of a kind
 
   checkForStraight(cardHand);
   checkForFlush(cardHand);
+  checkForRoyalFlush(cardHand);
   quadsThriplesPairsFullHouse(cardHand);
-  // checkForFiveOfAKind(cardHand);
   checkForStraightFlush(cardHand);
 
   checkIfHitCombo(); // logs the combo hit in console
@@ -78,6 +93,42 @@ const calcHandScore = (cardHand) => {
 //     }
 //   }
 // };
+
+const checkForRoyalFlush = (cardHand) => {
+  // check if suits are the same
+  let rank = cardHand.rank;
+
+  let ace = 0;
+  let king = 0;
+  let queen = 0;
+  let jack = 0;
+  let numTen = 0;
+
+  if (flush === 1) {
+    // check if A, K, J, 10, 9 are in the hand (bruteforce)
+    for (let [i, { rank }] of Object.entries(cardHand)) {
+      if (rank === 1) {
+        ace = 1;
+      }
+      if (rank === 13) {
+        king = 1;
+      }
+      if (rank === 12) {
+        queen = 1;
+      }
+      if (rank === 11) {
+        jack = 1;
+      }
+      if (rank === 10) {
+        numTen = 1;
+      }
+    }
+    if ((ace, king, queen, jack, numTen === 1)) {
+      console.log('royal flush');
+      royalFlush = 1;
+    }
+  }
+};
 
 const checkForStraightFlush = (cardHand) => {
   // check if straight and flush are true;
@@ -179,181 +230,20 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
 // helper functions //
 //////////////////////
 
-/**
- * function that makes a standard deck of cards
- */
-const makeDeck = () => {
-  // 4 suits - diamond, clubs, heart, spades
-  // 13 cards per suit
-  // create a loop that generates 52 cards of 4 suits
-  let newDeck = [];
-  const suits = ['diamonds', 'clubs', 'hearts', 'spades'];
-  for (let i = 0; i < suits.length; i += 1) {
-    const suitSymbol = ['♦', '♣', '♥', '♠'];
-    let currentSuitSymbol = suitSymbol[i];
-
-    for (let j = 1; j < 14; j += 1) {
-      let cardSuits = suits[i];
-      let suitColor;
-      let cardName = j;
-      let currentDisplayName = j;
-
-      if (j === 1) {
-        cardName = 'ace';
-        currentDisplayName = 'A';
-      } else if (j === 11) {
-        cardName = 'jack';
-        currentDisplayName = 'J';
-      } else if (j === 12) {
-        cardName = 'queen';
-        currentDisplayName = 'Q';
-      } else if (j === 13) {
-        cardName = 'king';
-        currentDisplayName = 'K';
-      }
-      if (cardSuits === 'diamonds' || cardSuits === 'hearts') {
-        suitColor = 'red';
-      } else {
-        suitColor = 'black';
-      }
-      let currentCard = {
-        name: cardName,
-        suit: cardSuits,
-        rank: j,
-        color: suitColor,
-        suitSymbol: currentSuitSymbol,
-        displayName: currentDisplayName,
-      };
-      newDeck.push(currentCard);
-    }
-  }
-  return newDeck;
-};
+// points system DOING
+// based on the bet amount, iterate on nth value in the object "comboPoints" and add that value to the credits.
 
 /**
- * Function that shuffles the deck
- * @param {array} deck array of deck
+ * function to update credits in HTML
  */
-const shuffleDeck = (cards) => {
-  for (let i = 0; i < cards.length; i += 1) {
-    let randomIndex = randomNumberGenerator(cards.length);
-    let currentCard = cards[i];
-    let randomCard = cards[randomIndex];
-    cards[i] = randomCard;
-    cards[randomIndex] = currentCard;
-  }
-  return cards;
-};
-
-/**
- * function that gives a random number depending on deck size
- * @param {number} deckLength length of deck
- * @returns a random number from 0 - 51
- */
-const randomNumberGenerator = (deckLength) => {
-  return Math.floor(Math.random() * deckLength);
-};
-
-/**
- * function that takes a card object and returns a div to display card
- * adds a function that saves the card to an array when clicked
- * @param {object} cardInfo contains info of the attributes of 1 card
- * @returns a card div containing the attributes of the  card
- */
-const makeCard = (cardInfo) => {
-  const card = document.createElement('div');
-  const cardName = document.createElement('div');
-  const cardSuit = document.createElement('div');
-
-  card.classList.add('card');
-  cardName.classList.add('name', cardInfo.color);
-  cardSuit.classList.add('suit', cardInfo.color);
-
-  cardName.innerHTML = cardInfo.displayName;
-  cardSuit.innerHTML = cardInfo.suitSymbol;
-
-  card.appendChild(cardName);
-  card.appendChild(cardSuit);
-
-  return card;
-};
-
-/**
- * function to swap cards that are not under holdStatus true
- */
-const swapCards = () => {
-  swapCardsBtn.addEventListener('click', () => {
-    // saves cards on 'hold' status to an array
-    savedCardsArray = userHand.filter((x) => x.holdStatus === true);
-    console.log(savedCardsArray);
-    const amtOfCardsToFillHand = 5 - savedCardsArray.length;
-    console.log(`amt of cards needed = ${amtOfCardsToFillHand}`);
-    // add x amt of cards into saved hand array to make it 5
-    for (let i = 0; i < amtOfCardsToFillHand; i += 1) {
-      const newCard = deck.pop();
-      savedCardsArray.push(newCard);
-    }
-    // makeCards this new array and deal
-    gameContainer.innerText = '';
-    for (let i = 0; i < savedCardsArray.length; i += 1) {
-      const card = savedCardsArray[i];
-      const cardEl = makeCard(card);
-      gameContainer.appendChild(cardEl);
-    }
-    // calculate the score of this card
-    calcHandScore(savedCardsArray);
-  });
-  // empties savedCardsArray
-  savedCardsArray = [];
-};
-
-/**
- * function to create a button to deal shuffled cards
- * also displays cards in gameContainer
- */
-const dealCardBtn = () => {
-  const btnEl = document.createElement('button');
-  btnEl.innerText = 'Deal Cards';
-  btnEl.classList.add('btn-deal-cards', 'btn');
-  buttonsContainer.appendChild(btnEl);
-  btnEl.addEventListener('click', () => {
-    // empties user hand array
-    userHand = [];
-
-    gameContainer.innerText = '';
-    for (let i = 0; i < 5; i += 1) {
-      const card = deck.pop();
-      card.holdStatus = false;
-      userHand.push(card);
-
-      console.log(`${userHand[i].name} of ${userHand[i].suit} dealt`);
-      const cardEl = makeCard(userHand[i]);
-
-      // adds the index of the card to saved card array on 1st click
-      let clickedTimes = 0;
-      cardEl.addEventListener('click', () => {
-        cardEl.classList.toggle('clicked');
-        console.log(`cardname: ${card.name}`);
-
-        if (clickedTimes % 2 === 0) {
-          // console.log('clickedTimes = 0');
-          card.holdStatus = true;
-          // removes index of card from array on 2nd click
-        } else if (clickedTimes % 2 === 1) {
-          card.holdStatus = false;
-          // console.log('clickedTimes = 1');
-        }
-        clickedTimes += 1;
-      });
-      gameContainer.appendChild(cardEl);
-    }
-    calcHandScore(userHand);
-  });
+const updateCredits = () => {
+  const creditsContainer = document.querySelector('.status-container');
+  creditsContainer.innerText = `Total Credits: ${credits}`;
 };
 
 const checkIfHitCombo = () => {
   console.log(
-    `fiveOfAKind: ${fiveOfAKind}, straightFlush: ${straightFlush}, quads: ${quads}, fullHouse: ${fullHouse}, straights: ${straights}, flush: ${flush}, thriples: ${thriples}, 2xPairs: ${doublePairs}, pairs: ${pairs}`
+    `fiveOfAKind: ${fiveOfAKind}, royalFlush: ${royalFlush}, straightFlush: ${straightFlush}, quads: ${quads}, fullHouse: ${fullHouse}, straights: ${straights}, flush: ${flush}, thriples: ${thriples}, 2xPairs: ${doublePairs}, pairs: ${pairs}`
   );
 };
 
