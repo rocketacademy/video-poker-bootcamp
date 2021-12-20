@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Shaz's Video Poker Game!</title>
     <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="./node_modules/nes.css/css/nes.min.css" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -57,14 +57,6 @@
               <td>250</td>
             </tr>
             <tr>
-              <td>Straight Flush</td>
-              <td>50</td>
-              <td>100</td>
-              <td>150</td>
-              <td>200</td>
-              <td>250</td>
-            </tr>
-            <tr>
               <td>Four Of A Kind</td>
               <td>25</td>
               <td>50</td>
@@ -77,26 +69,82 @@
               <td>9</td>
               <td>18</td>
               <td>27</td>
-              <td>100</td>
-              <td>125</td>
+              <td>36</td>
+              <td>45</td>
+            </tr>
+            <tr>
+              <td>Flush</td>
+              <td>6</td>
+              <td>12</td>
+              <td>18</td>
+              <td>24</td>
+              <td>30</td>
+            </tr>
+            <tr>
+              <td>Straight</td>
+              <td>4</td>
+              <td>8</td>
+              <td>12</td>
+              <td>16</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>Three Of A Kind</td>
+              <td>3</td>
+              <td>6</td>
+              <td>9</td>
+              <td>12</td>
+              <td>15</td>
+            </tr>
+            <tr>
+              <td>Two Pair</td>
+              <td>2</td>
+              <td>4</td>
+              <td>6</td>
+              <td>8</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>Jacks Or Better</td>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>5</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div id="cards" class="nes-container is-rounded is-dark">
-        <!-- <img src="./images/cards/2_of_clubs.png" class="card" />
-        <img src="./images/cards/2_of_clubs.png" class="card" />
-        <img src="./images/cards/2_of_clubs.png" class="card" />
-        <img src="./images/cards/2_of_clubs.png" class="card" />
-        <img src="./images/cards/2_of_clubs.png" class="card" /> -->
+      <div class="nes-container is-rounded is-dark">
         <div id="instructions">
           Start by pressing <span class="nes-text is-warning">Bet 1</span> or
           <span class="nes-text is-error">Bet 5</span> and pressing
           <span class="nes-text is-primary">Deal</span> after.
         </div>
+        <div id="cards" class="display-none">
+          <div id="card-0" class="card"></div>
+          <div id="card-1" class="card"></div>
+          <div id="card-2" class="card"></div>
+          <div id="card-3" class="card"></div>
+          <div id="card-4" class="card"></div>
+        </div>
+        <div id="probabilities">
+        <hr />
+          <p>Total Combinations Available: <span id="total-combinations">1,533,939</span></p>
+        <hr />
+          <p>Royal Flush: <span id="probability-royal-flush">0.00</span>%</p>
+          <p>Straight Flush: <span id="probability-straight-flush">0.00</span>%</p>
+          <p>Four Of A Kind: <span id="probability-four-of-a-kind">0.00</span>%</p>
+          <p>Full House: <span id="probability-full-house">0.00</span>%</p>
+          <p>Flush: <span id="probability-flush">0.00</span>%</p>
+          <p>Straight: <span id="probability-straight">0.00</span>%</p>
+          <p>Three Of A Kind: <span id="probability-three-of-a-kind">0.00</span>%</p>
+          <p>Two Pair: <span id="probability-two-pair">0.00</span>%</p>
+          <p>Jack Or Better: <span id="probability-jack-or-better">0.00</span>%</p>
+        </div>
       </div>
       <div id="buttons">
-        <div class="is-rounded is-dark flex space-between align-items-center">
+        <div class="is-rounded is-dark flex space-evenly align-items-center">
           <div>
             <button type="button" class="nes-btn is-warning" id="bet-1">
               Bet 1
@@ -112,7 +160,17 @@
             >
               Deal
             </button>
+            <button
+              type="button"
+              class="nes-btn is-disabled"
+              id="calculate-probability"
+              disabled
+            >
+              Calculate Probability
+            </button>
           </div>
+        </div>
+        <div>
           <div class="text-white">
             <span>Bet: <span id="player-bet">0</span></span>
             <span>/</span>
