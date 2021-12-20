@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 let shuffledDeck = [];
 
 let stats = {
