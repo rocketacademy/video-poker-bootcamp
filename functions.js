@@ -83,15 +83,6 @@ const makeDeck = () => {
   return newDeck;
 };
 
-// Create shuffled deck
-deck = shuffleCards(makeDeck());
-
-// Create hand array of 5 cards
-hand = [];
-for (let i = 0; i < 5; i += 1) {
-  hand.push(deck.pop());
-}
-
 /**
  * A function that takes in card hand & calculates the number of points based on that hand
  * Checks for the categories ranking first, then checks for higher card if previous check is a draw
@@ -152,7 +143,7 @@ const checkStraight = (cardRankTally, checkAce) => {
     // Diff between modified Ace rank & 10 = 4
     rankMaxMinDiff -= 8;
 
-    if (rankSum % 5 === 0 && rankMaxMinDiff === 4) {
+    if (rankSum === 60 && rankMaxMinDiff === 4) {
       outputvalue = true;
     }
   }
@@ -185,11 +176,13 @@ const checkOtherCondition = (cardRankTally) => {
 
 const checkHighCard = () => {};
 
-const calcHandScore = (hand) => {
+const calcHandScore = (hand, betAmount) => {
   let outputvalue;
   let cardRankTally = {};
   let cardSuitTally = {};
   let checkAce = false;
+  let highCardCounter = 0;
+  let winnings = 0;
 
   for (let i = 0; i < hand.length; i++) {
     let cardRank = hand[i].rank;
@@ -197,6 +190,9 @@ const calcHandScore = (hand) => {
 
     if (cardRank === 1) {
       checkAce = true;
+      highCardCounter += 1;
+    } else if (cardRank >= 11) {
+      highCardCounter += 1;
     }
 
     // Tallying card ranks & suits
@@ -222,36 +218,53 @@ const calcHandScore = (hand) => {
   // console.log(cardRankTallyValues);
   // console.log(cardSuitTallyValues);
 
-  const prelimCheck = checkOtherCondition(cardRankTally);
+  const otherCheck = checkOtherCondition(cardRankTally);
   const straightHand = checkStraight(cardRankTally, checkAce);
   const flushHand = checkFlush(cardSuitTally);
 
   if (straightHand && flushHand) {
     console.log("straight flush");
+    winnings = betAmount * 50;
+    outputvalue = `You won ${winnings} points with a Straight Flush!!`;
   } else if (straightHand) {
     console.log("straight");
+    winnings = betAmount * 4;
+    outputvalue = `You won ${winnings} points with a Straight`;
   } else if (flushHand) {
     console.log("flush");
-  } else if (prelimCheck === "High Card") {
+    winnings = betAmount * 6;
+    outputvalue = `You won ${winnings} points with a Flush`;
+  } else if (otherCheck === "High Card" && highCardCounter > 0) {
     console.log("high");
-  } else if (prelimCheck === "2 Pairs") {
+    winnings = betAmount * 1;
+    outputvalue = `You won ${winnings} points with a High Card (Jack or higher)`;
+    console.log("High Card Counter: " + highCardCounter);
+  } else if (otherCheck === "High Card") {
+    console.log("all other");
+    outputvalue = `You didn't win anything 😢`;
+  } else if (otherCheck === "2 Pairs") {
     console.log("2 pairs");
-  } else if (prelimCheck === "1 Pair") {
+    winnings = betAmount * 2;
+    outputvalue = `You won ${winnings} points with 2 Pairs`;
+  } else if (otherCheck === "1 Pair") {
     console.log("1 pair");
-  } else if (prelimCheck === "Full House") {
+    winnings = betAmount * 1;
+    outputvalue = `You won ${winnings} points with a Pair`;
+  } else if (otherCheck === "Full House") {
     console.log("full house");
-  } else if (prelimCheck === "3 of a Kind") {
+    winnings = betAmount * 9;
+    outputvalue = `You won ${winnings} points with a Full House`;
+  } else if (otherCheck === "3 of a Kind") {
     console.log("3 of a Kind");
-  } else if (prelimCheck === "4 of a Kind") {
+    winnings = betAmount * 3;
+    outputvalue = `You won ${winnings} points with 3 of a kind`;
+  } else if (otherCheck === "4 of a Kind") {
     console.log("4 of a Kind");
+    winnings = betAmount * 25;
+    outputvalue = `You won ${winnings} points with 4 of a kind!`;
   }
 
-  // for (k in ) {
-  //   if (!obj.hasOwnProperty(k)) continue;
-  //   if (obj[k] === "orange") {
-  //     /* yaay! an orange! */
-  //   }
-  // }
+  return [outputvalue, winnings];
 };
 
 // Refer to testHands.js to whats the current hand

@@ -7,14 +7,14 @@
 //   { rank: 1, suit: "hearts", name: "Ace" },
 // ];
 
-// Flush hand
-const playerHand = [
-  { rank: 2, suit: "hearts", name: "2" },
-  { rank: 3, suit: "hearts", name: "3" },
-  { rank: 5, suit: "hearts", name: "5" },
-  { rank: 10, suit: "hearts", name: "4" },
-  { rank: 1, suit: "hearts", name: "Ace" },
-];
+// // Flush hand
+// const playerHand = [
+//   { rank: 2, suit: "hearts", name: "2" },
+//   { rank: 3, suit: "hearts", name: "3" },
+//   { rank: 5, suit: "hearts", name: "5" },
+//   { rank: 10, suit: "hearts", name: "4" },
+//   { rank: 1, suit: "hearts", name: "Ace" },
+// ];
 
 // // Straight flush hand
 // const playerHand = [
@@ -78,3 +78,21 @@ const playerHand = [
 //   { rank: 5, suit: "clubs", name: "5" },
 //   { rank: 1, suit: "hearts", name: "Ace" },
 // ];
+
+// // All other
+// const playerHand = [
+//   { rank: 10, suit: "hearts", name: "10" },
+//   { rank: 8, suit: "diamonds", name: "8" },
+//   { rank: 6, suit: "spades", name: "6" },
+//   { rank: 5, suit: "clubs", name: "5" },
+//   { rank: 2, suit: "hearts", name: "2" },
+// ];
+
+// Random
+const playerHand = [
+  { rank: 12, suit: "clubs", name: "Q" },
+  { rank: 7, suit: "diamonds", name: "7" },
+  { rank: 13, suit: "diamonds", name: "K" },
+  { rank: 9, suit: "diamonds", name: "9" },
+  { rank: 1, suit: "clubs", name: "Ace" },
+];
