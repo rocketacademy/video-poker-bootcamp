@@ -88,8 +88,14 @@ body {
   margin-top: -3px;
 }
 
+.back-card {
+  width: 50px;
+  height: 30px;
+}
+
 .front-card {
   transform: rotateY(180deg);
+  margin-top: -73px;
 }
 
 .black {
@@ -101,9 +107,16 @@ body {
 }
 
 .suit {
-  margin-left: -37px;
-  margin-top: 80px;
+  margin-left: -28px;
+  margin-top: 7px;
   font-size: 130%;
+  width: 50px;
+  height: 50px;
+}
+
+.name {
+  width: 50px;
+  height: 50px;
 }
 
 .button-cont {
@@ -144,14 +157,12 @@ td {
   margin-left: auto;
   border: 2px;
 }
-
-#hold-button {
+.hold-button {
   position: relative;
   width: 60px;
   height: 20px;
   color: rgb(250, 9, 9);
-  background-color: rgba(255, 255, 255, 0.568);
+  background-color: rgb(255, 255, 255);
   border: 0cm;
-  margin-top: 130px;
-  z-index: 20;
+  margin-top: 117px;
 }

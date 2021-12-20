@@ -20,6 +20,7 @@ let cardName;
 let cardSuit;
 let cardRank;
 let card;
+let holdArray = [];
 
 // GLOBAL VARIABLES FOR CARD TALLY //
 let cardNameTally = {};
@@ -124,11 +125,6 @@ let finalDealButton = document.createElement("button");
 finalDealButton.setAttribute("id", "finaldeal-button");
 finalDealButton.style.display = "none";
 
-const holdButton = document.createElement("button");
-holdButton.id = "hold-button";
-holdButton.classList.add = "hold-button";
-holdButton.innerHTML = "HOLD";
-
 // CONTAINER FOR ALL BUTTONS //
 const buttonContainer = document.createElement("div");
 buttonContainer.classList.add("button-cont");
@@ -184,17 +180,23 @@ const createCard = (cardInfo) => {
   const innerCard = document.createElement("div");
   innerCard.classList.add("inner-card");
   const suit = document.createElement("div");
+  suit.setAttribute("id", "front-card");
+  suit.setAttribute("data-value", cardInfo.suit);
   suit.classList.add("front-card", "suit", cardInfo.cardColor);
   suit.innerText = cardInfo.suit;
   const name = document.createElement("div");
   name.classList.add("front-card", "name");
+  name.setAttribute("id", "front-card");
+  name.setAttribute("data-value", cardInfo.name);
   name.innerText = cardInfo.name;
+  const holdButton = document.createElement("button");
+  holdButton.classList.add("hold-button");
   const backCard = document.createElement("div");
   backCard.classList.add("back-card");
   card = document.createElement("div");
   card.id = "card";
   card.classList.add("card");
-
+  innerCard.appendChild(holdButton);
   innerCard.appendChild(name);
   innerCard.appendChild(suit);
   innerCard.appendChild(backCard);
@@ -286,15 +288,26 @@ const playerClick = () => {
 };
 
 const cardClick = () => {
-  let selectAllCards = document.getElementsByClassName("card");
-  for (i = 0; i < selectAllCards.length; i++) {
-    selectAllCards[i].appendChild(holdButton.cloneNode(true));
-  }
+  /*   let choices = document.querySelectorAll(".front-card.name, .front-card.suit");
+  for (i = 0; i < choices.length; i++) {
+    choices[i].addEventListener("click", () => {
+      let position = this.getAttribute("value");
+      console.log(position);
+    });
 
-  let allHoldButton = document.querySelectorAll("#hold-button");
-  for (const btn of allHoldButton) {
-    btn.addEventListener("click", () => {
-      btn.style.backgroundColor = "white";
+    console.log(choices[i]);
+  } */
+
+  let choices = document.querySelectorAll("#front-card");
+  console.log(choices);
+  console.log(choices.length);
+
+  for (i = 0; i < choices.length; i++) {
+    choices[i].addEventListener("click", () => {
+      let position = choices[i].getAttribute("data-value");
+      console.log(position);
+      holdArray.push(position);
+      console.log(holdArray);
     });
   }
 };
@@ -397,7 +410,7 @@ const fourKindsCombo = () => {
 const straightStraightFlushAndRoyalFlushCombo = () => {
   let count = 0;
   let sortedDeck = cardRankInHand.sort();
-  console.log(sortedDeck);
+
   for (j = 0; j < 5; j++) {
     if (sortedDeck[j] + 1 === sortedDeck[j + 1]) {
       count += 1;
