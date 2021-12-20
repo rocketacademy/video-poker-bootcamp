@@ -91,7 +91,7 @@ br {
   width: 120px;
 }
 
-.column-button:hover {
+.column-button:hover:enabled {
   text-decoration: none;
   background-color: var(--dark-orange-hover);
   border: var(--dark-orange-hover);

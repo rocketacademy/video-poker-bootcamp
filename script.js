@@ -121,7 +121,6 @@ const startShowHandButtons = () => {
   const showHandBtn = document.getElementById("show-hand-button");
 
   startBtn.addEventListener("click", () => {
-    console.log("dealhand");
     // check and clear existing card elements, reset deck, reset hand etc
     const cards = document.querySelectorAll(".card");
     if (cards) {
@@ -145,8 +144,6 @@ const startShowHandButtons = () => {
   });
 
   showHandBtn.addEventListener("click", () => {
-    console.log("calculateHand");
-
     // check wins
     const output = calculateHand(userHand);
     console.log(output);
@@ -166,6 +163,10 @@ const startShowHandButtons = () => {
 // ========================================================
 // - Business Logic functions
 // ========================================================
+/**
+ * Function reset global variables, recreate deck, clear userHand and swapCound
+ * @function
+ */
 const resetStates = () => {
   deck = [];
   userHand = [];
@@ -225,6 +226,7 @@ const calculateHand = (arr) => {
   let isHighCard = false;
 
   const hand = convertToHandSimp(arr);
+  console.log(arr);
   console.log(hand);
   let checkStates = false;
 

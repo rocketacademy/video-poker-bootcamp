@@ -11,7 +11,6 @@
 const checkCommonElement = (arr1, arr2) => {
   arr1.sort();
   arr2.sort();
-  console.log(arr1, arr2);
   // TODO: bad double for loop
   for (let i = 0; i < arr1.length; i++) {
     for (let j = 0; j < arr2.length; j++) {
@@ -83,14 +82,13 @@ const checkSameSuit = (arr) => {
  * @returns {boolean} true
  */
 export const checkRoyalFlush = (arr) => {
-  console.log("checkRoyalFlush");
-  checkSameSuit(arr);
+  const sameSuit = checkSameSuit(arr);
   let pictureCards = ["ace", "jack", "queen", "king", "10"];
   pictureCards.sort();
   let handNames = getHandNames(arr);
   handNames.sort();
-  const checkFlush = JSON.stringify(pictureCards) === JSON.stringify(handNames);
-  return checkSameSuit && checkFlush;
+  const sameName = JSON.stringify(pictureCards) === JSON.stringify(handNames);
+  return sameSuit && sameName;
 };
 
 /**
@@ -100,15 +98,13 @@ export const checkRoyalFlush = (arr) => {
  * @returns {boolean} true
  */
 export const checkStraightFlush = (arr) => {
-  console.log("checkStraightFlush");
-  checkSameSuit(arr);
+  const sameSuit = checkSameSuit(arr);
   let straightHand = ["9", "10", "jack", "queen", "king"];
   straightHand.sort();
   let handNames = getHandNames(arr);
   handNames.sort();
-  const checkStraight =
-    JSON.stringify(straightHand) === JSON.stringify(handNames);
-  return checkSameSuit && checkStraight;
+  const sameName = JSON.stringify(straightHand) === JSON.stringify(handNames);
+  return sameSuit && sameName;
 };
 
 /**
@@ -118,7 +114,6 @@ export const checkStraightFlush = (arr) => {
  * @returns {boolean} true
  */
 export const checkFlush = (arr) => {
-  console.log("checkFlush");
   return checkSameSuit(arr);
 };
 
@@ -129,7 +124,6 @@ export const checkFlush = (arr) => {
  * @returns {boolean} true
  */
 export const checkStraight = (arr) => {
-  console.log("checkStraight");
   const hand = convertToHandSimp(arr);
   const keysArr = Object.keys(hand);
   keysArr.sort();
@@ -164,7 +158,6 @@ export const checkStraight = (arr) => {
  * @returns {boolean} true
  */
 export const checkFullHouse = (arr) => {
-  console.log("checkFullHouse");
   const fullHouseCriteria = [2, 3];
   const hand = convertToHandSimp(arr);
   const valuesArr = Object.values(hand);
@@ -179,7 +172,6 @@ export const checkFullHouse = (arr) => {
  * @returns {boolean} true
  */
 export const checkTwoKind = (arr) => {
-  console.log("checkTwoPair");
   const twoPairCriteria = [1, 2, 2];
   const hand = convertToHandSimp(arr);
   const valuesArr = Object.values(hand);
@@ -194,13 +186,10 @@ export const checkTwoKind = (arr) => {
  * @returns {boolean} true
  */
 export const checkThreeKind = (arr) => {
-  console.log("checkThreeKind");
   const threeCriteria = [3];
   const hand = convertToHandSimp(arr);
   const valuesArr = Object.values(hand);
-  const res = checkCommonElement(valuesArr, threeCriteria);
-  console.log(res);
-  return res;
+  return checkCommonElement(valuesArr, threeCriteria);
 };
 
 /**
@@ -210,7 +199,6 @@ export const checkThreeKind = (arr) => {
  * @returns {boolean} true
  */
 export const checkFourKind = (arr) => {
-  console.log("checkFourKind");
   const fourCriteria = [1, 4];
   const hand = convertToHandSimp(arr);
   const valuesArr = Object.values(hand);
@@ -225,7 +213,6 @@ export const checkFourKind = (arr) => {
  * @returns {boolean} true
  */
 export const checkHighCard = (arr) => {
-  console.log("checkHighCard");
   const highCards = ["ace", "jack", "queen", "king"];
   const hand = convertToHandSimp(arr);
   const keysArr = Object.keys(hand);
