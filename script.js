@@ -7,17 +7,26 @@ let gameMode = 'bet';
 
 let betAmount = 0;
 
-// combinations met
-let fiveOfAKind = 0;
-let royalFlush = 0;
-let straightFlush = 0;
-let quads = 0;
-let fullHouse = 0;
-let straights = 0;
-let flush = 0;
-let thriples = 0;
-let doublePairs = 0;
-let pairs = 0;
+const combosMet = {
+  royalFlush: 0,
+  straightFlush: 0,
+  quads: 0,
+  fullHouse: 0,
+  straights: 0,
+  flush: 0,
+  thriples: 0,
+  doublePairs: 0,
+  pairs: 0,
+};
+
+const bestComboAchieved = () => {
+  for (let [combo, j] of Object.entries(combosMet)) {
+    if (j === 1) {
+      console.log(combo);
+      break;
+    }
+  }
+};
 
 let credits = 100;
 let deck = [];
@@ -64,7 +73,7 @@ const calcHandScore = (cardHand) => {
   // full house DONE
   // 4 of a kind DONE
   // straight flush DONE
-  // royal flush DOING
+  // royal flush DONE
   // 5 of a kind
 
   checkForStraight(cardHand);
@@ -86,7 +95,7 @@ const checkForRoyalFlush = (cardHand) => {
   let jack = 0;
   let numTen = 0;
 
-  if (flush === 1) {
+  if (combosMet.flush === 1) {
     // check if A, K, J, 10, 9 are in the hand (bruteforce)
     for (let [i, { rank }] of Object.entries(cardHand)) {
       if (rank === 1) {
@@ -105,8 +114,8 @@ const checkForRoyalFlush = (cardHand) => {
         numTen = 1;
       }
     }
-    if ((ace, king, queen, jack, numTen === 1)) {
-      royalFlush = 1;
+    if (ace === 1 && king === 1 && queen === 1 && jack === 1 && numTen === 1) {
+      combosMet.royalFlush = 1;
     }
   }
 };
@@ -114,8 +123,8 @@ const checkForRoyalFlush = (cardHand) => {
 const checkForStraightFlush = (cardHand) => {
   // check if straight and flush are true;
 
-  if (straights === 1 && flush === 1) {
-    straightFlush = 1;
+  if (combosMet.straights === 1 && combosMet.flush === 1) {
+    combosMet.straightFlush = 1;
   }
 };
 
@@ -131,7 +140,7 @@ const checkForFlush = (cardHand) => {
     }
   }
   if (Object.keys(suitTally).length === 1) {
-    flush = 1;
+    combosMet.flush = 1;
     return true;
   }
 };
@@ -150,7 +159,7 @@ const checkForStraight = (cardHand) => {
     if (sortedHand[i].rank - sortedHand[i + 1].rank === 1) {
       counter += 1;
       if (counter === 4) {
-        straights = 1;
+        combosMet.straights = 1;
       }
     }
   }
@@ -182,7 +191,7 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
       card2x = true;
       counterForPairs += 1;
       if (counterForPairs === 2) {
-        doublePairs = 1;
+        combosMet.doublePairs = 1;
       }
     }
     if (j === 3) {
@@ -194,13 +203,13 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
   }
   // }
   if (card4x === true) {
-    quads = 1;
+    combosMet.quads = 1;
   } else if (card3x2x === true) {
-    fullHouse = 1;
+    combosMet.fullHouse = 1;
   } else if (card3x === true) {
-    thriples = 1;
+    combosMet.thriples = 1;
   } else if (card2x === true) {
-    pairs = 1;
+    combosMet.pairs = 1;
   }
   // console.log(
   //   `card4x: ${card4x}, card3x: ${card3x}, card2x: ${card2x}, card3x2x: ${card3x2x}`
@@ -214,6 +223,24 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
 // points system DOING
 // based on the bet amount, iterate on nth value in the object "comboPoints" and add that value to the credits.
 
+const calcPointsToAdd = () => {
+  // check betAmount
+  // check which is the highest combo attained
+};
+
+/*
+let fiveOfAKind = 0;
+let royalFlush = 0;
+let straightFlush = 0;
+let quads = 0;
+let fullHouse = 0;
+let straights = 0;
+let flush = 0;
+let thriples = 0;
+let doublePairs = 0;
+let pairs = 0;
+*/
+
 /**
  * function to update credits in HTML
  */
@@ -223,9 +250,10 @@ const updateCredits = () => {
 };
 
 const checkIfHitCombo = () => {
-  console.log(
-    `FIVEOFAKIND: ${fiveOfAKind}, ROYALFLUSH: ${royalFlush}, STRAIGHTFLUSH: ${straightFlush}, QUADS: ${quads}, FULLHOUSE: ${fullHouse}, STRAIGHTS: ${straights}, FLUSH: ${flush}, THRIPLES: ${thriples}, 2xPAIRS: ${doublePairs}, 1xPAIRS: ${pairs}`
-  );
+  // console.log(
+  //   `FIVEOFAKIND: ${fiveOfAKind}, ROYALFLUSH: ${royalFlush}, STRAIGHTFLUSH: ${straightFlush}, QUADS: ${quads}, FULLHOUSE: ${fullHouse}, STRAIGHTS: ${straights}, FLUSH: ${flush}, THRIPLES: ${thriples}, 2xPAIRS: ${doublePairs}, 1xPAIRS: ${pairs}`
+  // );
+  console.log(combosMet);
 };
 
 /**
