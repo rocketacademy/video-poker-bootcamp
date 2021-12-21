@@ -1,6 +1,6 @@
 let shuffledDeck = [];
 
-let stats = {
+const stats = {
   hand: [],
   suit: {
     clubs: 0,
@@ -49,7 +49,7 @@ const probability = {
   jacksOrBetter: 0,
 };
 
-let cardsLeft = {
+const cardsLeft = {
   ace: {
     clubs: 1,
     spades: 1,
@@ -867,13 +867,11 @@ const checkStraightFlushCombinations = () => {
                 straightPossible = false;
                 break;
               }
-            } else {
-              if (cardsLeft[i].suit === 0) {
-                straightPossible = false;
-                break;
-              }
+            } else if (cardsLeft[i].suit === 0) {
+              straightPossible = false;
+              break;
             }
-          }          
+          }
         }
 
         if (straightPossible) {
@@ -905,13 +903,11 @@ const checkStraightFlushCombinations = () => {
                 straightPossible = false;
                 break;
               }
-            } else {
-              if (cardsLeft[i].suit === 0) {
-                straightPossible = false;
-                break;
-              }
+            } else if (cardsLeft[i].suit === 0) {
+              straightPossible = false;
+              break;
             }
-          }          
+          }
         }
 
         if (straightPossible) {
@@ -945,13 +941,11 @@ const checkStraightFlushCombinations = () => {
                 straightPossible = false;
                 break;
               }
-            } else {
-              if (cardsLeft[i].suit === 0) {
-                straightPossible = false;
-                break;
-              }
+            } else if (cardsLeft[i].suit === 0) {
+              straightPossible = false;
+              break;
             }
-          }          
+          }
         }
 
         if (straightPossible) {
@@ -992,10 +986,19 @@ const factorialize = (num) => {
 const totalCombinations = (numberOfCardsLeft, cardsToDraw) => {
   const numerator = factorialize(numberOfCardsLeft);
   const denominator = (factorialize(numberOfCardsLeft - cardsToDraw) * factorialize(cardsToDraw));
+
+  console.log('inside totalCombinations');
+  console.log(`numberOfCardsLeft: ${numberOfCardsLeft}`);
+  console.log(`cardsToDraw: ${cardsToDraw}`);
+  console.log(`numerator: ${numerator}`);
+  console.log(`denominator: ${denominator}`);
+
   return numerator / denominator;
 };
 
 const updateTotalCombinationsAvailableUI = (totalCombinations) => {
+  console.log('inside updateTotalCombinationsAvailableUI');
+  console.log(totalCombinations);
   document.getElementById('total-combinations').innerHTML = numberWithCommas(totalCombinations.toFixed(0));
 };
 
@@ -1067,13 +1070,13 @@ const deal = () => {
       drawnCard = shuffledDeck.pop();
       drawnCard.hold = false;
 
-      // stats.hand.push(drawnCard);
-      // stats.name[drawnCard.name] += 1;
-      // stats.suit[drawnCard.suit] += 1;
+      stats.hand.push(drawnCard);
+      stats.name[drawnCard.name] += 1;
+      stats.suit[drawnCard.suit] += 1;
 
-      // cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
-      stats = testStraightFlushHand;
-      cardsLeft = testStraightFlushCardsLeft;
+      cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
+      // stats = testStraightFlushHand;
+      // cardsLeft = testStraightFlushCardsLeft;
     }
     updateCardsUI();
     updateInstructions(
