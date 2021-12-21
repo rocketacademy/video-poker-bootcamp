@@ -1,15 +1,3 @@
-const SCORES = {
-  ROYAL_FLUSH: 250,
-  STRAIGHT_FLUSH: 50,
-  FOUR_OF_A_KIND: 25,
-  FULL_HOUSE: 9,
-  FLUSH: 6,
-  STRAIGHT: 4,
-  THREE_OF_A_KIND: 3,
-  TWO_PAIR: 2,
-  ONE_PAIR: 1,
-};
-
 let board = [];
 let deck;
 let credit = 100;
@@ -22,9 +10,29 @@ const MAX_BET = 5;
 const MAX_MULTIPLIER = 16;
 const MIN_RANK_FOR_ONE_PAIR = 11; // jack or higher
 
-const NUMBERS_DELAY_IN_MILLI_SECONDS = 150;
-const TEXT_DELAY_IN_MILLI_SECONDS = 100;
-const NEW_TEXT_DELAY_IN_MILLI_SECONDS = 4000;
+/**
+ * Scores or payouts for winning hands.
+ */
+const SCORES = {
+  ROYAL_FLUSH: 250,
+  STRAIGHT_FLUSH: 50,
+  FOUR_OF_A_KIND: 25,
+  FULL_HOUSE: 9,
+  FLUSH: 6,
+  STRAIGHT: 4,
+  THREE_OF_A_KIND: 3,
+  TWO_PAIR: 2,
+  ONE_PAIR: 1,
+};
+
+/**
+ * Delays for various scenarios.
+ */
+const NUMBERS_DELAY_IN_MILLI_SECONDS = 100;
+const TEXT_DELAY_IN_MILLI_SECONDS = 50;
+const NEW_TEXT_DELAY_IN_MILLI_SECONDS = 2000;
+const GAME_OVER_DELAY_IN_MILLI_SECONDS = 1000;
+const REDIRECT_DELAY_IN_MILLI_SECONDS = 5000;
 
 /**
  * Start/stop audio when speaker icon clicked.
@@ -73,18 +81,8 @@ const displayMessage = (message, color = 'black') => {
  * @returns Card
  */
 const revealCard = (cardElement, cardInfo) => {
-  cardElement.innerText = '';
-
-  const name = document.createElement('div');
-  name.classList.add('name', cardInfo.colour);
-  name.innerText = cardInfo.displayName;
-
-  const suit = document.createElement('div');
-  suit.classList.add('suit', cardInfo.colour);
-  suit.innerText = cardInfo.suitSymbol;
-
-  cardElement.appendChild(name);
-  cardElement.appendChild(suit);
+  cardElement.classList = 'card';
+  cardElement.classList.add(`${cardInfo.suit}-${cardInfo.name}`);
 
   return cardElement;
 };
@@ -494,14 +492,6 @@ const drawCards = (cardElements) => {
       cardElements[i].classList.remove('held');
     }
   }
-
-  // calculate hand score, winnings, and update credits
-  const score = calcHandScore(board);
-  const winnings = calcWinnings(score, bet);
-  updateCredits(winnings);
-
-  // reset bet
-  updateBets(-1 * bet);
 };
 
 /**
@@ -536,15 +526,40 @@ const setButtons = (buttonsGroup) => {
 };
 
 /**
+ * Check if game is over.
+ */
+const isGameOver = () => {
+  if (credit === 0) {
+    // TODO: REPLACE THIS
+    alert('GAME OVER');
+
+    // redirect to main page
+    setTimeout(() => {
+      window.location.replace('index.html');
+    }, REDIRECT_DELAY_IN_MILLI_SECONDS);
+  }
+};
+
+/**
  * Handle BET button click.
  */
 const betClick = () => {
+  // do nothing if no more credit
+  if (credit === 0) return;
+
   if (bet === 0) {
     displayMessage('Click DEAL button to play.');
   }
+
+  // remove win info
   updateWins(0);
+
+  // subtract credit count
   updateCredits(-1);
+
+  // add bet count
   updateBets(1);
+
   setButtons('deal');
 };
 
@@ -552,12 +567,22 @@ const betClick = () => {
  * Handle BET MAX button click.
  */
 const betMaxClick = () => {
+  // do nothing if not enough credit
+  if ((credit - MAX_BET) < 0) return;
+
   if (bet === 0) {
     displayMessage('Click DEAL button to play.');
   }
+
+  // remove win info
   updateWins(0);
+
+  // subtract credit count by max_bet
   updateCredits(-1 * MAX_BET);
+
+  // add bet count by max_bet
   updateBets(MAX_BET);
+
   setButtons('deal');
 };
 
@@ -570,8 +595,12 @@ const dealClick = (cardsElement) => {
   delayedMessageId = setTimeout(() => {
     displayMessage('and click DRAW to replace the rest.');
   }, NEW_TEXT_DELAY_IN_MILLI_SECONDS);
+
+  // remove win info
   updateCredits(0);
+
   dealCards(cardsElement.children);
+
   setButtons('draw');
 };
 
@@ -581,8 +610,23 @@ const dealClick = (cardsElement) => {
  */
 const drawClick = (cardsElement) => {
   displayMessage('Click BET button to play again.');
+
   drawCards(cardsElement.children);
+
   setButtons('bet');
+
+  // calculate hand score, winnings, and update credits
+  const score = calcHandScore(board);
+  const winnings = calcWinnings(score, bet);
+  updateCredits(winnings);
+
+  // reset bet
+  updateBets(-1 * bet);
+
+  // check if game is over
+  setTimeout(() => {
+    isGameOver();
+  }, GAME_OVER_DELAY_IN_MILLI_SECONDS);
 };
 
 /**
@@ -650,42 +694,11 @@ const buildGameStateElements = () => {
 };
 
 /**
- * Create all the board elements that will go on the screen.
- * @returns The built board
+ * Create buttons to play game.
+ * @param {*} cardsElement Cards
+ * @returns The game buttons
  */
-const buildBoardElements = () => {
-  // create the element that everything will go inside of
-  const boardElement = document.createElement('div');
-
-  // give it a class for CSS purposes
-  boardElement.classList.add('board');
-
-  // build game state elements
-  boardElement.appendChild(buildGameStateElements());
-
-  // make an element for the cards
-  const cardsElement = document.createElement('div');
-  cardsElement.classList.add('cards');
-
-  // make all the squares for this row
-  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
-    const card = document.createElement('div');
-    card.classList.add('card');
-
-    // set the click event
-    // eslint-disable-next-line
-    card.addEventListener('click', (event) => {
-      // we will want to pass in the card element so
-      // that we can change how it looks on screen, i.e.,
-      // "turn the card over"
-      cardClick(event.currentTarget);
-    });
-
-    cardsElement.appendChild(card);
-  }
-
-  boardElement.appendChild(cardsElement);
-
+const buildGameButtons = (cardsElement) => {
   // add area for buttons
   const buttonsElement = document.createElement('div');
   buttonsElement.classList.add('buttons');
@@ -726,7 +739,54 @@ const buildBoardElements = () => {
   drawButtonElement.addEventListener('click', () => drawClick(cardsElement));
   buttonsElement.appendChild(drawButtonElement);
 
-  boardElement.appendChild(buttonsElement);
+  return buttonsElement;
+};
+
+/**
+ * Create all the board elements that will go on the screen.
+ * @returns The built board
+ */
+const buildBoardElements = () => {
+  // create the element that everything will go inside of
+  const boardElement = document.createElement('div');
+
+  // give it a class for CSS purposes
+  boardElement.classList.add('board');
+
+  // build game state elements
+  boardElement.appendChild(buildGameStateElements());
+
+  // build container for cards
+  const divElement = document.createElement('div');
+  divElement.classList.add('cards-container');
+
+  // make an element for the cards
+  const cardsElement = document.createElement('div');
+  cardsElement.classList.add('cards');
+
+  // make all the squares for this row
+  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.classList.add('blue-back');
+
+    // set the click event
+    // eslint-disable-next-line
+    card.addEventListener('click', (event) => {
+      // we will want to pass in the card element so
+      // that we can change how it looks on screen, i.e.,
+      // "turn the card over"
+      cardClick(event.currentTarget);
+    });
+
+    cardsElement.appendChild(card);
+  }
+
+  divElement.appendChild(cardsElement);
+  boardElement.appendChild(divElement);
+
+  // build game buttons
+  boardElement.appendChild(buildGameButtons(cardsElement));
 
   return boardElement;
 };

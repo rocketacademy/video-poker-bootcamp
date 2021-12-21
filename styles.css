@@ -11,6 +11,7 @@ body {
   background-color: #16d6fb;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 h1 {
@@ -18,32 +19,44 @@ h1 {
   justify-content: space-around;
   border-bottom: 5px solid black;
   background-color: #ffcc00;
-  height: 70px;
+  height: 78px;
   align-items: center;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: center;
 }
 
 .cards {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin-bottom: 10px;
-  padding: 0.1rem;
+  margin-bottom: 1rem;
+  padding: 1rem 0 1rem 0;
+  max-width: 375px;
 }
 
 .held {
   border: 1px solid black;
 }
 
-.card {
+/* .cardx {
   margin: 0 5px 5px 5px;
   padding: 0 5px 5px 5px;
   background-color: #4dad5b;
-  width: 84px;
-  height: 144px;
+  width: 99px;
+  height: 135px;
   text-align: center;
   border-radius: 8px;
   display: inline-block;
   font-weight: bold;
+} */
+
+.card {
+  margin: 0 5px 5px 5px;
+  padding: 0 5px 5px 5px;
+  display: inline-block;
 }
 
 .card:hover {
