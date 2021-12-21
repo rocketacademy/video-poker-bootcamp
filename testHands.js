@@ -685,16 +685,16 @@ const jacksOrBetterHand = {
 const testStraightFlushHand = {
   hand: [
     {
-      name: 'ace',
+      name: '10',
       suit: 'diamonds',
-      rank: 1,
-      pic: './images/cards/ace_of_diamonds.png',
+      rank: 10,
+      pic: './images/cards/10_of_diamonds.png',
     },
     {
-      name: '8',
+      name: '2',
       suit: 'diamonds',
-      rank: 8,
-      pic: './images/cards/8_of_diamonds.png',
+      rank: 2,
+      pic: './images/cards/2_of_diamonds.png',
     },
     {
       name: '9',
@@ -722,13 +722,13 @@ const testStraightFlushHand = {
     diamonds: 5,
   },
   name: {
-    2: 0,
+    2: 1,
     3: 0,
     4: 0,
     5: 1,
     6: 0,
     7: 0,
-    8: 1,
+    8: 0,
     9: 1,
     10: 0,
     ace: 1,
@@ -743,13 +743,13 @@ const testStraightFlushCardsLeft = {
     clubs: 1,
     spades: 1,
     hearts: 1,
-    diamonds: 0,
+    diamonds: 1,
   },
   2: {
     clubs: 1,
     spades: 1,
     hearts: 1,
-    diamonds: 1,
+    diamonds: 0,
   },
   3: {
     clubs: 1,
@@ -785,7 +785,7 @@ const testStraightFlushCardsLeft = {
     clubs: 1,
     spades: 1,
     hearts: 1,
-    diamonds: 0,
+    diamonds: 1,
   },
   9: {
     clubs: 1,
@@ -797,7 +797,7 @@ const testStraightFlushCardsLeft = {
     clubs: 1,
     spades: 1,
     hearts: 1,
-    diamonds: 1,
+    diamonds: 0,
   },
   jack: {
     clubs: 1,

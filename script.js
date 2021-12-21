@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 let shuffledDeck = [];
 
 let stats = {
@@ -832,6 +831,8 @@ const checkStraightFlushCombinations = () => {
         combinations += 1;
       }
     } else if (diff === 3) {
+      let straightPossible = true;
+
       // if i have rank 2 and 5
       // first group goes from 1 to 5
       let firstRank1;
@@ -843,12 +844,119 @@ const checkStraightFlushCombinations = () => {
       if (parseInt(rankArray[0], 10) - 1 === 0) {
         firstRank1 = parseInt(rankArray[0], 10);
         lastRank1 = firstRank1 + 4;
+
+        for (let i = firstRank1; i <= lastRank1; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else {
+              if (cardsLeft[i].suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            }
+          }          
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
       } else {
         firstRank1 = parseInt(rankArray[0], 10) - 1;
         lastRank1 = firstRank1 + 4;
 
+        for (let i = firstRank1; i <= lastRank1; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else {
+              if (cardsLeft[i].suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            }
+          }          
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+
+        straightPossible = true;
+
         firstRank2 = parseInt(rankArray[0], 10);
         lastRank2 = firstRank2 + 4;
+
+        for (let i = firstRank2; i <= lastRank2; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king.suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else {
+              if (cardsLeft[i].suit === 0) {
+                straightPossible = false;
+                break;
+              }
+            }
+          }          
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
       }
 
       // second group goes from 2 to 6
