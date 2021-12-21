@@ -95,7 +95,7 @@ body {
 
 .front-card {
   transform: rotateY(180deg);
-  margin-top: -73px;
+  margin-top: 0px;
 }
 
 .black {

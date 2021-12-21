@@ -180,13 +180,13 @@ const createCard = (cardInfo) => {
   const innerCard = document.createElement("div");
   innerCard.classList.add("inner-card");
   const suit = document.createElement("div");
-  suit.setAttribute("id", "front-card");
+  suit.setAttribute("id", "front-card-suit");
   suit.setAttribute("data-value", cardInfo.suit);
   suit.classList.add("front-card", "suit", cardInfo.cardColor);
   suit.innerText = cardInfo.suit;
   const name = document.createElement("div");
   name.classList.add("front-card", "name");
-  name.setAttribute("id", "front-card");
+  name.setAttribute("id", "front-card-name");
   name.setAttribute("data-value", cardInfo.name);
   name.innerText = cardInfo.name;
   const holdButton = document.createElement("button");
@@ -196,7 +196,7 @@ const createCard = (cardInfo) => {
   card = document.createElement("div");
   card.id = "card";
   card.classList.add("card");
-  innerCard.appendChild(holdButton);
+  /* innerCard.appendChild(holdButton); */
   innerCard.appendChild(name);
   innerCard.appendChild(suit);
   innerCard.appendChild(backCard);
@@ -287,31 +287,6 @@ const playerClick = () => {
   document.body.appendChild(buttonContainer);
 };
 
-const cardClick = () => {
-  /*   let choices = document.querySelectorAll(".front-card.name, .front-card.suit");
-  for (i = 0; i < choices.length; i++) {
-    choices[i].addEventListener("click", () => {
-      let position = this.getAttribute("value");
-      console.log(position);
-    });
-
-    console.log(choices[i]);
-  } */
-
-  let choices = document.querySelectorAll("#front-card");
-  console.log(choices);
-  console.log(choices.length);
-
-  for (i = 0; i < choices.length; i++) {
-    choices[i].addEventListener("click", () => {
-      let position = choices[i].getAttribute("data-value");
-      console.log(position);
-      holdArray.push(position);
-      console.log(holdArray);
-    });
-  }
-};
-
 /* A function that flips the cards when deal button is pressed for the first time
  * @param cardNameTally set to empty to give a fresh start
  * @param cardSuitTally set to empty to give a fresh start
@@ -325,7 +300,30 @@ const flipCard = () => {
   }
   cardClick();
 };
+const cardClick = () => {
+  let cardChoice = document.querySelectorAll(".card");
+  let nameChoices = document.querySelectorAll("#front-card-name");
+  let suitChoices = document.querySelectorAll("#front-card-suit");
 
+  for (i = 0; i < cardChoice.length; i++) {
+    let nameCard = nameChoices[i].getAttribute("data-value");
+    let suitCard = suitChoices[i].getAttribute("data-value");
+    holdArray.push({ name: nameCard, suit: suitCard });
+    console.log(holdArray);
+  }
+  return holdArray;
+};
+
+let myAim = cardClick();
+let final = myAim.forEach((element) => createElement(element));
+
+const createElement = (newElem) => {
+  newElem.addEventListener("click", () => {
+    console.log("bananas");
+  });
+};
+
+createElement();
 /* A function that flips the cards when deal button is pressed for the second time
  * after the player has chosen which card wants to be held or changed
  * @param cardNameTally set to empty to give a fresh start
@@ -354,8 +352,10 @@ const twoPairsCombo = () => {
   let pairs = [];
   let sortedDeck = cardRankInHand.sort();
   for (i = 0; i < 5; i++) {
-    if (sortedDeck[i] === sortedDeck[i + 1]) {
+    if (sortedDeck[i] === sortedDeck[i] + 1) {
       pairs.push(sortedDeck[i]);
+      console.log(sortedDeck[i] === sortedDeck[i] + 1);
+      console.log(pairs);
     }
   }
   if (pairs.length === 2) {
@@ -492,3 +492,21 @@ const winningCombos = () => {
 };
 
 startOfGame();
+
+/* let elementA = holdArray[0];
+  let elementB = holdArray[1];
+  let elementC = holdArray[2];
+  let elementD = holdArray[3];
+  let elementE = holdArray[4].name;
+
+  let createElementA = document.createElement("div");
+  createElementA.appendChild(elementE);
+
+  createElementA.addEventListener("click", () => {
+    console.log(holdArray[0], "banana");
+  }); */
+
+/* for (j = 0; j < holdArray.length; j++) {
+    let createElement = document.createElement("div");
+    card.appendChild(createElement);
+  } */
