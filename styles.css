@@ -12,6 +12,16 @@ body {
   justify-content: center;
 }
 
+.game-header > button {
+  position: absolute;
+  text-align: center;
+  width: 30px;
+  right: 8px;
+  top: 8px;
+  font-size: 18px;
+  padding: 1px;
+}
+
 .game-header > h1 {
   text-align: center;
 }
