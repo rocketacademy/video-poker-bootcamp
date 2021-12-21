@@ -3,6 +3,7 @@ let deck;
 let credit = 100;
 let bet = 0;
 let messageId;
+let creditId;
 let delayedMessageId;
 
 const NUMBER_OF_CARDS = 5;
@@ -33,6 +34,7 @@ const TEXT_DELAY_IN_MILLI_SECONDS = 50;
 const NEW_TEXT_DELAY_IN_MILLI_SECONDS = 2000;
 const GAME_OVER_DELAY_IN_MILLI_SECONDS = 1000;
 const REDIRECT_DELAY_IN_MILLI_SECONDS = 5000;
+const REVEAL_CARDS_DELAY_IN_MILLI_SECONDS = 175;
 
 /**
  * Start/stop audio when speaker icon clicked.
@@ -78,11 +80,14 @@ const displayMessage = (message, color = 'black') => {
  * Reveal card to player
  * @param {*} cardElement Card
  * @param {*} cardInfo Card information
+ * @param {*} order Order in group of cards
  * @returns Card
  */
-const revealCard = (cardElement, cardInfo) => {
-  cardElement.classList = 'card';
-  cardElement.classList.add(`${cardInfo.suit}-${cardInfo.name}`);
+const revealCard = (cardElement, cardInfo, order = 0) => {
+  setTimeout(() => {
+    cardElement.classList = 'card';
+    cardElement.classList.add(`${cardInfo.suit}-${cardInfo.name}`);
+  }, order * REVEAL_CARDS_DELAY_IN_MILLI_SECONDS);
 
   return cardElement;
 };
@@ -110,9 +115,10 @@ const updateCredits = (creditChange) => {
   if (creditChange > 0) {
     const newCredit = credit + creditChange;
     let addCredit = 0;
-    const creditId = setInterval(() => {
+    creditId = setInterval(() => {
       if (credit === newCredit) {
         clearInterval(creditId);
+        setButtons('bet');
       } else {
         credit += 1;
         addCredit += 1;
@@ -123,6 +129,7 @@ const updateCredits = (creditChange) => {
   } else {
     credit += creditChange;
     credits.innerText = `Credits:${credit}`;
+    setButtons('bet');
   }
 };
 
@@ -158,6 +165,10 @@ const updateBets = (newBet) => {
  * @param {*} index
  */
 const holdCard = (cardElement) => {
+  // ignore card click if still in betting mode
+  if (!document.getElementById('bet').disabled) return;
+
+  // toggle holding card between card clicks
   if (cardElement.classList.contains('held')) {
     cardElement.classList.remove('held');
   } else {
@@ -202,21 +213,6 @@ const shuffleCards = (cards) => {
   }
   // Return the shuffled deck
   return shuffledCards;
-};
-
-/**
- * Set cards to be clickable or not clickable.
- * @param {*} isCardClickable True, if clickable. False, otherwise.
- */
-const setCardClickable = (isCardClickable) => {
-  const cards = document.querySelectorAll('.card');
-  for (let i = 0; i < cards.length; i += 1) {
-    if (isCardClickable) {
-      cards[i].style.setProperty('pointer-events', 'auto');
-    } else {
-      cards[i].style.setProperty('pointer-events', 'none');
-    }
-  }
 };
 
 /**
@@ -475,7 +471,7 @@ const dealCards = (cardElements) => {
 
   for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
     board.push(deck.pop());
-    revealCard(cardElements[j], board[j]);
+    revealCard(cardElements[j], board[j], j);
   }
 };
 
@@ -487,7 +483,7 @@ const drawCards = (cardElements) => {
   for (let i = 0; i < cardElements.length; i += 1) {
     if (!cardElements[i].classList.contains('held')) {
       board[i] = deck.pop();
-      revealCard(cardElements[i], board[i]);
+      revealCard(cardElements[i], board[i], i);
     } else {
       cardElements[i].classList.remove('held');
     }
@@ -515,9 +511,13 @@ const setButtons = (buttonsGroup) => {
       || ((buttonsGroup === 'deal') && !button.id.includes('draw'))
       || ((buttonsGroup === 'draw') && button.id.includes('draw'))) {
       button.classList.remove('is-disabled');
+      button.disabled = '';
+
       button.classList.add(buttonColorsByType[button.id]);
     } else {
       button.classList.add('is-disabled');
+      button.disabled = 'disabled';
+
       button.classList.remove('is-primary');
       button.classList.remove('is-warning');
       button.classList.remove('is-error');
@@ -530,6 +530,9 @@ const setButtons = (buttonsGroup) => {
  */
 const isGameOver = () => {
   if (credit === 0) {
+    // disable all buttons
+    setButtons();
+
     // TODO: REPLACE THIS
     alert('GAME OVER');
 
@@ -613,7 +616,8 @@ const drawClick = (cardsElement) => {
 
   drawCards(cardsElement.children);
 
-  setButtons('bet');
+  // disable all buttons while calculating score
+  setButtons();
 
   // calculate hand score, winnings, and update credits
   const score = calcHandScore(board);
@@ -728,6 +732,7 @@ const buildGameButtons = (cardsElement) => {
   dealButtonElement.classList.add('nes-btn');
   dealButtonElement.classList.add('is-disabled');
   dealButtonElement.addEventListener('click', () => dealClick(cardsElement));
+  dealButtonElement.disabled = 'disabled';
   buttonsElement.appendChild(dealButtonElement);
 
   // add draw game button
@@ -736,6 +741,7 @@ const buildGameButtons = (cardsElement) => {
   drawButtonElement.innerText = 'DRAW';
   drawButtonElement.classList.add('nes-btn');
   drawButtonElement.classList.add('is-disabled');
+  drawButtonElement.disabled = 'disabled';
   drawButtonElement.addEventListener('click', () => drawClick(cardsElement));
   buttonsElement.appendChild(drawButtonElement);
 
