@@ -4,12 +4,14 @@ let bettedPoints = 0;
 let playerHand = [];
 
 const playerCardsDiv = document.getElementById("playerCardsDiv");
-const gameInfoDiv = document.getElementById("gameInfo");
+const gameInfoDiv = document.getElementById("game-info-div");
+const gameInfoText = document.getElementById("gameInfo");
 const scoreData = document.getElementById("scoreBox");
 const bettingData = document.getElementById("bettingBox");
 
 const dealButton = document.getElementById("dealButton");
 dealButton.addEventListener("click", () => {
+  gameInfoDiv.classList.remove("show");
   playerPoints -= 10;
   // console.log(`deal button has been clicked`);
   if (playerHand.length != 5) {
@@ -27,7 +29,7 @@ const playButton = document.getElementById("playButton");
 playButton.addEventListener("click", () => {
   console.log(`draw button has been clicked`);
   const winner = parseResults(playerHand);
-  gameInfoDiv.innerText = `Your hand is: ${winner}`;
+  gameInfoDiv.classList.add("show");
   calcHandScore(winner);
   refreshDisplay();
 });
@@ -64,6 +66,18 @@ const cardNameMap = {
   11: "jack",
   12: "queen",
   13: "king",
+};
+
+const winTextMap = {
+  null: "no winning combinations",
+  royalFlush: "a Royal Flush",
+  straightFlush: "a Straight Flush",
+  flush: "a Flush",
+  straight: "a Straight",
+  fullHouse: "a Full House",
+  fourOfAKind: "a Four of a Kind",
+  threeOfAKind: "a Three of a Kind",
+  twoPairs: "Two Pairs",
 };
 
 /**
@@ -193,6 +207,7 @@ const displayCard = function (cardObj, handPosition) {
  */
 const calcHandScore = function (handType) {
   const earnings = betMultiplierMap[handType] * bettedPoints;
+  gameInfo.innerText = `Your hand contains ${winTextMap[handType]}.\nYou placed a bet of ${bettedPoints} points, and you have won ${earnings} points this round.\nYour total is currently ${playerPoints} points.`;
   playerPoints += earnings;
   bettedPoints = 0;
 };

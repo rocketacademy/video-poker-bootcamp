@@ -1,21 +1,41 @@
+body {
+  font-family: "Roboto Mono", monospace;
+  color: white;
+  background-color: #0f2943;
+  text-align: center;
+}
+
 img {
   max-width: 100%;
 }
 
+h1 {
+  margin: auto;
+  text-align: center;
+}
+
 .playerCardsDiv {
-  background-color: yellow;
+  /* background-color: yellow; */
+  border: #ff7b72 0.25rem solid;
   display: flex;
   width: 70%;
-  justify-content: space-between;
-  margin: auto;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1rem auto;
   padding: 5px;
 }
 
-.game-info {
+.game-info-div {
   background-color: slateblue;
-  display: flex;
+  display: none;
   width: fit-content;
   margin: 20px auto auto auto;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.game-info-div.show {
+  display: flex;
 }
 
 .card {
@@ -29,20 +49,65 @@ img {
   border: blueviolet 2px solid;
 }
 
-.scoreBox {
-  color: green;
-  background-color: red;
-  width: fit-content;
-  display: inline;
-  padding: 10px;
+.points-info-div {
+  display: flex;
+  /* border: #ff7b72 0.125rem solid; */
+  color: #ff7b72;
+  width: 45%;
+  height: fit-content;
+  margin: auto;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1vw;
 }
 
-.bettingBox {
-  color: black;
-  background-color: indianred;
+.number-div {
+  padding: 1rem;
+  flex-basis: auto;
+  border: #ff7b72 0.125rem solid;
+}
+
+.numberBox {
+  color: #0f2943;
+  background-color: #ff7b72;
+  font-size: 1rem;
+  font-weight: 300;
   width: fit-content;
-  display: inline;
-  padding: 10px;
+  padding: 1rem;
+  margin: auto;
+}
+
+button {
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  /* border-radius: 0.5rem; */
+  border: 0.25rem solid #f0883e;
+  color: #f0883e;
+  background: 0 0;
+  padding: 8px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 4px 0px,
+    rgba(0, 0, 0, 0.05) 0px 1px 1.5px 0px;
+  /* font-weight: 800; */
+  font-size: 3vw;
+  height: fit-content;
+}
+
+.button:hover {
+  background-color: #f0883e;
+  color: #0f2943;
+}
+
+.flex1 {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+.flex2 {
+  flex-grow: 0;
+  flex-shrink: 2;
+  flex-basis: auto;
 }
 
 .winning-message {
@@ -58,22 +123,6 @@ img {
   color: white;
   font-size: 5rem;
   flex-direction: column;
-}
-
-.restartButton {
-  width: fit-content;
-  height: fit-content;
-  font-size: 3rem;
-  background-color: white;
-  border: 1px solid black;
-  padding: 0.25em 0.5em;
-  cursor: pointer;
-}
-
-.restartButton:hover {
-  background-color: black;
-  color: white;
-  border-color: white;
 }
 
 .winning-message.show {

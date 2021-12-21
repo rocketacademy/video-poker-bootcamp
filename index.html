@@ -1,30 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SWE101</title>
+    <title>Video Poker</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-    <h1 id="header">Video Mooker testbed</h1>
+    <h1 id="header">Video Poker!</h1>
     <div id="gameDiv">
-      <div id="playerCardsDiv" class="playerCardsDiv"></div>
+      <div id="playerCardsDiv" class="playerCardsDiv">
+        Click 'Deal' to begin your game!
+      </div>
     </div>
-    <div id="scoreBox" class="scoreBox"></div>
-    <div id="bettingBox" class="bettingBox"></div>
-    <button id="dealButton" class="button">Deal</button>
-    <button id="playButton" class="button">Play</button>
+
+    <div id="points-info-div" class="points-info-div flex1">
+      <div class="number-div">
+        <p>Points Remaining</p>
+        <p id="scoreBox" class="numberBox">1000</p>
+      </div>
+
+      <div id="button-container" class="flex2">
+        <button id="dealButton" class="button">Deal</button>
+        <button id="playButton" class="button">Play</button>
+      </div>
+
+      <div class="number-div flex1">
+        <p>Points Betted</p>
+        <p id="bettingBox" class="numberBox">0</p>
+      </div>
+    </div>
 
     <div class="winning-message" id="winningMessage">
       <div data-winning-message-text>u won yaaaaay</div>
-      <button id="restartButton" class="restartButton">Restart</button>
     </div>
 
-    <div id="gameInfo" class="game-info">PLACEHOLDER</div>
+    <div id="game-info-div" class="game-info-div">
+      <p id="gameInfo"></p>
+      <!-- <button id="restartButton" class="button" style="display: block">
+        Continue
+      </button> -->
+    </div>
 
     <!-- Import program logic -->
     <script src="script.js"></script>
     <script src="scoring.js"></script>
-    <script src="testing.js"></script>
+    <!-- <script src="testing.js"></script> -->
   </body>
 </html>
