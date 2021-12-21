@@ -2,28 +2,37 @@
  * function to bet one credit
  */
 betOneBtn.addEventListener('click', () => {
+  gameContainer.innerText = '';
   if (gameMode === 'bet' || gameMode === 'deal') {
     if (betAmount < 5) {
       credits -= 1;
       betAmount += 1;
       updateCredits();
+      outputContainer.innerText = 'Come on, you can bet more!';
+      gameMode = 'deal';
     }
     if (betAmount === 5) {
       gameMode = 'deal';
+      outputContainer.innerText = "That's the way to play! Good luck! 😁";
     }
   }
+  dealCardsBtn.disabled = false;
 });
 
 /**
  * function to bet five credits
  */
 betFiveBtn.addEventListener('click', () => {
+  gameContainer.innerText = '';
   if (gameMode === 'bet') {
     credits -= 5;
     betAmount = 5;
     updateCredits();
     gameMode = 'deal';
+    outputContainer.innerText =
+      'All the best to ya boss! 😎 Hit the DEAL button!';
   }
+  dealCardsBtn.disabled = false;
 });
 
 /**
@@ -61,9 +70,14 @@ dealCardsBtn.addEventListener('click', () => {
         clickedTimes += 1;
       });
       gameContainer.appendChild(cardEl);
+      outputContainer.innerText =
+        'Looks good! Click on the cards you want to hold. ✋';
     }
     // calcHandScore(userHand);
     gameMode = 'swap';
+    betOneBtn.disabled = true;
+    betFiveBtn.disabled = true;
+    swapCardsBtn.disabled = false;
   }
 });
 
@@ -97,5 +111,10 @@ swapCardsBtn.addEventListener('click', () => {
     calcPointsToAdd();
     // updates credits in HTML
     updateCredits();
+    gameMode = 'bet';
   }
+  betOneBtn.disabled = false;
+  betFiveBtn.disabled = false;
+  swapCardsBtn.disabled = true;
+  dealCardsBtn.disabled = true;
 });
