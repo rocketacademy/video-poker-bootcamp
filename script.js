@@ -17,6 +17,26 @@ const betMax = document.getElementById("bet-max");
 const playerPoints = document.getElementById("player-points");
 const playerBetsDiv = document.getElementById("player-bets");
 
+const betSound = () => {
+  new Audio("./buttonsound.wav").play();
+};
+
+const dealSound = () => {
+  new Audio("./dealcard.mp3").play();
+};
+
+const holdSound = () => {
+  new Audio("./hold.mp3").play();
+};
+
+const winSound = () => {
+  new Audio("./win.wav").play();
+};
+
+const loseSound = () => {
+  new Audio("./lose.wav").play();
+};
+
 const increaseBet = () => {
   dealButton.disabled = false;
   if (playerBet >= 5) {
@@ -171,8 +191,10 @@ const resetGame = () => {
 const popup = () => {
   const pop = document.createElement("div");
   if (handScore < 0) {
+    loseSound();
     pop.innerText = `You got ${handName}! \nGAME OVER!\n `;
   } else {
+    winSound();
     pop.innerText = `You got ${handName}! \nYou Win!\n `;
   }
 
@@ -217,6 +239,7 @@ dealButton.addEventListener("click", function () {
       handCard.classList.add("card");
       handCard.innerHTML = `<img src="${card.pic}"/>`;
       container.appendChild(handCard);
+      handCard.addEventListener("click", holdSound);
       handCard.addEventListener("click", function () {
         toggleStay(card);
         console.log(card.change);
