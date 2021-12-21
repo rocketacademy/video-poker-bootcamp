@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 /* eslint-disable consistent-return */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
@@ -86,8 +87,6 @@ const output = (message) => {
   gameInfo.innerText = message;
 };
 
-/** Function to select cards to redraw */
-
 /** Function to build card deck elements */
 const buildCardElements = (hand) => {
   cardTable.innerHTML = '';
@@ -107,13 +106,13 @@ const buildCardElements = (hand) => {
     cardElement.className = 'card-element';
 
     cardBoxElement.addEventListener('click', (e) => {
-      if (e.currentTarget.className === 'card-box-element') {
+      if (currentGameMode === 'choose redraw' && e.currentTarget.className === 'card-box-element') {
         e.currentTarget.className = 'card-box-redraw';
         let index = Number(e.currentTarget.id);
         redrawIndexArr.push(index);
         redrawIndexArr.sort((a, b) => a - b);
         console.log(redrawIndexArr);
-      } else if (e.currentTarget.className === 'card-box-redraw') {
+      } else if (currentGameMode === 'choose redraw' && e.currentTarget.className === 'card-box-redraw') {
         e.currentTarget.className = 'card-box-element';
         let index = Number(e.currentTarget.id);
         console.log(redrawIndexArr);
@@ -130,8 +129,6 @@ const buildCardElements = (hand) => {
     cardTable.appendChild(cardBoxElement);
   }
 };
-
-// /** Function for clicking card to redraw */
 
 /** Function to check winning conditions with same card suit or sequential increase */
 /** which includes royal flush, straight flush, flush, straight */

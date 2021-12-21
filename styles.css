@@ -46,7 +46,7 @@ body {
   justify-content: center;
   max-width: 800px;
   height: fit-content;
-  max-height: 60vh;
+  max-height: 63vh;
   margin: 0 auto;
 }
 
@@ -110,7 +110,8 @@ td {
 .card-table {
   width: 100vw;
   max-width: 600px;
-  min-height: 31vh;
+  min-height: 280px;
+  max-height: 31vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,8 +131,8 @@ td {
   display: flex;
   width: 15%;
   justify-content: center;
-  text-align: center;
   background-color: grey;
+  border-radius: 10px;
   opacity: 0.2;
 }
 

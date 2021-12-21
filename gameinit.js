@@ -7,15 +7,20 @@ const playerClick = () => {
   /** if current game mode is input bet */
   if (currentGameMode === 'input bet') {
     betInputField.disabled = false;
+    cardTable.innerHTML = '';
     let betInput = betInputField.value;
     /** check if bet input is valid */
     if (betInput === '' || isNaN(betInput)) {
       output('You gotta type a number!');
     } else if (betInput !== '') {
-      betInputField.disabled = true;
-      currentGameMode = 'deal cards';
-      bet = betInput;
-      output(`You bet ${bet} credits. Click the 'Submit / Deal Cards' button again to deal cards!`);
+      if (betInput > credits) {
+        output('You don\'t have that many credits!');
+      } else if (betInput <= credits) {
+        betInputField.disabled = true;
+        currentGameMode = 'deal cards';
+        bet = betInput;
+        output(`You bet ${bet} credits. Click the 'Submit / Deal Cards' button again to deal cards!`);
+      }
     }
   } else if (currentGameMode === 'deal cards') {
     deck = shuffleCards(makeDeck());
