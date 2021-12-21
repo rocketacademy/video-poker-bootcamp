@@ -5,7 +5,7 @@ let savedCardsArray = [];
 let userHand = [];
 let gameMode = 'bet';
 
-let betAmount = 4;
+let betAmount = 0;
 
 const combosMet = {
   royalFlush: 0,
@@ -48,7 +48,8 @@ const comboPoints = {
 // come up with point system DONE
 // game calculates the handscore, and update total points. DONE
 // add output container instructions, output final combo. DOING
-// CSS
+
+// CSS DOING
 
 ///////////////////////////////////
 // Calculate handscore functions //
@@ -228,12 +229,21 @@ const bestComboAchieved = () => {
   }
 };
 
-// points system
-// based on the bet amount, iterate on nth value in the object "comboPoints" and add that value to the credits.
+/**
+ * function that determines the amt of credits to add
+ * @returns the amt of credits to add to user's current pool
+ */
 const calcPointsToAdd = () => {
   // check which is the highest combo attained
   const bestCombo = bestComboAchieved();
+  // console.log(`bestCombo: ${bestCombo}`);
 
+  // outputs the relevant text to HTML based on combo
+  if (bestCombo === 'highCard' || bestCombo === 'pairs') {
+    outputContainer.innerText = 'Aww, try again for another chance to win! 💔';
+  } else {
+    outputContainer.innerText = `You got ${bestCombo}, congrats! 🎉🍾🎊`;
+  }
   // check betAmount
   const bet = betAmount - 1;
 
