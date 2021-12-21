@@ -21,21 +21,19 @@ const initGame = () => {
 
   // create card combination container
   cardComboContainer = document.createElement('div');
-  cardComboContainer.innerText =
-    '<cardComboContainer> that shows all combination of cards.';
-  cardComboContainer.classList.add('card-combintaion-container', 'section');
+  cardComboContainer.innerText = 'VIDEO POKER';
+  cardComboContainer.classList.add('card-combo-container', 'section');
   overallContainer.appendChild(cardComboContainer);
 
   // create card display container
   gameContainer = document.createElement('div');
-  gameContainer.innerText = '<gameContainer> that shows cards dealt to player.';
+  gameContainer.innerText = '';
   gameContainer.classList.add('game-container', 'section');
   overallContainer.appendChild(gameContainer);
 
   // create output container
   outputContainer = document.createElement('div');
-  outputContainer.innerText =
-    '<outputContainer> that gives instructions to player.';
+  outputContainer.innerText = '💰PLACE YOUR BETS!💰';
   outputContainer.classList.add('output-container', 'section');
   overallContainer.appendChild(outputContainer);
 
@@ -85,15 +83,17 @@ const initGame = () => {
 
   // create deal cards button
   dealCardsBtn = document.createElement('button');
-  dealCardsBtn.innerText = 'Deal Cards';
-  dealCardsBtn.classList.add('btn-deal-cards', 'btn');
+  dealCardsBtn.innerText = 'DEAL';
+  dealCardsBtn.classList.add('btn-deal-cards', 'btn', 'play');
   buttonsContainer.appendChild(dealCardsBtn);
+  dealCardsBtn.disabled = true;
 
   // create swap cards button
   swapCardsBtn = document.createElement('button');
-  swapCardsBtn.innerText = 'Swap Cards';
-  swapCardsBtn.classList.add('btn-swap-cards', 'btn');
+  swapCardsBtn.innerText = 'SWAP';
+  swapCardsBtn.classList.add('btn-swap-cards', 'btn', 'play');
   buttonsContainer.appendChild(swapCardsBtn);
+  swapCardsBtn.disabled = true;
 
   /**
    * Variables & functions that make the betting slider function
