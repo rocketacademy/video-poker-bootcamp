@@ -35,12 +35,13 @@ const NEW_TEXT_DELAY_IN_MILLI_SECONDS = 2000;
 const GAME_OVER_DELAY_IN_MILLI_SECONDS = 1000;
 const REDIRECT_DELAY_IN_MILLI_SECONDS = 3000;
 const REVEAL_CARDS_DELAY_IN_MILLI_SECONDS = 175;
+const ONE_SEC_IN_MILLI_SECONDS = 1000;
 
 /**
  * Start/stop audio when speaker icon clicked.
  */
-const playAudio = () => {
-  const audio = document.querySelector('.audio');
+const playGameAudio = () => {
+  const audio = document.getElementById('game-audio');
   const speaker = document.getElementById('speaker');
 
   if (audio.paused) {
@@ -50,6 +51,13 @@ const playAudio = () => {
     speaker.src = './assets/speaker-mute.png';
     audio.pause();
   }
+};
+
+/**
+ * Play game over audio.
+ */
+const playGameOverAudio = () => {
+  document.getElementById('game-over-audio').play();
 };
 
 /**
@@ -533,13 +541,26 @@ const isGameOver = () => {
     // disable all buttons
     setButtons();
 
-    // TODO: REPLACE THIS
-    alert('GAME OVER');
+    const gameOverDialog = document.getElementById('game-over-dialog');
+    gameOverDialog.showModal();
 
-    // redirect to main page
-    setTimeout(() => {
-      window.location.replace('index.html');
-    }, REDIRECT_DELAY_IN_MILLI_SECONDS);
+    playGameOverAudio();
+
+    const gameOverParagraph = gameOverDialog.firstChild;
+
+    // set countdown
+    let counter = REDIRECT_DELAY_IN_MILLI_SECONDS;
+    const gameOverMessageId = setInterval(() => {
+      if (counter === 0) {
+        clearInterval(gameOverMessageId);
+
+        // redirect to main page
+        window.location.replace('index.html');
+      } else {
+        gameOverParagraph.innerText += ` ${counter / ONE_SEC_IN_MILLI_SECONDS}`;
+        counter -= ONE_SEC_IN_MILLI_SECONDS;
+      }
+    }, ONE_SEC_IN_MILLI_SECONDS);
   }
 };
 
@@ -721,7 +742,7 @@ const buildHowToPlayDialog = () => {
  * @returns Dialog element
  */
 const buildScoringGuideDialog = () => {
-  const buildScoringGuiideHTML = `
+  const buildScoringGuideHTML = `
     <div class="nes-table-responsive">
       <table class="nes-table is-bordered is-centered">
         <thead>
@@ -772,7 +793,27 @@ const buildScoringGuideDialog = () => {
     </div>
   `;
 
-  return buildDialog('scoring-guide-dialog', 'Scoring Guide', buildScoringGuiideHTML);
+  return buildDialog('scoring-guide-dialog', 'Scoring Guide', buildScoringGuideHTML);
+};
+
+/**
+ * Build Game Over dialog.
+ * @returns Dialog element
+ */
+const buildGameOverDialog = () => {
+  const dialog = document.createElement('dialog');
+  dialog.classList.add('nes-dialog');
+  dialog.classList.add('is-rounded');
+  dialog.id = 'game-over-dialog';
+
+  const dialogContent = document.createElement('p');
+  dialogContent.innerText = `GAME OVER
+  
+  Redirecting to Start Screen in ...`;
+
+  dialog.appendChild(dialogContent);
+
+  return dialog;
 };
 
 /**
@@ -977,6 +1018,7 @@ const buildBoardElements = () => {
   // build dialogs
   boardElement.appendChild(buildHowToPlayDialog());
   boardElement.appendChild(buildScoringGuideDialog());
+  boardElement.appendChild(buildGameOverDialog());
 
   return boardElement;
 };

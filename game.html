@@ -25,15 +25,20 @@
         class="nes-icon is-medium"
         src="./assets/speaker-mute.png"
         style="image-rendering: pixelated"
-        onclick="playAudio()"
+        onclick="playGameAudio()"
       />
     </h1>
     <audio
-      id="audio"
+      id="game-audio"
       class="audio"
       src="./assets/pokemon-center.mp3"
       autoplay
       loop
+    ></audio>
+    <audio
+      id="game-over-audio"
+      class="audio"
+      src="./assets/mario-lose-turn.mp3"
     ></audio>
     <!-- Import program logic -->
     <script src="script.js"></script>
