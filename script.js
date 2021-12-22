@@ -954,7 +954,7 @@ const buildBoardElements = () => {
   for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
     const card = document.createElement('div');
     card.classList.add('card');
-    card.classList.add('blue-back');
+    card.classList.add('pokemon-back');
 
     // set the click event
     // eslint-disable-next-line

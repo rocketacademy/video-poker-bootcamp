@@ -1,3 +1,9 @@
+.pokemon-back {
+  background: url("./assets/pokemon-back.png") no-repeat;
+  width: 90px;
+  height: 123px;
+}
+
 .red-back {
   background: url("./assets/8BitDeckAssets.png") no-repeat -2px -2px;
   width: 90px;
