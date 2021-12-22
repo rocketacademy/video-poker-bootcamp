@@ -122,6 +122,9 @@
           for (let i = 0; i < 5; i += 1) {
             // create the square element in each row
             const square = document.createElement('div');
+            const innersquare = document.createElement('div');
+            innersquare.classList.add("inner-square");
+            square.appendChild(innersquare);
             // set a class for CSS purposes
             // The squares are created. 
             square.classList.add('square');
@@ -137,6 +140,8 @@
        *  @return a div board which contains various elements
        */
       const buildScoreBoard = () => {
+        let scoreBoardBackgroundBorder = document.createElement('div');
+        scoreBoardBackgroundBorder.id = "score-board-background-border";
         let scoreBoardContainer = document.createElement('div');
         scoreBoardContainer.id = "score-board-container"
         scoreBoardContainer.classList.add("child")
@@ -153,11 +158,12 @@
         scoreBoard.classList.add('scoreBoard');
         scoreBoard.innerHTML = `<tbody>`
         for (let i = 0; i<firstColumn.length; i++){  
-          scoreBoard.innerHTML += '<tr><td>' + firstColumn[i] + '</td><td>' + secondColumn[i] + '</td><td>' + thirdColumn[i] + '</td><td>' + fourthColumn[i] + '</td><td>' + fifthColumn[i] + '</td><td>' + sixthColumn[i] + '</td></tr>';
+          scoreBoard.innerHTML += '<tr><td id="first-column">' + firstColumn[i] + '</td><td id="second-column">' + secondColumn[i] + '</td><td id="third-column">' + thirdColumn[i] + '</td><td id="fourth-column">' + fourthColumn[i] + '</td><td id="fifth-column">' + fifthColumn[i] + '</td><td id="sixth-column">' + sixthColumn[i] + '</td></tr>';
             } 
           scoreBoard.innerHTML += '</tbody>'
         scoreBoardContainer.appendChild(scoreBoard);
-        return scoreBoardContainer;
+        scoreBoardBackgroundBorder.appendChild(scoreBoardContainer);
+        return scoreBoardBackgroundBorder;
         
       };
 
@@ -274,6 +280,26 @@
         if (betAmount < 5 && gameMode === 0) {
           betAmount += 1;
           playerScore -= 1;
+          //pardon the hardcode here. Wouldn't need to do it if my classes were numerical, I mean I could change it... 
+          if (betAmount === 1) {
+          document.getElementById("second-column").classList.add("column-style");
+          }
+          else if (betAmount === 2) {
+          document.getElementById("second-column").classList.remove("column-style");
+          document.getElementById("third-column").classList.add("column-style");
+          }
+          else if (betAmount === 3) {
+          document.getElementById("third-column").classList.remove("column-style");
+          document.getElementById("fourth-column").classList.add("column-style");
+          }
+          else if (betAmount === 4) {
+          document.getElementById("fourth-column").classList.remove("column-style");
+          document.getElementById("fifth-column").classList.add("column-style");
+          }
+          else if (betAmount === 5) {
+          document.getElementById("fifth-column").classList.remove("column-style");
+          document.getElementById("sixth-column").classList.add("column-style");
+          }
           betMsg();
           outputPlayerCreditMsg()
         } else 
@@ -287,6 +313,11 @@
             betAmount = 0;
             betAmount += 5;
             playerScore -= 5;
+            document.getElementById("fifth-column").classList.remove("column-style")
+            document.getElementById("second-column").classList.remove("column-style")
+            document.getElementById("third-column").classList.remove("column-style")
+            document.getElementById("fourth-column").classList.remove("column-style")
+            document.getElementById("sixth-column").classList.add("column-style")
             betMsg();
             outputPlayerCreditMsg()
         } else

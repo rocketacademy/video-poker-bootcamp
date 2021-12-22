@@ -39,14 +39,40 @@ body {
   height: 860px;
 }
 
+#score-board-background-border {
+  display: flex;
+  width: 60%;
+  height: 385px;
+  justify-content: center;
+  margin: auto;
+  background: linear-gradient(
+    45deg,
+    #ff6600,
+    #00ffff,
+    #ff00ff,
+    #ff0099,
+    #e6fb04,
+    #6e0dd0,
+    #00ff66,
+    #ff3300,
+    #099fff
+  );
+  background-size: 400%;
+  animation: animate 20s linear infinite;
+}
+
 /* Also given a child class */
 #score-board-container {
-  display: flex;
+  /* display: flex; */
+  padding: 10px 10px;
   justify-content: center;
   background-color: black;
-  width: 60%;
+  width: 98%;
   margin: auto;
-  border: thick solid #0ff;
+}
+
+.scoreBoard {
+  margin: auto;
 }
 
 .table {
@@ -81,6 +107,39 @@ tr {
   margin: auto;
 }
 
+.card-pic {
+  padding: 5px 2px;
+  width: 190px;
+  height: 290px;
+}
+
+.inner-square {
+  content: "";
+  padding: 4.5px 3.5px;
+  margin-left: 7px;
+  margin-top: 6px;
+  width: 180px;
+  height: 280px;
+  background: black;
+}
+
+.column-style {
+  background: linear-gradient(
+    45deg,
+    #ff6600,
+    #00ffff,
+    #ff00ff,
+    #ff0099,
+    #e6fb04,
+    #6e0dd0,
+    #00ff66,
+    #ff3300,
+    #099fff
+  );
+  background-size: 400%;
+  animation: animate 500s linear infinite;
+}
+
 .square {
   margin: 10px;
   /* background-color: red; */
@@ -100,6 +159,7 @@ tr {
   display: inline-block;
   height: 300px;
   width: 200px;
+  background-size: 400%;
   text-align: center;
 }
 
@@ -125,9 +185,9 @@ tr {
 }
 
 .card-pic {
-  padding: 10px 0;
-  width: 180px;
-  height: 280px;
+  padding: 5px 2px;
+  width: 190px;
+  height: 290px;
 }
 
 #button-container {
