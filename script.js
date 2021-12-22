@@ -33,7 +33,7 @@ const NUMBERS_DELAY_IN_MILLI_SECONDS = 100;
 const TEXT_DELAY_IN_MILLI_SECONDS = 50;
 const NEW_TEXT_DELAY_IN_MILLI_SECONDS = 2000;
 const GAME_OVER_DELAY_IN_MILLI_SECONDS = 1000;
-const REDIRECT_DELAY_IN_MILLI_SECONDS = 5000;
+const REDIRECT_DELAY_IN_MILLI_SECONDS = 3000;
 const REVEAL_CARDS_DELAY_IN_MILLI_SECONDS = 175;
 
 /**
@@ -357,7 +357,7 @@ const isThreeOfAKind = (cardTally) => {
   const rankKeys = Object.keys(cardTally.ranks);
   return (rankKeys.length === 3)
     && ((cardTally.ranks[rankKeys[0]] === 3)
-    || (cardTally.ranks[rankKeys[1]] === 3) 
+    || (cardTally.ranks[rankKeys[1]] === 3)
     || (cardTally.ranks[rankKeys[2]] === 3));
 };
 
@@ -634,6 +634,183 @@ const drawClick = (cardsElement) => {
 };
 
 /**
+ * Dialog builder.
+ * @param {*} id Id of dialog
+ * @param {*} title Title of dialog content
+ * @param {*} contentHTML Dialog content
+ * @returns Dialog element
+ */
+const buildDialog = (id, title, contentHTML) => {
+  const dialog = document.createElement('dialog');
+  dialog.classList.add('nes-dialog');
+  dialog.classList.add('is-rounded');
+  dialog.id = id;
+
+  const dialogCloseSpan = document.createElement('span');
+  dialogCloseSpan.classList.add('close');
+  dialogCloseSpan.classList.add('nes-pointer');
+  dialogCloseSpan.innerHTML = '&times;';
+  dialogCloseSpan.addEventListener('click', () => dialog.close());
+
+  const dialogTitle = document.createElement('p');
+  dialogTitle.classList.add('title');
+  dialogTitle.innerText = title;
+
+  const dialogContent = document.createElement('p');
+  dialogContent.innerHTML = contentHTML;
+
+  dialog.appendChild(dialogCloseSpan);
+  dialog.appendChild(dialogTitle);
+  dialog.appendChild(dialogContent);
+
+  return dialog;
+};
+
+/**
+ * Close dialog when clicking outside of dialog.
+ */
+window.addEventListener('click', (event) => {
+  const howToPlayDialog = document.getElementById('how-to-play-dialog');
+  const scoringGuideDialog = document.getElementById('scoring-guide-dialog');
+
+  if (event.target === howToPlayDialog) howToPlayDialog.close();
+  else if (event.target === scoringGuideDialog) scoringGuideDialog.close();
+});
+
+/**
+ * Build How To Play dialog.
+ * @returns Dialog element
+ */
+const buildHowToPlayDialog = () => {
+  const howToPlayContentHTML = `
+    <div class="nes-table-responsive">
+      <table class="nes-table is-bordered is-centered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Steps</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Click on 'Bet' or 'Bet 5' to place bet</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Click on 'Deal' to deal the cards</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Click on the cards you want to keep</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Click on 'Draw' to replace cards</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+  `;
+
+  return buildDialog('how-to-play-dialog', 'How to Play', howToPlayContentHTML);
+};
+
+/**
+ * Build Scoring Guide dialog.
+ * @returns Dialog element
+ */
+const buildScoringGuideDialog = () => {
+  const buildScoringGuiideHTML = `
+    <div class="nes-table-responsive">
+      <table class="nes-table is-bordered is-centered">
+        <thead>
+          <tr>
+            <th>Hand</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Royal Flush</td>
+            <td>250</td>
+          </tr>
+          <tr>
+            <td>Straight Flush</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <td>Four of a Kind</td>
+            <td>25</td>
+          </tr>
+          <tr>
+            <td>Full House</td>
+            <td>9</td>
+          </tr>
+          <tr>
+            <td>Flush</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>Straight</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>Three of a Kind</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>Two Pair</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Jacks or Better</td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  return buildDialog('scoring-guide-dialog', 'Scoring Guide', buildScoringGuiideHTML);
+};
+
+/**
+ * Create buttons to show guides.
+ * @returns The guide buttons
+ */
+const buildGuideButtons = () => {
+  // add area for guide buttons
+  const buttonsElement = document.createElement('div');
+  buttonsElement.classList.add('guide-buttons');
+
+  // add how to play button
+  const howToPlayButtonElement = document.createElement('button');
+  howToPlayButtonElement.id = 'how-to-play';
+  howToPlayButtonElement.innerText = 'How to Play';
+  howToPlayButtonElement.classList.add('nes-btn');
+  howToPlayButtonElement.classList.add('is-primary');
+  howToPlayButtonElement.addEventListener('click', () => {
+    document.getElementById('how-to-play-dialog').showModal();
+  });
+
+  // add how to play button
+  const scoringGuideButtonElement = document.createElement('button');
+  scoringGuideButtonElement.id = 'scoring-guide';
+  scoringGuideButtonElement.innerText = 'Scoring Guide';
+  scoringGuideButtonElement.classList.add('nes-btn');
+  scoringGuideButtonElement.classList.add('is-success');
+  scoringGuideButtonElement.addEventListener('click', () => {
+    document.getElementById('scoring-guide-dialog').showModal();
+  });
+
+  buttonsElement.appendChild(howToPlayButtonElement);
+  buttonsElement.appendChild(scoringGuideButtonElement);
+
+  return buttonsElement;
+};
+
+/**
  * Create the game state elements that will go on the screen.
  * @returns The game state elements
  */
@@ -759,6 +936,9 @@ const buildBoardElements = () => {
   // give it a class for CSS purposes
   boardElement.classList.add('board');
 
+  // build game guide buttons
+  boardElement.appendChild(buildGuideButtons());
+
   // build game state elements
   boardElement.appendChild(buildGameStateElements());
 
@@ -793,6 +973,10 @@ const buildBoardElements = () => {
 
   // build game buttons
   boardElement.appendChild(buildGameButtons(cardsElement));
+
+  // build dialogs
+  boardElement.appendChild(buildHowToPlayDialog());
+  boardElement.appendChild(buildScoringGuideDialog());
 
   return boardElement;
 };
