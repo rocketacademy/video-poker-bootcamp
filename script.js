@@ -752,7 +752,7 @@ window.addEventListener('click', (event) => {
 const buildHowToPlayDialog = () => {
   const howToPlayContentHTML = `
     <div class="nes-table-responsive">
-      <table class="nes-table is-bordered is-centered">
+      <table class="nes-table is-centered">
         <thead>
           <tr>
             <th>#</th>
@@ -791,7 +791,7 @@ const buildHowToPlayDialog = () => {
 const buildScoringGuideDialog = () => {
   const buildScoringGuideHTML = `
     <div class="nes-table-responsive">
-      <table class="nes-table is-bordered is-centered">
+      <table class="nes-table is-centered">
         <thead>
           <tr>
             <th>Hand</th>
