@@ -493,11 +493,32 @@ const dealCards = (cardElements) => {
 };
 
 /**
+ * Deal any cards you want.
+ * @param {*} cardElements Cards on hand
+ * @param {*} hand Cards you want
+ */
+const dealSelectedCards = (cardElements, hand) => {
+  board = [];
+  deck = makeDeck();
+
+  for (let i = 0; i < hand.length; i += 1) {
+    const cardIndex = deck.findIndex((card) => (card.rank === hand[i].rank)
+      && (card.suit === hand[i].suit));
+    board.push(deck[cardIndex]);
+    deck.splice(cardIndex, 1);
+  }
+
+  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
+    revealCard(cardElements[j], board[j], j);
+  }
+};
+
+/**
  * Deal royal flush.
  * @param {*} cardElements Cards on hand
  */
 const dealRoyalFlush = (cardElements) => {
-  board = [
+  const royalFlushHand = [
     { rank: 10, suit: 'spades', name: '10' },
     { rank: 11, suit: 'spades', name: 'jack' },
     { rank: 12, suit: 'spades', name: 'queen' },
@@ -505,9 +526,7 @@ const dealRoyalFlush = (cardElements) => {
     { rank: 1, suit: 'spades', name: 'ace' },
   ];
 
-  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
-    revealCard(cardElements[j], board[j], j);
-  }
+  dealSelectedCards(cardElements, royalFlushHand);
 };
 
 /**
@@ -743,7 +762,7 @@ const buildHowToPlayDialog = () => {
         <tbody>
           <tr>
             <td>1</td>
-            <td>Click on 'Bet' or 'Bet 5' to place bet</td>
+            <td>Click on 'Bet' or 'Bet 5' to place a bet</td>
           </tr>
           <tr>
             <td>2</td>
@@ -837,7 +856,8 @@ const buildGameOverDialog = () => {
   const dialogContent = document.createElement('p');
   dialogContent.innerText = `GAME OVER
   
-  Redirecting to Start Screen in ...`;
+  Returning to Start Screen in
+  ...`;
 
   dialog.appendChild(dialogContent);
 
@@ -1080,7 +1100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (event) => {
     const currentTime = Date.now();
 
-    // put key in sequence, unless delay is too long
+    // put key in sequence, reset if delay is too long
     if ((currentTime - lastKeyTime) > KEY_SEQUENCE_DELAY_IN_MILLI_SECONDS) {
       userInput = [event.key];
     } else {
