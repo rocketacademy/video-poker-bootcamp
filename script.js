@@ -1,4 +1,5 @@
 // GLOBAL VARIABLES //
+//---FOR WINNING COMBOS---//
 let twoPairs = false;
 let threeKinds = false;
 let straight = false;
@@ -8,25 +9,58 @@ let fourKinds = false;
 let straightFlush = false;
 let royalFlush = false;
 let jackOrBetter = false;
-let userPoints = 0;
+//---FOR BETTING---//
 let moneyInHand = 200;
 let bettingMoney = 0;
 let balanceAmount = 0;
+//---FOR CARDS---//
 let container;
 let playerCardHand = [];
 let playerHandRank = [];
-let cardHeld = false;
 let cardName;
 let cardSuit;
 let cardRank;
 let card;
+let hold;
 let holdArray = [];
-
-// GLOBAL VARIABLES FOR CARD TALLY //
+let allCards = [];
+//---FOR CARD TALLY---//
 let cardNameTally = {};
 let cardSuitTally = {};
 let cardRankInHand = [];
+//---FOR MODES---//
+let mode = "firstRound";
 
+//---DOCUMENT OBJECT MODEL---//
+let readyButton = document.createElement("button");
+let gameMessage = document.createElement("div");
+let dealButton = document.createElement("button");
+dealButton.setAttribute("id", "deal-button");
+dealButton.innerHTML = "DEAL";
+dealButton.disabled = true;
+let outputMessage = document.createElement("div");
+outputMessage.id = "output-message";
+let table = document.getElementById("table");
+// BET ONCE BUTTON //
+let betOneButton = document.createElement("button");
+betOneButton.innerHTML = "BET ONE";
+betOneButton.setAttribute("id", "bet-one");
+// BET ALL BUTTON //
+let betAllButton = document.createElement("button");
+betAllButton.innerHTML = "MAX BET";
+betAllButton.setAttribute("id", "bet-all");
+// FINAL DEAL BUTTON AFTER CHOOSING CARDS TO BE HELD //
+let finalDealButton = document.createElement("button");
+finalDealButton.setAttribute("id", "finaldeal-button");
+finalDealButton.innerHTML = "LOCK IT IN";
+// CONTAINER FOR ALL BUTTONS //
+const buttonContainer = document.createElement("div");
+buttonContainer.classList.add("button-cont");
+buttonContainer.appendChild(betOneButton);
+buttonContainer.appendChild(betAllButton);
+buttonContainer.appendChild(dealButton);
+
+//---SHUFFLING AND MAKING OF DECK---//
 // GET A RANDOM INDEX RANGING FROM 0 (INCLUSIVE) TO MAX (EXCLUSIVE) //
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
@@ -99,47 +133,12 @@ const makeDeck = (cardAmount) => {
 // SHUFFLE ALL 52 CARDS //
 const deck = shuffleCards(makeDeck());
 
-// DOCUMENT OBJECT MODEL GLOBAL VARIABLES //
-let readyButton = document.createElement("button");
-let gameMessage = document.createElement("div");
-let dealButton = document.createElement("button");
-dealButton.setAttribute("id", "deal-button");
-dealButton.innerHTML = "DEAL";
-dealButton.disabled = true;
-let outputMessage = document.createElement("div");
-outputMessage.id = "output-message";
-let table = document.getElementById("table");
-
-// BET ONCE BUTTON //
-let betOneButton = document.createElement("button");
-betOneButton.innerHTML = "BET ONE";
-betOneButton.setAttribute("id", "bet-one");
-
-// BET ALL BUTTON //
-let betAllButton = document.createElement("button");
-betAllButton.innerHTML = "MAX BET";
-betAllButton.setAttribute("id", "bet-all");
-
-// FINAL DEAL BUTTON AFTER CHOOSING CARDS TO BE HELD //
-let finalDealButton = document.createElement("button");
-finalDealButton.setAttribute("id", "finaldeal-button");
-finalDealButton.style.display = "none";
-
-// CONTAINER FOR ALL BUTTONS //
-const buttonContainer = document.createElement("div");
-buttonContainer.classList.add("button-cont");
-buttonContainer.appendChild(betOneButton);
-buttonContainer.appendChild(betAllButton);
-buttonContainer.appendChild(dealButton);
-buttonContainer.appendChild(finalDealButton);
-
 // FUNCTIONS FOR SOME OF THE BUTTONS CREATED //
 const buttonFunctions = () => {
+  // OUTPUT MESSAGE IS TO UPDATE THE AMOUNT THAT IS GAMBLE AND BALANCE IN HAND
   document.body.appendChild(outputMessage);
   betAllButton.addEventListener("click", () => {
-    dealButton.disabled = false;
-    betAllButton.disabled = true;
-    betOneButton.disabled = true;
+    // DISABLING/ENABLING SOME OF THE OTHER BUTTONS WHEN BET ALL IS CLICKED. MAX TO BET IS $5 AT ONE GO
     bettingMoney = 5;
     balanceAmount = moneyInHand - bettingMoney;
     dealButton.disabled = false;
@@ -151,7 +150,7 @@ const buttonFunctions = () => {
     dealButton.disabled = false;
     bettingMoney++;
     balanceAmount = moneyInHand - bettingMoney;
-
+    // DISABLING/ENABLING SOME OF THE OTHER BUTTONS WHEN BET ALL IS CLICKED. MAX TO BET IS $5 AT ONE GO
     if (bettingMoney === 5) {
       dealButton.disabled = false;
       betAllButton.disabled = true;
@@ -161,17 +160,50 @@ const buttonFunctions = () => {
   });
 
   dealButton.addEventListener("click", () => {
-    finalDealButton.style.display = "";
-    finalDealButton.innerHTML = "LOCK IT IN";
+    // ONCE DEAL IS CLICKED, FINAL DEAL BUTTON WILL COME ON TO DOUBLE CONFIRM THEIR HAND
+    buttonContainer.appendChild(finalDealButton);
+    // REMOVE ALL THE OTHER BUTTONS THAT ARE NOT NEEDED
     removeElement("deal-button");
     removeElement("bet-one");
     removeElement("bet-all");
-    flipCard();
+    if (mode === "firstRound") {
+      // FLIP TO SHOW FRONT OF CARD
+      flipCard();
+    } else {
+      removeElement("container");
+      playerClick();
+      flipCard();
+      allCards = [];
+      holdArray = [];
+    }
   });
 
   finalDealButton.addEventListener("click", () => {
-    removeElement("finaldeal-button");
-    secondFlipCard();
+    if (mode === "firstRound") {
+      buttonContainer.appendChild(betOneButton);
+      buttonContainer.appendChild(betAllButton);
+      buttonContainer.appendChild(dealButton);
+      dealButton.disabled = true;
+      betAllButton.disabled = false;
+      betOneButton.disabled = false;
+      mode = "notFirstRound";
+      // REMOVE FINAL DEAL BUTTON BECAUSE IT ISNT NEEDED
+      removeElement("finaldeal-button");
+      // CALL OUT THE FUNCTION FOR THE FINAL CARDS IN HAND TO BE ASSESSED
+      secondFlipCard();
+    } else {
+      // REMOVE FINAL DEAL BUTTON BECAUSE IT ISNT NEEDED
+      removeElement("finaldeal-button");
+      removeElement("container");
+      buttonContainer.appendChild(betOneButton);
+      buttonContainer.appendChild(betAllButton);
+      buttonContainer.appendChild(dealButton);
+      dealButton.disabled = true;
+      betAllButton.disabled = false;
+      betOneButton.disabled = false;
+      playerClick();
+      secondFlipCard();
+    }
   });
 };
 
@@ -189,14 +221,14 @@ const createCard = (cardInfo) => {
   name.setAttribute("id", "front-card-name");
   name.setAttribute("data-value", cardInfo.name);
   name.innerText = cardInfo.name;
-  const holdButton = document.createElement("button");
-  holdButton.classList.add("hold-button");
+  /*  const cardmode = document.createElement("div");
+  cardmode.setAttribute("id", `allCards${i}`);
+  cardmode.setAttribute("data-value", cardInfo.playerCardmode); */
   const backCard = document.createElement("div");
   backCard.classList.add("back-card");
   card = document.createElement("div");
-  card.id = "card";
-  card.classList.add("card");
-  /* innerCard.appendChild(holdButton); */
+  card.classList.add("free-card");
+  /*  innerCard.appendChild(cardmode); */
   innerCard.appendChild(name);
   innerCard.appendChild(suit);
   innerCard.appendChild(backCard);
@@ -209,30 +241,13 @@ const removeElement = (elementId) => {
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
 };
-
-// SHOWN AT THE START OF THE GAME PAGE //
-const startOfGame = () => {
-  gameMessage.id = "game-message";
-  gameMessage.innerHTML = " Y O U &nbsp R E A D Y ?";
-  document.body.appendChild(gameMessage);
-
-  // indicate ready to begin
-  readyButton.id = "ready-button";
-  readyButton.innerHTML = "R E A D Y";
-  document.body.appendChild(readyButton);
-  readyButton.addEventListener("click", initGame);
-  removeElement("table");
+// REMOVE ELEMENTS IN HTML USING ELEMENT CLASS //
+const removeElementByClass = (className) => {
+  const elements = document.getElementsByClassName(className);
+  while (elements.length > 0) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
 };
-
-// AFTER READY BUTTON IS CLICKED, GAME INITILIAZED //
-// RUNS playerClick() & buttonFunctions() //
-const initGame = () => {
-  gameMessage.innerHTML = "";
-  removeElement("ready-button");
-  playerClick();
-  buttonFunctions();
-};
-
 /* A function that tallies the cards by name,suit and rank.
  * @param cardSuitTally tallies cards by suit
  * @param cardNameTally tallies cards by name
@@ -268,19 +283,44 @@ const cardTally = (card) => {
   }
 };
 
+// SHOWN AT THE START OF THE GAME PAGE //
+const startOfGame = () => {
+  gameMessage.id = "game-message";
+  gameMessage.innerHTML = " Y O U &nbsp R E A D Y ?";
+  document.body.appendChild(gameMessage);
+
+  // indicate ready to begin
+  readyButton.id = "ready-button";
+  readyButton.innerHTML = "R E A D Y";
+  document.body.appendChild(readyButton);
+  readyButton.addEventListener("click", initGame);
+  removeElement("table");
+};
+
+// AFTER READY BUTTON IS CLICKED, GAME INITILIAZED //
+const initGame = () => {
+  gameMessage.innerHTML = "";
+  removeElement("ready-button");
+  playerClick();
+  buttonFunctions();
+};
+
 // CALLING OUT 5 CARDS INTO CONTAINER TO BE DISPLAYED FOR THE FIRST FLIP CARD //
 const playerClick = () => {
   document.body.appendChild(table);
   container = document.createElement("div");
+  container.setAttribute("id", "container");
   container.classList.add("container");
   document.body.appendChild(container);
-  for (i = 0; i < 5; i++) {
+  for (i = 1; i < 6; i++) {
     playerCard = deck.pop();
+    allCards.push(playerCard);
     // Displaying sorted full display cards
     playerCardHand.push(playerCard);
     // For comparing sorted cards rank later on
     playerHandRank.push(playerCard.rank);
     let cardElement = createCard(playerCard);
+    cardElement.setAttribute("id", `card${i}`);
     container.appendChild(cardElement);
   }
 
@@ -301,29 +341,36 @@ const flipCard = () => {
   cardClick();
 };
 const cardClick = () => {
-  let cardChoice = document.querySelectorAll(".card");
-  let nameChoices = document.querySelectorAll("#front-card-name");
-  let suitChoices = document.querySelectorAll("#front-card-suit");
+  let cardChoice = document.querySelectorAll(".free-card");
 
-  for (i = 0; i < cardChoice.length; i++) {
-    let nameCard = nameChoices[i].getAttribute("data-value");
-    let suitCard = suitChoices[i].getAttribute("data-value");
-    holdArray.push({ name: nameCard, suit: suitCard });
-    console.log(holdArray);
+  let nameCard;
+  let suitCard;
+  for (let i = 0; i < cardChoice.length; i++) {
+    document.querySelector(`#card${i + 1}`).addEventListener("click", () => {
+      if (
+        document.getElementById(`card${i + 1}`).classList.contains("held-card")
+      ) {
+        document.getElementById(`card${i + 1}`).classList.remove("held-card");
+        document.getElementById(`card${i + 1}`).classList.toggle("free-card");
+      } else {
+        document.getElementById(`card${i + 1}`).classList.remove("free-card");
+        document.getElementById(`card${i + 1}`).classList.toggle("held-card");
+      }
+
+      // let heldCardChoice = document.querySelectorAll(".held-card");
+      let nameChoices = document.querySelectorAll("#front-card-name");
+      let suitChoices = document.querySelectorAll("#front-card-suit");
+      nameCard = nameChoices[i].getAttribute("data-value");
+      suitCard = suitChoices[i].getAttribute("data-value");
+
+      console.log("clicked");
+      holdArray.push(allCards[i]);
+      console.log(allCards);
+    });
   }
   return holdArray;
 };
 
-let myAim = cardClick();
-let final = myAim.forEach((element) => createElement(element));
-
-const createElement = (newElem) => {
-  newElem.addEventListener("click", () => {
-    console.log("bananas");
-  });
-};
-
-createElement();
 /* A function that flips the cards when deal button is pressed for the second time
  * after the player has chosen which card wants to be held or changed
  * @param cardNameTally set to empty to give a fresh start
@@ -332,18 +379,44 @@ createElement();
  * @return the flipped card of the front side with the card elements on it
  */
 const secondFlipCard = () => {
-  /*   // tally variables set to empty
-  cardNameTally = {};
-  cardSuitTally = {};
-  cardRankInHand = []; */
-  const flipTheCard = document.getElementsByClassName("inner-card");
-  for (let i = 0; i < flipTheCard.length; i += 1) {
-    flipTheCard.item(i).classList.toggle("front-card");
+  // compare original array to the one that is held
+  // if original array and held array is the same, go straight to tally cards
+  // remove the ones that are not held
+  // insert new cards into those that are removed
+  // show on the front of card
+  // update on player hand and tally it
+  const flipFreeCard = document.getElementsByClassName("free-card");
+
+  for (let i = 0; i < allCards.length; i += 1) {
+    if (holdArray.includes(allCards[i]) === false) {
+      playerCard = deck.pop();
+      allCards.splice(i, 1, playerCard);
+    }
   }
-  cardTally(playerCardHand);
+  let newContainer = document.getElementsByClassName("container");
+  console.log(newContainer);
+  newContainer[0].innerHTML = "";
+  for (j = 0; j < allCards.length; j++) {
+    let newCard = createCard(allCards[j]);
+    newContainer[0].appendChild(newCard);
+    let showCard = document.getElementsByClassName("inner-card");
+    showCard.item(j).classList.add("front-card");
+  }
+  console.log(allCards);
+  cardTally(allCards);
   winningCombos();
   return outputMessage;
 };
+/* const reFlipCard = () => {
+  const reFlipTheCard = document.getElementsByClassName(
+    "inner-card front-card"
+  );
+  console.log(reFlipTheCard);
+  for (let i = 0; i < reFlipTheCard.length; i += 1) {
+    reFlipTheCard.item(i).classList.remove("front-card");
+  }
+  cardClick();
+}; */
 
 /* A function that goes through cardRankInHand and sorts them
  * @return true/false if hand has two pairs in it
@@ -359,7 +432,7 @@ const twoPairsCombo = () => {
     }
   }
   if (pairs.length === 2) {
-    twoPairs = true;
+    return (twoPairs = true);
   }
 };
 
@@ -489,24 +562,7 @@ const winningCombos = () => {
   } else {
     outputMessage.innerHTML = "You have no special combinations.";
   }
+  bettingMoney = 0;
 };
 
 startOfGame();
-
-/* let elementA = holdArray[0];
-  let elementB = holdArray[1];
-  let elementC = holdArray[2];
-  let elementD = holdArray[3];
-  let elementE = holdArray[4].name;
-
-  let createElementA = document.createElement("div");
-  createElementA.appendChild(elementE);
-
-  createElementA.addEventListener("click", () => {
-    console.log(holdArray[0], "banana");
-  }); */
-
-/* for (j = 0; j < holdArray.length; j++) {
-    let createElement = document.createElement("div");
-    card.appendChild(createElement);
-  } */

@@ -51,7 +51,21 @@ body {
   height: 200px;
 }
 
-.card {
+.free-card {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 200%;
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJGdUkfIIURWSMhi9JpnvfPBw3sVpyFwSH7A&usqp=CAU");
+  display: flex;
+  margin-left: 0.5%;
+  width: 60px;
+  height: 100px;
+  padding: 5px;
+  border-radius: 8px;
+  perspective: 1000px;
+  position: relative;
+}
+.held-card {
   font-family: monospace;
   font-weight: bold;
   font-size: 200%;
