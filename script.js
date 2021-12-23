@@ -36,6 +36,8 @@ const GAME_OVER_DELAY_IN_MILLI_SECONDS = 1000;
 const REDIRECT_DELAY_IN_MILLI_SECONDS = 3000;
 const REVEAL_CARDS_DELAY_IN_MILLI_SECONDS = 175;
 const ONE_SEC_IN_MILLI_SECONDS = 1000;
+const TEMP_CHANGE_DELAY_IN_MILLI_SECONDS = 1700;
+const KEY_SEQUENCE_DELAY_IN_MILLI_SECONDS = 700;
 
 /**
  * Start/stop audio when speaker icon clicked.
@@ -51,6 +53,13 @@ const playGameAudio = () => {
     speaker.src = './assets/speaker-mute.png';
     audio.pause();
   }
+};
+
+/**
+ * Play win audio.
+ */
+const playWinAudio = () => {
+  document.getElementById('win-audio').play();
 };
 
 /**
@@ -484,6 +493,24 @@ const dealCards = (cardElements) => {
 };
 
 /**
+ * Deal royal flush.
+ * @param {*} cardElements Cards on hand
+ */
+const dealRoyalFlush = (cardElements) => {
+  board = [
+    { rank: 10, suit: 'spades', name: '10' },
+    { rank: 11, suit: 'spades', name: 'jack' },
+    { rank: 12, suit: 'spades', name: 'queen' },
+    { rank: 13, suit: 'spades', name: 'king' },
+    { rank: 1, suit: 'spades', name: 'ace' },
+  ];
+
+  for (let j = 0; j < NUMBER_OF_CARDS; j += 1) {
+    revealCard(cardElements[j], board[j], j);
+  }
+};
+
+/**
  * Handle draw button click by replacing cards not held.
  * @param {*} cardElements Cards on hand
  */
@@ -678,6 +705,7 @@ const buildDialog = (id, title, contentHTML) => {
   dialogTitle.innerText = title;
 
   const dialogContent = document.createElement('p');
+  dialogContent.classList.add('dialog-content');
   dialogContent.innerHTML = contentHTML;
 
   dialog.appendChild(dialogCloseSpan);
@@ -1032,8 +1060,52 @@ const initGame = () => {
 
   displayMessage('Click BET button to start.');
 };
-
 initGame();
+
+/**
+ * Handle keyboard input.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  const konamiCodeKeySequence = [
+    'ArrowUp', 'ArrowUp',
+    'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight',
+    'ArrowLeft', 'ArrowRight',
+    'b', 'a',
+  ];
+
+  let userInput = [];
+  let lastKeyTime = Date.now();
+
+  document.addEventListener('keydown', (event) => {
+    const currentTime = Date.now();
+
+    // put key in sequence, unless delay is too long
+    if ((currentTime - lastKeyTime) > KEY_SEQUENCE_DELAY_IN_MILLI_SECONDS) {
+      userInput = [event.key];
+    } else {
+      userInput.push(event.key);
+    }
+    lastKeyTime = currentTime;
+
+    // if user input has the same sequence as one of the codes
+    if (konamiCodeKeySequence.every((v, k) => v === userInput[k])) {
+      credit += 30;
+
+      // add background color to highlight credit increase
+      const creditElement = document.querySelector('.credits');
+      creditElement.innerText = `Credits:${credit}`;
+      creditElement.style.backgroundColor = '#f7d51d';
+
+      // remove background color after a short delay
+      setTimeout(() => {
+        creditElement.style.backgroundColor = '';
+      }, TEMP_CHANGE_DELAY_IN_MILLI_SECONDS);
+
+      playWinAudio();
+    }
+  });
+});
 
 /**
  * This module.exports is needed to run unit tests.

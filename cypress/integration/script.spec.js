@@ -105,10 +105,10 @@ describe('Unit tests for Video Poker', () => {
     it('straight-to-ace hand score returns 4', () => {
       const playerHand = [
         { rank: 10, suit: 'hearts', name: '10' },
-        { rank: 11, suit: 'diamonds', name: '11' },
-        { rank: 12, suit: 'spades', name: '12' },
-        { rank: 13, suit: 'spades', name: '13' },
-        { rank: 1, suit: 'hearts', name: '1' },
+        { rank: 11, suit: 'diamonds', name: 'jack' },
+        { rank: 12, suit: 'spades', name: 'queen' },
+        { rank: 13, suit: 'spades', name: 'king' },
+        { rank: 1, suit: 'hearts', name: 'ace' },
       ];
 
       expect(calcHandScore(playerHand)).to.eq(4);
@@ -119,8 +119,8 @@ describe('Unit tests for Video Poker', () => {
         { rank: 2, suit: 'hearts', name: '2' },
         { rank: 4, suit: 'hearts', name: '4' },
         { rank: 7, suit: 'hearts', name: '7' },
-        { rank: 11, suit: 'hearts', name: '11' },
-        { rank: 13, suit: 'hearts', name: '13' },
+        { rank: 11, suit: 'hearts', name: 'jack' },
+        { rank: 13, suit: 'hearts', name: 'king' },
       ];
 
       expect(calcHandScore(playerHand)).to.eq(6);
@@ -143,8 +143,8 @@ describe('Unit tests for Video Poker', () => {
         { rank: 7, suit: 'hearts', name: '7' },
         { rank: 7, suit: 'spades', name: '7' },
         { rank: 7, suit: 'clubs', name: '7' },
-        { rank: 11, suit: 'hearts', name: '11' },
-        { rank: 11, suit: 'diamonds', name: '11' },
+        { rank: 11, suit: 'hearts', name: 'jack' },
+        { rank: 11, suit: 'diamonds', name: 'jack' },
       ];
 
       expect(calcHandScore(playerHand)).to.eq(9);
@@ -153,10 +153,10 @@ describe('Unit tests for Video Poker', () => {
     it('four-of-a-kind-jack hand score returns 25', () => {
       const playerHand = [
         { rank: 7, suit: 'hearts', name: '7' },
-        { rank: 11, suit: 'spades', name: '11' },
-        { rank: 11, suit: 'clubs', name: '11' },
-        { rank: 11, suit: 'hearts', name: '11' },
-        { rank: 11, suit: 'diamonds', name: '11' },
+        { rank: 11, suit: 'spades', name: 'jack' },
+        { rank: 11, suit: 'clubs', name: 'jack' },
+        { rank: 11, suit: 'hearts', name: 'jack' },
+        { rank: 11, suit: 'diamonds', name: 'jack' },
       ];
 
       expect(calcHandScore(playerHand)).to.eq(25);
@@ -177,10 +177,10 @@ describe('Unit tests for Video Poker', () => {
     it('royal-flush hand score returns 250', () => {
       const playerHand = [
         { rank: 10, suit: 'diamonds', name: '10' },
-        { rank: 11, suit: 'diamonds', name: '11' },
-        { rank: 12, suit: 'diamonds', name: '12' },
-        { rank: 13, suit: 'diamonds', name: '13' },
-        { rank: 1, suit: 'diamonds', name: '1' },
+        { rank: 11, suit: 'diamonds', name: 'jack' },
+        { rank: 12, suit: 'diamonds', name: 'queen' },
+        { rank: 13, suit: 'diamonds', name: 'king' },
+        { rank: 1, suit: 'diamonds', name: 'ace' },
       ];
 
       expect(calcHandScore(playerHand)).to.eq(250);
@@ -201,10 +201,10 @@ describe('Unit tests for Video Poker', () => {
     it('bet 5 royal-flush hand score returns 4000', () => {
       const playerHand = [
         { rank: 10, suit: 'diamonds', name: '10' },
-        { rank: 11, suit: 'diamonds', name: '11' },
-        { rank: 12, suit: 'diamonds', name: '12' },
-        { rank: 13, suit: 'diamonds', name: '13' },
-        { rank: 1, suit: 'diamonds', name: '1' },
+        { rank: 11, suit: 'diamonds', name: 'jack' },
+        { rank: 12, suit: 'diamonds', name: 'queen' },
+        { rank: 13, suit: 'diamonds', name: 'king' },
+        { rank: 1, suit: 'diamonds', name: 'ace' },
       ];
 
       expect(calcWinnings(calcHandScore(playerHand), 5)).to.eq(4000);
