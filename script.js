@@ -175,6 +175,9 @@ const buttonFunctions = () => {
       flipCard();
       allCards = [];
       holdArray = [];
+	  cardNameTally = {};
+	  cardSuitTally = {};
+	  cardRankInHand = [];
     }
   });
 
@@ -402,8 +405,12 @@ const secondFlipCard = () => {
     let showCard = document.getElementsByClassName("inner-card");
     showCard.item(j).classList.add("front-card");
   }
-  console.log(allCards);
+
   cardTally(allCards);
+  console.log(cardNameTally)
+    console.log(cardSuitTally)
+	  console.log(cardRankInHand)
+	  
   winningCombos();
   return outputMessage;
 };
