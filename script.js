@@ -171,10 +171,10 @@ const buttonFunctions = () => {
       flipCard();
     } else {
       removeElement("container");
+	  allCards = [];
       playerClick();
+	  holdArray = [];
       flipCard();
-      allCards = [];
-      holdArray = [];
 	  cardNameTally = {};
 	  cardSuitTally = {};
 	  cardRankInHand = [];
@@ -197,14 +197,21 @@ const buttonFunctions = () => {
     } else {
       // REMOVE FINAL DEAL BUTTON BECAUSE IT ISNT NEEDED
       removeElement("finaldeal-button");
-      removeElement("container");
+      twoPairs = false;
+ 	  threeKinds = false;
+ 	  straight = false;
+ 	  flush = false;
+ 	  fullHouse = false;
+ 	  fourKinds = false;
+ 	  straightFlush = false;
+ 	  royalFlush = false;
+ 	  jackOrBetter = false;
       buttonContainer.appendChild(betOneButton);
       buttonContainer.appendChild(betAllButton);
       buttonContainer.appendChild(dealButton);
       dealButton.disabled = true;
       betAllButton.disabled = false;
       betOneButton.disabled = false;
-      playerClick();
       secondFlipCard();
     }
   });
@@ -224,9 +231,6 @@ const createCard = (cardInfo) => {
   name.setAttribute("id", "front-card-name");
   name.setAttribute("data-value", cardInfo.name);
   name.innerText = cardInfo.name;
-  /*  const cardmode = document.createElement("div");
-  cardmode.setAttribute("id", `allCards${i}`);
-  cardmode.setAttribute("data-value", cardInfo.playerCardmode); */
   const backCard = document.createElement("div");
   backCard.classList.add("back-card");
   card = document.createElement("div");
@@ -315,6 +319,7 @@ const playerClick = () => {
   container.setAttribute("id", "container");
   container.classList.add("container");
   document.body.appendChild(container);
+  // setting for loop with 1 so that it will give the ID of #1 onwards for each card instead of #0
   for (i = 1; i < 6; i++) {
     playerCard = deck.pop();
     allCards.push(playerCard);
@@ -407,9 +412,9 @@ const secondFlipCard = () => {
   }
 
   cardTally(allCards);
-  console.log(cardNameTally)
-    console.log(cardSuitTally)
-	  console.log(cardRankInHand)
+  console.log("Name Tally",cardNameTally)
+    console.log("Suit Tally", cardSuitTally)
+	  console.log("Rank Tally", cardRankInHand)
 	  
   winningCombos();
   return outputMessage;
@@ -432,13 +437,13 @@ const twoPairsCombo = () => {
   let pairs = [];
   let sortedDeck = cardRankInHand.sort();
   for (i = 0; i < 5; i++) {
-    if (sortedDeck[i] === sortedDeck[i] + 1) {
+    if (sortedDeck[i] === sortedDeck[i+1]) {
       pairs.push(sortedDeck[i]);
-      console.log(sortedDeck[i] === sortedDeck[i] + 1);
+      console.log(sortedDeck[i] === sortedDeck[i + 1]);
       console.log(pairs);
     }
   }
-  if (pairs.length === 2) {
+  if (pairs.length === 2 && pairs[0] !== pairs[1]) {
     return (twoPairs = true);
   }
 };
