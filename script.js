@@ -171,13 +171,14 @@ const buttonFunctions = () => {
       flipCard();
     } else {
       removeElement("container");
-	  allCards = [];
+      allCards = [];
       playerClick();
-	  holdArray = [];
+      holdArray = [];
       flipCard();
-	  cardNameTally = {};
-	  cardSuitTally = {};
-	  cardRankInHand = [];
+      cardNameTally = {};
+      cardSuitTally = {};
+      cardRankInHand = [];
+      console.log(deck);
     }
   });
 
@@ -198,14 +199,14 @@ const buttonFunctions = () => {
       // REMOVE FINAL DEAL BUTTON BECAUSE IT ISNT NEEDED
       removeElement("finaldeal-button");
       twoPairs = false;
- 	  threeKinds = false;
- 	  straight = false;
- 	  flush = false;
- 	  fullHouse = false;
- 	  fourKinds = false;
- 	  straightFlush = false;
- 	  royalFlush = false;
- 	  jackOrBetter = false;
+      threeKinds = false;
+      straight = false;
+      flush = false;
+      fullHouse = false;
+      fourKinds = false;
+      straightFlush = false;
+      royalFlush = false;
+      jackOrBetter = false;
       buttonContainer.appendChild(betOneButton);
       buttonContainer.appendChild(betAllButton);
       buttonContainer.appendChild(dealButton);
@@ -248,6 +249,7 @@ const removeElement = (elementId) => {
   let element = document.getElementById(elementId);
   element.parentNode.removeChild(element);
 };
+
 // REMOVE ELEMENTS IN HTML USING ELEMENT CLASS //
 const removeElementByClass = (className) => {
   const elements = document.getElementsByClassName(className);
@@ -255,6 +257,7 @@ const removeElementByClass = (className) => {
     elements[0].parentNode.removeChild(elements[0]);
   }
 };
+
 /* A function that tallies the cards by name,suit and rank.
  * @param cardSuitTally tallies cards by suit
  * @param cardNameTally tallies cards by name
@@ -355,27 +358,35 @@ const cardClick = () => {
   let suitCard;
   for (let i = 0; i < cardChoice.length; i++) {
     document.querySelector(`#card${i + 1}`).addEventListener("click", () => {
+      let holdButton = document.createElement("div");
+      holdButton.setAttribute("id", "hold");
+      document.getElementById(`card${i + 1}`).appendChild(holdButton);
+      let nameChoices = document.querySelectorAll("#front-card-name");
+      let suitChoices = document.querySelectorAll("#front-card-suit");
+      nameCard = nameChoices[i].getAttribute("data-value");
+      suitCard = suitChoices[i].getAttribute("data-value");
       if (
         document.getElementById(`card${i + 1}`).classList.contains("held-card")
       ) {
         document.getElementById(`card${i + 1}`).classList.remove("held-card");
         document.getElementById(`card${i + 1}`).classList.toggle("free-card");
+        let hold = document.getElementById("hold");
+        if (hold.parentNode) {
+          hold.parentNode.removeChild(hold);
+        }
+        // This is to remove the index from the hold array when unhold is clicked
+        let index = holdArray.indexOf(allCards[i]);
+        holdArray.splice(index, 1);
       } else {
         document.getElementById(`card${i + 1}`).classList.remove("free-card");
         document.getElementById(`card${i + 1}`).classList.toggle("held-card");
+        holdButton.innerHTML = "HOLD";
+        holdArray.push(allCards[i]);
       }
-
-      // let heldCardChoice = document.querySelectorAll(".held-card");
-      let nameChoices = document.querySelectorAll("#front-card-name");
-      let suitChoices = document.querySelectorAll("#front-card-suit");
-      nameCard = nameChoices[i].getAttribute("data-value");
-      suitCard = suitChoices[i].getAttribute("data-value");
-
-      console.log("clicked");
-      holdArray.push(allCards[i]);
-      console.log(allCards);
+      console.log(holdArray);
     });
   }
+
   return holdArray;
 };
 
@@ -402,7 +413,6 @@ const secondFlipCard = () => {
     }
   }
   let newContainer = document.getElementsByClassName("container");
-  console.log(newContainer);
   newContainer[0].innerHTML = "";
   for (j = 0; j < allCards.length; j++) {
     let newCard = createCard(allCards[j]);
@@ -412,23 +422,10 @@ const secondFlipCard = () => {
   }
 
   cardTally(allCards);
-  console.log("Name Tally",cardNameTally)
-    console.log("Suit Tally", cardSuitTally)
-	  console.log("Rank Tally", cardRankInHand)
-	  
+
   winningCombos();
   return outputMessage;
 };
-/* const reFlipCard = () => {
-  const reFlipTheCard = document.getElementsByClassName(
-    "inner-card front-card"
-  );
-  console.log(reFlipTheCard);
-  for (let i = 0; i < reFlipTheCard.length; i += 1) {
-    reFlipTheCard.item(i).classList.remove("front-card");
-  }
-  cardClick();
-}; */
 
 /* A function that goes through cardRankInHand and sorts them
  * @return true/false if hand has two pairs in it
@@ -437,10 +434,8 @@ const twoPairsCombo = () => {
   let pairs = [];
   let sortedDeck = cardRankInHand.sort();
   for (i = 0; i < 5; i++) {
-    if (sortedDeck[i] === sortedDeck[i+1]) {
+    if (sortedDeck[i] === sortedDeck[i + 1]) {
       pairs.push(sortedDeck[i]);
-      console.log(sortedDeck[i] === sortedDeck[i + 1]);
-      console.log(pairs);
     }
   }
   if (pairs.length === 2 && pairs[0] !== pairs[1]) {
@@ -455,10 +450,10 @@ const threeKindsAndFullHouseCombo = () => {
   let duplicates = [];
   for (cardName in cardNameTally) {
     if (cardNameTally[cardName] === 3) {
-      duplicates.push(cardName);
+      duplicates.push(cardNameTally[cardName]);
     }
     if (cardNameTally[cardName] === 2) {
-      duplicates.push(cardName);
+      duplicates.push(cardNameTally[cardName]);
     }
     if (
       (duplicates[0] === 3 && duplicates[1] !== 2) ||
