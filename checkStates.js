@@ -168,7 +168,7 @@ export const checkStraight = (arr) => {
 };
 
 /**
- * Function to check if hand is a two of a kind
+ * Function to check if hand is fullhouse
  * @function
  * @param {array} Array of card obj
  * @returns {boolean} true
@@ -196,7 +196,7 @@ export const checkTwoKind = (arr) => {
 };
 
 /**
- * Function to check if hand is a two of a kind
+ * Function to check if hand is a three of a kind
  * @function
  * @param {array} Array of card obj
  * @returns {boolean} true
@@ -209,7 +209,7 @@ export const checkThreeKind = (arr) => {
 };
 
 /**
- * Function to check if hand is a two of a kind
+ * Function to check if hand is a four of a kind
  * @function
  * @param {array} Array of card obj
  * @returns {boolean} true
