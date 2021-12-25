@@ -59,7 +59,7 @@ const getHandNames = (arr) => {
  * Function to check if hand contains all the same suit
  * @function
  * @param {array} Array of card obj
- * @returns {boolean} true
+ * @returns {boolean} true if suit is all the same
  */
 const checkSameSuit = (arr) => {
   let suit = arr[0].suit;
@@ -69,6 +69,22 @@ const checkSameSuit = (arr) => {
     }
   }
   return true;
+};
+
+/**
+ * Function to check if element exists in the arr
+ * @function
+ * @param {array} Array of int
+ * @returns {boolean} true if element already exists
+ */
+export const checkElementExists = (element, arr) => {
+  arr.sort();
+  for (let i = 0; i < arr.length; i += 1) {
+    if (arr[i] == element) {
+      return true;
+    }
+  }
+  return false;
 };
 
 // ========================================================

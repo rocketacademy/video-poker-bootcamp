@@ -1,6 +1,7 @@
 :root {
   --dark-green: #064635;
   --light-green: #519259;
+  --light-green-hover: #1fc600;
   --mustard-orange: #f0bb62;
   --pale-yellow: #f4eea9;
   --dark-orange: #d06224;
@@ -47,7 +48,6 @@ br {
   width: 60px;
   border-radius: 5px;
   text-align: center;
-  border-color: black;
   border-width: 5px;
   cursor: pointer;
 }
@@ -92,6 +92,81 @@ br {
 }
 
 .column-button:hover:enabled {
+  text-decoration: none;
+  background-color: var(--dark-orange-hover);
+  border: var(--dark-orange-hover);
+}
+
+.table-div {
+  padding: 10px;
+  background-color: var(--light-green);
+  margin: 1em 0em 0.5em 0em;
+  border-radius: 3px;
+}
+
+#column-title-hand {
+  width: 150px;
+  text-align: start;
+}
+
+#column-title-score {
+  width: 90px;
+  text-align: start;
+}
+
+#column-title-example {
+  text-align: start;
+}
+
+.card-example {
+  display: flex;
+  flex-direction: row;
+}
+
+.mini-card {
+  padding: 3px;
+  margin: 3px;
+  background-color: var(--pale-yellow);
+  display: inline-block;
+  height: 45px;
+  width: 30px;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 0.5rem;
+  border-width: 5px;
+}
+
+.mini-card-back {
+  padding: 3px;
+  margin: 3px;
+  background: linear-gradient(120deg, black 50%, red 50%);
+  display: inline-block;
+  height: 45px;
+  width: 30px;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 0.5rem;
+  border-width: 5px;
+}
+
+.toggle-button-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-button {
+  background-color: var(--dark-orange);
+  border: var(--dark-orange);
+  text-align: center;
+  margin: 1em 0em 0.5em 0em;
+  padding: 5px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 260px;
+}
+
+.toggle-button:hover:enabled {
   text-decoration: none;
   background-color: var(--dark-orange-hover);
   border: var(--dark-orange-hover);

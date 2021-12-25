@@ -25,9 +25,68 @@
             <button class="column-button" id="show-hand-button"> SHOW HAND </Button>
         </div>
     </div>
+    <div class= "toggle-button-div">
+    <button class="toggle-button" id ="toggle-button"> Toggle Instructions and Examples</button>
+    </div>
+    <div class="table-div" id="table-div" style='display: none'>
+        <table class="score-table">
+            <tr id="title-row">
+                <th id="column-title-hand">Hand</th>
+                <th id="column-title-score">Score</th>
+                <th id="column-title-example">Example</th>
+            </tr>
+            <tr id="royal-flush-row">
+                <td>Royal Flush</td>
+                <td>250</td>
+                <td class="card-example" id=royal-flush-card-example></td>
+            </tr>
+            <tr id="straight-flush-row">
+                <td>Straight Flush</td>
+                <td>50</td>
+                <td class="card-example" id="straight-flush-card-example"></td>
+            </tr>
+            <tr id="four-kind-row">
+                <td>Four of a Kind</td>
+                <td>25</td>
+                <td class="card-example" id="four-kind-card-example"></td>
+            </tr>
+            <tr id="full-house-row">
+                <td>Full House</td>
+                <td>9</td>
+                <td class="card-example" id="full-house-card-example"></td>
+            </tr>
+            <tr id="flush-row">
+                <td>Flush</td>
+                <td>6</td>
+                <td class="card-example" id="flush-card-example"></td>
+            </tr>
+            <tr id="straight-row">
+                <td>Straight</td>
+                <td>4</td>
+                <td class="card-example" id="straight-card-example"></td>
+            </tr>
+            <tr id="three-kind-row">
+                <td>Three of a Kind</td>
+                <td>3</td>
+                <td class="card-example" id="three-kind-card-example"></td>
+            </tr>
+            <tr id="two-kind-row">
+                <td>Two of a Kind</td>
+                <td>2</td>
+                <td class="card-example" id="two-kind-card-example"></td>
+            </tr>
+            <tr id="high-card-row">
+                <td>J or Higher</td>
+                <td>1</td>
+                <td class="card-example" id="high-card-example"></td>
+            </tr>
+        </table>
+    </div>
     <script type="module" src="script.js"></script>
     <script type="module" src="createDeck.js"></script>
     <script type="module" src="checkStates.js"></script>
+    <script type="module" src="scoreTable.js"></script>
+
 
 </body>
 

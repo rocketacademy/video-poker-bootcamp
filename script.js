@@ -10,7 +10,9 @@ import {
   checkThreeKind,
   checkStraightFlush,
   checkFullHouse,
+  checkElementExists,
 } from "./checkStates.js";
+import { createScoreTable } from "./scoreTable.js";
 
 // ========================================================
 // - Global vars
@@ -20,6 +22,7 @@ let deck = shuffleCards(makeDeck());
 let numberToDeal = 5;
 let maxSwaps = 5;
 let swapCount = 0;
+let swapArray = [];
 let credits = 100;
 let betAmount = 1;
 let gameStarted = false;
@@ -119,10 +122,10 @@ const fillOutput = (s) => {
 const startShowHandButtons = () => {
   const startBtn = document.getElementById("start-button");
   const showHandBtn = document.getElementById("show-hand-button");
+  const cards = document.querySelectorAll(".card");
 
   startBtn.addEventListener("click", () => {
     // check and clear existing card elements, reset deck, reset hand etc
-    const cards = document.querySelectorAll(".card");
     if (cards) {
       removeCardHandElements();
       resetStates();
@@ -170,6 +173,7 @@ const startShowHandButtons = () => {
 const resetStates = () => {
   deck = [];
   userHand = [];
+  swapArray = [];
   swapCount = 0;
   deck = shuffleCards(makeDeck());
 };
@@ -181,6 +185,28 @@ const resetStates = () => {
  * @param {number} Index of card in hand to swap with new card
  */
 const swapCard = (arr, idx) => {
+  if (!checkElementExists(idx, swapArray) && swapCount < maxSwaps) {
+    // swap permitted
+    swapArray.push(idx);
+  } else {
+    // swap not permitted
+    const cardID = `card-${idx}`;
+    document.getElementById(cardID).style.backgroundColor = "grey";
+
+    setTimeout(
+      () =>
+        (document.getElementById(cardID).style.backgroundColor =
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--pale-yellow"
+          )),
+      100
+    );
+    fillOutput(
+      "You have already swapped this card out, select another card to swap"
+    );
+    return;
+  }
+
   const newCard = deck.pop();
   let arrCopy = JSON.parse(JSON.stringify(arr));
   arrCopy[idx] = newCard;
@@ -344,6 +370,7 @@ const main = () => {
   startShowHandButtons();
   fillCreditsBets();
   fillOutput("Click start to deal cards");
+  createScoreTable();
 };
 
 main();
