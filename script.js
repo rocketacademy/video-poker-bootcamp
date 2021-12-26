@@ -10,10 +10,10 @@ let straightFlush = false;
 let royalFlush = false;
 let jackOrBetter = false;
 //---FOR BETTING---//
-let moneyInHand = 0;
 let bettingMoney = 0;
 let balanceAmount = 0;
 let winnings = 0;
+let returns = 0;
 //---FOR CARDS---//
 let container;
 let playerCardHand = [];
@@ -490,7 +490,7 @@ const fourKindsCombo = () => {
 
 /* A function that goes through cardSuitTally and cardRankInHand
  *  and sorts them. This is to see if there are card ranks that
- * are in proper numerical order of difference 1 OR if they have
+ *  are in proper numerical order of difference 1 OR if they have
  *  the same suit OR both.
  * @return true/false if hand has said combos or not.
  */
@@ -558,45 +558,54 @@ const winningCombos = () => {
   straightStraightFlushAndRoyalFlushCombo();
   jackOrBetterCombo();
   if (twoPairs === true) {
+    returns = bettingMoney * 2;
     winnings = bettingMoney * 3;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have a Two pairs. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Two pairs. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (threeKinds === true) {
+    returns = bettingMoney * 3;
     winnings = bettingMoney * 4;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have Three of a kind. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have Three of a kind. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (fullHouse === true) {
+    returns = bettingMoney * 9;
     winnings = bettingMoney * 10;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have a Full House. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Full House. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (fourKinds === true) {
+    returns = bettingMoney * 25;
     winnings = bettingMoney * 26;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have Four of a kind. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have Four of a kind. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (straight === true) {
+    returns = bettingMoney * 4;
     winnings = bettingMoney * 5;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have a Straight. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Straight. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (flush === true) {
+    returns = bettingMoney * 6;
     winnings = bettingMoney * 7;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have a Flush. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (straightFlush === true) {
+    returns = bettingMoney * 50;
     winnings = bettingMoney * 51;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have a Straight Flush. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Straight Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (royalFlush === true) {
+    returns = bettingMoney * 250;
     winnings = bettingMoney * 251;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have a Royal Flush. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Royal Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (jackOrBetter === true) {
+    returns = bettingMoney * 1;
     winnings = bettingMoney * 2;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have a Jacks or Better. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Jacks or Better. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else {
     winnings = 0;
     balanceAmount += winnings;
-    outputMessage.innerHTML = `You have no special combinations. <br><br> Your balance in hand is: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have no special combinations. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   }
   bettingMoney = 0;
   deck = shuffleCards(makeDeck());
