@@ -10,9 +10,10 @@ let straightFlush = false;
 let royalFlush = false;
 let jackOrBetter = false;
 //---FOR BETTING---//
-let moneyInHand = 200;
+let moneyInHand = 0;
 let bettingMoney = 0;
 let balanceAmount = 0;
+let winnings = 0;
 //---FOR CARDS---//
 let container;
 let playerCardHand = [];
@@ -131,7 +132,7 @@ const makeDeck = (cardAmount) => {
 };
 
 // SHUFFLE ALL 52 CARDS //
-const deck = shuffleCards(makeDeck());
+let deck = shuffleCards(makeDeck());
 
 // FUNCTIONS FOR SOME OF THE BUTTONS CREATED //
 const buttonFunctions = () => {
@@ -140,7 +141,7 @@ const buttonFunctions = () => {
   betAllButton.addEventListener("click", () => {
     // DISABLING/ENABLING SOME OF THE OTHER BUTTONS WHEN BET ALL IS CLICKED. MAX TO BET IS $5 AT ONE GO
     bettingMoney = 5;
-    balanceAmount = moneyInHand - bettingMoney;
+    balanceAmount -= bettingMoney;
     dealButton.disabled = false;
     betAllButton.disabled = true;
     betOneButton.disabled = true;
@@ -149,7 +150,7 @@ const buttonFunctions = () => {
   betOneButton.addEventListener("click", () => {
     dealButton.disabled = false;
     bettingMoney++;
-    balanceAmount = moneyInHand - bettingMoney;
+    balanceAmount -= bettingMoney;
     // DISABLING/ENABLING SOME OF THE OTHER BUTTONS WHEN BET ALL IS CLICKED. MAX TO BET IS $5 AT ONE GO
     if (bettingMoney === 5) {
       dealButton.disabled = false;
@@ -310,6 +311,12 @@ const startOfGame = () => {
 // AFTER READY BUTTON IS CLICKED, GAME INITILIAZED //
 const initGame = () => {
   gameMessage.innerHTML = "";
+  balanceAmount = Number(
+    window.prompt(
+      "How much coins do you want to start with today?",
+      "Enter amount here"
+    )
+  );
   removeElement("ready-button");
   playerClick();
   buttonFunctions();
@@ -336,6 +343,7 @@ const playerClick = () => {
   }
 
   document.body.appendChild(buttonContainer);
+  document.body.appendChild(outputMessage);
 };
 
 /* A function that flips the cards when deal button is pressed for the first time
@@ -359,8 +367,8 @@ const cardClick = () => {
   for (let i = 0; i < cardChoice.length; i++) {
     document.querySelector(`#card${i + 1}`).addEventListener("click", () => {
       let holdButton = document.createElement("div");
-      holdButton.setAttribute("id", "hold");
-      document.getElementById(`card${i + 1}`).appendChild(holdButton);
+      holdButton.setAttribute("id", `hold${i + 1}`);
+      holdButton.innerHTML = "Hold";
       let nameChoices = document.querySelectorAll("#front-card-name");
       let suitChoices = document.querySelectorAll("#front-card-suit");
       nameCard = nameChoices[i].getAttribute("data-value");
@@ -370,17 +378,16 @@ const cardClick = () => {
       ) {
         document.getElementById(`card${i + 1}`).classList.remove("held-card");
         document.getElementById(`card${i + 1}`).classList.toggle("free-card");
-        let hold = document.getElementById("hold");
-        if (hold.parentNode) {
-          hold.parentNode.removeChild(hold);
-        }
+        let hold = document.getElementById(`hold${i + 1}`);
+        document.getElementById(`card${i + 1}`).removeChild(hold);
+
         // This is to remove the index from the hold array when unhold is clicked
         let index = holdArray.indexOf(allCards[i]);
         holdArray.splice(index, 1);
       } else {
         document.getElementById(`card${i + 1}`).classList.remove("free-card");
         document.getElementById(`card${i + 1}`).classList.toggle("held-card");
-        holdButton.innerHTML = "HOLD";
+        document.getElementById(`card${i + 1}`).appendChild(holdButton);
         holdArray.push(allCards[i]);
       }
       console.log(holdArray);
@@ -551,25 +558,48 @@ const winningCombos = () => {
   straightStraightFlushAndRoyalFlushCombo();
   jackOrBetterCombo();
   if (twoPairs === true) {
-    outputMessage.innerHTML = "You have a Two Pairs.";
+    winnings = bettingMoney * 3;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have a Two pairs. <br><br> Your balance in hand is: $${balanceAmount}`;
   } else if (threeKinds === true) {
-    outputMessage.innerHTML = "You have Three of a kind.";
+    winnings = bettingMoney * 4;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have Three of a kind. <br><br> Your balance in hand is: $${balanceAmount}`;
   } else if (fullHouse === true) {
-    outputMessage.innerHTML = "You have a Full House.";
+    winnings = bettingMoney * 10;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have a Full House. <br><br> Your balance in hand is: $${balanceAmount}`;
   } else if (fourKinds === true) {
-    outputMessage.innerHTML = "You have Four of a kind.";
+    winnings = bettingMoney * 26;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have Four of a kind. <br><br> Your balance in hand is: $${balanceAmount}`;
   } else if (straight === true) {
-    outputMessage.innerHTML = "You have a Straight.";
+    winnings = bettingMoney * 5;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have a Straight. <br><br> Your balance in hand is: $${balanceAmount}`;
   } else if (flush === true) {
-    outputMessage.innerHTML = "You have a Flush.";
+    winnings = bettingMoney * 7;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have a Flush. <br><br> Your balance in hand is: $${balanceAmount}`;
   } else if (straightFlush === true) {
-    outputMessage.innerHTML = "You have a Straight Flush.";
+    winnings = bettingMoney * 51;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have a Straight Flush. <br><br> Your balance in hand is: $${balanceAmount}`;
   } else if (royalFlush === true) {
-    outputMessage.innerHTML = "You have a Royal Flush.";
+    winnings = bettingMoney * 251;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have a Royal Flush. <br><br> Your balance in hand is: $${balanceAmount}`;
+  } else if (jackOrBetter === true) {
+    winnings = bettingMoney * 2;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have a Jacks or Better. <br><br> Your balance in hand is: $${balanceAmount}`;
   } else {
-    outputMessage.innerHTML = "You have no special combinations.";
+    winnings = 0;
+    balanceAmount += winnings;
+    outputMessage.innerHTML = `You have no special combinations. <br><br> Your balance in hand is: $${balanceAmount}`;
   }
   bettingMoney = 0;
+  deck = shuffleCards(makeDeck());
 };
 
 startOfGame();

@@ -171,7 +171,11 @@ td {
   margin-left: auto;
   border: 2px;
 }
-#hold {
+#hold1,
+#hold2,
+#hold3,
+#hold4,
+#hold5 {
   position: relative;
   text-align: center;
   justify-content: space-between;
