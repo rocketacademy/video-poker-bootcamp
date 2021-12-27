@@ -1112,7 +1112,7 @@ const buildBoardElements = () => {
 const loadSettings = () => {
   // load game host setting
   gameHost = localStorage.getItem('host');
-  if (gameHost === '') gameHost = 'nes-bulbasaur';
+  if (gameHost === null || gameHost === '') gameHost = 'nes-bulbasaur';
 
   // set background color based on host
   if (gameHost.includes('squirtle')) {
