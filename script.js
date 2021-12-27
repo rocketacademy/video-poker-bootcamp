@@ -34,6 +34,7 @@ let mode = "firstRound";
 
 //---DOCUMENT OBJECT MODEL---//
 let readyButton = document.createElement("button");
+
 let gameMessage = document.createElement("div");
 let dealButton = document.createElement("button");
 dealButton.setAttribute("id", "deal-button");
@@ -136,6 +137,7 @@ let deck = shuffleCards(makeDeck());
 
 // FUNCTIONS FOR SOME OF THE BUTTONS CREATED //
 const buttonFunctions = () => {
+  let buttonCont = document.getElementsByClassName("button-cont")[0];
   // OUTPUT MESSAGE IS TO UPDATE THE AMOUNT THAT IS GAMBLE AND BALANCE IN HAND
   document.body.appendChild(outputMessage);
   betAllButton.addEventListener("click", () => {
@@ -150,14 +152,23 @@ const buttonFunctions = () => {
   betOneButton.addEventListener("click", () => {
     dealButton.disabled = false;
     bettingMoney++;
-    balanceAmount -= bettingMoney;
+    balanceAmount -= 1;
+    if (balanceAmount < 0) {
+      removeElement("deal-button");
+      removeElement("bet-one");
+      removeElement("bet-all");
+      removeElement("container");
+      outputMessage.innerHTML = `You've run out of money. <br><br> Please proceed to the nearest ATM to withdraw money and refresh the page. <br><br> In case you're broke and can no longer play, have a nice day.`;
+    }
     // DISABLING/ENABLING SOME OF THE OTHER BUTTONS WHEN BET ALL IS CLICKED. MAX TO BET IS $5 AT ONE GO
-    if (bettingMoney === 5) {
+    else if (bettingMoney === 5) {
       dealButton.disabled = false;
       betAllButton.disabled = true;
       betOneButton.disabled = true;
+      outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney}`;
+    } else {
+      outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney}`;
     }
-    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney}`;
   });
 
   dealButton.addEventListener("click", () => {
@@ -199,15 +210,6 @@ const buttonFunctions = () => {
     } else {
       // REMOVE FINAL DEAL BUTTON BECAUSE IT ISNT NEEDED
       removeElement("finaldeal-button");
-      twoPairs = false;
-      threeKinds = false;
-      straight = false;
-      flush = false;
-      fullHouse = false;
-      fourKinds = false;
-      straightFlush = false;
-      royalFlush = false;
-      jackOrBetter = false;
       buttonContainer.appendChild(betOneButton);
       buttonContainer.appendChild(betAllButton);
       buttonContainer.appendChild(dealButton);
@@ -311,9 +313,10 @@ const startOfGame = () => {
 // AFTER READY BUTTON IS CLICKED, GAME INITILIAZED //
 const initGame = () => {
   gameMessage.innerHTML = "";
+  // This will prompt user how much they want to start the game with
   balanceAmount = Number(
     window.prompt(
-      "How much coins do you want to start with today?",
+      "How much money do you want to start with?",
       "Enter amount here"
     )
   );
@@ -390,7 +393,6 @@ const cardClick = () => {
         document.getElementById(`card${i + 1}`).appendChild(holdButton);
         holdArray.push(allCards[i]);
       }
-      console.log(holdArray);
     });
   }
 
@@ -427,9 +429,7 @@ const secondFlipCard = () => {
     let showCard = document.getElementsByClassName("inner-card");
     showCard.item(j).classList.add("front-card");
   }
-
   cardTally(allCards);
-
   winningCombos();
   return outputMessage;
 };
@@ -549,6 +549,7 @@ const jackOrBetterCombo = () => {
 
 /* A function that goes through all different combo functions to
  * see if hand has any of it
+ * @param
  * @return an output message of what combination you have in hand
  */
 const winningCombos = () => {
@@ -609,6 +610,15 @@ const winningCombos = () => {
   }
   bettingMoney = 0;
   deck = shuffleCards(makeDeck());
+  twoPairs = false;
+  threeKinds = false;
+  straight = false;
+  flush = false;
+  fullHouse = false;
+  fourKinds = false;
+  straightFlush = false;
+  royalFlush = false;
+  jackOrBetter = false;
 };
 
 startOfGame();
