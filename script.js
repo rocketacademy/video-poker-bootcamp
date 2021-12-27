@@ -5,6 +5,7 @@ let bet = 0;
 let messageId;
 let creditId;
 let delayedMessageId;
+let guaranteedWin = false;
 
 const NUMBER_OF_CARDS = 5;
 const MAX_BET = 5;
@@ -669,7 +670,8 @@ const dealClick = (cardsElement) => {
   // remove win info
   updateCredits(0);
 
-  dealCards(cardsElement.children);
+  if (guaranteedWin) dealRoyalFlush(cardsElement.children);
+  else dealCards(cardsElement.children);
 
   setButtons('draw');
 };
@@ -693,6 +695,9 @@ const drawClick = (cardsElement) => {
 
   // reset bet
   updateBets(-1 * bet);
+
+  // reset guaranteed win code
+  guaranteedWin = false;
 
   // check if game is over
   setTimeout(() => {
@@ -1094,6 +1099,12 @@ document.addEventListener('DOMContentLoaded', () => {
     'b', 'a',
   ];
 
+  const royalFlushCodeKeySequence = [
+    'ArrowUp', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight',
+    'b', 'a',
+  ];
+
   let userInput = [];
   let lastKeyTime = Date.now();
 
@@ -1121,6 +1132,10 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         creditElement.style.backgroundColor = '';
       }, TEMP_CHANGE_DELAY_IN_MILLI_SECONDS);
+
+      playWinAudio();
+    } else if (royalFlushCodeKeySequence.every((v, k) => v === userInput[k])) {
+      guaranteedWin = true;
 
       playWinAudio();
     }
