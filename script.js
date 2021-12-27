@@ -38,6 +38,8 @@ let creditId;
 let delayedMessageId;
 let guaranteedWin = false;
 let speedUpCounting = false;
+let gameHost;
+let gameMusic;
 
 const NUMBER_OF_CARDS = 5;
 const MAX_BET = 5;
@@ -190,7 +192,7 @@ const calcWinnings = (score, gameBet) => {
 
   // special extra winnings if player gets royal flush and bets max
   if (score === SCORES.ROYAL_FLUSH) {
-    winCredits = (gameBet === MAX_BET) ? MAX_MULTIPLIER : gameBet;
+    winCredits = (gameBet >= MAX_BET) ? MAX_MULTIPLIER : gameBet;
   }
 
   return score * winCredits;
@@ -700,8 +702,6 @@ const dealClick = (cardsElement) => {
  * @param {*} cardsElement Cards
  */
 const drawClick = (cardsElement) => {
-  displayMessage('Click BET button to play again.');
-
   drawCards(cardsElement.children);
 
   // disable all buttons while calculating score
@@ -711,6 +711,20 @@ const drawClick = (cardsElement) => {
   const score = calcHandScore(board);
   const winnings = calcWinnings(score, bet);
   updateCredits(winnings);
+
+  if (winnings >= 4000) {
+    // add special message if getting a royal flush
+    // while betting 5 or more
+    displayMessage('Royal Flush with Bet of 5 or more!');
+    delayedMessageId = setTimeout(() => {
+      displayMessage('Enjoy the extra multiplier!');
+      delayedMessageId = setTimeout(() => {
+        displayMessage('Click BET button to play again.');
+      }, NEW_TEXT_DELAY_IN_MILLI_SECONDS * 1.5);
+    }, NEW_TEXT_DELAY_IN_MILLI_SECONDS * 1.5);
+  } else {
+    displayMessage('Click BET button to play again.');
+  }
 
   // reset guaranteed win code
   guaranteedWin = false;
@@ -972,7 +986,7 @@ const buildGameStateElements = () => {
 
   // add area for game host image
   const hostElement = document.createElement('i');
-  hostElement.classList.add('nes-bulbasaur');
+  hostElement.classList.add(gameHost);
   gameInfoContainerElement.appendChild(hostElement);
 
   // add balloon and game state to main container
@@ -1093,9 +1107,26 @@ const buildBoardElements = () => {
 };
 
 /**
+ * Load settings.
+ */
+const loadSettings = () => {
+  // load game host setting
+  gameHost = localStorage.getItem('host');
+  if (gameHost === '') gameHost = 'nes-bulbasaur';
+
+  // load game music setting
+  gameMusic = localStorage.getItem('music');
+  if (gameMusic === '') gameMusic = './assets/pokemon-center.mp3';
+  document.getElementById('game-audio').src = gameMusic;
+};
+
+/**
  * Initialize game.
  */
 const initGame = () => {
+  // load settings
+  loadSettings();
+
   const boardEl = buildBoardElements(board);
   document.body.appendChild(boardEl);
 

@@ -35,8 +35,14 @@
       i {
         margin-bottom: 1rem;
       }
-      div {
+      .logo {
         display: inline-block;
+      }
+      .select {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        text-align: left;
       }
       label {
         position: relative;
@@ -47,24 +53,38 @@
   <body>
     <img src="./assets/pokermon-logo.png" alt="Pokermon" />
     <span class="nes-text title-description">Pokemon Video Poker</span>
-    <div>
+    <div class="logo">
       <i class="nes-pokeball"></i>
     </div>
-    <label class="nes-pointer">
-      <input type="radio" class="nes-radio" name="start" id="start" checked />
-      <span class="nes-text start">Start</span>
-    </label>
+    <div class="select">
+      <label class="nes-pointer">
+        <input type="radio" class="nes-radio" name="answer" checked />
+        <span class="nes-text start">Start</span>
+      </label>
+      <label class="nes-pointer">
+        <input type="radio" class="nes-radio" name="answer" />
+        <span class="nes-text option">Option</span>
+      </label>
+    </div>
     <audio
       id="audio"
       class="audio"
       src="./assets/pokemon-notification.mp3"
     ></audio>
     <script>
-      const start = document.getElementById("start");
+      const start = document.querySelector(".start");
       start.onclick = () => {
         document.getElementById("audio").play();
         setTimeout(() => {
           window.location.href = "game.html";
+        }, 3000);
+      };
+
+      const option = document.querySelector(".option");
+      option.onclick = () => {
+        document.getElementById("audio").play();
+        setTimeout(() => {
+          window.location.href = "option.html";
         }, 3000);
       };
     </script>
