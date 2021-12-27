@@ -712,12 +712,12 @@ const drawClick = (cardsElement) => {
   const winnings = calcWinnings(score, bet);
   updateCredits(winnings);
 
-  if (winnings >= 4000) {
+  if (winnings >= (SCORES.ROYAL_FLUSH * MAX_MULTIPLIER)) {
     // add special message if getting a royal flush
     // while betting 5 or more
     displayMessage('Royal Flush with Bet of 5 or more!');
     delayedMessageId = setTimeout(() => {
-      displayMessage('Enjoy the extra multiplier!');
+      displayMessage('Enjoy the 800 multiplier!');
       delayedMessageId = setTimeout(() => {
         displayMessage('Click BET button to play again.');
       }, NEW_TEXT_DELAY_IN_MILLI_SECONDS * 1.5);
