@@ -1114,6 +1114,13 @@ const loadSettings = () => {
   gameHost = localStorage.getItem('host');
   if (gameHost === '') gameHost = 'nes-bulbasaur';
 
+  // set background color based on host
+  if (gameHost.includes('squirtle')) {
+    document.body.style.backgroundColor = '#5EBDFC';
+  } else if (gameHost.includes('charmander')) {
+    document.body.style.backgroundColor = '#CE2211';
+  }
+
   // load game music setting
   gameMusic = localStorage.getItem('music');
   if (gameMusic === '') gameMusic = './assets/pokemon-center.mp3';
