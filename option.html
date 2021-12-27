@@ -102,10 +102,12 @@
       const answerMusic = document.getElementById("answer-music");
 
       // reselect previous selections
-      if (localStorage.getItem("host") !== "") {
+      const storedHost = localStorage.getItem("host");
+      if (storedHost !== "" && storedHost !== null) {
         host.value = localStorage.getItem("host");
       }
-      if (localStorage.getItem("music") !== "") {
+      const storedMusic = localStorage.getItem("music");
+      if (storedMusic !== "" && storedMusic !== null) {
         music.value = localStorage.getItem("music");
       }
 
