@@ -1,17 +1,3 @@
-let board = [];
-let deck;
-let credit = 100;
-let bet = 0;
-let messageId;
-let creditId;
-let delayedMessageId;
-let guaranteedWin = false;
-
-const NUMBER_OF_CARDS = 5;
-const MAX_BET = 5;
-const MAX_MULTIPLIER = 16;
-const MIN_RANK_FOR_ONE_PAIR = 11; // jack or higher
-
 /**
  * Scores or payouts for winning hands.
  */
@@ -39,6 +25,24 @@ const REVEAL_CARDS_DELAY_IN_MILLI_SECONDS = 175;
 const ONE_SEC_IN_MILLI_SECONDS = 1000;
 const TEMP_CHANGE_DELAY_IN_MILLI_SECONDS = 1700;
 const KEY_SEQUENCE_DELAY_IN_MILLI_SECONDS = 700;
+
+/**
+ * Global variables.
+ */
+let board = [];
+let deck;
+let credit = 100;
+let bet = 0;
+let messageId;
+let creditId;
+let delayedMessageId;
+let guaranteedWin = false;
+let speedUpCounting = false;
+
+const NUMBER_OF_CARDS = 5;
+const MAX_BET = 5;
+const MAX_MULTIPLIER = 16;
+const MIN_RANK_FOR_ONE_PAIR = 11; // jack or higher
 
 /**
  * Start/stop audio when speaker icon clicked.
@@ -124,6 +128,16 @@ const updateWins = (creditWin) => {
 };
 
 /**
+ * Update bets.
+ * @param {*} newBet
+ */
+const updateBets = (newBet) => {
+  bet += newBet;
+  const bets = document.querySelector('.bets');
+  bets.innerText = `Bet:${bet}`;
+};
+
+/**
  * Update credits after a game.
  * @param {*} creditChange Change of credit
  */
@@ -136,10 +150,25 @@ const updateCredits = (creditChange) => {
     creditId = setInterval(() => {
       if (credit === newCredit) {
         clearInterval(creditId);
+
+        // reset bet
+        updateBets(-1 * bet);
+
         setButtons('bet');
+      } else if (speedUpCounting) {
+        // skip counting if counting of winning takes too long
+        credit = newCredit;
+        addCredit = creditChange;
+
+        // reset speed counting
+        speedUpCounting = false;
+
+        credits.innerText = `Credits:${credit}`;
+        updateWins(addCredit);
       } else {
         credit += 1;
         addCredit += 1;
+
         credits.innerText = `Credits:${credit}`;
         updateWins(addCredit);
       }
@@ -168,23 +197,13 @@ const calcWinnings = (score, gameBet) => {
 };
 
 /**
- * Update bets.
- * @param {*} newBet
- */
-const updateBets = (newBet) => {
-  bet += newBet;
-  const bets = document.querySelector('.bets');
-  bets.innerText = `Bet:${bet}`;
-};
-
-/**
  * Hold selected card.
  * @param {*} cardElement Card selected
  * @param {*} index
  */
 const holdCard = (cardElement) => {
-  // ignore card click if still in betting mode
-  if (!document.getElementById('bet').disabled) return;
+  // ignore card click if not in drawing mode
+  if (document.getElementById('draw').disabled) return;
 
   // toggle holding card between card clicks
   if (cardElement.classList.contains('held')) {
@@ -693,9 +712,6 @@ const drawClick = (cardsElement) => {
   const winnings = calcWinnings(score, bet);
   updateCredits(winnings);
 
-  // reset bet
-  updateBets(-1 * bet);
-
   // reset guaranteed win code
   guaranteedWin = false;
 
@@ -1138,6 +1154,8 @@ document.addEventListener('DOMContentLoaded', () => {
       guaranteedWin = true;
 
       playWinAudio();
+    } else if (event.key === ' ') {
+      speedUpCounting = true;
     }
   });
 });
