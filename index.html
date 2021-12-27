@@ -74,6 +74,7 @@
     <script>
       // set background color based on host
       gameHost = localStorage.getItem("host");
+      if (gameHost === "") gameHost = "nes-bulbasaur";
 
       if (gameHost.includes("squirtle")) {
         document.body.style.backgroundColor = "#5EBDFC";
