@@ -1123,7 +1123,7 @@ const loadSettings = () => {
 
   // load game music setting
   gameMusic = localStorage.getItem('music');
-  if (gameMusic === '') gameMusic = './assets/pokemon-center.mp3';
+  if (gameMusic === null || gameMusic === '') gameMusic = './assets/pokemon-center.mp3';
   document.getElementById('game-audio').src = gameMusic;
 };
 
