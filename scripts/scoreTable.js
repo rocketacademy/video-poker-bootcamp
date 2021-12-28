@@ -212,7 +212,7 @@ const createToggleButton = () => {
  * @function
  */
 const onToggleButtonClick = () => {
-  const tableDiv = document.getElementById("table-div");
+  const tableDiv = document.getElementById("instructions-table-div");
   tableDiv.style.display = tableDiv.style.display === "none" ? "block" : "none";
 };
 

@@ -24,7 +24,7 @@ let maxSwaps = 5;
 let swapCount = 0;
 let swapArray = [];
 let credits = 100;
-let betAmount = 1;
+let betAmount = 5;
 let gameStarted = false;
 
 // ========================================================
@@ -95,7 +95,7 @@ const removeCardHandElements = () => {
 };
 
 /**
- * Function to update and populate credits and bet amount display
+ * Funtion to update and populate credits and bet amount display
  * @function
  */
 const fillCreditsBets = () => {
@@ -131,19 +131,23 @@ const startShowHandButtons = () => {
       resetStates();
     }
     // start game
-    credits -= betAmount;
-    fillCreditsBets();
-    gameStarted = true;
-    startBtn.disabled = true;
-    // deal cards
-    dealHand(numberToDeal, userHand);
-    buildCardHand(userHand);
-    // output instructions
-    fillOutput(
-      `Click any card to swap it out, you have ${
-        maxSwaps - swapCount
-      } swaps left`
-    );
+    if (credits > 5) {
+      credits -= betAmount;
+      fillCreditsBets();
+      gameStarted = true;
+      startBtn.disabled = true;
+      // deal cards
+      dealHand(numberToDeal, userHand);
+      buildCardHand(userHand);
+      // output instructions
+      fillOutput(
+        `Click any card to swap it out, you have ${
+          maxSwaps - swapCount
+        } swaps left`
+      );
+    } else {
+      fillOutput("Not enough credits to play");
+    }
   });
 
   showHandBtn.addEventListener("click", () => {
@@ -158,8 +162,12 @@ const startShowHandButtons = () => {
     // output Instructions
     setTimeout(() => {
       startBtn.disabled = false;
-      fillOutput("Click start to deal cards");
-    }, 3000);
+      credits > 0
+        ? fillOutput("Click start to deal cards")
+        : fillOutput("Not enough credits to play");
+    }, 2000);
+
+    // check available credits
   });
 };
 

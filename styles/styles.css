@@ -97,7 +97,7 @@ br {
   border: var(--dark-orange-hover);
 }
 
-.table-div {
+.instructions-table-div {
   padding: 10px;
   background-color: var(--light-green);
   margin: 1em 0em 0.5em 0em;
@@ -170,4 +170,9 @@ br {
   text-decoration: none;
   background-color: var(--dark-orange-hover);
   border: var(--dark-orange-hover);
+}
+
+h4 {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

@@ -9,8 +9,6 @@
  * @returns {boolean} true if common element exist, else false
  */
 const checkCommonElement = (arr1, arr2) => {
-  arr1.sort();
-  arr2.sort();
   // TODO: bad double for loop
   for (let i = 0; i < arr1.length; i++) {
     for (let j = 0; j < arr2.length; j++) {
@@ -74,11 +72,12 @@ const checkSameSuit = (arr) => {
 /**
  * Function to check if element exists in the arr
  * @function
+ * @param {int} int element
  * @param {array} Array of int
  * @returns {boolean} true if element already exists
  */
 export const checkElementExists = (element, arr) => {
-  arr.sort();
+  arr.sort((a, b) => a - b);
   for (let i = 0; i < arr.length; i += 1) {
     if (arr[i] == element) {
       return true;
@@ -142,17 +141,33 @@ export const checkFlush = (arr) => {
 export const checkStraight = (arr) => {
   const hand = convertToHandSimp(arr);
   const keysArr = Object.keys(hand);
-  keysArr.sort();
-  const pictureCards = ["king", "queen", "jack"];
 
-  if (checkCommonElement(pictureCards, keysArr)) {
-    // check for picture cards, if exist, return false (not a straight)
-    return false;
-  }
-
-  // loop to convert to int and ace to 1
+  // loop to convert to int and picture cards to rank
   for (let i = 0; i < keysArr.length; i += 1) {
-    keysArr[i] = keysArr[i] === "ace" ? 1 : Number(keysArr[i]);
+    switch (keysArr[i]) {
+      case "ace":
+        keysArr[i] = 1;
+        break;
+      case "king":
+        keysArr[i] = 13;
+        break;
+      case "queen":
+        keysArr[i] = 12;
+        break;
+      case "jack":
+        keysArr[i] = 11;
+        break;
+      default:
+        keysArr[i] = Number(keysArr[i]);
+    }
+  }
+  // sort ascending
+  keysArr.sort((a, b) => a - b);
+
+  // check exception
+  const aceHighStraight = [1, 10, 11, 12, 13]; // A, 10, J, Q, K
+  if (JSON.stringify(keysArr) === JSON.stringify(aceHighStraight)) {
+    return true;
   }
 
   // loop to check if numbers are running
