@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Video Poker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+</head>
+
+<body>
+    <h1 id="header">Video Poker</h1>
+    <!-- Import program logic -->
+    <div class="reference-table" id="reference-table"></div>
+    <div class="user-hand" id="user-hand"></div>
+    <div class="action-output-cluster" id= "action-output-cluster">
+        <div class="box" id="credits-bets">
+            <span class="multi-column" id="credits"></span>
+            <span class="multi-column" id="bets"></span>
+        </div>
+        <div class="box" id="output-box">
+            <span class="single-column" id="output"></span>
+        </div>
+        <div class="box" id="action-buttons">
+            <button class="column-button" id="start-button"> START </Button>
+            <button class="column-button" id="show-hand-button"> SHOW HAND </Button>
+        </div>
+    </div>
+    <div class= "toggle-button-div">
+    <button class="toggle-button" id ="toggle-button"> Toggle Instructions and Examples</button>
+    </div>
+    <div class="instructions-table-div" id="instructions-table-div" style='display: none'>
+        <span>
+            <h4> How to play video poker</h4>
+            <hr color="black">
+            <p>
+                1. Bet is fixed at 5 credits<br>
+                2. Hit Start button to receive your initial five-card poker hand<br>
+                3. Discard card you don't deem useful, refer to scoring table<br>
+                4. Receive replacement cards for up to 5 discarded cards<br>
+                5. Winnings are paid out according to the score table<br>
+            </p>
+            <hr color="black">
+        </span>
+        <table class="score-table">
+            <tr id="title-row">
+                <th id="column-title-hand">Hand</th>
+                <th id="column-title-score">Score</th>
+                <th id="column-title-example">Example</th>
+            </tr>
+            <tr id="royal-flush-row">
+                <td>Royal Flush</td>
+                <td>250</td>
+                <td class="card-example" id=royal-flush-card-example></td>
+            </tr>
+            <tr id="straight-flush-row">
+                <td>Straight Flush</td>
+                <td>50</td>
+                <td class="card-example" id="straight-flush-card-example"></td>
+            </tr>
+            <tr id="four-kind-row">
+                <td>Four of a Kind</td>
+                <td>25</td>
+                <td class="card-example" id="four-kind-card-example"></td>
+            </tr>
+            <tr id="full-house-row">
+                <td>Full House</td>
+                <td>9</td>
+                <td class="card-example" id="full-house-card-example"></td>
+            </tr>
+            <tr id="flush-row">
+                <td>Flush</td>
+                <td>6</td>
+                <td class="card-example" id="flush-card-example"></td>
+            </tr>
+            <tr id="straight-row">
+                <td>Straight</td>
+                <td>4</td>
+                <td class="card-example" id="straight-card-example"></td>
+            </tr>
+            <tr id="three-kind-row">
+                <td>Three of a Kind</td>
+                <td>3</td>
+                <td class="card-example" id="three-kind-card-example"></td>
+            </tr>
+            <tr id="two-kind-row">
+                <td>Two of a Kind</td>
+                <td>2</td>
+                <td class="card-example" id="two-kind-card-example"></td>
+            </tr>
+            <tr id="high-card-row">
+                <td>J or Higher</td>
+                <td>1</td>
+                <td class="card-example" id="high-card-example"></td>
+            </tr>
+        </table>
+    </div>
+    <script type="module" src="scripts/script.js"></script>
+    <script type="module" src="scripts/createDeck.js"></script>
+    <script type="module" src="scripts/checkStates.js"></script>
+    <script type="module" src="scripts/scoreTable.js"></script>
+</body>
+
+</html>
