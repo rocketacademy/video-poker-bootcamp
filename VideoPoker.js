@@ -18,9 +18,7 @@
       let threeOfAKind = false;
       let twoPair = false;
       let onePair = false;
-      // let jacksOrBetter = false;
-
-
+    
       /**
        * A function that builds deck
        */
@@ -67,7 +65,6 @@
               suit: currentSuit,
               rank: rankCounter,
               pic: `./cardsPng/${cardName}_of_${currentSuit}.png`,
-              //`./images/cards/${cardName}_of_${currentSuit}.png`,
               display: displayName,      //1,2,J,K
               colour: currentColour,     //red,black
               suitSymbol: currentSymbol, //"♥️"
@@ -157,7 +154,8 @@
         // give it a class for CSS purposes
         scoreBoard.classList.add('scoreBoard');
         scoreBoard.innerHTML = `<tbody>`
-        for (let i = 0; i<firstColumn.length; i++){  
+        for (let i = 0; i<firstColumn.length; i++){ 
+          //because I'm adding ID, id only applies on the first instance of each column. I could apply a class to all the elements within the column.
           scoreBoard.innerHTML += '<tr><td id="first-column">' + firstColumn[i] + '</td><td id="second-column">' + secondColumn[i] + '</td><td id="third-column">' + thirdColumn[i] + '</td><td id="fourth-column">' + fourthColumn[i] + '</td><td id="fifth-column">' + fifthColumn[i] + '</td><td id="sixth-column">' + sixthColumn[i] + '</td></tr>';
             } 
           scoreBoard.innerHTML += '</tbody>'
@@ -412,6 +410,7 @@
 
       let talliedArray = [];
       //What object.values does is that it takes the values of the object and stores them into an array. In this case, I name it talliedArray
+      //I'm doing this because I want to loop through the array. I'm not sure how to do it via the object.
       talliedArray = Object.values(cardRankTally);
 
 
@@ -510,6 +509,148 @@
       console.log("end")
       }
 
+  // const countProb = () => {
+  //   // let playerholdArray is created within the countProb function as it needs to be emptied when the function is called.
+  //   let playerHoldArray = [];
+  //   let noDrawnCards = 0;
+  //   let cardRankTally = {};
+  //   let counter = 0;
+  //   // countProb will probably be integrated in the tablescore 
+  //   // countProb will fire when squares are clicked. Because that's when the probabilities will have to change 
+  //   // if card has the clickedContainer class, it means I want to remove it. 
+  //   // I need to know what's left in my playerHandArray 
+
+  //     // I have to create a way to combine both the clickedContainer class reader and the playerHandArray
+  //     // I circulate through the squares to find those with without classes, meaning, those which player intends to keep.
+  //    for (let i = 0; i < 5; i += 1) {
+  //     if (document.getElementById(`square${i}`).classList.contains("clickedContainer" === false)) {
+  //       //I register the card in an array (For now)
+  //       playerHoldArray.push(playerHandArray[i]) 
+  //     }
+  //    }
+  //   // I need to know how many cards I'm drawing
+  //   noDrawnCards = 5 - playerHoldArray.length 
+  //   // I need to calculate probability of each of the winning hands occuring
+
+  //     // Not sure if I have to sort the array first, but here it is
+  //     playerHoldArray.sort(function (a, b) {
+  //       return a.rank - b.rank;
+  //     });
+
+  //     //Creates an object which tallies the cards
+  //     for (let i = 0; i < playerHoldArray.length; i += 1) {
+  //       let cardRank = playerHoldArray[i].rank;
+  //       // If we have seen the card name before, increment its count
+  //       if (cardRank in cardRankTally) {
+  //         cardRankTally[cardRank] += 1;
+  //       }
+  //       // Else, initialise count of this card name to 1
+  //       else {
+  //         cardRankTally[cardRank] = 1;
+  //       }
+  //     }
+  //     console.log(cardRankTally);
+
+  //     let talliedArray = [];
+  //     //What object.values does is that it takes the values of the object and stores them into an array. In this case, I name it talliedArray
+  //     talliedArray = Object.values(cardRankTally);
+
+  //      //test twoPair 
+  //     for (let i = 0; i < talliedArray.length; i += 1) {
+  //       if (talliedArray[i] === 2) {
+  //         counter += 1;
+  //         onePair = true;
+  //         console.log("onePair is true")
+  //       }
+  //       if (counter === 2) {
+  //         twoPair = true;
+  //         console.log("twoPair is true")
+  //       }
+  //     }
+  //     counter = 0;
+
+  //     //test threeOfAKind
+  //     for (let i = 0; i < talliedArray.length; i += 1) {
+  //       if (talliedArray[i] === 3) {
+  //         counter += 1;
+  //       }
+  //       if (counter === 1) {
+  //         threeOfAKind = true;
+  //         console.log("threeOfAKind is true")
+  //       }
+  //     }
+  //     counter = 0;
+
+  //     //test fourOfAKind
+  //     for (let i = 0; i < talliedArray.length; i += 1) {
+  //       if (talliedArray[i] === 4) {
+  //         counter += 1;
+  //       }
+  //       if (counter === 1) {
+  //         fourOfAKind = true;
+  //         console.log("fourOfAKind is true")
+  //       }
+  //     }
+  //     counter = 0;
+
+  //     //test straights
+  //     for (let i = 0; i < (playerHandArrayFinal.length - 1); i++) {
+  //       let storeRank = playerHandArrayFinal[i].rank
+  //       let scoreDifference = storeRank - playerHandArrayFinal[i+1].rank
+  //       if (scoreDifference === -1) {
+  //           counter += 1;
+  //         }
+  //       //account for A, 10, J, Q, K
+  //       if ((counter === 4) || ((playerHandArrayFinal[0].rank === 1) && (playerHandArrayFinal[1].rank === 10) && (counter === 3))) {
+  //         straight = true;
+  //         console.log("straights is true")
+  //       }
+  //     }
+
+  //     counter = 0;
+
+  //     //test flush
+  //     let storeSuit = playerHandArrayFinal[0].suit
+  //     for (let i = 0; i < playerHandArrayFinal.length; i++)
+  //       if (storeSuit === playerHandArrayFinal[i].suit) {
+  //           counter += 1;
+  //         }
+  //       if (counter === 5) {
+  //         flush = true;
+  //         console.log("flush is true")
+  //       }
+
+  //     counter = 0;
+
+  //     //test straightFlush
+  //     if (straight === true && flush === true) {
+  //       straightFlush = true;
+  //       console.log("straight flush is true")
+  //     }
+
+  //     //test fullHouse
+  //     if (onePair === true && threeOfAKind === true) {
+  //       fullHouse = true;
+  //       console.log("fullHouse is true")
+  //     }
+
+  //     //test royalFlush
+  //     for (let i = 0; i < (playerHandArrayFinal.length - 1); i++) {
+  //       let storeRank = playerHandArrayFinal[i].rank
+  //       let scoreDifference = storeRank - playerHandArrayFinal[i+1].rank
+  //       if (scoreDifference === -1) {
+  //           counter += 1;
+  //         }
+  //       //account for A, 10, J, Q, K
+  //       if ((flush === true) && ((playerHandArrayFinal[0].rank === 1) && (playerHandArrayFinal[1].rank === 10) && (counter === 3))) {
+  //         royalFlush = true;
+  //         console.log("royalFlush is true")
+  //       }
+  //     }
+  //     console.log("end")
+  //     }
+
+
       /**
        * A function which creates messages for the player to understand what's going on in the game. 
        */
@@ -525,59 +666,73 @@
             if (royalFlush === true) {
               let msgsForPlayer = document.querySelector('#player-msg')
               msgsForPlayer.innerHTML = `YOU GOT A ROYAL FLUSH!`
+              msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
               winAmount = betAmount * 250
               playerScore += winAmount + betAmount
               outputPlayerCreditMsg(); 
             } else if (straightFlush === true) {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `YOU GOT A STRAIGHT FLUSH!`
+                msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
                 winAmount = betAmount * 50
                 playerScore += winAmount + betAmount
                 outputPlayerCreditMsg(); 
             } else if (fourOfAKind === true) {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `YOU GOT A FOUR OF A KIND!`
+                msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
                 winAmount = betAmount * 25
                 playerScore += winAmount + betAmount
                 outputPlayerCreditMsg(); 
             } else if (fullHouse === true) {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `YOU GOT A FULL HOUSE!`
+                msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
                 winAmount = betAmount * 9
                 playerScore += winAmount + betAmount
                 outputPlayerCreditMsg(); 
             } else if (flush === true) {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `YOU GOT A FLUSH!`
+                msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
                 winAmount = betAmount * 6
                 playerScore += winAmount + betAmount
                 outputPlayerCreditMsg(); 
             } else if (straight === true) {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `YOU GOT A STRAIGHT!`
+                msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
                 winAmount = betAmount * 4
                 playerScore += winAmount + betAmount
                 outputPlayerCreditMsg(); 
             } else if (threeOfAKind === true) {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `YOU GOT A THREE OF A KIND!`
+                msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
                 winAmount = betAmount * 3
                 playerScore += winAmount + betAmount
                 outputPlayerCreditMsg(); 
             } else if (twoPair === true) {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `YOU GOT A TWO PAIR!`
+                msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
                 winAmount = betAmount * 2
                 playerScore += winAmount + betAmount
                 outputPlayerCreditMsg(); 
             } else {
                 let msgsForPlayer = document.querySelector('#player-msg')
                 msgsForPlayer.innerHTML = `BETTER LUCK NEXT TIME!`
+                msgsForPlayer.innerHTML += `<br> CLICK DEAL TO PLAY AGAIN!`
             }
         }
       }
 
       initGame();
+
+
+
   }
 
   gameLoop();
+
+
