@@ -14,6 +14,8 @@ let bettingMoney = 0;
 let balanceAmount = 0;
 let winnings = 0;
 let returns = 0;
+let clickCount = 0;
+
 //---FOR CARDS---//
 let container;
 let playerCardHand = [];

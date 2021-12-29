@@ -71,8 +71,33 @@ const makeDeck = (cardAmount) => {
 // SHUFFLE ALL 52 CARDS //
 let deck = shuffleCards(makeDeck());
 
+/* A function that highlights the table according to the amount of bet put in
+ * @param clickCount is the amount of bet put in
+ * @param tableCont is a dom for the table
+ * returns grey background color
+ */
+const tableHighlights = (clickCount) => {
+  for (i = 0; i < tableCont.rows.length; i++) {
+    tableCont.rows[i].cells[clickCount].style.backgroundColor = "grey";
+
+    if (
+      tableCont.rows[i].cells[clickCount - 1].style.backgroundColor === "grey"
+    ) {
+      tableCont.rows[i].cells[clickCount - 1].style.backgroundColor = "";
+    }
+  }
+};
+const removeHighlights = () => {
+  let highlighed = tableCont.querySelectorAll("td");
+  console.log(highlighted);
+};
+
 // FUNCTIONS FOR SOME OF THE BUTTONS CREATED //
 const buttonFunctions = () => {
+  let tableCont = document.getElementById("table");
+  let allRows = tableCont.querySelectorAll("tr");
+
+  console.log(allRows);
   let coinsPouringAudio = new Audio();
   coinsPouringAudio.src = "coins-pouring.mp3";
   let coinAudio = new Audio();
@@ -91,10 +116,14 @@ const buttonFunctions = () => {
       buttonContainer.appendChild(restartButton);
       outputMessage.innerHTML = `You've run out of money. <br><br> Please proceed to the nearest ATM to withdraw money and restart the game.`;
     } else if (balanceAmount < 5 && balanceAmount > 0) {
+      clickCount = balanceAmount;
       bettingMoney = balanceAmount;
+      tableHighlights(clickCount);
       outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
     } else if (balanceAmount >= 5) {
+      clickCount = 5;
       bettingMoney = 5;
+      tableHighlights(clickCount);
       outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
     }
     // DISABLING/ENABLING SOME OF THE OTHER BUTTONS WHEN BET ALL IS CLICKED. MAX TO BET IS $5 AT ONE GO
@@ -104,10 +133,13 @@ const buttonFunctions = () => {
     betOneButton.disabled = true;
   });
   betOneButton.addEventListener("click", () => {
+    clickCount++;
     coinAudio.play();
     dealButton.disabled = false;
     bettingMoney++;
     balanceAmount -= 1;
+    tableHighlights(clickCount);
+
     if (balanceAmount < 0) {
       removeElement("deal-button");
       removeElement("bet-one");
@@ -151,6 +183,20 @@ const buttonFunctions = () => {
   });
 
   finalDealButton.addEventListener("click", () => {
+    // set timeout here to remove all highlights when final cards in hand are locked in
+    setTimeout(() => {
+      // selecting all rows in the table
+      for (i = 0; i < allRows.length; i++) {
+        // selecting all cells in the table
+        let allColumns = allRows[i].querySelectorAll("td");
+        console.log(allColumns);
+        // going through all the cells to change each one back to its original color
+        for (j = 0; j < allColumns.length; j++) {
+          allColumns[j].style.backgroundColor = "";
+        }
+      }
+    }, 3000);
+
     if (mode === "firstRound") {
       buttonContainer.appendChild(betOneButton);
       buttonContainer.appendChild(betAllButton);
@@ -174,6 +220,7 @@ const buttonFunctions = () => {
       betOneButton.disabled = false;
       secondFlipCard();
     }
+    clickCount = 0;
   });
   restartButton.addEventListener("click", () => {
     location.reload();
