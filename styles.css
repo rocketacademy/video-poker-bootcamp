@@ -1,6 +1,6 @@
 body {
   background-color: black;
-  background-image: url("https://wallpaper-house.com/data/out/7/wallpaper2you_199983.gif");
+  background-image: url("https://i.pinimg.com/originals/40/16/cd/4016cd0da5dd95f171edbdb6dbd83806.gif");
   background-size: 100%;
   max-width: 100%;
 }
@@ -103,11 +103,6 @@ body {
   transform-style: preserve-3d;
   margin-top: -3px;
 }
-
-/* .back-card {
-  width: 50px;
-  height: 30px;
-} */
 
 .front-card {
   transform: rotateY(180deg);
