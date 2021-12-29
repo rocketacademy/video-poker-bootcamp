@@ -136,6 +136,7 @@ const winningCombos = () => {
   winningAudio.src = "winning-audio.wav";
   let losingAudio = new Audio();
   losingAudio.src = "total-fail.wav";
+
   if (twoPairs === true) {
     returns = bettingMoney * 2;
     winnings = bettingMoney * 3;
@@ -199,6 +200,8 @@ const winningCombos = () => {
     losingAudio.play();
     outputMessage.innerHTML = `You have no special combinations. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   }
+  // ALL OF THIS BELOW IS TO RESET EVERYTHING BACK TO ITS DEFAULT STATE AFTER ROUND IS COMPLETED
+  returns = 0;
   bettingMoney = 0;
   deck = shuffleCards(makeDeck());
   twoPairs = false;

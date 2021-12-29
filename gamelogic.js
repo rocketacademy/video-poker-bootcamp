@@ -79,18 +79,29 @@ const buttonFunctions = () => {
   coinAudio.src = "coin.ogg";
   let dealAudio = new Audio();
   dealAudio.src = "shuffle.wav";
-  let buttonCont = document.getElementsByClassName("button-cont")[0];
   // OUTPUT MESSAGE IS TO UPDATE THE AMOUNT THAT IS GAMBLE AND BALANCE IN HAND
   document.body.appendChild(outputMessage);
   betAllButton.addEventListener("click", () => {
     coinsPouringAudio.play();
+    if (balanceAmount <= 0) {
+      removeElement("deal-button");
+      removeElement("bet-one");
+      removeElement("bet-all");
+      removeElement("container");
+      buttonContainer.appendChild(restartButton);
+      outputMessage.innerHTML = `You've run out of money. <br><br> Please proceed to the nearest ATM to withdraw money and restart the game.`;
+    } else if (balanceAmount < 5 && balanceAmount > 0) {
+      bettingMoney = balanceAmount;
+      outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
+    } else if (balanceAmount >= 5) {
+      bettingMoney = 5;
+      outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
+    }
     // DISABLING/ENABLING SOME OF THE OTHER BUTTONS WHEN BET ALL IS CLICKED. MAX TO BET IS $5 AT ONE GO
-    bettingMoney = 5;
     balanceAmount -= bettingMoney;
     dealButton.disabled = false;
     betAllButton.disabled = true;
     betOneButton.disabled = true;
-    outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
   });
   betOneButton.addEventListener("click", () => {
     coinAudio.play();
@@ -102,7 +113,8 @@ const buttonFunctions = () => {
       removeElement("bet-one");
       removeElement("bet-all");
       removeElement("container");
-      outputMessage.innerHTML = `You've run out of money. <br><br> Please proceed to the nearest ATM to withdraw money and refresh the page. <br><br> In case you're broke and can no longer play, have a nice day.`;
+      buttonContainer.appendChild(restartButton);
+      outputMessage.innerHTML = `You've run out of money. <br><br> Please proceed to the nearest ATM to withdraw money and restart the game.`;
     }
     // DISABLING/ENABLING SOME OF THE OTHER BUTTONS WHEN BET ALL IS CLICKED. MAX TO BET IS $5 AT ONE GO
     else if (bettingMoney === 5) {
@@ -162,6 +174,9 @@ const buttonFunctions = () => {
       betOneButton.disabled = false;
       secondFlipCard();
     }
+  });
+  restartButton.addEventListener("click", () => {
+    location.reload();
   });
 };
 

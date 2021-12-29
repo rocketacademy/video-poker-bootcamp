@@ -1,4 +1,7 @@
 //---DOCUMENT OBJECT MODEL---//
+let restartButton = document.createElement("button");
+restartButton.setAttribute("id", "restart");
+restartButton.innerHTML = "RESTART";
 let readyButton = document.createElement("button");
 let gameMessage = document.createElement("div");
 let dealButton = document.createElement("button");
@@ -26,3 +29,5 @@ buttonContainer.classList.add("button-cont");
 buttonContainer.appendChild(betOneButton);
 buttonContainer.appendChild(betAllButton);
 buttonContainer.appendChild(dealButton);
+
+let tableCont = document.getElementById("table");
