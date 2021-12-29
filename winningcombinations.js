@@ -3,7 +3,9 @@
  */
 const twoPairsCombo = () => {
   let pairs = [];
-  let sortedDeck = cardRankInHand.sort();
+  let sortedDeck = cardRankInHand.sort(function (a, b) {
+    return a - b;
+  });
   for (i = 0; i < 5; i++) {
     if (sortedDeck[i] === sortedDeck[i + 1]) {
       pairs.push(sortedDeck[i]);
@@ -142,7 +144,7 @@ const winningCombos = () => {
     winnings = bettingMoney * 3;
     balanceAmount += winnings;
     winningAudio.play();
-    outputMessage.innerHTML = `You have a Two pairs. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have Two pairs. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else if (threeKinds === true) {
     returns = bettingMoney * 3;
     winnings = bettingMoney * 4;
@@ -193,7 +195,7 @@ const winningCombos = () => {
     winnings = bettingMoney * 2;
     balanceAmount += winnings;
     winningAudio.play();
-    outputMessage.innerHTML = `You have a Jacks or Better. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have Jacks or Better. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
   } else {
     winnings = 0;
     balanceAmount += winnings;

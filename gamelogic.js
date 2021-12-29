@@ -29,7 +29,6 @@ const makeDeck = (cardAmount) => {
   for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
     // make a variable of the current suit
     const currentSuit = suits[suitIndex];
-    /* console.log(`current suit: ${currentSuit}`); */
 
     // loop to create all cards in this suit
     // rank 1-13
@@ -87,17 +86,12 @@ const tableHighlights = (clickCount) => {
     }
   }
 };
-const removeHighlights = () => {
-  let highlighed = tableCont.querySelectorAll("td");
-  console.log(highlighted);
-};
 
 // FUNCTIONS FOR SOME OF THE BUTTONS CREATED //
 const buttonFunctions = () => {
   let tableCont = document.getElementById("table");
   let allRows = tableCont.querySelectorAll("tr");
 
-  console.log(allRows);
   let coinsPouringAudio = new Audio();
   coinsPouringAudio.src = "coins-pouring.mp3";
   let coinAudio = new Audio();
@@ -108,6 +102,7 @@ const buttonFunctions = () => {
   document.body.appendChild(outputMessage);
   betAllButton.addEventListener("click", () => {
     coinsPouringAudio.play();
+    // If user has no money left, they have to restart the game
     if (balanceAmount <= 0) {
       removeElement("deal-button");
       removeElement("bet-one");
@@ -115,11 +110,13 @@ const buttonFunctions = () => {
       removeElement("container");
       buttonContainer.appendChild(restartButton);
       outputMessage.innerHTML = `You've run out of money. <br><br> Please proceed to the nearest ATM to withdraw money and restart the game.`;
+      // If user has left than $5 but wants to max bet, it will deduct whatever they have left
     } else if (balanceAmount < 5 && balanceAmount > 0) {
       clickCount = balanceAmount;
       bettingMoney = balanceAmount;
       tableHighlights(clickCount);
       outputMessage.innerHTML = `Money in hand: $${balanceAmount}<br><br> Betting: $${bettingMoney}`;
+      // If user has more than $5, it will take a maximum of only $5
     } else if (balanceAmount >= 5) {
       clickCount = 5;
       bettingMoney = 5;
@@ -139,7 +136,7 @@ const buttonFunctions = () => {
     bettingMoney++;
     balanceAmount -= 1;
     tableHighlights(clickCount);
-
+    // If user has no money left, they have to restart the game
     if (balanceAmount < 0) {
       removeElement("deal-button");
       removeElement("bet-one");
@@ -189,13 +186,13 @@ const buttonFunctions = () => {
       for (i = 0; i < allRows.length; i++) {
         // selecting all cells in the table
         let allColumns = allRows[i].querySelectorAll("td");
-        console.log(allColumns);
+
         // going through all the cells to change each one back to its original color
         for (j = 0; j < allColumns.length; j++) {
           allColumns[j].style.backgroundColor = "";
         }
       }
-    }, 3000);
+    }, 1500);
 
     if (mode === "firstRound") {
       buttonContainer.appendChild(betOneButton);
@@ -241,14 +238,13 @@ const createCard = (cardInfo) => {
   name.setAttribute("id", "front-card-name");
   name.setAttribute("data-value", cardInfo.name);
   name.innerText = cardInfo.name;
-  const backCard = document.createElement("div");
-  backCard.classList.add("back-card");
+
   card = document.createElement("div");
   card.classList.add("free-card");
-  /*  innerCard.appendChild(cardmode); */
+
   innerCard.appendChild(name);
   innerCard.appendChild(suit);
-  innerCard.appendChild(backCard);
+
   card.appendChild(innerCard);
   return card;
 };
@@ -329,9 +325,21 @@ const initGame = () => {
       "Enter amount here"
     )
   );
-  removeElement("ready-button");
-  playerClick();
-  buttonFunctions();
+  if (balanceAmount === 777) {
+    balanceAmount = Number(
+      window.prompt(
+        "How much money do you REALLY want to start with?",
+        "Enter amount here"
+      )
+    );
+    removeElement("ready-button");
+    playerClick7();
+    buttonFunctions7();
+  } else {
+    removeElement("ready-button");
+    playerClick();
+    buttonFunctions();
+  }
 };
 
 // CALLING OUT 5 CARDS INTO CONTAINER TO BE DISPLAYED FOR THE FIRST FLIP CARD //
@@ -422,7 +430,6 @@ const secondFlipCard = () => {
   // insert new cards into those that are removed
   // show on the front of card
   // update on player hand and tally it
-  const flipFreeCard = document.getElementsByClassName("free-card");
 
   for (let i = 0; i < allCards.length; i += 1) {
     if (holdArray.includes(allCards[i]) === false) {

@@ -15,7 +15,7 @@ let balanceAmount = 0;
 let winnings = 0;
 let returns = 0;
 let clickCount = 0;
-
+let dealCount = 4;
 //---FOR CARDS---//
 let container;
 let playerCardHand = [];
