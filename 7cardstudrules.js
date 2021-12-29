@@ -165,12 +165,13 @@ const buttonFunctions7 = () => {
       if (dealCount > 7) {
         dealButton.disabled = true;
       }
+      // User will be given a choice to lock in their cards in hand when they have 5 cards or more. They dont necessarily have to draw all 7 cards.
+      if (dealCount >= 6) {
+        // ONCE DEAL IS CLICKED, FINAL DEAL BUTTON WILL COME ON TO DOUBLE CONFIRM THEIR HAND
+        buttonContainer.appendChild(finalDealButton);
+      }
     }
-    // User will be given a choice to lock in their cards in hand when they have 5 cards or more. They dont necessarily have to draw all 7 cards.
-    if (dealCount >= 6) {
-      // ONCE DEAL IS CLICKED, FINAL DEAL BUTTON WILL COME ON TO DOUBLE CONFIRM THEIR HAND
-      buttonContainer.appendChild(finalDealButton);
-    }
+
     // for second round onwards, user needs to get a fresh deck of card starting with 2 face down cards and 1 face up card
     if (mode === "notFirstRound") {
       // dealCount above 7 will disable dealButton, this ensures on a new round, dealButton is enabled again
@@ -193,6 +194,11 @@ const buttonFunctions7 = () => {
       dealCount++;
       if (dealCount > 7) {
         dealButton.disabled = true;
+      }
+      // User will be given a choice to lock in their cards in hand when they have 5 cards or more. They dont necessarily have to draw all 7 cards.
+      if (dealCount >= 6) {
+        // ONCE DEAL IS CLICKED, FINAL DEAL BUTTON WILL COME ON TO DOUBLE CONFIRM THEIR HAND
+        buttonContainer.appendChild(finalDealButton);
       }
     }
   });
@@ -226,10 +232,7 @@ const buttonFunctions7 = () => {
     cardTally(allCards);
     winningCombos();
     mode = "notFirstRound";
-    console.log(allCards);
-    console.log("name", cardNameTally);
-    console.log("suit", cardSuitTally);
-    console.log("rank", cardRankInHand);
+    dealCount = 4;
   });
   restartButton.addEventListener("click", () => {
     location.reload();
