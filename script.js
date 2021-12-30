@@ -1332,12 +1332,13 @@ const analyzeHand = (cards) => {
 
       cardsToKeep = readHandAnalysis(data);
 
-      displayMessage('Hint: Keep these cards ...');
-
       if (cardsToKeep.length > 0) {
+        displayMessage('Hint: Keep these cards ...');
         delayedHintsMessageId = setTimeout(() => {
           displayCardsToKeep(cardsToKeep);
         }, NEW_HINT_TEXT_DELAY_IN_MILLI_SECONDS);
+      } else {
+        displayMessage('Hint: Replace all 5 cards');
       }
     }).catch((error) => console.error(error));
 
