@@ -13,6 +13,18 @@ let dealCardsBtn;
 let output;
 let input;
 
+// add images
+const image0 = document.createElement('img');
+const image1 = document.createElement('img');
+const image2 = document.createElement('img');
+const image3 = document.createElement('img');
+const image4 = document.createElement('img');
+image0.src = 'cardbacking.png';
+image1.src = 'cardbacking.png';
+image2.src = 'cardbacking.png';
+image3.src = 'cardbacking.png';
+image4.src = 'cardbacking.png';
+
 const initGame = () => {
   // create overall container
   overallContainer = document.createElement('div');
@@ -21,13 +33,13 @@ const initGame = () => {
 
   // create card combination container
   cardComboContainer = document.createElement('div');
-  cardComboContainer.innerText = 'VIDEO POKER';
+  // cardComboContainer.innerText = 'VIDEO POKER';
   cardComboContainer.classList.add('card-combo-container', 'section');
   overallContainer.appendChild(cardComboContainer);
 
   // create card display container
   gameContainer = document.createElement('div');
-  gameContainer.innerText = '';
+  gameContainer.innerHTML = '♥♦ Video Poker ♠♣';
   gameContainer.classList.add('game-container', 'section');
   overallContainer.appendChild(gameContainer);
 
@@ -48,26 +60,6 @@ const initGame = () => {
   buttonsContainer = document.createElement('div');
   buttonsContainer.classList.add('buttons-container');
   overallContainer.appendChild(buttonsContainer);
-
-  // // create input container, bet input and submit
-  // inputContainer = document.createElement('div');
-  // inputContainer.classList.add('input-container');
-  // buttonsContainer.appendChild(inputContainer);
-
-  /** removed input slider */
-  // bet input slider
-  // input = document.createElement('input');
-  // input.type = 'range';
-  // input.name = 'quantity';
-  // input.classList.add('input-bet');
-  // input.min = 0;
-  // input.max = 100;
-  // inputContainer.appendChild(input);
-  // // output for slider
-  // output = document.createElement('output');
-  // output.classList.add('output');
-  // output.setAttribute('for', 'quantity');
-  // inputContainer.appendChild(output);
 
   // create bet one button
   betOneBtn = document.createElement('button');
@@ -100,6 +92,37 @@ const initGame = () => {
    */
   const rangeInput = document.querySelector('.input-bet');
   const rangeOutput = document.querySelector('.output');
+
+  // add scoreBoard & card names DOING
+  const scoreBoardName = document.createElement('div');
+  scoreBoardName.classList.add('score-board', 'hand');
+  // scoreBoardName.innerText = 'Video Poker';
+  scoreBoardName.innerHTML =
+    'Royal Flush<br>Straight Flush<br>Four of a Kind<br>Full House<br>Flush<br>Straight<br>Three of a Kind<br>Two Pair';
+  cardComboContainer.appendChild(scoreBoardName);
+  const scoreBoard = document.createElement('div');
+  scoreBoard.classList.add('score-board');
+
+  ////////////////INPUT SLIDER (DEPRECIATED)
+  // // create input container, bet input and submit
+  // inputContainer = document.createElement('div');
+  // inputContainer.classList.add('input-container');
+  // buttonsContainer.appendChild(inputContainer);
+
+  /** removed input slider */
+  // bet input slider
+  // input = document.createElement('input');
+  // input.type = 'range';
+  // input.name = 'quantity';
+  // input.classList.add('input-bet');
+  // input.min = 0;
+  // input.max = 100;
+  // inputContainer.appendChild(input);
+  // // output for slider
+  // output = document.createElement('output');
+  // output.classList.add('output');
+  // output.setAttribute('for', 'quantity');
+  // inputContainer.appendChild(output);
 
   /** logic for input slider */
   // const outputDefaultState = () => {
