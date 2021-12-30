@@ -3,6 +3,12 @@
  */
 betOneBtn.addEventListener('click', () => {
   gameContainer.innerText = '';
+  gameContainer.appendChild(image0);
+  gameContainer.appendChild(image1);
+  gameContainer.appendChild(image2);
+  gameContainer.appendChild(image3);
+  gameContainer.appendChild(image4);
+
   if (gameMode === 'bet' || gameMode === 'deal') {
     if (betAmount < 5) {
       credits -= 1;
@@ -14,8 +20,39 @@ betOneBtn.addEventListener('click', () => {
     if (betAmount === 5) {
       gameMode = 'deal';
       outputContainer.innerText = "That's the way to play! Good luck! 😁";
+      betOneBtn.disabled = true;
     }
   }
+  // highlight the pointsBoard that corresponds to the betAmount
+
+  let highLight0 = document.querySelector('.board0');
+  let highLight1 = document.querySelector('.board1');
+  let highLight2 = document.querySelector('.board2');
+  let highLight3 = document.querySelector('.board3');
+  let highLight4 = document.querySelector('.board4');
+
+  switch (betAmount) {
+    case 1:
+      highLight0.classList.add('highLightBoard');
+      break;
+    case 2:
+      highLight0.classList.remove('highLightBoard');
+      highLight1.classList.add('highLightBoard');
+      break;
+    case 3:
+      highLight1.classList.remove('highLightBoard');
+      highLight2.classList.add('highLightBoard');
+      break;
+    case 4:
+      highLight2.classList.remove('highLightBoard');
+      highLight3.classList.add('highLightBoard');
+      break;
+    case 5:
+      highLight3.classList.remove('highLightBoard');
+      highLight4.classList.add('highLightBoard');
+      break;
+  }
+
   dealCardsBtn.disabled = false;
 });
 
@@ -24,15 +61,25 @@ betOneBtn.addEventListener('click', () => {
  */
 betFiveBtn.addEventListener('click', () => {
   gameContainer.innerText = '';
+  gameContainer.appendChild(image0);
+  gameContainer.appendChild(image1);
+  gameContainer.appendChild(image2);
+  gameContainer.appendChild(image3);
+  gameContainer.appendChild(image4);
   if (gameMode === 'bet') {
     credits -= 5;
     betAmount = 5;
     updateCredits();
     gameMode = 'deal';
-    outputContainer.innerText =
-      'All the best to ya boss! 😎 Hit the DEAL button!';
+    outputContainer.innerText = 'All the best to ya boss! 😎';
   }
+
+  let highlight4 = document.querySelector('.board4');
+  highlight4.classList.add('highLightBoard');
+
   dealCardsBtn.disabled = false;
+  betFiveBtn.disabled = true;
+  betOneBtn.disabled = true;
 });
 
 /**
@@ -78,6 +125,7 @@ dealCardsBtn.addEventListener('click', () => {
     betOneBtn.disabled = true;
     betFiveBtn.disabled = true;
     swapCardsBtn.disabled = false;
+    dealCardsBtn.disabled = true;
   }
 });
 
@@ -117,4 +165,7 @@ swapCardsBtn.addEventListener('click', () => {
   betFiveBtn.disabled = false;
   swapCardsBtn.disabled = true;
   dealCardsBtn.disabled = true;
+
+  gameContainer.style.fontSize = '1.5rem';
+  gameContainer.innerHTML = 'Start betting to play again!';
 });
