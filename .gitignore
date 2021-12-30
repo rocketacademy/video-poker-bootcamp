@@ -5,6 +5,6 @@
 node_modules/
 
 # Cypress sample directories and files
-cypress/integration/1-getting-started
-cypress/integration/2-advanced-examples
+cypress/integration/1-getting-started/
+cypress/integration/2-advanced-examples/
 
