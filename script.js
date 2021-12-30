@@ -17,26 +17,34 @@ const betMax = document.getElementById("bet-max");
 const playerPoints = document.getElementById("player-points");
 const playerBetsDiv = document.getElementById("player-bets");
 
+/** Plays the sound when the person presses the bet one or bet max */
 const betSound = () => {
   new Audio("./buttonsound.wav").play();
 };
 
+/** Plays the sound of cards dealing  */
 const dealSound = () => {
   new Audio("./dealcard.mp3").play();
 };
 
+/** Plays the sound when the person press the cards. */
 const holdSound = () => {
   new Audio("./hold.mp3").play();
 };
 
+/** Plays the sound when the person has a winning hand */
 const winSound = () => {
   new Audio("./win.wav").play();
 };
 
+/** Plays the sound when the person loses */
 const loseSound = () => {
   new Audio("./lose.wav").play();
 };
 
+/**
+ * Increases the player's bet by 1. if player bet is more than or equal to 5, player bet will revert back to 1. It also disables the deal button and highlights the score that is respective of the bet size.
+ */
 const increaseBet = () => {
   dealButton.disabled = false;
   if (playerBet >= 5) {
@@ -47,6 +55,9 @@ const increaseBet = () => {
   playerBetsDiv.innerText = `Player's Bet \n\n ${playerBet}`;
 };
 
+/**
+ * Increases the player's bet to the max bet size (5), disables the deal button and highlights the score that is respective of the bet size.
+ */
 const maxBet = () => {
   dealButton.disabled = false;
   playerBet = 5;
@@ -54,6 +65,9 @@ const maxBet = () => {
   playerBetsDiv.innerText = `Player's Bet \n\n ${playerBet}`;
 };
 
+/**
+ * Highlights the score the box in scoreboard that corresponds to the bet size.
+ */
 const highlightScore = () => {
   let x = document.querySelectorAll(".score");
   for (let o = 0; o < x.length; o += 1) {
@@ -63,21 +77,34 @@ const highlightScore = () => {
   x[num].style.backgroundColor = "rgba(255, 0, 221, 0.616)";
 };
 
+/**
+ * Initiates the game by making a new card deck, shuffling the cards and deal to hand.
+ */
 const initGame = () => {
   deck = makeDeck();
   deck = shuffleCards(deck);
   dealToHand(deck);
-  console.log(hand);
 };
 
+/**
+ * Takes the player's hand, calculating the total number of points and changes the global player's score accordingly.
+ * @param {Array.<Object>} hand - array of card objects in player's hand.
+ */
 const calcHandScore = (hand) => {
   totalPoints = hand[0].rank;
   for (let i = 1; i < hand.length; i += 1) {
     totalPoints += hand[i].rank;
   }
-
   pointSelection(hand);
-  console.log("score", handScore);
+};
+
+/**
+ * Takes the player's hand and calculates if they win or lose.
+ * @param {Array.<Object>} hand - array of card objects in player's hand.
+ */
+const calcWinLose = (hand) => {
+  calcHandScore(hand);
+
   if (handScore < 0) {
     playerChips -= playerBet;
   } else {
@@ -87,8 +114,10 @@ const calcHandScore = (hand) => {
   playerPoints.innerText = `Player Points \n\n ${playerChips}`;
 };
 
+/**
+ * Makes a deck of 52 card objects
+ */
 const makeDeck = () => {
-  // create the empty deck at the beginning
   const newDeck = [];
   const suits = ["hearts", "diamonds", "clubs", "spades"];
 
@@ -121,8 +150,18 @@ const makeDeck = () => {
   return newDeck;
 };
 
+/**
+ * Returns a random number within a range of 0 to a selected max num.
+ * @param {number} max - the selected max num of range
+ * @returns {number} random number within the the range of 0 and max.
+ */
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
+/**
+ * Shuffles the deck of card objects.
+ * @param {object} cards - the array of caard objects.
+ * @returns shuffled cards
+ */
 const shuffleCards = (cards) => {
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
     const randomIndex = getRandomIndex(cards.length);
@@ -134,6 +173,10 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
+/**
+ * Takes two cards from the deck and adds it to the player's hand.
+ * @param {Array.<Object>} deck - deck of 52 card objects
+ */
 const dealToHand = (deck) => {
   for (let i = 0; i < 5; i += 1) {
     let card = deck.pop();
@@ -141,6 +184,10 @@ const dealToHand = (deck) => {
   }
 };
 
+/**
+ * Change the property value of the card object from hold to change and vice versa, when applicable.
+ * @param {object} card - card object
+ */
 const toggleStay = (card) => {
   if (card.change === "hold") {
     card.change = "change";
@@ -149,6 +196,10 @@ const toggleStay = (card) => {
   }
 };
 
+/**
+ * Resets the property value of all the card objects in the player's hand to default (i.e.change).
+ * @param {Array.<Object>} hand
+ */
 const resetChange = (hand) => {
   for (let b = 0; b < hand.length; b += 1) {
     let card = hand[b];
@@ -156,6 +207,9 @@ const resetChange = (hand) => {
   }
 };
 
+/**
+ * Resets the global variables to the starting values and resets all functions back to the original starting point. Then initiates the game.
+ */
 const resetGame = () => {
   //reset the global variables
   handScore = 0;
@@ -180,14 +234,19 @@ const resetGame = () => {
     n[a].innerHTML = "";
   }
 
+  //initiates game
   initGame();
 
+  //changes the buttons status to original
   dealButton.disabled = true;
   betOne.disabled = false;
   betMax.disabled = false;
   console.log(deals);
 };
 
+/**
+ * Creates a popup that informs the player of the hand they achieved and whether they have win or lose. Also, adds buttons that allow the user to restart game or ends game.
+ */
 const popup = () => {
   const pop = document.createElement("div");
   if (handScore < 0) {
@@ -198,8 +257,11 @@ const popup = () => {
     pop.innerText = `You got ${handName}! \nYou Win!\n `;
   }
 
+  // adding css to the popup
   pop.classList.add("popup");
   document.body.appendChild(pop);
+
+  //create button for the next game
   const nextGame = document.createElement("button");
   nextGame.innerText = "Next Game";
   pop.appendChild(nextGame);
@@ -207,6 +269,8 @@ const popup = () => {
     pop.remove();
     resetGame();
   });
+
+  //create button for end game
   const endGame = document.createElement("button");
   endGame.innerText = "End Game";
   pop.appendChild(endGame);
@@ -220,6 +284,9 @@ betOne.addEventListener("click", increaseBet);
 betMax.addEventListener("click", maxBet);
 initGame();
 
+/**
+ * Deals 5 card objects into the player's hand and displays it. If the player has clicked deal twice, it will calculate the points of the hand and initate the popup.
+ */
 dealButton.addEventListener("click", function () {
   betMax.disabled = true;
   betOne.disabled = true;
@@ -263,7 +330,7 @@ dealButton.addEventListener("click", function () {
     "Click the cards that you want to hold. \n Then click draw when you are ready!";
 
   if (deals === 2) {
-    calcHandScore(hand);
+    calcWinLose(hand);
     popup();
   }
 });
