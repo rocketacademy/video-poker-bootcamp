@@ -185,7 +185,7 @@ const updateCredits = (creditChange) => {
   } else {
     credit += creditChange;
     credits.innerText = `Credits:${credit}`;
-    setButtons('bet');
+    // setButtons('bet');
   }
 };
 
@@ -721,7 +721,13 @@ const drawClick = (cardsElement) => {
   // calculate hand score, winnings, and update credits
   const score = calcHandScore(board);
   const winnings = calcWinnings(score, bet);
-  updateCredits(winnings);
+
+  if (winnings > 0) {
+    updateCredits(winnings);
+  } else {
+    updateBets(-1 * bet); // reset bet
+    setButtons('bet');
+  }
 
   if (winnings >= (SCORES.ROYAL_FLUSH * MAX_MULTIPLIER)) {
     // add special message if getting a royal flush
