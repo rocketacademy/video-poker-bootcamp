@@ -1,6 +1,6 @@
 # Pokermon: Pokemon Video Poker
 ## Overview
-This is a video poker game with Pokemon theme and done in 8-bit gaming style.
+This is a video poker game with Pokemon theme, done in 8-bit gaming style.
 This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootcamp.rocketacademy.co/projects/project-1-video-poker).
 
 **LIVE LINK** : https://hertantoirawan.github.io/video-poker-bootcamp/
