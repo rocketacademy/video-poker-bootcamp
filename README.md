@@ -16,7 +16,7 @@ This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootc
 - "Bet 5" is to add bet 5 credits at a time.
 - Player can bet as many credits (no max) as he/she wants.
 - Hint is given during select-cards-to-keep round, if Hints is enabled in Option menu.
-  - Hint is the result of API calls to [Flask API wrapper](https://github.com/hertantoirawan/video_poker_analyzer) of [Video Poker Analyzer code by Brad Jacobs](https://github.com/BradAJ/video_poker_analyzer)
+  - Hint is the result of API call to [Flask API wrapper](https://github.com/hertantoirawan/video_poker_analyzer) of [Video Poker Analyzer code by Brad Jacobs](https://github.com/BradAJ/video_poker_analyzer)
 - Pokemon character host, game music, and hints settings can be changed in Option menu.
 - Secret codes
   - Konami code: Up, Up, Down, Down, Left, Right, Left, Right, B, A
