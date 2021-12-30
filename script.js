@@ -37,20 +37,6 @@ const comboPoints = {
   highCard: [0, 0, 0, 0, 0],
 };
 
-// TODO
-// clicks a button to deal cards DONE
-// user selects which card to keep DONE
-// --> cards get saved to savedCardsArray when clicked. Need to create a function that replaces the unclicked cards DONE
-// game calculates the hand score upon dealt of first hand DONE
-// function that adds card in a loop and adds a click element to change cards. DONE
-// create status box to track: credits DONE
-// add royal flush DONE
-// come up with point system DONE
-// game calculates the handscore, and update total points. DONE
-// add output container instructions, output final combo. DOING
-
-// CSS DOING
-
 ///////////////////////////////////
 // Calculate handscore functions //
 ///////////////////////////////////
@@ -61,17 +47,6 @@ const comboPoints = {
  */
 
 const calcHandScore = (cardHand) => {
-  // 1 pair DONE
-  // 2 pair DONE
-  // 3 of a kind DONE
-  // straight DONE
-  // flush DONE
-  // full house DONE
-  // 4 of a kind DONE
-  // straight flush DONE
-  // royal flush DONE
-  // 5 of a kind
-
   checkForStraight(cardHand);
   checkForFlush(cardHand);
   checkForRoyalFlush(cardHand);
@@ -170,7 +145,7 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
       cardTally[rank] = 1;
     }
   }
-  console.log(cardTally);
+  // console.log(cardTally);
 
   let card4x = false;
   let card3x = false;
@@ -213,6 +188,43 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
   // );
 };
 
+/*
+const comboPoints = {
+  royalFlush: [250, 500, 750, 1000, 4000],
+  straightFlush: [50, 100, 150, 200, 250],
+  quads: [25, 50, 75, 100, 125],
+  fullHouse: [9, 18, 27, 36, 45],
+  flush: [6, 12, 18, 24, 30],
+  straights: [4, 8, 12, 16, 20],
+  thriples: [3, 6, 9, 12, 15],
+  twoPair: [2, 4, 6, 8, 10],
+  pairs: [0, 0, 0, 0, 0],
+  highCard: [0, 0, 0, 0, 0],
+}; */
+
+///////////////////////
+// create scoreboard // DOING
+///////////////////////
+// create 5 boxes with scores for each bet (1-5).
+let index = 0;
+for (let i = 0; i < 5; i += 1) {
+  // create a div for each bet amt
+  const pointsBoard = document.createElement('div');
+  pointsBoard.classList.add('pointsBoard', `board${index}`);
+  cardComboContainer.appendChild(pointsBoard);
+  // iterate through the comboPoints obj
+  for (const [comboName, points] of Object.entries(comboPoints)) {
+    // skip iteration of pairs and highcard in comboPoints
+    if (comboName === 'pairs' || comboName === 'highCard') {
+    } else {
+      // add the points of that combo to the div
+      let pointsDisplay = points[index];
+      pointsBoard.innerHTML += `${pointsDisplay}<br>`;
+    }
+  }
+  index += 1;
+}
+
 //////////////////////
 // helper functions //
 //////////////////////
@@ -223,7 +235,9 @@ const quadsThriplesPairsFullHouse = (cardHand) => {
  */
 const bestComboAchieved = () => {
   for (let [combo, j] of Object.entries(combosMet)) {
+    // check against combosMet obj in high to low rank
     if (j === 1) {
+      // if any combo === 1, returns that combo
       return combo;
     }
   }
