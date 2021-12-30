@@ -1,7 +1,8 @@
 let deck;
 let playerPoints = 1000;
-let bettedPoints = 0;
+let bettedPoints = document.getElementById("points-betted");
 let playerHand = [];
+let canDraw = true;
 
 const playerCardsDiv = document.getElementById("playerCardsDiv");
 const gameInfoDiv = document.getElementById("game-info-div");
@@ -16,22 +17,42 @@ dealButton.addEventListener("click", () => {
   // console.log(`deal button has been clicked`);
   if (playerHand.length != 5) {
     drawCardIntoHand(5);
-    bettedPoints = 10;
-  } else {
+  } else if (canDraw == true) {
     removeMarkedCards(playerHand);
     replaceRemovedCards(playerHand);
-    bettedPoints += 10;
   }
   refreshDisplay();
 });
 
 const playButton = document.getElementById("playButton");
 playButton.addEventListener("click", () => {
-  console.log(`draw button has been clicked`);
-  const winner = parseResults(playerHand);
-  gameInfoDiv.classList.add("show");
-  calcHandScore(winner);
+  // console.log(`draw button has been clicked`);
+  if (playerHand.length != 0) {
+    const winner = parseResults(playerHand);
+    gameInfoDiv.classList.add("show");
+    calcHandScore(winner);
+    refreshDisplay();
+    // something to disable the Deal and Play buttons
+    dealButton.disabled = true;
+    playButton.disabled = true;
+  }
+});
+
+const continueButton = document.getElementById("continueButton");
+continueButton.addEventListener("click", () => {
+  // some function to remove every card from the hand or replace every element with ""
+  for (i = 0; i < 5; i += 1) {
+    playerHand[i] = "";
+  }
+  // redraw all cards
+  replaceRemovedCards(playerHand);
+  // refreshdisplay
   refreshDisplay();
+  // hide game div
+  gameInfoDiv.classList.remove("show");
+  // re-enable game buttons
+  dealButton.disabled = false;
+  playButton.disabled = false;
 });
 
 /** @type {object} */
@@ -68,6 +89,7 @@ const cardNameMap = {
   13: "king",
 };
 
+/** @type {object} */
 const winTextMap = {
   null: "no winning combinations",
   royalFlush: "a Royal Flush",
@@ -81,9 +103,8 @@ const winTextMap = {
 };
 
 /**
- *helper function to generate a standard deck of 52 playing cards
- *
- * @return {array} 52 sequential card objects
+ * generates a standard deck of 52 playing cards
+ * @return {array} - 52 sequential card objects
  */
 const makeDeck = function () {
   const cardDeck = [];
@@ -114,8 +135,7 @@ const makeDeck = function () {
 };
 
 /**
- * helper function to randomly reorder all elements in an array
- * based on Durstenfeld shuffle
+ * randomly reorder all elements in an array, based on Durstenfeld shuffle
  * https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
  * @param {array} array - array
  * @return {array} - reordered array
@@ -131,7 +151,6 @@ const shuffleArray = function (array) {
 };
 
 /**
- * helper function
  * removes a number of cards from the deck and moves them into the player's hand
  * @param {number} numOfCards - number of cards to be drawn
  */
@@ -144,8 +163,7 @@ const drawCardIntoHand = function (numOfCards) {
 };
 
 /**
- * helper function - marks the card, is called by the eventListener in createCardDiv.
- *
+ * marks the card, is called by the eventListener in createCardDiv.
  * @param {number} handArrIndex - index of the card to be removed from playerHand
  */
 const markCardForRemoval = function (handArrIndex) {
@@ -201,37 +219,56 @@ const displayCard = function (cardObj, handPosition) {
 };
 
 /**
- * helper function - takes a hand of cards and returns the number of points
- * that the user scored for this handArray
- * @param {array} handArr - 1-D arary of unique card objects
+ * takes a hand of cards and returns the number of points that the user scored for this handArray
+ * by matching the type of combination to a score multiplier and changing the playerPoints and bettedPoints
+ * global variables
+ * @param {string} handType - the type of winning combination scored by the playerHand array, or null if no combination is found
  */
 const calcHandScore = function (handType) {
-  const earnings = betMultiplierMap[handType] * bettedPoints;
-  gameInfo.innerText = `Your hand contains ${winTextMap[handType]}.\nYou placed a bet of ${bettedPoints} points, and you have won ${earnings} points this round.\nYour total is currently ${playerPoints} points.`;
+  let bet = document.getElementById("points-betted");
+  // console.log(bet);
+  // console.log(bet.value);
+  const earnings = betMultiplierMap[handType] * bet.value;
   playerPoints += earnings;
-  bettedPoints = 0;
+  gameInfoText.innerText = `Your hand contains ${winTextMap[handType]}.\nYou placed a bet of ${bet.value} points, and you have won ${earnings} points this round.\nYour total is currently ${playerPoints} points.\nYour deck has ${deck.length} cards remaining.`;
+  bet.value = 10;
 };
 
+/**
+ * takes a playerHand array, scans each card for the .toremove attribute
+ * and replaces the element in the array if the card is marked for removal
+ * @param {array} cardObjArr
+ */
 const removeMarkedCards = function (cardObjArr) {
-  console.log("removing cards...");
+  // console.log("removing cards...");
   for (let i = 0; i < cardObjArr.length; i += 1) {
     let card = cardObjArr[i];
     if (card.toRemove == true) {
       cardObjArr[i] = "";
-      console.log(`card ${i} removed`);
+      // console.log(`card ${i} removed`);
     }
   }
-  console.log("all cards removed.");
+  // console.log("all cards removed.");
 };
 
+/**
+ * scans the array for elements matching ""
+ * and replaces the element with a new card drawn from the deck
+ * @param {*} cardObjArr
+ */
 const replaceRemovedCards = function (cardObjArr) {
   for (let i = 0; i < cardObjArr.length; i += 1) {
     if (cardObjArr[i] == "") {
       cardObjArr[i] = deck.pop();
     }
   }
+  dealButton.disabled = true;
 };
 
+/**
+ * removes contents of the playerCardsDiv and replaces them with new cards
+ * updates scoreData amd bettingData
+ */
 const refreshDisplay = function () {
   // need to remove original card divs
   playerCardsDiv.innerHTML = "";
@@ -240,7 +277,6 @@ const refreshDisplay = function () {
     displayCard(playerHand[i], createCardDiv(i));
   }
   scoreData.innerText = playerPoints;
-  bettingData.innerHTML = bettedPoints;
 };
 
 deck = shuffleArray(makeDeck());

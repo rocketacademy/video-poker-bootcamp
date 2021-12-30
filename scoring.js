@@ -80,7 +80,7 @@ const isTwoPairs = function (valuesArr) {
     return b - a;
   });
   const comparatorArray = [2, 2, 1];
-  console.log((comparatorArray, valuesArr));
+  // console.log((comparatorArray, valuesArr));
   return arrayEquals(comparatorArray, valuesArr);
 };
 
@@ -112,8 +112,8 @@ const isStraight = function (handArr) {
       trueCounter += 1;
     }
   }
-  console.log(`trueCounter: ${trueCounter} (for isStraight)`);
-  console.log(trueCounter === handArr.length);
+  // console.log(`trueCounter: ${trueCounter} (for isStraight)`);
+  // console.log(trueCounter === handArr.length);
   return trueCounter === handArr.length;
 };
 
@@ -135,8 +135,8 @@ const checkRepeatedCards = function (rankTallyObj) {
 const parseResults = function (rawPlayerHand) {
   const sortedHand = sortHand(rawPlayerHand);
   const rankTally = generateRankTally(sortedHand);
-  console.log("rankTally:");
-  console.log(rankTally);
+  // console.log("rankTally:");
+  // console.log(rankTally);
 
   // check flushes
   if (isFlush(sortedHand) == true) {

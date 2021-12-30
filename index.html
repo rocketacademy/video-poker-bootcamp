@@ -25,7 +25,7 @@
 
     <div id="points-info-div" class="points-info-div flex1">
       <div class="number-div">
-        <p>Points Remaining</p>
+        <label for="scoreBox">Points Remaining</label>
         <p id="scoreBox" class="numberBox">1000</p>
       </div>
 
@@ -35,8 +35,15 @@
       </div>
 
       <div class="number-div flex1">
-        <p>Points Betted</p>
-        <p id="bettingBox" class="numberBox">0</p>
+        <label for="points-betted">Points Betted</label>
+        <input
+          type="number"
+          id="points-betted"
+          value="10"
+          min="10"
+          max="100"
+          step="10"
+        />
       </div>
     </div>
 
@@ -46,9 +53,9 @@
 
     <div id="game-info-div" class="game-info-div">
       <p id="gameInfo"></p>
-      <!-- <button id="restartButton" class="button" style="display: block">
-        Continue
-      </button> -->
+      <div>
+        <button id="continueButton" class="button">Continue</button>
+      </div>
     </div>
 
     <!-- Import program logic -->

@@ -335,11 +335,13 @@ const TH_2Pairs = [
 ];
 
 const test = function (testHandArray) {
+  console.log("running test script.");
   playerHand = testHandArray;
   const winner = parseResults(playerHand);
-  gameInfoDiv.innerText = `Your hand is: ${winner}`;
+  // gameInfoDiv.innerText = `Your hand is: ${winner}`;
   calcHandScore(winner);
   refreshDisplay();
+  console.log("test script completed.");
 };
 
 test(TH_2Pairs);

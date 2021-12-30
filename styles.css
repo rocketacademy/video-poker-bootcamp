@@ -22,38 +22,40 @@ h1 {
   align-items: center;
   justify-content: space-around;
   margin: 1rem auto;
-  padding: 5px;
+  padding: 0.5%;
 }
 
 .game-info-div {
   background-color: slateblue;
   display: none;
-  width: fit-content;
+  width: 69%;
+  padding: 1%;
   margin: 20px auto auto auto;
-  font-size: 1rem;
+  border: #ff7b72 0.25rem solid;
+  font-size: 0.75rem;
   text-align: center;
 }
 
 .game-info-div.show {
-  display: flex;
+  display: block;
 }
 
 .card {
   display: flex;
   height: auto;
   width: auto;
-  margin: 5px;
+  margin: 0.5%;
 }
 
 .selected-card {
-  border: blueviolet 2px solid;
+  border: blueviolet 0px solid;
 }
 
 .points-info-div {
   display: flex;
   /* border: #ff7b72 0.125rem solid; */
   color: #ff7b72;
-  width: 45%;
+  width: 70%;
   height: fit-content;
   margin: auto;
   align-items: center;
@@ -93,9 +95,17 @@ button {
   height: fit-content;
 }
 
-.button:hover {
+button:hover {
   background-color: #f0883e;
   color: #0f2943;
+}
+
+button:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 .flex1 {
@@ -127,4 +137,21 @@ button {
 
 .winning-message.show {
   display: flex;
+}
+
+label {
+  display: block;
+  font-size: 0.75rem;
+}
+
+input {
+  color: #0f2943;
+  background-color: #ff7b72;
+  font-size: 1rem;
+  font-weight: 300;
+  font-family: "Roboto Mono", monospace;
+  width: fit-content;
+  padding: 1rem;
+  margin: auto;
+  text-align: center;
 }
