@@ -39,10 +39,12 @@ let creditId;
 let delayedMessageId;
 let delayedAnalyzeHandId;
 let delayedHintsMessageId;
+let delayedHintsSecondMessageId;
 let guaranteedWin = false;
 let speedUpCounting = false;
 let gameHost;
 let gameMusic;
+let gameHints;
 
 const NUMBER_OF_CARDS = 5;
 const MAX_BET = 5;
@@ -95,6 +97,7 @@ const displayMessage = (message, color = 'black') => {
   clearTimeout(delayedMessageId);
   clearTimeout(delayedAnalyzeHandId);
   clearTimeout(delayedHintsMessageId);
+  clearTimeout(delayedHintsSecondMessageId);
 
   messageId = setInterval(() => {
     if (subStringLength === message.length) {
@@ -694,9 +697,11 @@ const dealClick = (cardsElement) => {
   delayedMessageId = setTimeout(() => {
     displayMessage('and click DRAW to replace the rest.');
 
-    delayedAnalyzeHandId = setTimeout(() => {
-      analyzeHand(board);
-    }, NEW_TEXT_DELAY_IN_MILLI_SECONDS);
+    if (gameHints === 'yes') {
+      delayedAnalyzeHandId = setTimeout(() => {
+        analyzeHand(board);
+      }, NEW_TEXT_DELAY_IN_MILLI_SECONDS);
+    }
   }, NEW_TEXT_DELAY_IN_MILLI_SECONDS);
 
   // remove win info
@@ -1142,6 +1147,10 @@ const loadSettings = () => {
   gameMusic = localStorage.getItem('music');
   if (gameMusic === null || gameMusic === '') gameMusic = './assets/pokemon-center.mp3';
   document.getElementById('game-audio').src = gameMusic;
+
+  // load game hints setting
+  gameHints = localStorage.getItem('hints');
+  if (gameHints === null || gameHints === '') gameHints = 'no';
 };
 
 /**
@@ -1301,7 +1310,7 @@ const displayCardsToKeep = (cards) => {
 
   // display the other 2 cards to keep
   if (stringsToDisplay.length > 1) {
-    setTimeout(() => {
+    delayedHintsSecondMessageId = setTimeout(() => {
       displayMessage(stringsToDisplay[1]);
     }, NEW_HINT_TEXT_DELAY_IN_MILLI_SECONDS);
   }
