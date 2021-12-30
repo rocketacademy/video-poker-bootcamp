@@ -21,6 +21,7 @@ betOneBtn.addEventListener('click', () => {
       gameMode = 'deal';
       outputContainer.innerText = "That's the way to play! Good luck! 😁";
       betOneBtn.disabled = true;
+      betFiveBtn.disabled = true;
     }
   }
   // highlight the pointsBoard that corresponds to the betAmount
