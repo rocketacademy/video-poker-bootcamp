@@ -72,23 +72,24 @@ const makeDeck = () => {
 };
 
 const createCard = (cardInfo) => {
-  // const cardID = String(playerNum) + "-" + String(cardNum);
-  const suit = document.createElement("div");
-  suit.classList.add("suit", cardInfo.colour);
-  suit.innerText = cardInfo.suitSymbol;
-  const name = document.createElement("div");
-  name.classList.add("name", cardInfo.colour);
-  name.innerText = cardInfo.displayName;
-  const card = document.createElement("div");
-  card.className = "card";
-  // card.id = cardID;
-  // const decision = document.createElement("div");
-  // decision.innerText = "REPLACE";
-  // decision.className = "decision";
-  card.appendChild(name);
-  card.appendChild(suit);
-  // card.appendChild(decision);
-  return card;
+  let img = document.createElement("img");
+  img.className = "card";
+  img.src = `./${cardInfo.name}_of_${cardInfo.suit}.svg`;
+
+  return img;
+};
+
+const showCardBacks = () => {
+  cardContainer.innerHTML = "";
+  const handElement = document.createElement("div");
+  for (let i = 0; i < 5; i += 1) {
+    let img = document.createElement("img");
+    img.className = "card";
+    img.src = "./Card_back_05a.svg";
+    const cardElement = img;
+    handElement.appendChild(cardElement);
+  }
+  cardContainer.appendChild(handElement);
 };
 
 const dealFirstHands = () => {
@@ -330,7 +331,7 @@ const cardClick = (cardElement, i) => {
     // const clickedCard = hand[i];
 
     const clickedCard = hand[i];
-    gameInfo.innerText = `Clicked card is ${clickedCard.displayName} ${clickedCard.suitSymbol}`;
+
     printDecision();
     return;
     // let newCard = deck.pop();
@@ -346,7 +347,7 @@ const cardClick = (cardElement, i) => {
     // const clickedCard = hand[i];
 
     const clickedCard = hand[i];
-    gameInfo.innerText = `Clicked card is ${clickedCard.displayName} ${clickedCard.suitSymbol}`;
+
     // let newCard = deck.pop();
     // hand[i] = newCard;
     // handClickTracker[i] = true;
@@ -516,13 +517,14 @@ const giveSelectionAdvice = () => {
 
 //1. Game info message
 let gameInfo = document.createElement("div");
-gameInfo.innerText = "Video Poker - Click Deal to start";
+gameInfo.innerText = "Place bet and click deal to start";
 gameInfo.className = "game-info";
 document.body.appendChild(gameInfo);
 
 //2. Card container (and slider buttons for keep or discard?)
 let cardContainer = document.createElement("div");
 cardContainer.classList.add("card-container");
+cardContainer.classList.add("gradient-border");
 document.body.appendChild(cardContainer);
 
 let decisionContainer = document.createElement("div");
@@ -531,7 +533,7 @@ document.body.appendChild(decisionContainer);
 
 //Credits tracker container
 let creditsInfo = document.createElement("div");
-creditsInfo.innerText = "Bet: 0 Credits: 100";
+creditsInfo.innerText = "BET: 0 CREDITS: 100";
 creditsInfo.className = "credits-tracker";
 document.body.appendChild(creditsInfo);
 
@@ -568,8 +570,8 @@ const output = (message) => {
 
 //start of game logic
 
-const KEEP = "keep";
-const REPLACE = "replace";
+const KEEP = "KEEP";
+const REPLACE = "REPLACE";
 let betAmount = 0;
 let credits = 100;
 let deck;
@@ -577,11 +579,12 @@ let hand;
 let handClickTracker = [REPLACE, REPLACE, REPLACE, REPLACE, REPLACE];
 let gameMode = "first-draw"; // "calc-score" //"end-round"
 
+showCardBacks();
 betButton.addEventListener("click", () => {
   if (betAmount < 5 && gameMode === "first-draw") {
     betAmount += 1;
     credits -= 1;
-    creditsInfo.innerText = `Bet: ${betAmount} Credits: ${credits}`;
+    creditsInfo.innerText = `BET: ${betAmount} CREDITS: ${credits}`;
   }
 });
 
@@ -612,9 +615,6 @@ dealButton.addEventListener("click", () => {
     for (let i = 0; i < 5; i += 1) {
       const cardElement = createCard(hand[i]);
       cardElement.addEventListener("click", (event) => {
-        // we will want to pass in the card element so
-        // that we can change how it looks on screen, i.e.,
-        // "turn the card over"
         cardClick(event.currentTarget, i);
       });
       handElement.appendChild(cardElement);
@@ -633,9 +633,19 @@ dealButton.addEventListener("click", () => {
     let handResult = calcHandScore(hand);
     givePayout(findPayout(handResult));
     gameInfo.innerText = handResult;
+    if (handResult === "NIL") {
+      gameInfo.innerText = "Oops, no luck :(";
+    }
+
     gameMode = "first-draw";
     betAmount = 0;
-    creditsInfo.innerText = `Bet: ${betAmount} Credits: ${credits} - Place bet and deal again to play`;
+
+    setTimeout(() => {
+      gameInfo.innerText = "Place bet and click deal to start";
+      creditsInfo.innerText = `BET: ${betAmount} CREDIT: ${credits}`;
+      probContainer.innerHTML = "";
+      showCardBacks();
+    }, 3000);
     return;
   }
 });
