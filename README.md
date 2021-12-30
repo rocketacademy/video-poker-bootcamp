@@ -35,6 +35,7 @@ This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootc
 - Color inspiration from [Online Palette](https://www.onlinepalette.com/pokemon/)
 - Fonts from [Google Fonts](https://fonts.google.com/specimen/Press+Start+2P)
 - 8-bit card deck from [drawsgood](https://drawsgood.itch.io/)
+- 8-bit pokemon card back image modified from [Tumblr](https://66.media.tumblr.com/2c0f485a7b6c4c3e3ddd5bdb3d70794b/tumblr_mfluqxX5FE1rfjowdo1_540.gif)
 - Music and sounds from [Mobcup](https://mobcup.net/)
 - Pokermon logo made using [Font Meme](https://fontmeme.com/pokemon-font/)
 - README.md format from [Chingu article in Medium](https://medium.com/chingu/keys-to-a-well-written-readme-55c53d34fe6d)
