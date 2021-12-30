@@ -541,16 +541,18 @@ document.body.appendChild(creditsInfo);
 let buttonsContainer = document.createElement("div");
 buttonsContainer.classList.add("buttons-container");
 let dealButton = document.createElement("button");
-dealButton.innerText = "Deal";
+dealButton.innerText = "DEAL";
 
 let betButton = document.createElement("button");
-betButton.innerText = "Bet +1";
+betButton.innerText = "BET ONE";
 
 let probButton = document.createElement("button");
-probButton.innerText = "Calculate Probabilities";
+probButton.innerText = "CALC PROBS";
+probButton.classList.add("disabled-button");
 
 let adviceButton = document.createElement("button");
-adviceButton.innerText = "Seek Advice";
+adviceButton.innerText = "ADVISE ME";
+adviceButton.classList.add("disabled-button");
 
 buttonsContainer.appendChild(betButton);
 buttonsContainer.appendChild(dealButton);
@@ -586,6 +588,10 @@ betButton.addEventListener("click", () => {
     credits -= 1;
     creditsInfo.innerText = `BET: ${betAmount} CREDITS: ${credits}`;
   }
+
+  if (betAmount === 5) {
+    betButton.classList.add("disabled-button");
+  }
 });
 
 probButton.addEventListener("click", () => {
@@ -607,7 +613,10 @@ probButton.addEventListener("click", () => {
 dealButton.addEventListener("click", () => {
   // buildCardElements();
 
-  if (gameMode === "first-draw") {
+  if (gameMode === "first-draw" && betAmount > 0) {
+    betButton.classList.add("disabled-button");
+    probButton.classList.remove("disabled-button");
+    adviceButton.classList.remove("disabled-button");
     dealFirstHands();
     gameInfo.innerText = "Select cards you want to keep then deal again";
     cardContainer.innerHTML = "";
@@ -625,6 +634,9 @@ dealButton.addEventListener("click", () => {
   }
   if (gameMode === "calc-score") {
     decisionContainer.innerHTML = "";
+    probButton.classList.add("disabled-button");
+    adviceButton.classList.add("disabled-button");
+    dealButton.classList.add("disabled-button");
     gameMode = "end-round";
     //FOR TEST HANDS
     // hand = testrf;
@@ -637,7 +649,6 @@ dealButton.addEventListener("click", () => {
       gameInfo.innerText = "Oops, no luck :(";
     }
 
-    gameMode = "first-draw";
     betAmount = 0;
 
     setTimeout(() => {
@@ -645,7 +656,11 @@ dealButton.addEventListener("click", () => {
       creditsInfo.innerText = `BET: ${betAmount} CREDIT: ${credits}`;
       probContainer.innerHTML = "";
       showCardBacks();
+      gameMode = "first-draw";
+      betButton.classList.remove("disabled-button");
+      dealButton.classList.remove("disabled-button");
     }, 3000);
+
     return;
   }
 });

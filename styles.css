@@ -123,7 +123,19 @@ td {
 }
 
 .buttons-container {
+  width: 900;
   text-align: center;
+}
+
+.buttons-container > button {
+  /* background-color: yellow; */
+  margin: 5px 5px;
+  padding: 10px 5px;
+  font-family: "Arial Black", sans-serif;
+}
+
+.disabled-button {
+  background-color: grey;
 }
 
 /* .high-card {
