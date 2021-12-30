@@ -1,3 +1,8 @@
+/**
+ * Look through the cards in your hand and check for straights.
+ * @param {Array.<Object>} hand - array of card objects
+ * @returns {boolean} straight - returns true when there is a straight.
+ */
 const checkForStraights = (hand) => {
   let tempHand = hand.slice();
   tempHand.sort((a, b) => a.rank - b.rank);
@@ -10,11 +15,14 @@ const checkForStraights = (hand) => {
       break;
     }
   }
-  console.log(hand);
-  console.log(tempHand);
   return straight;
 };
 
+/**
+ * Check the the cards in your hand and check for Royal straights card.
+ * @param {Object} tally - tally of the hand, where the property is the card name and the value is the number of the cards in the hand.
+ * @returns {boolean} returns true when there is a royal cards
+ */
 const checkForRoyal = (tally) => {
   let royal = false;
   if (
@@ -26,8 +34,14 @@ const checkForRoyal = (tally) => {
   ) {
     royal = true;
   }
+  return royal;
 };
 
+/**
+ * Check the the cards in your hand and check for Flush
+ * @param {Array.<Object>} hand - array of card objects
+ * @returns {boolean} flush - returns true when there is a flush
+ */
 const checkForFlush = (hand) => {
   let flush;
   for (i = 1; i < hand.length; i += 1) {
@@ -43,6 +57,10 @@ const checkForFlush = (hand) => {
   return flush;
 };
 
+/**
+ * If the total points of the hand is more than 30 (i.e. more than 3 high cards), they will translate the rank of the aces to 14.
+ * @param {Array.<Object>} hand - array of card objects
+ */
 const checkForAces = (hand) => {
   for (i = 0; i < hand.length; i += 1) {
     if (totalPoints > 30 && hand[i].name === "ace") {
@@ -51,17 +69,30 @@ const checkForAces = (hand) => {
   }
 };
 
-const pointSelection = (hand) => {
-  let cardTally = {};
+/**
+ * Makes a card tally in your hand.
+ * @param {Array.<Object>} hand - array of card objects
+ * @returns {Object} tally - tally of the hand, where the property is the card name and the value is the number of the cards in the hand.
+ */
+const makeTally = (hand) => {
+  let tally = {};
   for (let v = 0; v < hand.length; v += 1) {
     var cardName = hand[v].name;
-    if (cardName in cardTally) {
-      cardTally[cardName] += 1;
+    if (cardName in tally) {
+      tally[cardName] += 1;
     } else {
-      cardTally[cardName] = 1;
+      tally[cardName] = 1;
     }
   }
+  return tally;
+};
 
+/**
+ * Calculates the points of the hand.
+ * @param {Array. <Object>} hand - array of card objects
+ */
+const pointSelection = (hand) => {
+  let cardTally = makeTally(hand);
   let tallyLength = Object.keys(cardTally).length;
 
   if (tallyLength === 2) {
