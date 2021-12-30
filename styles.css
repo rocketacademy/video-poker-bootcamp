@@ -29,26 +29,38 @@ body {
 }
 
 .card-combo-container {
-  font-size: 3rem;
-  height: 125px;
+  font-size: 1.2rem; /* changed from 3rem */
+  height: 250px; /* changed from 150px */
   border: 3px solid darkred;
+  justify-content: space-around;
+  font-weight: bold;
 }
 
 .game-container {
-  height: 150px;
-  border: 3px solid orangered;
+  height: 250px;
+  /* width: 500px; */
+  background-color: darkgreen;
+  border-radius: 150px;
+  font-size: 3rem;
+  color: darkorange;
+  text-align: center;
 }
 
 .output-container {
   height: 60px;
-  border: 3px solid yellow;
+  /* border: 3px solid darkred; */
 }
+/* 
+.score-board {
+  border: 3px solid orange;
+} */
 
 .btn {
   /* border-radius: 20%; */
   font-family: monospace;
-  /* border: 2px solid red; */
   cursor: pointer;
+  width: 90px;
+  height: 45px;
 }
 
 .input-container {
@@ -62,7 +74,7 @@ body {
 
 .status-container {
   font-size: 1rem;
-  border: 3px solid goldenrod;
+  /* border: 3px solid darkred; */
 }
 
 .card {
@@ -102,4 +114,14 @@ body {
 
 .card:hover {
   border: 3px solid orange;
+}
+
+.highLightBoard {
+  color: red;
+}
+
+img {
+  width: 50px;
+  border-radius: 5px;
+  margin: 10px;
 }
