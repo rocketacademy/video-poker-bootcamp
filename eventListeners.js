@@ -14,7 +14,7 @@ betOneBtn.addEventListener('click', () => {
       credits -= 1;
       betAmount += 1;
       updateCredits();
-      outputContainer.innerText = 'Come on, you can bet more!';
+      outputContainer.innerText = 'Come on, you can bet more! 💸';
       gameMode = 'deal';
     }
     if (betAmount === 5) {
