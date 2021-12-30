@@ -25,6 +25,7 @@ const REVEAL_CARDS_DELAY_IN_MILLI_SECONDS = 175;
 const ONE_SEC_IN_MILLI_SECONDS = 1000;
 const TEMP_CHANGE_DELAY_IN_MILLI_SECONDS = 1700;
 const KEY_SEQUENCE_DELAY_IN_MILLI_SECONDS = 700;
+const NEW_HINT_TEXT_DELAY_IN_MILLI_SECONDS = 2500;
 
 /**
  * Global variables.
@@ -36,6 +37,8 @@ let bet = 0;
 let messageId;
 let creditId;
 let delayedMessageId;
+let delayedAnalyzeHandId;
+let delayedHintsMessageId;
 let guaranteedWin = false;
 let speedUpCounting = false;
 let gameHost;
@@ -45,6 +48,8 @@ const NUMBER_OF_CARDS = 5;
 const MAX_BET = 5;
 const MAX_MULTIPLIER = 16;
 const MIN_RANK_FOR_ONE_PAIR = 11; // jack or higher
+
+const analyzeAPIPath = 'https://vp-analyzer.herokuapp.com/analyze';
 
 /**
  * Start/stop audio when speaker icon clicked.
@@ -88,6 +93,8 @@ const displayMessage = (message, color = 'black') => {
   // clear existing delayed messages
   clearInterval(messageId);
   clearTimeout(delayedMessageId);
+  clearTimeout(delayedAnalyzeHandId);
+  clearTimeout(delayedHintsMessageId);
 
   messageId = setInterval(() => {
     if (subStringLength === message.length) {
@@ -686,6 +693,10 @@ const dealClick = (cardsElement) => {
   displayMessage('Select cards to keep ...');
   delayedMessageId = setTimeout(() => {
     displayMessage('and click DRAW to replace the rest.');
+
+    delayedAnalyzeHandId = setTimeout(() => {
+      analyzeHand(board);
+    }, NEW_TEXT_DELAY_IN_MILLI_SECONDS);
   }, NEW_TEXT_DELAY_IN_MILLI_SECONDS);
 
   // remove win info
@@ -1162,6 +1173,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let userInput = [];
   let lastKeyTime = Date.now();
 
+  // handle key presses
   document.addEventListener('keydown', (event) => {
     const currentTime = Date.now();
 
@@ -1197,6 +1209,125 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+/**
+ * Read hand analysis result from video_poker_analyze API.
+ * @param {*} resp API response
+ * @returns Cards to keep based on analysis
+ */
+const readHandAnalysis = (resp) => {
+  const discardStrategy = Object.keys(resp)[0];
+
+  const cardsToKeep = [];
+  for (let i = 0; i < 10; i += 2) {
+    let cardName = discardStrategy.substring(i, i + 1);
+    let cardSuit = discardStrategy.substring(i + 1, i + 2);
+
+    if (cardName !== 'X') {
+      // convert T to 10
+      if (cardName === 'T') cardName = '10';
+
+      // convert suit
+      if (cardSuit === 's') cardSuit = 'Spades';
+      else if (cardSuit === 'h') cardSuit = 'Hearts';
+      else if (cardSuit === 'c') cardSuit = 'Clubs';
+      else if (cardSuit === 'd') cardSuit = 'Diamonds';
+
+      // keep recommended cards
+      cardsToKeep.push({ suit: cardSuit, name: cardName });
+    }
+  }
+
+  return cardsToKeep;
+};
+
+/**
+ * Convert cards object into string input for video_poker_analyze API.
+ * @param {*} cards Cards
+ * @returns Cards string
+ */
+const convertCardsToString = (cards) => {
+  const cardsStringArray = [];
+
+  for (let i = 0; i < cards.length; i += 1) {
+    const card = cards[i];
+    if (card.displayName === '10') card.displayName = 'T';
+
+    // combine display name with suit
+    cardsStringArray.push(card.displayName + cards[i].suit.substring(0, 1));
+  }
+
+  return cardsStringArray.join().replaceAll(',', '');
+};
+
+/**
+ * Display hints of cards to keep.
+ * @param {*} cards Cards to keep
+ */
+const displayCardsToKeep = (cards) => {
+  if (cards.length === 5) {
+    displayMessage('... keep all 5 cards');
+    return;
+  }
+
+  const stringsToDisplay = [];
+  let stringToDisplay;
+  for (let i = 0; i < cards.length; i += 1) {
+    if (i === 0) {
+      stringToDisplay = `${cards[i].name} of ${cards[i].suit}`;
+    } else {
+      stringToDisplay += `,${cards[i].name} of ${cards[i].suit}`;
+    }
+
+    // store in array when cards to keep is more than 2 or final card
+    if ((cards.length > 2) && (i === 1)) {
+      stringToDisplay += ' ...';
+      stringsToDisplay.push(stringToDisplay);
+      stringToDisplay = '';
+    } else if (cards.length === (i + 1)) {
+      stringsToDisplay.push(stringToDisplay);
+      stringToDisplay = '';
+    }
+  }
+
+  // display first 2 cards to keep
+  displayMessage(stringsToDisplay[0]);
+
+  // display the other 2 cards to keep
+  if (stringsToDisplay.length > 1) {
+    setTimeout(() => {
+      displayMessage(stringsToDisplay[1]);
+    }, NEW_HINT_TEXT_DELAY_IN_MILLI_SECONDS);
+  }
+};
+
+/**
+ * Analyze hand using video_poker_analyze API.
+ * @param {*} cards Cards to analyze
+ * @returns Cards to keep
+ */
+const analyzeHand = (cards) => {
+  const cardsString = convertCardsToString(cards);
+  let cardsToKeep = [];
+
+  fetch(`${analyzeAPIPath}/${cardsString}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === 'error') throw new Error(data.message);
+
+      cardsToKeep = readHandAnalysis(data);
+
+      displayMessage('Hint: Keep these cards ...');
+
+      if (cardsToKeep.length > 0) {
+        delayedHintsMessageId = setTimeout(() => {
+          displayCardsToKeep(cardsToKeep);
+        }, NEW_HINT_TEXT_DELAY_IN_MILLI_SECONDS);
+      }
+    }).catch((error) => console.error(error));
+
+  return cardsToKeep;
+};
 
 /**
  * This module.exports is needed to run unit tests.
