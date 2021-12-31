@@ -41,8 +41,6 @@ This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootc
 - README.md format from [Chingu article in Medium](https://medium.com/chingu/keys-to-a-well-written-readme-55c53d34fe6d)
 
 ## ToDo List
-- [ ] Make holding cards css better\
-      Currently card held is only done by adding border around the card.
 - [ ] Make app work in mobile\
       Some html tags, like 'dialog' is not supported in a lot of browsers.
       Would be nice to also make this app work in more phone dimensions.
