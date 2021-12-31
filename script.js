@@ -133,6 +133,23 @@ const revealCard = (cardElement, cardInfo, order = 0) => {
 };
 
 /**
+ * Close cards from previous round when new betting starts.
+ */
+const closeCards = () => {
+  let order = 0;
+
+  document.querySelectorAll('.card').forEach((card) => {
+    setTimeout(() => {
+      card.classList.remove(...card.classList);
+      card.classList.add('card');
+      card.classList.add('pokemon-back');
+    }, order * REVEAL_CARDS_DELAY_IN_MILLI_SECONDS);
+
+    order += 1;
+  });
+};
+
+/**
  * Update wins info.
  * @param {*} creditWin Credits won
  */
@@ -665,6 +682,9 @@ const betClick = () => {
     displayMessage('Click DEAL button to play.');
   }
 
+  // close cards
+  closeCards();
+
   // remove win info
   updateWins(0);
 
@@ -687,6 +707,9 @@ const betMaxClick = () => {
   if (bet === 0) {
     displayMessage('Click DEAL button to play.');
   }
+
+  // close cards
+  closeCards();
 
   // remove win info
   updateWins(0);
