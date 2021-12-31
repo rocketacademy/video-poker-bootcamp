@@ -1,6 +1,6 @@
 # Pokermon: Pokemon Video Poker
 ## Overview
-This is a video poker game with Pokemon theme, done in 8-bit gaming style.
+This is a video poker game with Pokemon theme, done in 8-bit gaming style.\
 This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootcamp.rocketacademy.co/projects/project-1-video-poker).
 
 **LIVE LINK** : https://hertantoirawan.github.io/video-poker-bootcamp/
@@ -40,7 +40,15 @@ This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootc
 - Pokermon logo made using [Font Meme](https://fontmeme.com/pokemon-font/)
 - README.md format from [Chingu article in Medium](https://medium.com/chingu/keys-to-a-well-written-readme-55c53d34fe6d)
 
-
+## ToDo List
+- [ ] Make holding cards css better\
+      Currently card held is only done by adding border around the card.
+- [ ] Make app work in mobile\
+      Some html tags, like 'dialog' is not supported in a lot of browsers.
+      Would be nice to also make this app work in more phone dimensions.
+- [ ] Make auto play feature\
+      Using the analyze hands feature, we can already get suggestion of what cards to keep to get the highest expected winning value.\ The next step is to just let AI play for you.
+- [ ] Add more animations
 
 
 
