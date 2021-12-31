@@ -48,6 +48,7 @@
         border-radius: 8px;
         display: inline-block;
         font-weight: bold;
+        position: relative;
       }
       .card-back {
         width: 42px;
@@ -115,6 +116,52 @@
         color: black;
         text-decoration: none;
       }
+
+      .pokemon-back {
+        background: url("../assets/pokemon-back.png") no-repeat;
+        width: 90px;
+        height: 123px;
+      }
+
+      .hearts-5 {
+        background: url("../assets/8BitDeckAssets.png") no-repeat -380px -2px;
+        width: 90px;
+        height: 123px;
+      }
+      .clubs-queen {
+        background: url("../assets/8BitDeckAssets.png") no-repeat -1041px -129px;
+        width: 91px;
+        height: 123px;
+      }
+      .diamonds-jack {
+        background: url("../assets/8BitDeckAssets.png") no-repeat -947px -256px;
+        width: 90px;
+        height: 123px;
+      }
+      .diamonds-ace {
+        background: url("../assets/8BitDeckAssets.png") no-repeat -1231px -256px;
+        width: 90px;
+        height: 123px;
+      }
+      .spades-7 {
+        background: url("../assets/8BitDeckAssets.png") no-repeat -569px -383px;
+        width: 90px;
+        height: 123px;
+      }
+      .card-not-hold {
+        float: left;
+        position: absolute;
+        top: 50px;
+        width: 90px;
+        left: 0;
+        text-align: center;
+        background-color: #e76e55;
+        color: white;
+        display: none;
+      }
+      .card-hold {
+        display: block;
+      }
     </style>
   </head>
 
@@ -161,11 +208,21 @@
     </section>
     <div class="board">
       <div class="cards">
-        <div class="card">1</div>
-        <div class="card">2</div>
-        <div class="card">3</div>
-        <div class="card">4</div>
-        <div class="card">5</div>
+        <div class="card clubs-queen">
+          <div class="card-not-hold">Hold</div>
+        </div>
+        <div class="card diamonds-ace">
+          <div class="card-not-hold">Hold</div>
+        </div>
+        <div class="card diamonds-jack">
+          <div class="card-not-hold">Hold</div>
+        </div>
+        <div class="card spades-7">
+          <div class="card-not-hold">Hold</div>
+        </div>
+        <div class="card hearts-5">
+          <div class="card-not-hold">Hold</div>
+        </div>
       </div>
     </div>
     <div class="buttons">
@@ -306,6 +363,17 @@
           scoringGuideModal.style.display = "none";
         }
       };
+
+      document.querySelectorAll(".card").forEach((card) => {
+        card.addEventListener("click", (event) => {
+          let hold = card.firstElementChild;
+          if (hold.classList.contains("card-hold")) {
+            hold.classList.remove("card-hold");
+          } else {
+            hold.classList.add("card-hold");
+          }
+        });
+      });
     </script>
   </body>
 </html>
