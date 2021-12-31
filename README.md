@@ -45,7 +45,8 @@ This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootc
       Some html tags, like 'dialog' is not supported in a lot of browsers.
       Would be nice to also make this app work in more phone dimensions.
 - [ ] Make auto play feature\
-      Using the analyze hands feature, we can already get suggestion of what cards to keep to get the highest expected winning value.\ The next step is to just let AI play for you.
+      Using the analyze hands feature, we can already get suggestion of what cards to keep to get the highest expected winning value.\
+      The next step is to just let AI play for you.
 - [ ] Add more animations
 
 
