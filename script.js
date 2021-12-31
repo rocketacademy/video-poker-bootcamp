@@ -121,6 +121,12 @@ const revealCard = (cardElement, cardInfo, order = 0) => {
   setTimeout(() => {
     cardElement.classList = 'card';
     cardElement.classList.add(`${cardInfo.suit}-${cardInfo.name}`);
+
+    // add hold div element
+    const holdElement = document.createElement('div');
+    holdElement.classList.add('card-not-hold');
+    holdElement.innerText = 'Hold';
+    cardElement.appendChild(holdElement);
   }, order * REVEAL_CARDS_DELAY_IN_MILLI_SECONDS);
 
   return cardElement;
@@ -218,10 +224,13 @@ const holdCard = (cardElement) => {
   if (document.getElementById('draw').disabled) return;
 
   // toggle holding card between card clicks
-  if (cardElement.classList.contains('held')) {
-    cardElement.classList.remove('held');
+  const holdElement = cardElement.firstElementChild;
+  if (holdElement.classList.contains('card-hold')) {
+    cardElement.classList.remove('card-hold-border');
+    holdElement.classList.remove('card-hold');
   } else {
-    cardElement.classList.add('held');
+    cardElement.classList.add('card-hold-border');
+    holdElement.classList.add('card-hold');
   }
 };
 
@@ -567,11 +576,14 @@ const dealRoyalFlush = (cardElements) => {
  */
 const drawCards = (cardElements) => {
   for (let i = 0; i < cardElements.length; i += 1) {
-    if (!cardElements[i].classList.contains('held')) {
+    if (!cardElements[i].classList.contains('card-hold-border')) {
       board[i] = deck.pop();
       revealCard(cardElements[i], board[i], i);
     } else {
-      cardElements[i].classList.remove('held');
+      cardElements[i].classList.remove('card-hold-border');
+
+      const holdElement = cardElements[i].firstElementChild;
+      holdElement.classList.remove('card-hold');
     }
   }
 };

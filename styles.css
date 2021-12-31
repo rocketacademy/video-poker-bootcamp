@@ -47,15 +47,32 @@ h1 {
   max-width: 375px;
 }
 
-.held {
+.card-hold-border {
   border: 1px solid #212529;
   border-radius: 10%;
+}
+
+.card-not-hold {
+  float: left;
+  position: absolute;
+  top: 50px;
+  width: 89px;
+  left: 0;
+  text-align: center;
+  background-color: #e76e55;
+  color: white;
+  display: none;
+}
+
+.card-hold {
+  display: block;
 }
 
 .card {
   margin: 0 5px 5px 5px;
   padding: 0 5px 5px 5px;
   display: inline-block;
+  position: relative;
 }
 
 .card:hover {
