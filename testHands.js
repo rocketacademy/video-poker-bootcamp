@@ -54,37 +54,42 @@ const royalFlushHand = {
   },
 };
 
-const straightFlushHand = {
+const testStraightFlushHand1 = {
   hand: [
     {
       name: '7',
       suit: 'diamonds',
       rank: 7,
       pic: './images/cards/7_of_diamonds.png',
+      hold: false,
     },
     {
       name: '8',
       suit: 'diamonds',
       rank: 8,
       pic: './images/cards/8_of_diamonds.png',
+      hold: false,
     },
     {
       name: '9',
       suit: 'diamonds',
       rank: 9,
       pic: './images/cards/9_of_diamonds.png',
+      hold: false,
     },
     {
       name: 'jack',
       suit: 'diamonds',
       rank: 11,
       pic: './images/cards/jack_of_diamonds.png',
+      hold: false,
     },
     {
       name: '10',
       suit: 'diamonds',
       rank: 10,
       pic: './images/cards/10_of_diamonds.png',
+      hold: false,
     },
   ],
   suit: {
@@ -107,6 +112,87 @@ const straightFlushHand = {
     jack: 1,
     queen: 0,
     king: 0,
+  },
+};
+
+const testStraightFlushCardsLeft1 = {
+  ace: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  2: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  3: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  4: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  5: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  6: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  7: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 0,
+  },
+  8: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 0,
+  },
+  9: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 0,
+  },
+  10: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 0,
+  },
+  jack: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 0,
+  },
+  queen: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  king: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
   },
 };
 
@@ -222,37 +308,42 @@ const fullHouseHand = {
   },
 };
 
-const fourOfAKindHand = {
+const testFourOfAKindHand = {
   hand: [
     {
       name: '2',
       suit: 'hearts',
       rank: 2,
       pic: './images/cards/2_of_hearts.png',
+      hold: false,
     },
     {
       name: '2',
       suit: 'diamonds',
       rank: 2,
       pic: './images/cards/2_of_diamonds.png',
+      hold: false,
     },
     {
       name: '2',
       suit: 'spades',
       rank: 2,
       pic: './images/cards/2_of_spades.png',
+      hold: false,
     },
     {
-      name: '2',
+      name: '3',
       suit: 'clubs',
-      rank: 2,
-      pic: './images/cards/2_of_clubs.png',
+      rank: 3,
+      pic: './images/cards/3_of_clubs.png',
+      hold: false,
     },
     {
       name: '6',
       suit: 'hearts',
       rank: 6,
       pic: './images/cards/6_of_hearts.png',
+      hold: false,
     },
   ],
   suit: {
@@ -262,8 +353,8 @@ const fourOfAKindHand = {
     diamonds: 1,
   },
   name: {
-    2: 4,
-    3: 0,
+    2: 3,
+    3: 1,
     4: 0,
     5: 0,
     6: 1,
@@ -275,6 +366,87 @@ const fourOfAKindHand = {
     jack: 0,
     queen: 0,
     king: 0,
+  },
+};
+
+const testFourOfAKindCardsLeft = {
+  ace: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  2: {
+    clubs: 1,
+    spades: 0,
+    hearts: 0,
+    diamonds: 0,
+  },
+  3: {
+    clubs: 0,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  4: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  5: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  6: {
+    clubs: 1,
+    spades: 1,
+    hearts: 0,
+    diamonds: 1,
+  },
+  7: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  8: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  9: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  10: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  jack: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  queen: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  king: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
   },
 };
 

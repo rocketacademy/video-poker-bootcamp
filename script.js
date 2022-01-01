@@ -1,6 +1,6 @@
 let shuffledDeck = [];
 
-const stats = {
+let stats = {
   hand: [],
   suit: {
     clubs: 0,
@@ -49,7 +49,7 @@ const probability = {
   jacksOrBetter: 0,
 };
 
-const cardsLeft = {
+let cardsLeft = {
   ace: {
     clubs: 1,
     spades: 1,
@@ -133,7 +133,7 @@ const cardsLeft = {
 let playerCredits = 100;
 let playerBet = 0;
 let mode = '';
-let result = 'Sorry you lost.';
+let outcome = 'Sorry you lost.';
 let foundHand = '';
 let totalCombinationsAvailable = 0;
 
@@ -265,7 +265,6 @@ const checkStraightHand = () => {
 
   // check rankTable to see whether sequential
   rankTable.sort((a, b) => a - b);
-  console.log(rankTable);
   let sequential = true;
   for (let i = 1; i < rankTable.length; i += 1) {
     if (rankTable[i] - 1 === rankTable[i - 1]) {
@@ -355,47 +354,47 @@ const checkRoyalFlushHand = () => {
 
 const calcHandScore = () => {
   if (checkRoyalFlushHand()) {
-    result = 'Royal flush found!';
+    outcome = 'Royal flush found!';
     foundHand = 'royalFlush';
     return;
   }
   if (checkStraightFlushHand()) {
-    result = 'Straight flush found!';
+    outcome = 'Straight flush found!';
     foundHand = 'straightFlush';
     return;
   }
   if (checkFourOfAKindHand()) {
-    result = 'Four of a kind found!';
+    outcome = 'Four of a kind found!';
     foundHand = 'fourOfAKind';
     return;
   }
   if (checkFullHouseHand()) {
-    result = 'Full house found!';
+    outcome = 'Full house found!';
     foundHand = 'fullHouse';
     return;
   }
   if (checkFlushHand()) {
-    result = 'Flush found!';
+    outcome = 'Flush found!';
     foundHand = 'flush';
     return;
   }
   if (checkStraightHand()) {
-    result = 'Straight found!';
+    outcome = 'Straight found!';
     foundHand = 'straight';
     return;
   }
   if (checkThreeOfAKindHand()) {
-    result = 'Three of a kind found!';
+    outcome = 'Three of a kind found!';
     foundHand = 'threeOfAKind';
     return;
   }
   if (checkTwoPairHand()) {
-    result = 'Two pairs found!';
+    outcome = 'Two pairs found!';
     foundHand = 'twoPairs';
     return;
   }
   if (checkJacksOrBetterHand()) {
-    result = 'Jacks or better found!';
+    outcome = 'Jacks or better found!';
     foundHand = 'jacksOrBetter';
   }
 };
@@ -429,9 +428,9 @@ const gameOver = () => {
 };
 
 const tallyPlayerCredits = () => {
-  if (result === 'Royal flush found!' && playerBet === 5) {
+  if (outcome === 'Royal flush found!' && playerBet === 5) {
     playerCredits += 4000;
-  } else if (result !== 'Sorry you lost.') {
+  } else if (outcome !== 'Sorry you lost.') {
     playerCredits += (playerBet * rewards[foundHand]);
   }
 
@@ -493,7 +492,7 @@ const resetGame = () => {
 
   document.getElementById('cards').className = 'display-none';
   shuffledDeck = shuffleCards(makeDeck());
-  result = 'Sorry you lost.';
+  outcome = 'Sorry you lost.';
 };
 
 const updateCardsUI = () => {
@@ -754,8 +753,9 @@ const checkRoyalFlushCombinations = () => {
         return 0;
       }
     }
-  }
 
+    return 1;
+  }
   return 0;
 };
 
@@ -833,115 +833,161 @@ const checkStraightFlushCombinations = () => {
     } else if (diff === 3) {
       let straightPossible = true;
 
-      // if i have rank 2 and 5
-      // first group goes from 1 to 5
-      let firstRank1;
-      let lastRank1;
+      const firstRank1 = parseInt(rankArray[0], 10);
+      const lastRank1 = firstRank1 + 4;
 
-      let firstRank2;
-      let lastRank2;
-
-      if (parseInt(rankArray[0], 10) - 1 === 0) {
-        firstRank1 = parseInt(rankArray[0], 10);
-        lastRank1 = firstRank1 + 4;
-
-        for (let i = firstRank1; i <= lastRank1; i += 1) {
-          if (straightHand[i] === undefined) {
-            if (i === 1) {
-              if (cardsLeft.ace.suit === 0) {
-                straightPossible = false;
-                break;
-              }
-            } else if (i === 11) {
-              if (cardsLeft.jack.suit === 0) {
-                straightPossible = false;
-                break;
-              }
-            } else if (i === 12) {
-              if (cardsLeft.queen.suit === 0) {
-                straightPossible = false;
-                break;
-              }
-            } else if (i === 13) {
-              if (cardsLeft.king.suit === 0) {
-                straightPossible = false;
-                break;
-              }
-            } else if (cardsLeft[i].suit === 0) {
+      for (let i = firstRank1; i <= lastRank1; i += 1) {
+        if (straightHand[i] === undefined) {
+          if (i === 1) {
+            if (cardsLeft.ace[suit] === 0) {
               straightPossible = false;
               break;
             }
-          }
-        }
-
-        if (straightPossible) {
-          combinations += 1;
-        }
-      } else {
-        firstRank1 = parseInt(rankArray[0], 10) - 1;
-        lastRank1 = firstRank1 + 4;
-
-        for (let i = firstRank1; i <= lastRank1; i += 1) {
-          if (straightHand[i] === undefined) {
-            if (i === 1) {
-              if (cardsLeft.ace.suit === 0) {
-                straightPossible = false;
-                break;
-              }
-            } else if (i === 11) {
-              if (cardsLeft.jack.suit === 0) {
-                straightPossible = false;
-                break;
-              }
-            } else if (i === 12) {
-              if (cardsLeft.queen.suit === 0) {
-                straightPossible = false;
-                break;
-              }
-            } else if (i === 13) {
-              if (cardsLeft.king.suit === 0) {
-                straightPossible = false;
-                break;
-              }
-            } else if (cardsLeft[i].suit === 0) {
+          } else if (i === 11) {
+            if (cardsLeft.jack[suit] === 0) {
               straightPossible = false;
               break;
             }
+          } else if (i === 12) {
+            if (cardsLeft.queen[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i === 13) {
+            if (cardsLeft.king[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i > 13) {
+            straightPossible = false;
+            break;
+          } else if (cardsLeft[i][suit] === 0) {
+            straightPossible = false;
+            break;
           }
         }
+      }
 
-        if (straightPossible) {
-          combinations += 1;
-        }
+      if (straightPossible) {
+        combinations += 1;
+      }
 
-        straightPossible = true;
+      straightPossible = true;
 
-        firstRank2 = parseInt(rankArray[0], 10);
-        lastRank2 = firstRank2 + 4;
+      if (parseInt(rankArray[0], 10) - 1 > 0) {
+        const firstRank2 = parseInt(rankArray[0], 10) - 1;
+        const lastRank2 = firstRank2 + 4;
 
         for (let i = firstRank2; i <= lastRank2; i += 1) {
           if (straightHand[i] === undefined) {
             if (i === 1) {
-              if (cardsLeft.ace.suit === 0) {
+              if (cardsLeft.ace[suit] === 0) {
                 straightPossible = false;
                 break;
               }
             } else if (i === 11) {
-              if (cardsLeft.jack.suit === 0) {
+              if (cardsLeft.jack[suit] === 0) {
                 straightPossible = false;
                 break;
               }
             } else if (i === 12) {
-              if (cardsLeft.queen.suit === 0) {
+              if (cardsLeft.queen[suit] === 0) {
                 straightPossible = false;
                 break;
               }
             } else if (i === 13) {
-              if (cardsLeft.king.suit === 0) {
+              if (cardsLeft.king[suit] === 0) {
                 straightPossible = false;
                 break;
               }
-            } else if (cardsLeft[i].suit === 0) {
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
+    } else if (diff === 2) {
+      let straightPossible = true;
+
+      const firstRank1 = parseInt(rankArray[0], 10) - 1;
+      const lastRank1 = firstRank1 + 4;
+
+      for (let i = firstRank1; i <= lastRank1; i += 1) {
+        if (straightHand[i] === undefined) {
+          if (i === 1) {
+            if (cardsLeft.ace[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i === 11) {
+            if (cardsLeft.jack[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i === 12) {
+            if (cardsLeft.queen[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i === 13) {
+            if (cardsLeft.king[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i > 13) {
+            straightPossible = false;
+            break;
+          } else if (cardsLeft[i][suit] === 0) {
+            straightPossible = false;
+            break;
+          }
+        }
+      }
+
+      if (straightPossible) {
+        combinations += 1;
+      }
+
+      straightPossible = true;
+
+      if (parseInt(rankArray[0], 10) - 1 > 0) {
+        const firstRank2 = parseInt(rankArray[0], 10) - 1;
+        const lastRank2 = firstRank2 + 4;
+
+        for (let i = firstRank2; i <= lastRank2; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
               straightPossible = false;
               break;
             }
@@ -953,17 +999,482 @@ const checkStraightFlushCombinations = () => {
         }
       }
 
-      // second group goes from 2 to 6
-    } else if (diff === 2) {
+      straightPossible = true;
 
+      if (parseInt(rankArray[0], 10) - 2 > 0) {
+        const firstRank3 = parseInt(rankArray[0], 10) - 2;
+        const lastRank3 = firstRank3 + 4;
+
+        for (let i = firstRank3; i <= lastRank3; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
     } else if (diff === 1) {
+      let straightPossible = true;
 
+      const firstRank1 = parseInt(rankArray[0], 10) - 1;
+      const lastRank1 = firstRank1 + 4;
+
+      for (let i = firstRank1; i <= lastRank1; i += 1) {
+        if (straightHand[i] === undefined) {
+          if (i === 1) {
+            if (cardsLeft.ace[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i === 11) {
+            if (cardsLeft.jack[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i === 12) {
+            if (cardsLeft.queen[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i === 13) {
+            if (cardsLeft.king[suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          } else if (i > 13) {
+            straightPossible = false;
+            break;
+          } else if (cardsLeft[i][suit] === 0) {
+            straightPossible = false;
+            break;
+          }
+        }
+      }
+
+      if (straightPossible) {
+        combinations += 1;
+      }
+
+      straightPossible = true;
+
+      if (parseInt(rankArray[0], 10) - 1 > 0) {
+        const firstRank2 = parseInt(rankArray[0], 10) - 1;
+        const lastRank2 = firstRank2 + 4;
+
+        for (let i = firstRank2; i <= lastRank2; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
+
+      straightPossible = true;
+
+      if (parseInt(rankArray[0], 10) - 2 > 0) {
+        const firstRank3 = parseInt(rankArray[0], 10) - 2;
+        const lastRank3 = firstRank3 + 4;
+
+        for (let i = firstRank3; i <= lastRank3; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
+
+      if (parseInt(rankArray[0], 10) - 3 > 0) {
+        const firstRank4 = parseInt(rankArray[0], 10) - 3;
+        const lastRank4 = firstRank4 + 4;
+
+        for (let i = firstRank4; i <= lastRank4; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
+    } else if (diff === 0) {
+      let straightPossible = true;
+
+      if (parseInt(rankArray[0], 10) !== 0) {
+        const firstRank1 = parseInt(rankArray[0], 10);
+        const lastRank1 = firstRank1 + 4;
+
+        for (let i = firstRank1; i <= lastRank1; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
+
+      straightPossible = true;
+
+      if (parseInt(rankArray[0], 10) - 1 > 0) {
+        const firstRank2 = parseInt(rankArray[0], 10) - 1;
+        const lastRank2 = firstRank2 + 4;
+
+        for (let i = firstRank2; i <= lastRank2; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
+
+      straightPossible = true;
+
+      if (parseInt(rankArray[0], 10) - 2 > 0) {
+        const firstRank3 = parseInt(rankArray[0], 10) - 2;
+        const lastRank3 = firstRank3 + 4;
+
+        for (let i = firstRank3; i <= lastRank3; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
+
+      straightPossible = true;
+
+      if (parseInt(rankArray[0], 10) - 3 > 0) {
+        const firstRank4 = parseInt(rankArray[0], 10) - 3;
+        const lastRank4 = firstRank4 + 4;
+
+        for (let i = firstRank4; i <= lastRank4; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
+
+      straightPossible = true;
+
+      if (parseInt(rankArray[0], 10) - 4 > 0) {
+        const firstRank5 = parseInt(rankArray[0], 10) - 4;
+        const lastRank5 = firstRank5 + 4;
+
+        for (let i = firstRank5; i <= lastRank5; i += 1) {
+          if (straightHand[i] === undefined) {
+            if (i === 1) {
+              if (cardsLeft.ace[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 11) {
+              if (cardsLeft.jack[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 12) {
+              if (cardsLeft.queen[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i === 13) {
+              if (cardsLeft.king[suit] === 0) {
+                straightPossible = false;
+                break;
+              }
+            } else if (i > 13) {
+              straightPossible = false;
+              break;
+            } else if (cardsLeft[i][suit] === 0) {
+              straightPossible = false;
+              break;
+            }
+          }
+        }
+
+        if (straightPossible) {
+          combinations += 1;
+        }
+      }
     }
 
     return combinations;
   }
 
   return 0;
+};
+
+const checkFourOfAKindCombinations = () => {
+  const result = {
+    combinations: 0,
+    alreadyWin: false,
+  };
+  let combinations = 0;
+
+  // get the cards being held first
+  const fourOfAKindHand = {};
+
+  for (let i = 0; i < stats.hand.length; i += 1) {
+    if (stats.hand[i].hold === true) {
+      if (fourOfAKindHand[stats.hand[i].rank] === undefined) {
+        fourOfAKindHand[stats.hand[i].rank] = 1;
+      } else {
+        fourOfAKindHand[stats.hand[i].rank] += 1;
+      }
+    }
+  }
+
+  const rankArray = Object.keys(fourOfAKindHand);
+
+  if (Object.values(fourOfAKindHand).length >= 3) {
+    // if there are 3 different card ranks are being held, return 0
+    combinations = 0;
+  } else if (Object.values(fourOfAKindHand).indexOf(4) !== -1) {
+    // if there are already 4 cards with the same rank being held, return 1
+    combinations = 1;
+    result.alreadyWin = true;
+  } else {
+    for (let i = 0; i < rankArray.length; i += 1) {
+      const rank = rankArray[i];
+      const noOfCardsHeld = fourOfAKindHand[rank];
+      const noOfCardsLeft = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
+
+      if (noOfCardsHeld + noOfCardsLeft === 4) {
+        combinations += 1;
+      }
+    }
+  }
+  result.combinations = combinations;
+
+  return result;
 };
 
 const calculateCardsToBeReplaced = () => {
@@ -987,18 +1498,10 @@ const totalCombinations = (numberOfCardsLeft, cardsToDraw) => {
   const numerator = factorialize(numberOfCardsLeft);
   const denominator = (factorialize(numberOfCardsLeft - cardsToDraw) * factorialize(cardsToDraw));
 
-  console.log('inside totalCombinations');
-  console.log(`numberOfCardsLeft: ${numberOfCardsLeft}`);
-  console.log(`cardsToDraw: ${cardsToDraw}`);
-  console.log(`numerator: ${numerator}`);
-  console.log(`denominator: ${denominator}`);
-
   return numerator / denominator;
 };
 
 const updateTotalCombinationsAvailableUI = (totalCombinations) => {
-  console.log('inside updateTotalCombinationsAvailableUI');
-  console.log(totalCombinations);
   document.getElementById('total-combinations').innerHTML = numberWithCommas(totalCombinations.toFixed(0));
 };
 
@@ -1010,6 +1513,10 @@ const updateStraightFlushProbabilityUI = (input) => {
   document.getElementById('probability-straight-flush').innerHTML = input;
 };
 
+const updateFourOfAKindProbabilityUI = (input) => {
+  document.getElementById('probability-four-of-a-kind').innerHTML = input;
+};
+
 const calculateProbability = () => {
   // take into account the hand and the amount
   // of cards being held or to be replaced
@@ -1018,13 +1525,54 @@ const calculateProbability = () => {
   totalCombinationsAvailable = totalCombinations(shuffledDeck.length, cardsToBeReplaced);
   updateTotalCombinationsAvailableUI(totalCombinationsAvailable);
 
-  const royalFlushCombinations = checkRoyalFlushCombinations();
-  const royalFlushProbability = (royalFlushCombinations / totalCombinationsAvailable) * 100;
-  updateRoyalFlushProbabilityUI(royalFlushProbability);
+  if (cardsToBeReplaced === 5) {
+  } else if (cardsToBeReplaced === 0) {
+    // if (checkRoyalFlushHand()) {
+    //   probability.royalFlush = 100;
+    // }
+    // if (checkStraightFlushHand()) {
+    //   probability.straightFlush = 100;
+    // }
+    // if (checkFourOfAKindHand()) {
+    //   probability.fourOfAKind = 100;
+    // }
+    // if (checkFullHouseHand()) {
+    //   probability.fullHouse = 100;
+    // }
+    // if (checkFlushHand()) {
+    //   probability.flush = 100;
+    // }
+    // if (checkStraightHand()) {
+    //   probability.straight = 100;
+    // }
+    // if (checkThreeOfAKindHand()) {
+    //   probability.threeOfAKind = 100;
+    // }
+    // if (checkTwoPairHand()) {
+    //   probability.twoPairs = 100;
+    // }
+    // if (checkJacksOrBetterHand()) {
+    //   probability.jacksOrBetter = 100;
+    // }
+    // updateProbabilityUI();
+  } else {
+    const royalFlushCombinations = checkRoyalFlushCombinations();
+    const royalFlushProbability = (royalFlushCombinations / totalCombinationsAvailable) * 100;
+    updateRoyalFlushProbabilityUI(royalFlushProbability);
 
-  const straightFlushCombinations = checkStraightFlushCombinations();
-  const straightFlushProbability = (straightFlushCombinations / totalCombinationsAvailable) * 100;
-  updateStraightFlushProbabilityUI(straightFlushProbability);
+    const straightFlushCombinations = checkStraightFlushCombinations();
+    const straightFlushProbability = (straightFlushCombinations / totalCombinationsAvailable) * 100;
+    updateStraightFlushProbabilityUI(straightFlushProbability);
+
+    const fourOfAKindCombinations = checkFourOfAKindCombinations();
+    if (fourOfAKindCombinations.alreadyWin) {
+      updateFourOfAKindProbabilityUI(100);
+    } else {
+      const fourOfAKindProbability = (fourOfAKindCombinations.combinations
+        / totalCombinationsAvailable) * 100;
+      updateFourOfAKindProbabilityUI(fourOfAKindProbability);
+    }
+  }
 };
 
 const bet5 = () => {
@@ -1070,26 +1618,27 @@ const deal = () => {
       drawnCard = shuffledDeck.pop();
       drawnCard.hold = false;
 
-      stats.hand.push(drawnCard);
-      stats.name[drawnCard.name] += 1;
-      stats.suit[drawnCard.suit] += 1;
+      // stats.hand.push(drawnCard);
+      // stats.name[drawnCard.name] += 1;
+      // stats.suit[drawnCard.suit] += 1;
 
-      cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
-      // stats = testStraightFlushHand;
-      // cardsLeft = testStraightFlushCardsLeft;
+      // cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
     }
+
+    stats = testFourOfAKindHand;
+    cardsLeft = testFourOfAKindCardsLeft;
     updateCardsUI();
     updateInstructions(
       "Click on any card to hold and press <span class='nes-text is-primary'>Deal</span> again.",
     );
     // calculateProbability();
-    updateProbabilityUI();
+    // updateProbabilityUI();
   } else if (mode === 'finalDeal') {
     refreshHand();
     updateCardsUI();
     calcHandScore();
 
-    updateInstructions(`${result} Restart by pressing <span class='nes-text is-warning'>Bet 1</span> or <span class='nes-text is-error'>Bet 5</span> and pressing <span class='nes-text is-primary'>Deal</span> after.`);
+    updateInstructions(`${outcome} Restart by pressing <span class='nes-text is-warning'>Bet 1</span> or <span class='nes-text is-error'>Bet 5</span> and pressing <span class='nes-text is-primary'>Deal</span> after.`);
 
     tallyPlayerCredits();
     updatePlayerCreditsUI();
