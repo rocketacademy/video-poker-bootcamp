@@ -75,6 +75,7 @@ const createCard = (cardInfo, tracker) => {
   let img = document.createElement("img");
   img.className = "card";
   if (tracker === REPLACE) {
+    cardAudio.play();
     img.classList.add("card-animate");
   }
   img.src = `./${cardInfo.name}_of_${cardInfo.suit}.svg`;
@@ -88,6 +89,7 @@ const showCardBacks = () => {
   for (let i = 0; i < 5; i += 1) {
     let img = document.createElement("img");
     img.className = "card";
+    img.classList.add("card-animate");
     img.src = "./Card_back_05a.svg";
     const cardElement = img;
     handElement.appendChild(cardElement);
@@ -585,9 +587,15 @@ let handClickTracker = [REPLACE, REPLACE, REPLACE, REPLACE, REPLACE];
 let gameMode = "first-draw"; // "calc-score" //"end-round"
 let adviceResult = 0;
 
+let coinAudio = new Audio("./Insert-coin-sound.mp3");
+let cardAudio = new Audio("./Card-flip-sound-effect.mp3");
+let winAudio = new Audio("./Slot-machine-jackpot-sound-effect.mp3");
+let loseAudio = new Audio("./Whomp-whomp.mp3");
+
 showCardBacks();
 betButton.addEventListener("click", () => {
   if (betAmount < 5 && gameMode === "first-draw") {
+    coinAudio.play();
     betAmount += 1;
     credits -= 1;
     creditsInfo.innerText = `BET: ${betAmount} CREDITS: ${credits}`;
@@ -650,13 +658,15 @@ dealButton.addEventListener("click", () => {
     givePayout(findPayout(handResult));
 
     setTimeout(() => {
-      gameInfo.classList.add("blinking");
       gameInfo.innerText = handResult;
       if (handResult === "NIL") {
-        gameInfo.classList.remove("blinking");
+        loseAudio.play();
         gameInfo.innerText = "Oops, no luck :(";
+      } else {
+        winAudio.play();
+        gameInfo.classList.add("blinking");
       }
-    }, 1);
+    }, 1000);
 
     betAmount = 0;
 
