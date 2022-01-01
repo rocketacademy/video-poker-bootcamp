@@ -71,9 +71,12 @@ const makeDeck = () => {
   return newDeck;
 };
 
-const createCard = (cardInfo) => {
+const createCard = (cardInfo, tracker) => {
   let img = document.createElement("img");
   img.className = "card";
+  if (tracker === REPLACE) {
+    img.classList.add("card-animate");
+  }
   img.src = `./${cardInfo.name}_of_${cardInfo.suit}.svg`;
 
   return img;
@@ -271,7 +274,7 @@ const printResultHand = () => {
   cardContainer.innerHTML = "";
   const handElement = document.createElement("div");
   for (let i = 0; i < 5; i += 1) {
-    const cardElement = createCard(hand[i]);
+    const cardElement = createCard(hand[i], handClickTracker[i]);
 
     handElement.appendChild(cardElement);
   }
@@ -580,6 +583,7 @@ let deck;
 let hand;
 let handClickTracker = [REPLACE, REPLACE, REPLACE, REPLACE, REPLACE];
 let gameMode = "first-draw"; // "calc-score" //"end-round"
+let adviceResult = 0;
 
 showCardBacks();
 betButton.addEventListener("click", () => {
@@ -622,7 +626,7 @@ dealButton.addEventListener("click", () => {
     cardContainer.innerHTML = "";
     const handElement = document.createElement("div");
     for (let i = 0; i < 5; i += 1) {
-      const cardElement = createCard(hand[i]);
+      const cardElement = createCard(hand[i], handClickTracker[i]);
       cardElement.addEventListener("click", (event) => {
         cardClick(event.currentTarget, i);
       });
@@ -644,10 +648,15 @@ dealButton.addEventListener("click", () => {
     printResultHand();
     let handResult = calcHandScore(hand);
     givePayout(findPayout(handResult));
-    gameInfo.innerText = handResult;
-    if (handResult === "NIL") {
-      gameInfo.innerText = "Oops, no luck :(";
-    }
+
+    setTimeout(() => {
+      gameInfo.classList.add("blinking");
+      gameInfo.innerText = handResult;
+      if (handResult === "NIL") {
+        gameInfo.classList.remove("blinking");
+        gameInfo.innerText = "Oops, no luck :(";
+      }
+    }, 1);
 
     betAmount = 0;
 
@@ -659,7 +668,9 @@ dealButton.addEventListener("click", () => {
       gameMode = "first-draw";
       betButton.classList.remove("disabled-button");
       dealButton.classList.remove("disabled-button");
-    }, 3000);
+      gameInfo.classList.remove("blinking");
+      adviceResult = 0;
+    }, 5000);
 
     return;
   }
@@ -667,13 +678,15 @@ dealButton.addEventListener("click", () => {
 
 adviceButton.addEventListener("click", () => {
   if (gameMode === "calc-score") {
-    // const drStrangeImage =
-    //   '<img src="https://c.tenor.com/nDhUSRc7Q-8AAAAd/timeline-doctor-strange.gif"/>';
     probContainer.innerHTML = `Thinking...`;
 
     setTimeout(() => {
-      //store this to global variable, no need rethinking
-      revealAdvice(giveSelectionAdvice());
+      if (adviceResult === 0) {
+        adviceResult = giveSelectionAdvice();
+        revealAdvice(adviceResult);
+      } else {
+        revealAdvice(adviceResult);
+      }
     }, 1);
   }
 });
