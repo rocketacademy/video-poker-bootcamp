@@ -100,6 +100,7 @@ const buttonFunctions = () => {
   dealAudio.src = "shuffle.wav";
   // OUTPUT MESSAGE IS TO UPDATE THE AMOUNT THAT IS GAMBLE AND BALANCE IN HAND
   document.body.appendChild(outputMessage);
+
   betAllButton.addEventListener("click", () => {
     coinsPouringAudio.play();
     // If user has no money left, they have to restart the game
@@ -157,6 +158,8 @@ const buttonFunctions = () => {
   });
 
   dealButton.addEventListener("click", () => {
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney} <br><br> Click on card to hold it in hand.`;
+
     dealAudio.play();
     // ONCE DEAL IS CLICKED, FINAL DEAL BUTTON WILL COME ON TO DOUBLE CONFIRM THEIR HAND
     buttonContainer.appendChild(finalDealButton);
@@ -180,6 +183,7 @@ const buttonFunctions = () => {
   });
 
   finalDealButton.addEventListener("click", () => {
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney} <br><br> Start betting to begin game.`;
     // set timeout here to remove all highlights when final cards in hand are locked in
     setTimeout(() => {
       // selecting all rows in the table
@@ -339,6 +343,7 @@ const initGame = () => {
     removeElement("ready-button");
     playerClick();
     buttonFunctions();
+    outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Start betting to begin game.`;
   }
 };
 
@@ -363,6 +368,7 @@ const playerClick = () => {
   }
 
   document.body.appendChild(buttonContainer);
+
   document.body.appendChild(outputMessage);
 };
 

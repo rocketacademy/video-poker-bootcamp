@@ -144,63 +144,63 @@ const winningCombos = () => {
     winnings = bettingMoney * 3;
     balanceAmount += winnings;
     winningAudio.play();
-    outputMessage.innerHTML = `You have Two pairs. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have Two pairs. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else if (threeKinds === true) {
     returns = bettingMoney * 3;
     winnings = bettingMoney * 4;
     balanceAmount += winnings;
     winningAudio.play();
 
-    outputMessage.innerHTML = `You have Three of a kind. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have Three of a kind. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else if (fullHouse === true) {
     returns = bettingMoney * 9;
     winnings = bettingMoney * 10;
     balanceAmount += winnings;
     winningAudio.play();
 
-    outputMessage.innerHTML = `You have a Full House. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Full House. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else if (fourKinds === true) {
     returns = bettingMoney * 25;
     winnings = bettingMoney * 26;
     balanceAmount += winnings;
     winningAudio.play();
 
-    outputMessage.innerHTML = `You have Four of a kind. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have Four of a kind. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else if (straight === true) {
     returns = bettingMoney * 4;
     winnings = bettingMoney * 5;
     balanceAmount += winnings;
     winningAudio.play();
-    outputMessage.innerHTML = `You have a Straight. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Straight. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else if (flush === true) {
     returns = bettingMoney * 6;
     winnings = bettingMoney * 7;
     balanceAmount += winnings;
     winningAudio.play();
-    outputMessage.innerHTML = `You have a Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else if (straightFlush === true) {
     returns = bettingMoney * 50;
     winnings = bettingMoney * 51;
     balanceAmount += winnings;
     winningAudio.play();
-    outputMessage.innerHTML = `You have a Straight Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Straight Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else if (royalFlush === true) {
     returns = bettingMoney * 250;
     winnings = bettingMoney * 251;
     balanceAmount += winnings;
     winningAudio.play();
-    outputMessage.innerHTML = `You have a Royal Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have a Royal Flush. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else if (jackOrBetter === true) {
     returns = bettingMoney * 1;
     winnings = bettingMoney * 2;
     balanceAmount += winnings;
     winningAudio.play();
-    outputMessage.innerHTML = `You have Jacks or Better. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have Jacks or Better. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   } else {
     winnings = 0;
     balanceAmount += winnings;
     losingAudio.play();
-    outputMessage.innerHTML = `You have no special combinations. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}`;
+    outputMessage.innerHTML = `You have no special combinations. <br><br>You've won $${returns}. <br><br> Your balance in hand: $${balanceAmount}<br><br> Start betting to play another round.`;
   }
   // ALL OF THIS BELOW IS TO RESET EVERYTHING BACK TO ITS DEFAULT STATE AFTER ROUND IS COMPLETED
   returns = 0;
@@ -216,3 +216,5 @@ const winningCombos = () => {
   royalFlush = false;
   jackOrBetter = false;
 };
+
+outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Betting: $${bettingMoney} `;
