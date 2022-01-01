@@ -29,6 +29,12 @@ body {
   align-items: center;
   margin-top: 2%;
   text-align: center;
+  background-color: rgba(128, 128, 128, 0.397);
+  width: 20%;
+  height: auto;
+  margin: 0px auto;
+  padding: 4px;
+  border-radius: 10px;
 }
 
 #ready-button {
