@@ -34,6 +34,7 @@ body {
   height: auto;
   margin: 0px auto;
   padding: 4px;
+  border: 1px solid black;
   border-radius: 10px;
 }
 
@@ -46,7 +47,7 @@ body {
 
   margin-top: 50px;
   width: 100px;
-  height: 20px;
+  height: 30px;
 
   background-color: rgba(255, 255, 255, 0.795);
 }
@@ -72,6 +73,7 @@ body {
   border-radius: 8px;
   perspective: 1000px;
   position: relative;
+  border: 1px solid black;
 }
 .held-card {
   font-family: monospace;
@@ -86,6 +88,7 @@ body {
   border-radius: 8px;
   perspective: 1000px;
   position: relative;
+  border: 1px solid black;
 }
 
 .inner-card {
@@ -144,7 +147,43 @@ body {
 }
 
 button {
+  width: 100px;
+  height: 30px;
   border-radius: 10px;
+  border: 1px solid #070707;
+  color: rgb(7, 7, 7);
+  position: relative;
+  margin: 5px;
+  box-shadow: inset 0 0 0 0 #ffffff;
+  transition: ease-out 0.3s;
+  outline: none;
+  z-index: 1;
+}
+button:hover {
+  /* box-shadow: inset 300px 0 0 0 #080808; */
+  cursor: pointer;
+  color: white;
+}
+
+button:before {
+  transition: 0.5s;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+  opacity: 0;
+  content: "";
+  background-color: #0d0e0e;
+  border-radius: 5px;
+}
+
+button:hover:before {
+  transition: 0.5s all ease;
+  left: 0;
+  right: 0;
+  opacity: 1;
+  z-index: -1;
 }
 
 table {
@@ -159,8 +198,9 @@ table {
   margin-right: auto;
   margin-left: auto;
   color: white;
-  border: 2px;
+  border: 1px;
   border-style: solid;
+  border-color: black;
 }
 
 tr,
