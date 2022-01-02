@@ -203,30 +203,35 @@ const twoPairHand = {
       suit: 'hearts',
       rank: 2,
       pic: './images/cards/2_of_hearts.png',
+      hold: false,
     },
     {
       name: '4',
       suit: 'hearts',
       rank: 4,
       pic: './images/cards/4_of_hearts.png',
+      hold: false,
     },
     {
       name: '2',
       suit: 'spades',
       rank: 2,
       pic: './images/cards/2_of_spades.png',
+      hold: false,
     },
     {
       name: '4',
       suit: 'clubs',
       rank: 4,
       pic: './images/cards/4_of_clubs.png',
+      hold: false,
     },
     {
-      name: '6',
+      name: 'ace',
       suit: 'hearts',
-      rank: 6,
-      pic: './images/cards/6_of_hearts.png',
+      rank: 1,
+      pic: './images/cards/ace_of_hearts.png',
+      hold: false,
     },
   ],
   suit: {
@@ -240,15 +245,96 @@ const twoPairHand = {
     3: 0,
     4: 2,
     5: 0,
-    6: 1,
+    6: 0,
     7: 0,
     8: 0,
     9: 0,
     10: 0,
-    ace: 0,
+    ace: 1,
     jack: 0,
     queen: 0,
     king: 0,
+  },
+};
+
+const twoPairCardsLeft = {
+  ace: {
+    clubs: 1,
+    spades: 1,
+    hearts: 0,
+    diamonds: 1,
+  },
+  2: {
+    clubs: 1,
+    spades: 0,
+    hearts: 0,
+    diamonds: 1,
+  },
+  3: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  4: {
+    clubs: 0,
+    spades: 1,
+    hearts: 0,
+    diamonds: 1,
+  },
+  5: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  6: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  7: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  8: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  9: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  10: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  jack: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  queen: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  king: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
   },
 };
 
@@ -658,30 +744,35 @@ const straightHand1 = {
       suit: 'hearts',
       rank: 2,
       pic: './images/cards/2_of_hearts.png',
+      hold: false,
     },
     {
       name: '3',
       suit: 'diamonds',
       rank: 3,
       pic: './images/cards/3_of_diamonds.png',
+      hold: false,
     },
     {
       name: '4',
       suit: 'spades',
       rank: 4,
       pic: './images/cards/4_of_spades.png',
+      hold: false,
     },
     {
       name: '5',
       suit: 'clubs',
       rank: 5,
       pic: './images/cards/5_of_clubs.png',
+      hold: false,
     },
     {
       name: '6',
       suit: 'hearts',
       rank: 6,
       pic: './images/cards/6_of_hearts.png',
+      hold: false,
     },
   ],
   suit: {
@@ -707,6 +798,87 @@ const straightHand1 = {
   },
 };
 
+const straightHand1CardsLeft = {
+  ace: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  2: {
+    clubs: 1,
+    spades: 1,
+    hearts: 0,
+    diamonds: 1,
+  },
+  3: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 0,
+  },
+  4: {
+    clubs: 1,
+    spades: 0,
+    hearts: 1,
+    diamonds: 1,
+  },
+  5: {
+    clubs: 0,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  6: {
+    clubs: 1,
+    spades: 1,
+    hearts: 0,
+    diamonds: 1,
+  },
+  7: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  8: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  9: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  10: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  jack: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  queen: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  king: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+};
+
 /**
  * A 2 3 4 5
  */
@@ -717,30 +889,35 @@ const straightHand2 = {
       suit: 'hearts',
       rank: 1,
       pic: './images/cards/ace_of_hearts.png',
+      hold: false,
     },
     {
       name: '3',
       suit: 'diamonds',
       rank: 3,
       pic: './images/cards/3_of_diamonds.png',
+      hold: false,
     },
     {
       name: '4',
       suit: 'spades',
       rank: 4,
       pic: './images/cards/4_of_spades.png',
+      hold: false,
     },
     {
       name: '5',
       suit: 'clubs',
       rank: 5,
       pic: './images/cards/5_of_clubs.png',
+      hold: false,
     },
     {
       name: '2',
       suit: 'hearts',
       rank: 2,
       pic: './images/cards/2_of_hearts.png',
+      hold: false,
     },
   ],
   suit: {
@@ -763,6 +940,87 @@ const straightHand2 = {
     jack: 0,
     queen: 0,
     king: 0,
+  },
+};
+
+const straightHand2CardsLeft = {
+  ace: {
+    clubs: 1,
+    spades: 1,
+    hearts: 0,
+    diamonds: 1,
+  },
+  2: {
+    clubs: 1,
+    spades: 1,
+    hearts: 0,
+    diamonds: 1,
+  },
+  3: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 0,
+  },
+  4: {
+    clubs: 1,
+    spades: 0,
+    hearts: 1,
+    diamonds: 1,
+  },
+  5: {
+    clubs: 0,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  6: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  7: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  8: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  9: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  10: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  jack: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  queen: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  king: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
   },
 };
 

@@ -1432,8 +1432,222 @@ const checkStraightFlushCombinations = () => {
   return 0;
 };
 
+const checkTwoPairCombinations = () => {
+  console.log('insied checkTwoPairCombinations');
+  const result = {
+    combinations: 0,
+    alreadyWin: false,
+  };
+  let combinations = 0;
+
+  // get the cards being held first
+  const twoPairHand = {};
+
+  for (let i = 0; i < stats.hand.length; i += 1) {
+    if (stats.hand[i].hold === true) {
+      if (twoPairHand[stats.hand[i].rank] === undefined) {
+        twoPairHand[stats.hand[i].rank] = 1;
+      } else {
+        twoPairHand[stats.hand[i].rank] += 1;
+      }
+    }
+  }
+
+  const rankArray = Object.keys(twoPairHand);
+
+  const twoPairHandValues = Object.values(twoPairHand);
+  const twoPairHandCardLeft = [];
+
+  for (let i = 0; i < rankArray.length; i += 1) {
+    let cardsLeftWithRank;
+    const rank = parseInt(rankArray[i], 10);
+
+    if (rank === 1) {
+      cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+    } else if (rank === 11) {
+      cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+    } else if (rank === 12) {
+      cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+    } else if (rank === 13) {
+      cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+    } else if (rank === 14) {
+      cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+    } else {
+      cardsLeftWithRank = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
+    }
+
+    twoPairHandCardLeft.push(cardsLeftWithRank);
+  }
+
+  let twoCounts = 0;
+
+  for (let i = 0; i < twoPairHandValues.length; i += 1) {
+    if (twoPairHandValues[i] === 2) {
+      twoCounts += 1;
+    }
+  }
+
+  if (Object.values(twoPairHand).length === 5 || rankArray.length >= 4) {
+    combinations = 0;
+  } else if (twoCounts === 2) {
+    result.alreadyWin = true;
+    combinations = 1;
+  } else if (rankArray.length === 3) {
+    const set1Rank1 = parseInt(rankArray[0], 10);
+    const set1Rank1Held = twoPairHandValues[0];
+    const set1Rank1Left = twoPairHandCardLeft[0];
+    const set1Rank2 = parseInt(rankArray[1], 10);
+    const set1Rank2Held = twoPairHandValues[1];
+    const set1Rank2Left = twoPairHandCardLeft[1];
+
+    const set2Rank1 = parseInt(rankArray[0], 10);
+    const set2Rank1Held = twoPairHandValues[0];
+    const set2Rank1Left = twoPairHandCardLeft[0];
+    const set2Rank2 = parseInt(rankArray[2], 10);
+    const set2Rank2Held = twoPairHandValues[1];
+    const set2Rank2Left = twoPairHandCardLeft[1];
+
+    const set3Rank1 = parseInt(rankArray[1], 10);
+    const set3Rank1Held = twoPairHandValues[0];
+    const set3Rank1Left = twoPairHandCardLeft[0];
+    const set3Rank2 = parseInt(rankArray[2], 10);
+    const set3Rank2Held = twoPairHandValues[1];
+    const set3Rank2Left = twoPairHandCardLeft[1];
+
+    const tempCombinations = 1;
+
+    // set 1
+    // rank1 held === 2
+    // rank2 held !== 2
+
+    // rank1 held !== 2
+    // rank2 held === 2
+
+    // rank1 held !== 2
+    // rank2 held !== 2
+
+    // set 2
+    // rank1 held === 2
+    // rank2 held !== 2
+
+    // rank1 held !== 2
+    // rank2 held === 2
+
+    // rank1 held !== 2
+    // rank2 held !== 2
+
+    // set 3
+    // rank1 held === 2
+    // rank2 held !== 2
+
+    // rank1 held !== 2
+    // rank2 held === 2
+
+    // rank1 held !== 2
+    // rank2 held !== 2
+
+    combinations += tempCombinations;
+  } else if (rankArray.length === 2) {
+
+  } else if (rankArray.length === 1) {
+    console.log('inside rankArray.length === 1');
+    const rank = parseInt(rankArray[0], 10);
+    const rankHeld = twoPairHandValues[0];
+    const rankLeft = twoPairHandCardLeft[0];
+
+    const rankCombinations = totalCombinations(rankLeft, 2 - rankHeld);
+
+    const cardsLeftKeys = Object.keys(cardsLeft);
+    const cardsLeftValues = Object.values(cardsLeft);
+
+    console.log('cardsLeftKeys');
+    console.log(cardsLeftKeys);
+
+    console.log('cardsLeftValues');
+    console.log(cardsLeftValues);
+
+    for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+      let tempCombinations = 0;
+      if (i !== rank) {
+        const tempCardLeftValue = Object.values(cardsLeftValues[i])
+          .reduce((a, b) => a + b, 0);
+        if (tempCardLeftValue >= 2) {
+          tempCombinations = totalCombinations(tempCardLeftValue, 2);
+        } else {
+          tempCombinations = 0;
+        }
+
+        combinations += (rankCombinations * tempCombinations);
+      }
+    }
+  }
+
+  result.combinations = combinations;
+  return result;
+};
+
+const checkThreeOfAKindCombinations = () => {
+  const result = {
+    combinations: 0,
+    alreadyWin: false,
+  };
+  let combinations = 0;
+
+  // get the cards being held first
+  const threeOfAKindHand = {};
+
+  for (let i = 0; i < stats.hand.length; i += 1) {
+    if (stats.hand[i].hold === true) {
+      if (threeOfAKindHand[stats.hand[i].rank] === undefined) {
+        threeOfAKindHand[stats.hand[i].rank] = 1;
+      } else {
+        threeOfAKindHand[stats.hand[i].rank] += 1;
+      }
+    }
+  }
+
+  const rankArray = Object.keys(threeOfAKindHand);
+
+  if (Object.values(threeOfAKindHand).length >= 4) {
+    // if there are 3 different card ranks are being held, return 0
+    combinations = 0;
+  } else if (Object.values(threeOfAKindHand).indexOf(3) !== -1) {
+    // if there are already 4 cards with the same rank being held, return 1
+    combinations = 1;
+    result.alreadyWin = true;
+  } else {
+    for (let i = 0; i < rankArray.length; i += 1) {
+      const rank = parseInt(rankArray[i], 10);
+      const noOfCardsHeld = threeOfAKindHand[rank];
+
+      let noOfCardsLeft;
+
+      if (rank === 1) {
+        noOfCardsLeft = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+      } else if (rank === 11) {
+        noOfCardsLeft = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+      } else if (rank === 12) {
+        noOfCardsLeft = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+      } else if (rank === 13) {
+        noOfCardsLeft = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+      } else if (rank === 14) {
+        noOfCardsLeft = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+      } else {
+        noOfCardsLeft = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
+      }
+
+      if (noOfCardsHeld + noOfCardsLeft >= 3) {
+        combinations += 1;
+      }
+    }
+  }
+
+  result.combinations = combinations;
+
+  return result;
+};
+
 const checkFourOfAKindCombinations = () => {
-  console.log('inside checkFourOfAKindCombinations');
   const result = {
     combinations: 0,
     alreadyWin: false,
@@ -1452,9 +1666,6 @@ const checkFourOfAKindCombinations = () => {
       }
     }
   }
-
-  console.log('fourOfAKindHand');
-  console.log(fourOfAKindHand);
 
   const rankArray = Object.keys(fourOfAKindHand);
 
@@ -1603,7 +1814,8 @@ const checkFullHouseCombinations = () => {
       }
     } else if (noOfRank1CardsHeld < 3) {
       if (noOfRank1CardsLeft >= (3 - noOfRank1CardsHeld)) {
-        const rank1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 3 - noOfRank1CardsHeld);
+        const rank1TotalCombinations = totalCombinations(noOfRank1CardsLeft,
+          3 - noOfRank1CardsHeld);
 
         for (let i = 0; i < cardsLeftKeys.length; i += 1) {
           if (cardsLeftValues[i] >= 2) {
@@ -1622,7 +1834,8 @@ const checkFullHouseCombinations = () => {
       }
     } else if (noOfRank1CardsHeld < 2) {
       if (noOfRank1CardsLeft >= (2 - noOfRank1CardsHeld)) {
-        const rank1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld);
+        const rank1TotalCombinations = totalCombinations(noOfRank1CardsLeft,
+          2 - noOfRank1CardsHeld);
 
         for (let i = 0; i < cardsLeftKeys.length; i += 1) {
           if (cardsLeftValues[i] >= 3) {
@@ -1652,22 +1865,14 @@ const checkFlushCombinations = () => {
     }
   }
 
-  console.log('flushHand');
-  console.log(flushHand);
-  console.log(Object.keys(flushHand).length);
-
   const cardsLeftValues = Object.values(cardsLeft);
-  console.log(cardsLeftValues);
 
   if (Object.keys(flushHand).length > 1) {
     combinations = 0;
   } else {
-    console.log('inside else');
     const suit = Object.keys(flushHand)[0];
     const cardsHeld = Object.values(flushHand)[0];
 
-    console.log(`suit: ${suit}`);
-    console.log(`cardsHeld: ${cardsHeld}`);
     let cardsLeftWithSuit = 0;
 
     for (let i = 0; i < cardsLeftValues.length; i += 1) {
@@ -1678,10 +1883,527 @@ const checkFlushCombinations = () => {
   }
 
   return combinations;
-}
+};
 
 const checkStraightCombinations = () => {
-  
+  const withinStraightResult = isHeldCardsWithinStraight(stats.hand);
+
+  let combinations = 0;
+
+  if (withinStraightResult.result) {
+    const { straightHand } = withinStraightResult;
+    const { diff } = withinStraightResult;
+
+    const rankArray = Object.keys(straightHand);
+
+    if (diff > 4) {
+      combinations = 0;
+    } else if (diff === 4) {
+      const firstRank = parseInt(rankArray[0], 10);
+
+      combinations = 1;
+
+      for (let i = 1; i < 5; i += 1) {
+        if (rankArray.indexOf((firstRank + i).toString()) === -1) {
+          // current rank is not in held cards
+          // find in cardsLeft
+
+          const cardsLeftWithRank = Object.values(cardsLeft[firstRank + i])
+            .reduce((a, b) => a + b, 0);
+
+          if (cardsLeftWithRank > 0) {
+            combinations *= totalCombinations(cardsLeftWithRank, 1);
+          } else {
+            combinations = 0;
+          }
+        }
+      }
+    } else if (diff === 3) {
+      let tempCombinations = 1;
+
+      const firstRank = parseInt(rankArray[0], 10);
+      const lastRank = firstRank + 4;
+
+      for (let i = firstRank; i <= lastRank; i += 1) {
+        if (rankArray.indexOf((i).toString()) === -1) {
+          let cardsLeftWithRank;
+
+          if (i === 1) {
+            cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+          } else if (i === 11) {
+            cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+          } else if (i === 12) {
+            cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+          } else if (i === 13) {
+            cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+          } else if (i === 14) {
+            cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+          } else {
+            cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+          }
+
+          if (cardsLeftWithRank > 0) {
+            tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+          } else {
+            tempCombinations = 0;
+          }
+        }
+      }
+
+      combinations += tempCombinations;
+
+      tempCombinations = 1;
+
+      const firstRank1 = parseInt(rankArray[0], 10) - 1;
+      if (firstRank1 > 0) {
+        const lastRank1 = firstRank1 + 4;
+
+        for (let i = firstRank1; i <= lastRank1; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+    } else if (diff === 2) {
+      let tempCombinations = 1;
+
+      const firstRank = parseInt(rankArray[0], 10);
+      const lastRank = firstRank + 4;
+
+      for (let i = firstRank; i <= lastRank; i += 1) {
+        if (rankArray.indexOf((i).toString()) === -1) {
+          let cardsLeftWithRank;
+
+          if (i === 1) {
+            cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+          } else if (i === 11) {
+            cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+          } else if (i === 12) {
+            cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+          } else if (i === 13) {
+            cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+          } else if (i === 14) {
+            cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+          } else {
+            cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+          }
+
+          if (cardsLeftWithRank > 0) {
+            tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+          } else {
+            tempCombinations = 0;
+          }
+        }
+      }
+
+      combinations += tempCombinations;
+
+      tempCombinations = 1;
+
+      const firstRank1 = parseInt(rankArray[0], 10) - 1;
+      if (firstRank1 > 0) {
+        const lastRank1 = firstRank1 + 4;
+
+        for (let i = firstRank1; i <= lastRank1; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+
+      tempCombinations = 1;
+
+      const firstRank2 = parseInt(rankArray[0], 10) - 2;
+      if (firstRank2 > 0) {
+        const lastRank2 = firstRank2 + 4;
+
+        for (let i = firstRank2; i <= lastRank2; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+    } else if (diff === 1) {
+      let tempCombinations = 1;
+
+      const firstRank = parseInt(rankArray[0], 10);
+      const lastRank = firstRank + 4;
+
+      for (let i = firstRank; i <= lastRank; i += 1) {
+        if (rankArray.indexOf((i).toString()) === -1) {
+          let cardsLeftWithRank;
+
+          if (i === 1) {
+            cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+          } else if (i === 11) {
+            cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+          } else if (i === 12) {
+            cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+          } else if (i === 13) {
+            cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+          } else if (i === 14) {
+            cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+          } else {
+            cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+          }
+
+          if (cardsLeftWithRank > 0) {
+            tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+          } else {
+            tempCombinations = 0;
+          }
+        }
+      }
+
+      combinations += tempCombinations;
+
+      tempCombinations = 1;
+
+      const firstRank1 = parseInt(rankArray[0], 10) - 1;
+      if (firstRank1 > 0) {
+        const lastRank1 = firstRank1 + 4;
+
+        for (let i = firstRank1; i <= lastRank1; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+
+      tempCombinations = 1;
+
+      const firstRank2 = parseInt(rankArray[0], 10) - 2;
+      if (firstRank2 > 0) {
+        const lastRank2 = firstRank2 + 4;
+
+        for (let i = firstRank2; i <= lastRank2; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+
+      tempCombinations = 1;
+
+      const firstRank3 = parseInt(rankArray[0], 10) - 3;
+      if (firstRank3 > 0) {
+        const lastRank3 = firstRank3 + 4;
+
+        for (let i = firstRank3; i <= lastRank3; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+    } else if (diff === 0) {
+      let tempCombinations = 1;
+
+      const firstRank = parseInt(rankArray[0], 10);
+      const lastRank = firstRank + 4;
+
+      for (let i = firstRank; i <= lastRank; i += 1) {
+        if (rankArray.indexOf((i).toString()) === -1) {
+          let cardsLeftWithRank;
+
+          if (i === 1) {
+            cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+          } else if (i === 11) {
+            cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+          } else if (i === 12) {
+            cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+          } else if (i === 13) {
+            cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+          } else if (i === 14) {
+            cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+          } else {
+            cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+          }
+
+          if (cardsLeftWithRank > 0) {
+            tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+          } else {
+            tempCombinations = 0;
+          }
+        }
+      }
+
+      combinations += tempCombinations;
+
+      tempCombinations = 1;
+
+      const firstRank1 = parseInt(rankArray[0], 10) - 1;
+      if (firstRank1 > 0) {
+        const lastRank1 = firstRank1 + 4;
+
+        for (let i = firstRank1; i <= lastRank1; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+
+      tempCombinations = 1;
+
+      const firstRank2 = parseInt(rankArray[0], 10) - 2;
+      if (firstRank2 > 0) {
+        const lastRank2 = firstRank2 + 4;
+
+        for (let i = firstRank2; i <= lastRank2; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+
+      tempCombinations = 1;
+
+      const firstRank3 = parseInt(rankArray[0], 10) - 3;
+      if (firstRank3 > 0) {
+        const lastRank3 = firstRank3 + 4;
+
+        for (let i = firstRank3; i <= lastRank3; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+
+      tempCombinations = 1;
+
+      const firstRank4 = parseInt(rankArray[0], 10) - 3;
+      if (firstRank4 > 0) {
+        const lastRank4 = firstRank4 + 4;
+
+        for (let i = firstRank4; i <= lastRank4; i += 1) {
+          if (rankArray.indexOf((i).toString()) === -1) {
+            let cardsLeftWithRank;
+
+            if (i === 1) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else if (i === 11) {
+              cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+            } else if (i === 12) {
+              cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+            } else if (i === 13) {
+              cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+            } else if (i === 14) {
+              cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+            } else {
+              cardsLeftWithRank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+            }
+
+            if (cardsLeftWithRank > 0) {
+              tempCombinations *= totalCombinations(cardsLeftWithRank, 1);
+            } else {
+              tempCombinations = 0;
+            }
+          }
+        }
+
+        combinations += tempCombinations;
+      }
+    }
+  }
+
+  return combinations;
 };
 
 const calculateCardsToBeReplaced = () => {
@@ -1715,12 +2437,20 @@ const updateFullHouseProbabilityUI = (input) => {
   document.getElementById('probability-full-house').innerHTML = input;
 };
 
-const updateProbabilityUI = (input) => {
+const updateFlushProbabilityUI = (input) => {
   document.getElementById('probability-flush').innerHTML = input;
 };
 
 const updateStraightProbabilityUI = (input) => {
   document.getElementById('probability-straight').innerHTML = input;
+};
+
+const updateThreeOfAKindProbabilityUI = (input) => {
+  document.getElementById('probability-three-of-a-kind').innerHTML = input;
+};
+
+const updateTwoPairProbabilityUI = (input) => {
+  document.getElementById('probability-two-pair').innerHTML = input;
 };
 
 const calculateProbability = () => {
@@ -1815,6 +2545,24 @@ const calculateProbability = () => {
     const straightProbability = (straightCombinations
         / totalCombinationsAvailable) * 100;
     updateStraightProbabilityUI(straightProbability);
+
+    const threeOfAKindCombinations = checkThreeOfAKindCombinations();
+    if (threeOfAKindCombinations.alreadyWin) {
+      updateThreeOfAKindProbabilityUI(100);
+    } else {
+      const threeOfAKindProbability = (threeOfAKindCombinations.combinations
+        / totalCombinationsAvailable) * 100;
+      updateThreeOfAKindProbabilityUI(threeOfAKindProbability);
+    }
+
+    const twoPairCombinations = checkTwoPairCombinations();
+    if (twoPairCombinations.alreadyWin) {
+      updateTwoPairProbabilityUI(100);
+    } else {
+      const twoPairProbability = (twoPairCombinations.combinations
+        / totalCombinationsAvailable) * 100;
+      updateTwoPairProbabilityUI(twoPairProbability);
+    }
   }
 };
 
@@ -1868,8 +2616,8 @@ const deal = () => {
       // cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
     }
 
-    stats = testFullHouseHand;
-    cardsLeft = testFullHouseCardsLeft;
+    stats = twoPairHand;
+    cardsLeft = twoPairCardsLeft;
     updateCardsUI();
     updateInstructions(
       "Click on any card to hold and press <span class='nes-text is-primary'>Deal</span> again.",
