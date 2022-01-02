@@ -385,20 +385,20 @@ const flipCard = () => {
   }
   cardClick();
 };
+
+/* A function that creates a hold button div to every single card that is being pushed on the screen
+ * @param cardChoice will select all the cards that are not being held (free-card class)
+ * @param nameChoices will select all the front card name id
+ * @param suitChoices will select all the front card suit id
+ * @param nameCard will take all the nameChoices[i] data-value in the loop
+ */
 const cardClick = () => {
   let cardChoice = document.querySelectorAll(".free-card");
-
-  let nameCard;
-  let suitCard;
   for (let i = 0; i < cardChoice.length; i++) {
     document.querySelector(`#card${i + 1}`).addEventListener("click", () => {
       let holdButton = document.createElement("div");
       holdButton.setAttribute("id", `hold${i + 1}`);
       holdButton.innerHTML = "Hold";
-      let nameChoices = document.querySelectorAll("#front-card-name");
-      let suitChoices = document.querySelectorAll("#front-card-suit");
-      nameCard = nameChoices[i].getAttribute("data-value");
-      suitCard = suitChoices[i].getAttribute("data-value");
       if (
         document.getElementById(`card${i + 1}`).classList.contains("held-card")
       ) {
