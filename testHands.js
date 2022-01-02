@@ -308,6 +308,148 @@ const fullHouseHand = {
   },
 };
 
+const testFullHouseHand = {
+  hand: [
+    {
+      name: '2',
+      suit: 'hearts',
+      rank: 2,
+      pic: './images/cards/2_of_hearts.png',
+      hold: false,
+    },
+    {
+      name: '2',
+      suit: 'diamonds',
+      rank: 2,
+      pic: './images/cards/2_of_diamonds.png',
+      hold: false,
+    },
+    {
+      name: '2',
+      suit: 'spades',
+      rank: 2,
+      pic: './images/cards/2_of_spades.png',
+      hold: false,
+    },
+    {
+      name: '4',
+      suit: 'clubs',
+      rank: 4,
+      pic: './images/cards/4_of_clubs.png',
+      hold: false,
+    },
+    {
+      name: '4',
+      suit: 'hearts',
+      rank: 4,
+      pic: './images/cards/4_of_hearts.png',
+      hold: false,
+    },
+  ],
+  suit: {
+    clubs: 1,
+    spades: 1,
+    hearts: 2,
+    diamonds: 1,
+  },
+  name: {
+    2: 3,
+    3: 0,
+    4: 2,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+    10: 0,
+    ace: 0,
+    jack: 0,
+    queen: 0,
+    king: 0,
+  },
+};
+
+const testFullHouseCardsLeft = {
+  ace: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  2: {
+    clubs: 1,
+    spades: 0,
+    hearts: 0,
+    diamonds: 0,
+  },
+  3: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  4: {
+    clubs: 0,
+    spades: 1,
+    hearts: 0,
+    diamonds: 1,
+  },
+  5: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  6: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  7: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  8: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  9: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  10: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  jack: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  queen: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+  king: {
+    clubs: 1,
+    spades: 1,
+    hearts: 1,
+    diamonds: 1,
+  },
+};
+
 const testFourOfAKindHand = {
   hand: [
     {

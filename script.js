@@ -210,8 +210,10 @@ const checkFourOfAKindHand = () => {
   return false;
 };
 
-const checkFullHouseHand = () => {
-  const nameCount = Object.values(stats.name);
+const checkFullHouseHand = (hand) => {
+  console.log('hand');
+  console.log(hand);
+  const nameCount = Object.values(hand);
 
   if (nameCount.indexOf(3) !== -1 && nameCount.indexOf(2) !== -1) {
     return true;
@@ -368,7 +370,7 @@ const calcHandScore = () => {
     foundHand = 'fourOfAKind';
     return;
   }
-  if (checkFullHouseHand()) {
+  if (checkFullHouseHand(stats.name)) {
     outcome = 'Full house found!';
     foundHand = 'fullHouse';
     return;
@@ -1503,18 +1505,43 @@ const checkFullHouseCombinations = () => {
   for (let i = 0; i < stats.hand.length; i += 1) {
     if (stats.hand[i].hold === true) {
       if (fullHouseHand[stats.hand[i].rank] === undefined) {
-        fullHouseHand[stats.hand[i].rank] = 1;
+        if (stats.hand[i].rank === 11) {
+          fullHouseHand.jack = 1;
+        } else if (stats.hand[i].rank === 12) {
+          fullHouseHand.queen = 1;
+        } else if (stats.hand[i].rank === 13) {
+          fullHouseHand.king = 1;
+        } else if (stats.hand[i].rank === 1) {
+          fullHouseHand.ace = 1;
+        } else {
+          fullHouseHand[stats.hand[i].rank] = 1;
+        }
+      } else if (stats.hand[i].rank === 11) {
+        fullHouseHand.jack += 1;
+      } else if (stats.hand[i].rank === 12) {
+        fullHouseHand.queen += 1;
+      } else if (stats.hand[i].rank === 13) {
+        fullHouseHand.king += 1;
+      } else if (stats.hand[i].rank === 1) {
+        fullHouseHand.ace += 1;
       } else {
         fullHouseHand[stats.hand[i].rank] += 1;
       }
     }
   }
 
+  if (checkFullHouseHand(fullHouseHand)) {
+    result.alreadyWin = true;
+    return result;
+  }
+
   const rankArray = Object.keys(fullHouseHand);
 
   if (rankArray.length >= 3) {
+    console.log('inside rankArray.length >= 3');
     combinations = 0;
   } else if (rankArray.length === 2) {
+    console.log('inside rankArray.length === 2');
     // given the two different ranks A and B, i need to find out
     // different combinations of 3 As 2 Bs and 2 As 3 Bs.
 
@@ -1538,6 +1565,7 @@ const checkFullHouseCombinations = () => {
       * totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld));
     }
   } else if (rankArray.length === 1) {
+    console.log('inside rankArray.length === 1');
     // if there is only 1 rank A, i need to find out
     // different combinations of 3 As 2 Of Everything Else and
     // 2 As 3 Of Everything Else
@@ -1550,21 +1578,32 @@ const checkFullHouseCombinations = () => {
     const cardsLeftKeys = Object.keys(cardsLeft);
     const cardsLeftValues = Object.keys(cardsLeft);
 
+    // to find combinations where rank 1 has 3 cards
+    if (noOfRank1CardsHeld === 3) {
+
+    } else {
+
+    }
+
     if (totalRank1Cards >= 2) {
+      console.log('inside totalRank1Cards >= 2');
       const set1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld);
 
       for (let i = 0; i < cardsLeftKeys.length; i += 1) {
         if (cardsLeftValues[i] >= 3) {
+          console.log('inside cardsLeftValues[i] >= 3');
           combinations += (set1TotalCombinations * totalCombinations(cardsLeftValues[i], 3));
         }
       }
     }
 
     if (totalRank1Cards >= 3) {
+      console.log('inside totalRank1Cards >= 3');
       const set1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 3 - noOfRank1CardsHeld);
 
       for (let i = 0; i < cardsLeftKeys.length; i += 1) {
         if (cardsLeftValues[i] >= 2) {
+          console.log('cardsLeftValues[i] >= 2');
           combinations += (set1TotalCombinations * totalCombinations(cardsLeftValues[i], 2));
         }
       }
@@ -1572,9 +1611,6 @@ const checkFullHouseCombinations = () => {
   }
 
   result.combinations = combinations;
-
-  console.log('inside checkFullHouseCombinations');
-  console.log(result);
 
   return result;
 };
@@ -1606,6 +1642,10 @@ const updateFourOfAKindProbabilityUI = (input) => {
   document.getElementById('probability-four-of-a-kind').innerHTML = input;
 };
 
+const updateFullHouseProbabilityUI = (input) => {
+  document.getElementById('probability-full-house').innerHTML = input;
+};
+
 const calculateProbability = () => {
   // take into account the hand and the amount
   // of cards being held or to be replaced
@@ -1625,9 +1665,10 @@ const calculateProbability = () => {
     // if (checkFourOfAKindHand()) {
     //   probability.fourOfAKind = 100;
     // }
-    // if (checkFullHouseHand()) {
-    //   probability.fullHouse = 100;
-    // }
+    if (checkFullHouseHand(stats.name)) {
+      probability.fullHouse = 100;
+      updateFullHouseProbabilityUI(100);
+    }
     // if (checkFlushHand()) {
     //   probability.flush = 100;
     // }
@@ -1663,6 +1704,14 @@ const calculateProbability = () => {
     }
 
     const fullHouseCombinations = checkFullHouseCombinations();
+    if (fullHouseCombinations.alreadyWin) {
+      updateFullHouseProbabilityUI(100);
+    } else {
+      console.log(`fullHouseCombinations: ${fullHouseCombinations.combinations}`);
+      const fullHouseProbability = (fullHouseCombinations.combinations
+        / totalCombinationsAvailable) * 100;
+      updateFullHouseProbabilityUI(fullHouseProbability);
+    }
   }
 };
 
@@ -1716,8 +1765,8 @@ const deal = () => {
       // cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
     }
 
-    stats = testFourOfAKindHand;
-    cardsLeft = testFourOfAKindCardsLeft;
+    stats = testFullHouseHand;
+    cardsLeft = testFullHouseCardsLeft;
     updateCardsUI();
     updateInstructions(
       "Click on any card to hold and press <span class='nes-text is-primary'>Deal</span> again.",
