@@ -1477,6 +1477,19 @@ const checkFourOfAKindCombinations = () => {
   return result;
 };
 
+const factorialize = (num) => {
+  if (num < 0) return -1;
+  if (num === 0) return 1;
+  return (num * factorialize(num - 1));
+};
+
+const totalCombinations = (numberOfCardsLeft, cardsToDraw) => {
+  const numerator = factorialize(numberOfCardsLeft);
+  const denominator = (factorialize(numberOfCardsLeft - cardsToDraw) * factorialize(cardsToDraw));
+
+  return numerator / denominator;
+};
+
 const checkFullHouseCombinations = () => {
   const result = {
     combinations: 0,
@@ -1484,7 +1497,7 @@ const checkFullHouseCombinations = () => {
   };
   let combinations = 0;
 
-   // get the cards being held first
+  // get the cards being held first
   const fullHouseHand = {};
 
   for (let i = 0; i < stats.hand.length; i += 1) {
@@ -1497,37 +1510,74 @@ const checkFullHouseCombinations = () => {
     }
   }
 
-  const rankArray = Object.keys(fullHouseHand);  
+  const rankArray = Object.keys(fullHouseHand);
 
   if (rankArray.length >= 3) {
     combinations = 0;
-  } else {
-    if (rankArray.length === 2) {
-      // given the two different ranks A and B, i need to find out 
-      // different combinations of 3 As 2 Bs and 2 As 3 Bs.
+  } else if (rankArray.length === 2) {
+    // given the two different ranks A and B, i need to find out
+    // different combinations of 3 As 2 Bs and 2 As 3 Bs.
 
-      for (let i = 0; i < rankArray.length; i += 1) {
-      const rank = rankArray[i];
-      const noOfCardsHeld = fourOfAKindHand[rank];
-      const noOfCardsLeft = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
+    const rank1 = rankArray[0];
+    const noOfRank1CardsHeld = fullHouseHand[rank1];
+    const noOfRank1CardsLeft = Object.values(cardsLeft[rank1]).reduce((a, b) => a + b, 0);
+    const totalRank1Cards = noOfRank1CardsHeld + noOfRank1CardsLeft;
 
-      if (noOfCardsHeld + noOfCardsLeft === 4) {
-        combinations += 1;
+    const rank2 = rankArray[0];
+    const noOfRank2CardsHeld = fullHouseHand[rank2];
+    const noOfRank2CardsLeft = Object.values(cardsLeft[rank2]).reduce((a, b) => a + b, 0);
+    const totalRank2Cards = noOfRank2CardsHeld + noOfRank2CardsLeft;
+
+    if (totalRank1Cards >= 3 && totalRank2Cards >= 2) {
+      combinations += (totalCombinations(noOfRank1CardsLeft, 3 - noOfRank1CardsHeld)
+      * totalCombinations(noOfRank2CardsLeft, 2 - noOfRank2CardsHeld));
+    }
+
+    if (totalRank2Cards >= 3 && totalRank1Cards >= 2) {
+      combinations += (totalCombinations(noOfRank2CardsLeft, 3 - noOfRank2CardsHeld)
+      * totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld));
+    }
+  } else if (rankArray.length === 1) {
+    // if there is only 1 rank A, i need to find out
+    // different combinations of 3 As 2 Of Everything Else and
+    // 2 As 3 Of Everything Else
+
+    const rank1 = rankArray[0];
+    const noOfRank1CardsHeld = fullHouseHand[rank1];
+    const noOfRank1CardsLeft = Object.values(cardsLeft[rank1]).reduce((a, b) => a + b, 0);
+    const totalRank1Cards = noOfRank1CardsHeld + noOfRank1CardsLeft;
+
+    const cardsLeftKeys = Object.keys(cardsLeft);
+    const cardsLeftValues = Object.keys(cardsLeft);
+
+    if (totalRank1Cards >= 2) {
+      const set1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld);
+
+      for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+        if (cardsLeftValues[i] >= 3) {
+          combinations += (set1TotalCombinations * totalCombinations(cardsLeftValues[i], 3));
+        }
       }
     }
 
+    if (totalRank1Cards >= 3) {
+      const set1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 3 - noOfRank1CardsHeld);
 
-    } else if (rankArray.length === 1) {
-      // if there is only 1 rank A, i need to find out 
-      // different combinations of 3 As 2 Of Everything Else and
-      // 2 As 3 Of Everything Else
+      for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+        if (cardsLeftValues[i] >= 2) {
+          combinations += (set1TotalCombinations * totalCombinations(cardsLeftValues[i], 2));
+        }
+      }
     }
   }
 
   result.combinations = combinations;
 
+  console.log('inside checkFullHouseCombinations');
+  console.log(result);
+
   return result;
-}
+};
 
 const calculateCardsToBeReplaced = () => {
   let replaceCounter = 0;
@@ -1538,19 +1588,6 @@ const calculateCardsToBeReplaced = () => {
   }
 
   return replaceCounter;
-};
-
-const factorialize = (num) => {
-  if (num < 0) return -1;
-  if (num === 0) return 1;
-  return (num * factorialize(num - 1));
-};
-
-const totalCombinations = (numberOfCardsLeft, cardsToDraw) => {
-  const numerator = factorialize(numberOfCardsLeft);
-  const denominator = (factorialize(numberOfCardsLeft - cardsToDraw) * factorialize(cardsToDraw));
-
-  return numerator / denominator;
 };
 
 const updateTotalCombinationsAvailableUI = (totalCombinations) => {
