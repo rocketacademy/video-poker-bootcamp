@@ -1477,6 +1477,58 @@ const checkFourOfAKindCombinations = () => {
   return result;
 };
 
+const checkFullHouseCombinations = () => {
+  const result = {
+    combinations: 0,
+    alreadyWin: false,
+  };
+  let combinations = 0;
+
+   // get the cards being held first
+  const fullHouseHand = {};
+
+  for (let i = 0; i < stats.hand.length; i += 1) {
+    if (stats.hand[i].hold === true) {
+      if (fullHouseHand[stats.hand[i].rank] === undefined) {
+        fullHouseHand[stats.hand[i].rank] = 1;
+      } else {
+        fullHouseHand[stats.hand[i].rank] += 1;
+      }
+    }
+  }
+
+  const rankArray = Object.keys(fullHouseHand);  
+
+  if (rankArray.length >= 3) {
+    combinations = 0;
+  } else {
+    if (rankArray.length === 2) {
+      // given the two different ranks A and B, i need to find out 
+      // different combinations of 3 As 2 Bs and 2 As 3 Bs.
+
+      for (let i = 0; i < rankArray.length; i += 1) {
+      const rank = rankArray[i];
+      const noOfCardsHeld = fourOfAKindHand[rank];
+      const noOfCardsLeft = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
+
+      if (noOfCardsHeld + noOfCardsLeft === 4) {
+        combinations += 1;
+      }
+    }
+
+
+    } else if (rankArray.length === 1) {
+      // if there is only 1 rank A, i need to find out 
+      // different combinations of 3 As 2 Of Everything Else and
+      // 2 As 3 Of Everything Else
+    }
+  }
+
+  result.combinations = combinations;
+
+  return result;
+}
+
 const calculateCardsToBeReplaced = () => {
   let replaceCounter = 0;
   for (let i = 0; i < stats.hand.length; i += 1) {
@@ -1572,6 +1624,8 @@ const calculateProbability = () => {
         / totalCombinationsAvailable) * 100;
       updateFourOfAKindProbabilityUI(fourOfAKindProbability);
     }
+
+    const fullHouseCombinations = checkFullHouseCombinations();
   }
 };
 
