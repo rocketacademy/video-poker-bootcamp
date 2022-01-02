@@ -210,10 +210,8 @@ const checkFourOfAKindHand = () => {
   return false;
 };
 
-const checkFullHouseHand = (hand) => {
-  console.log('hand');
-  console.log(hand);
-  const nameCount = Object.values(hand);
+const checkFullHouseHand = () => {
+  const nameCount = Object.values(stats.name);
 
   if (nameCount.indexOf(3) !== -1 && nameCount.indexOf(2) !== -1) {
     return true;
@@ -370,7 +368,7 @@ const calcHandScore = () => {
     foundHand = 'fourOfAKind';
     return;
   }
-  if (checkFullHouseHand(stats.name)) {
+  if (checkFullHouseHand()) {
     outcome = 'Full house found!';
     foundHand = 'fullHouse';
     return;
@@ -1435,6 +1433,7 @@ const checkStraightFlushCombinations = () => {
 };
 
 const checkFourOfAKindCombinations = () => {
+  console.log('inside checkFourOfAKindCombinations');
   const result = {
     combinations: 0,
     alreadyWin: false,
@@ -1453,6 +1452,9 @@ const checkFourOfAKindCombinations = () => {
       }
     }
   }
+
+  console.log('fourOfAKindHand');
+  console.log(fourOfAKindHand);
 
   const rankArray = Object.keys(fourOfAKindHand);
 
@@ -1530,18 +1532,11 @@ const checkFullHouseCombinations = () => {
     }
   }
 
-  if (checkFullHouseHand(fullHouseHand)) {
-    result.alreadyWin = true;
-    return result;
-  }
-
   const rankArray = Object.keys(fullHouseHand);
 
   if (rankArray.length >= 3) {
-    console.log('inside rankArray.length >= 3');
     combinations = 0;
   } else if (rankArray.length === 2) {
-    console.log('inside rankArray.length === 2');
     // given the two different ranks A and B, i need to find out
     // different combinations of 3 As 2 Bs and 2 As 3 Bs.
 
@@ -1550,22 +1545,39 @@ const checkFullHouseCombinations = () => {
     const noOfRank1CardsLeft = Object.values(cardsLeft[rank1]).reduce((a, b) => a + b, 0);
     const totalRank1Cards = noOfRank1CardsHeld + noOfRank1CardsLeft;
 
-    const rank2 = rankArray[0];
+    const rank2 = rankArray[1];
     const noOfRank2CardsHeld = fullHouseHand[rank2];
     const noOfRank2CardsLeft = Object.values(cardsLeft[rank2]).reduce((a, b) => a + b, 0);
     const totalRank2Cards = noOfRank2CardsHeld + noOfRank2CardsLeft;
 
-    if (totalRank1Cards >= 3 && totalRank2Cards >= 2) {
-      combinations += (totalCombinations(noOfRank1CardsLeft, 3 - noOfRank1CardsHeld)
-      * totalCombinations(noOfRank2CardsLeft, 2 - noOfRank2CardsHeld));
+    // 3 of Rank1Cards 2 of Rank2Cards
+    if (noOfRank1CardsHeld === 3) {
+      if (noOfRank2CardsLeft >= (2 - noOfRank2CardsHeld)) {
+        combinations += totalCombinations(noOfRank2CardsLeft, 2 - noOfRank2CardsHeld);
+      }
+    } else if (noOfRank1CardsHeld < 3) {
+      if (noOfRank1CardsLeft >= (3 - noOfRank1CardsHeld)) {
+        const rank1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 3 - noOfRank1CardsHeld);
+        if (noOfRank2CardsLeft >= (2 - noOfRank2CardsHeld)) {
+          combinations += (rank1TotalCombinations * totalCombinations(noOfRank2CardsLeft, 2 - noOfRank2CardsHeld));
+        }
+      }
     }
 
-    if (totalRank2Cards >= 3 && totalRank1Cards >= 2) {
-      combinations += (totalCombinations(noOfRank2CardsLeft, 3 - noOfRank2CardsHeld)
-      * totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld));
+    // 2 of Rank1Cards 3 of Rank2Cards
+    if (noOfRank1CardsHeld === 2) {
+      if (noOfRank2CardsLeft >= (3 - noOfRank2CardsHeld)) {
+        combinations += totalCombinations(noOfRank2CardsLeft, 3 - noOfRank2CardsHeld);
+      }
+    } else if (noOfRank1CardsHeld < 2) {
+      if (noOfRank1CardsLeft >= (2 - noOfRank1CardsHeld)) {
+        const rank1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld);
+        if (noOfRank2CardsLeft >= (3 - noOfRank2CardsHeld)) {
+          combinations += (rank1TotalCombinations * totalCombinations(noOfRank2CardsLeft, 3 - noOfRank2CardsHeld));
+        }
+      }
     }
   } else if (rankArray.length === 1) {
-    console.log('inside rankArray.length === 1');
     // if there is only 1 rank A, i need to find out
     // different combinations of 3 As 2 Of Everything Else and
     // 2 As 3 Of Everything Else
@@ -1576,35 +1588,46 @@ const checkFullHouseCombinations = () => {
     const totalRank1Cards = noOfRank1CardsHeld + noOfRank1CardsLeft;
 
     const cardsLeftKeys = Object.keys(cardsLeft);
-    const cardsLeftValues = Object.keys(cardsLeft);
+    const cardsLeftValues = Object.values(cardsLeft);
 
-    // to find combinations where rank 1 has 3 cards
-    if (noOfRank1CardsHeld === 3) {
-
-    } else {
-
+    for (let i = 0; i < cardsLeftValues.length; i += 1) {
+      cardsLeftValues[i] = Object.values(cardsLeftValues[i]).reduce((a, b) => a + b, 0);
     }
 
-    if (totalRank1Cards >= 2) {
-      console.log('inside totalRank1Cards >= 2');
-      const set1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld);
-
+    // 3 of Rank1Cards 2 of Rank2Cards
+    if (noOfRank1CardsHeld === 3) {
       for (let i = 0; i < cardsLeftKeys.length; i += 1) {
-        if (cardsLeftValues[i] >= 3) {
-          console.log('inside cardsLeftValues[i] >= 3');
-          combinations += (set1TotalCombinations * totalCombinations(cardsLeftValues[i], 3));
+        if (cardsLeftValues[i] >= 2) {
+          combinations += totalCombinations(cardsLeftValues[i], 2);
+        }
+      }
+    } else if (noOfRank1CardsHeld < 3) {
+      if (noOfRank1CardsLeft >= (3 - noOfRank1CardsHeld)) {
+        const rank1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 3 - noOfRank1CardsHeld);
+
+        for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+          if (cardsLeftValues[i] >= 2) {
+            combinations += (rank1TotalCombinations * totalCombinations(cardsLeftValues[i], 2));
+          }
         }
       }
     }
 
-    if (totalRank1Cards >= 3) {
-      console.log('inside totalRank1Cards >= 3');
-      const set1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 3 - noOfRank1CardsHeld);
-
+    // 2 of Rank1Cards 3 of Rank2Cards
+    if (noOfRank1CardsHeld === 2) {
       for (let i = 0; i < cardsLeftKeys.length; i += 1) {
-        if (cardsLeftValues[i] >= 2) {
-          console.log('cardsLeftValues[i] >= 2');
-          combinations += (set1TotalCombinations * totalCombinations(cardsLeftValues[i], 2));
+        if (cardsLeftValues[i] >= 3) {
+          combinations += totalCombinations(cardsLeftValues[i], 3);
+        }
+      }
+    } else if (noOfRank1CardsHeld < 2) {
+      if (noOfRank1CardsLeft >= (2 - noOfRank1CardsHeld)) {
+        const rank1TotalCombinations = totalCombinations(noOfRank1CardsLeft, 2 - noOfRank1CardsHeld);
+
+        for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+          if (cardsLeftValues[i] >= 3) {
+            combinations += (rank1TotalCombinations * totalCombinations(cardsLeftValues[i], 3));
+          }
         }
       }
     }
@@ -1613,6 +1636,52 @@ const checkFullHouseCombinations = () => {
   result.combinations = combinations;
 
   return result;
+};
+
+const checkFlushCombinations = () => {
+  let combinations = 0;
+  const flushHand = {};
+
+  for (let i = 0; i < stats.hand.length; i += 1) {
+    if (stats.hand[i].hold === true) {
+      if (flushHand[stats.hand[i].suit] === undefined) {
+        flushHand[stats.hand[i].suit] = 1;
+      } else {
+        flushHand[stats.hand[i].suit] += 1;
+      }
+    }
+  }
+
+  console.log('flushHand');
+  console.log(flushHand);
+  console.log(Object.keys(flushHand).length);
+
+  const cardsLeftValues = Object.values(cardsLeft);
+  console.log(cardsLeftValues);
+
+  if (Object.keys(flushHand).length > 1) {
+    combinations = 0;
+  } else {
+    console.log('inside else');
+    const suit = Object.keys(flushHand)[0];
+    const cardsHeld = Object.values(flushHand)[0];
+
+    console.log(`suit: ${suit}`);
+    console.log(`cardsHeld: ${cardsHeld}`);
+    let cardsLeftWithSuit = 0;
+
+    for (let i = 0; i < cardsLeftValues.length; i += 1) {
+      cardsLeftWithSuit += cardsLeftValues[i][suit];
+    }
+
+    combinations = totalCombinations(cardsLeftWithSuit, 5 - cardsHeld);
+  }
+
+  return combinations;
+}
+
+const checkStraightCombinations = () => {
+  
 };
 
 const calculateCardsToBeReplaced = () => {
@@ -1646,6 +1715,14 @@ const updateFullHouseProbabilityUI = (input) => {
   document.getElementById('probability-full-house').innerHTML = input;
 };
 
+const updateProbabilityUI = (input) => {
+  document.getElementById('probability-flush').innerHTML = input;
+};
+
+const updateStraightProbabilityUI = (input) => {
+  document.getElementById('probability-straight').innerHTML = input;
+};
+
 const calculateProbability = () => {
   // take into account the hand and the amount
   // of cards being held or to be replaced
@@ -1656,35 +1733,52 @@ const calculateProbability = () => {
 
   if (cardsToBeReplaced === 5) {
   } else if (cardsToBeReplaced === 0) {
-    // if (checkRoyalFlushHand()) {
-    //   probability.royalFlush = 100;
-    // }
-    // if (checkStraightFlushHand()) {
-    //   probability.straightFlush = 100;
-    // }
-    // if (checkFourOfAKindHand()) {
-    //   probability.fourOfAKind = 100;
-    // }
-    if (checkFullHouseHand(stats.name)) {
-      probability.fullHouse = 100;
-      updateFullHouseProbabilityUI(100);
+    if (checkRoyalFlushHand()) {
+      probability.royalFlush = 100;
+    } else {
+      probability.royalFlush = 0;
     }
-    // if (checkFlushHand()) {
-    //   probability.flush = 100;
-    // }
-    // if (checkStraightHand()) {
-    //   probability.straight = 100;
-    // }
-    // if (checkThreeOfAKindHand()) {
-    //   probability.threeOfAKind = 100;
-    // }
-    // if (checkTwoPairHand()) {
-    //   probability.twoPairs = 100;
-    // }
-    // if (checkJacksOrBetterHand()) {
-    //   probability.jacksOrBetter = 100;
-    // }
-    // updateProbabilityUI();
+    if (checkStraightFlushHand()) {
+      probability.straightFlush = 100;
+    } else {
+      probability.straightFlush = 0;
+    }
+    if (checkFourOfAKindHand()) {
+      probability.fourOfAKind = 100;
+    } else {
+      probability.fourOfAKind = 0;
+    }
+    if (checkFullHouseHand()) {
+      probability.fullHouse = 100;
+    } else {
+      probability.fullHouse = 0;
+    }
+    if (checkFlushHand()) {
+      probability.flush = 100;
+    } else {
+      probability.flush = 0;
+    }
+    if (checkStraightHand()) {
+      probability.straight = 100;
+    } else {
+      probability.straight = 0;
+    }
+    if (checkThreeOfAKindHand()) {
+      probability.threeOfAKind = 100;
+    } else {
+      probability.threeOfAKind = 0;
+    }
+    if (checkTwoPairHand()) {
+      probability.twoPairs = 100;
+    } else {
+      probability.twoPairs = 0;
+    }
+    if (checkJacksOrBetterHand()) {
+      probability.jacksOrBetter = 100;
+    } else {
+      probability.jacksOrBetter = 0;
+    }
+    updateProbabilityUI();
   } else {
     const royalFlushCombinations = checkRoyalFlushCombinations();
     const royalFlushProbability = (royalFlushCombinations / totalCombinationsAvailable) * 100;
@@ -1707,11 +1801,20 @@ const calculateProbability = () => {
     if (fullHouseCombinations.alreadyWin) {
       updateFullHouseProbabilityUI(100);
     } else {
-      console.log(`fullHouseCombinations: ${fullHouseCombinations.combinations}`);
       const fullHouseProbability = (fullHouseCombinations.combinations
         / totalCombinationsAvailable) * 100;
       updateFullHouseProbabilityUI(fullHouseProbability);
     }
+
+    const flushCombinations = checkFlushCombinations();
+    const flushProbability = (flushCombinations
+        / totalCombinationsAvailable) * 100;
+    updateFlushProbabilityUI(flushProbability);
+
+    const straightCombinations = checkStraightCombinations();
+    const straightProbability = (straightCombinations
+        / totalCombinationsAvailable) * 100;
+    updateStraightProbabilityUI(straightProbability);
   }
 };
 
