@@ -15,8 +15,7 @@ h1 {
 }
 
 .playerCardsDiv {
-  /* background-color: yellow; */
-  border: #ff7b72 0.25rem solid;
+  border: #ed7d3a 0.25rem solid;
   display: flex;
   width: 70%;
   align-items: center;
@@ -26,12 +25,12 @@ h1 {
 }
 
 .game-info-div {
-  background-color: slateblue;
+  /* background-color: #6b2b06; */
   display: none;
   width: 69%;
   padding: 1%;
   margin: 20px auto auto auto;
-  border: #ff7b72 0.25rem solid;
+  border: #ed7d3a 0.25rem solid;
   font-size: 0.75rem;
   text-align: center;
 }
@@ -47,6 +46,12 @@ h1 {
   margin: 0.5%;
 }
 
+.card:hover {
+  box-shadow: 4px 4px 0 #ef2d56;
+  transform: translate(-4px, -4px);
+  border-radius: 1%;
+}
+
 .selected-card {
   border: blueviolet 0px solid;
 }
@@ -54,8 +59,10 @@ h1 {
 .points-info-div {
   display: flex;
   /* border: #ff7b72 0.125rem solid; */
-  color: #ff7b72;
+  color: #ed7d3a;
   width: 70%;
+  padding: 0.5%;
+  border: 0.25rem;
   height: fit-content;
   margin: auto;
   align-items: center;
@@ -66,12 +73,12 @@ h1 {
 .number-div {
   padding: 1rem;
   flex-basis: auto;
-  border: #ff7b72 0.125rem solid;
+  border: #ed7d3a 0.125rem solid;
 }
 
 .numberBox {
   color: #0f2943;
-  background-color: #ff7b72;
+  background-color: #ed7d3a;
   font-size: 1rem;
   font-weight: 300;
   width: fit-content;
@@ -83,21 +90,24 @@ button {
   display: inline-block;
   outline: 0;
   cursor: pointer;
-  /* border-radius: 0.5rem; */
-  border: 0.25rem solid #f0883e;
-  color: #f0883e;
+  border: 0.25rem solid #93e5ab;
+  color: #93e5ab;
   background: 0 0;
   padding: 8px;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 4px 0px,
-    rgba(0, 0, 0, 0.05) 0px 1px 1.5px 0px;
-  /* font-weight: 800; */
   font-size: 3vw;
   height: fit-content;
+  transition: transform 200ms, background 200ms;
 }
 
 button:hover {
-  background-color: #f0883e;
+  background-color: #93e5ab;
   color: #0f2943;
+  box-shadow: 4px 4px 0 #4e878c;
+  transform: translate(-4px, -4px);
+}
+
+button:focus-visible {
+  outline-offset: 1px;
 }
 
 button:disabled,
@@ -146,7 +156,7 @@ label {
 
 input {
   color: #0f2943;
-  background-color: #ff7b72;
+  background-color: #ed7d3a;
   font-size: 1rem;
   font-weight: 300;
   font-family: "Roboto Mono", monospace;
