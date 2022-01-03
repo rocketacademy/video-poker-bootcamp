@@ -6,7 +6,7 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 4.5rem;
+  font-size: 4 5rem;
   font-family: Brush Script MT;
   margin: 0%;
 }
@@ -70,7 +70,7 @@ li {
   padding: 5px;
   margin: 10px;
   background-color: white;
-  display: inline-flex;
+  display: flex;
   height: 140px;
   width: 85px;
   /* vertical-align: top; */

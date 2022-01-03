@@ -159,6 +159,25 @@ const dealButtonClick = () => {
   }
 };
 
+const resetButtonClick = () => {
+  console.log("RESET BUTTON CLICKED");
+
+  if (dealCardsTurn) {
+    console.log("RESET WORKED");
+    playerPoints = 100;
+
+    const currentPoints = document.querySelector(".player-points");
+    const feedback = document.querySelector(".feedback-message");
+
+    feedback.classList.add("opaque");
+    feedback.innerText = "Player points has been reset";
+
+    currentPoints.innerHTML = `Player Points: ${playerPoints}<br>Bet Amount: 0`;
+  } else {
+    return;
+  }
+};
+
 const buildPointsTracker = () => {
   const pointsHeader = document.createElement("p");
   pointsHeader.classList.add("player-points");
@@ -182,6 +201,12 @@ const buildPlayerInterface = () => {
   dealButton.innerText = "Deal";
   dealButton.addEventListener("click", dealButtonClick);
   playerResponseGroup.appendChild(dealButton);
+
+  const resetButton = document.createElement("button");
+  resetButton.classList.add("reset-button");
+  resetButton.innerText = "Reset";
+  resetButton.addEventListener("click", resetButtonClick);
+  playerResponseGroup.appendChild(resetButton);
 
   document.body.appendChild(playerResponseGroup);
 };
