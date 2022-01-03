@@ -1551,7 +1551,18 @@ const checkTwoPairCombinations = () => {
 
   } else if (rankArray.length === 1) {
     console.log('inside rankArray.length === 1');
-    const rank = parseInt(rankArray[0], 10);
+    let rank = parseInt(rankArray[0], 10);
+
+    if (rank === 1) {
+      rank = 'ace';
+    } else if (rank === 11) {
+      rank = 'jack';
+    } else if (rank === 12) {
+      rank = 'queen';
+    } else if (rank === 13) {
+      rank = 'king';
+    }
+
     const rankHeld = twoPairHandValues[0];
     const rankLeft = twoPairHandCardLeft[0];
 
@@ -1566,9 +1577,19 @@ const checkTwoPairCombinations = () => {
     console.log('cardsLeftValues');
     console.log(cardsLeftValues);
 
+    console.log('rankHeld');
+    console.log(rankHeld);
+
+    // if rankHeld === 2, this rank we dont need to find any more
+    // any other number, try to get 2 piece
+    // with last number, any number
+
     for (let i = 0; i < cardsLeftKeys.length; i += 1) {
       let tempCombinations = 0;
-      if (i !== rank) {
+      console.log(`cardsLeftKeys[i]: ${cardsLeftKeys[i]}`);
+      console.log(`rank: ${rank}`);
+      if (cardsLeftKeys[i] !== rank) {
+        console.log('inside cardsLeftKeys[i] !== rank');
         const tempCardLeftValue = Object.values(cardsLeftValues[i])
           .reduce((a, b) => a + b, 0);
         if (tempCardLeftValue >= 2) {
@@ -1577,12 +1598,17 @@ const checkTwoPairCombinations = () => {
           tempCombinations = 0;
         }
 
-        combinations += (rankCombinations * tempCombinations);
+        const totalCardsLeft = 47 - tempCardLeftValue; 
+        const remainingCombinations = totalCombinations(totalCardsLeft, 1);
+
+        combinations += (rankCombinations * tempCombinations * remainingCombinations);
       }
     }
   }
 
   result.combinations = combinations;
+
+  console.log(result);
   return result;
 };
 
@@ -1678,9 +1704,25 @@ const checkFourOfAKindCombinations = () => {
     result.alreadyWin = true;
   } else {
     for (let i = 0; i < rankArray.length; i += 1) {
-      const rank = rankArray[i];
+      const rank = parseInt(rankArray[i], 10);
       const noOfCardsHeld = fourOfAKindHand[rank];
-      const noOfCardsLeft = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
+      
+      let noOfCardsleft;
+
+      if (rank === 1) {
+        noOfCardsLeft = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+      } else if (rank === 11) {
+        noOfCardsLeft = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+      } else if (rank === 12) {
+        noOfCardsLeft = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+      } else if (rank === 13) {
+        noOfCardsLeft = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+      } else if (rank === 14) {
+        noOfCardsLeft = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+      } else {
+        console.log(cardsLeft[rank]);
+        noOfCardsLeft = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
+      }
 
       if (noOfCardsHeld + noOfCardsLeft === 4) {
         combinations += 1;
