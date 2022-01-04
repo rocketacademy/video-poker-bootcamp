@@ -1,7 +1,6 @@
 # Pokermon: Pokemon Video Poker
 ## Overview
-This is a video poker game with Pokemon theme, done in 8-bit gaming style.\
-This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootcamp.rocketacademy.co/projects/project-1-video-poker).
+Pokermon is a video poker game with Pokemon theme, done in 8-bit gaming style.
 
 **LIVE LINK** : https://hertantoirawan.github.io/video-poker-bootcamp/
 
@@ -15,6 +14,7 @@ This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootc
 - Player starts with 100 credits.
 - "Bet 5" is to add bet 5 credits at a time.
 - Player can bet as many credits (no max) as he/she wants.
+- Extra multiplier (800x) when getting Royal Flush applies to bet of 5 or more credits.
 - Hint is given during select-cards-to-keep round, if Hints is enabled in Option menu.
   - Hint is the result of API call to [Flask API wrapper](https://github.com/hertantoirawan/video_poker_analyzer) of [Video Poker Analyzer code by Brad Jacobs](https://github.com/BradAJ/video_poker_analyzer)
 - Pokemon character host, game music, and hints settings can be changed in Option menu.
@@ -28,9 +28,6 @@ This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootc
 
 - This is a vanilla Javascript app with HTML and CSS
 - UI is only tested in iPhone X and Chrome browser dimensions
-- Poker hand score calculation is unit tested using [Cypress](https://www.npmjs.com/package/cypress)
-- Code is formatted using [Prettier](https://www.npmjs.com/package/prettier)
-- Code is linted using [ESLint](https://www.npmjs.com/package/eslint) 
 - Components from [NES.css](https://nostalgic-css.github.io/NES.css/)
 - Color inspiration from [Online Palette](https://www.onlinepalette.com/pokemon/)
 - Fonts from [Google Fonts](https://fonts.google.com/specimen/Press+Start+2P)
@@ -38,17 +35,11 @@ This app is created for [Rocket Academy Coding Bootcamp Project 1](https://bootc
 - 8-bit pokemon card back image modified from [Tumblr](https://66.media.tumblr.com/2c0f485a7b6c4c3e3ddd5bdb3d70794b/tumblr_mfluqxX5FE1rfjowdo1_540.gif)
 - Music and sounds from [Mobcup](https://mobcup.net/)
 - Pokermon logo made using [Font Meme](https://fontmeme.com/pokemon-font/)
-- README.md format from [Chingu article in Medium](https://medium.com/chingu/keys-to-a-well-written-readme-55c53d34fe6d)
+- README.md format from [article in Medium](https://medium.com/chingu/keys-to-a-well-written-readme-55c53d34fe6d)
+- Poker hand score calculation is unit tested using [Cypress](https://www.npmjs.com/package/cypress)
+- Code is formatted using [Prettier](https://www.npmjs.com/package/prettier)
+- Code is linted using [ESLint](https://www.npmjs.com/package/eslint) 
 
-## ToDo List
-- [ ] Make app work in mobile\
-      Some html tags, like 'dialog' is not supported in a lot of browsers.
-      Would be nice to also make this app work in more phone dimensions.
-- [ ] Make auto play feature\
-      Using the analyze hands feature, we can already get suggestion of what cards to keep to get the highest expected winning value.\
-      The next step is to just let AI play for you.
-- [ ] Add more animations
-
-
-
+## Documentation
+More documentation about the development of the game in [Github Wiki](https://github.com/hertantoirawan/video-poker-bootcamp/wiki).
 
