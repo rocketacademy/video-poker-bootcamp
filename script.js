@@ -2439,6 +2439,52 @@ const updateTwoPairProbabilityUI = (input) => {
   document.getElementById('probability-two-pair').innerHTML = input;
 };
 
+const buildStats = (cleanedUpCardsLeft) => {
+  const statsList = [];
+
+  for (let i = 0; i < cleanedUpCardsLeft.length; i += 1) {
+    const stats = {};
+    stats.hand = [];
+    stats.name = {
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0,
+      7: 0,
+      8: 0,
+      9: 0,
+      10: 0,
+      ace: 0,
+      jack: 0,
+      king: 0,
+      queen: 0,
+    };
+    stats.suit = {
+      clubs: 0,
+      spades: 0,
+      hearts: 0,
+      diamonds: 0,
+    };
+
+    stats.hand.push(cleanedUpCardsLeft[i]);
+    stats.name[cleanedUpCardsLeft[i].name] += 1;
+
+    if (i + 5 < cleanedUpCardsLeft.length) {
+      for (let j = i + 1; j < i + 5; j += 1) {
+        stats.hand.push(cleanedUpCardsLeft[j]);
+
+        stats.suit[cleanedUpCardsLeft[i].suit] += 1;
+      }
+    }
+
+    statsList.push(stats);
+  }
+
+  console.log('inside buildstats');
+  console.log(statsList);
+};
+
 const calculateProbability = () => {
   // take into account the hand and the amount
   // of cards being held or to be replaced
@@ -2452,48 +2498,43 @@ const calculateProbability = () => {
 
     const cardsLeftKeys = Object.keys(cardsLeft);
     const cardsLeftValues = Object.values(cardsLeft);
-
     const cleanedUpCardsLeft = [];
-
-    console.log('cardsLeftKeys');
-    console.log(cardsLeftKeys);
-    console.log('cardsLeftValues');
-    console.log(cardsLeftValues);
-
-    let counter = 0;
 
     // convert cardsLeft to stats hand object e.g. has properties name, suit, rank
     for (let i = 0; i < cardsLeftKeys.length; i += 1) {
-      let cleanedUpCardsLeftItem = {};
-      cleanedUpCardsLeftItem.name = cardsLeftKeys[i];
-      if (i === 1) {
-        cleanedUpCardsLeftItem.rank = 'ace';
-      } else if (i === 11) {
-        cleanedUpCardsLeftItem.rank = 'jack';
-      } else if (i === 12) {
-        cleanedUpCardsLeftItem.rank = 'queen';
-      } else if (i === 13) {
-        cleanedUpCardsLeftItem.rank = 'king';
-      } else {
-        cleanedUpCardsLeftItem.rank = i;
-      }
-      if (cardsLeftValues[i].clubs !== 0) {
-        cleanedUpCardsLeftItem.suit = 'clubs';
-      } else if (cardsLeftValues[i].diamonds !== 0) {
-        cleanedUpCardsLeftItem.suit = 'diamonds';
-      } else if (cardsLeftValues[i].hearts !== 0) {
-        cleanedUpCardsLeftItem.suit = 'hearts';
-      } else if (cardsLeftValues[i].spades !== 0) {
-        cleanedUpCardsLeftItem.suit = 'spades';
-      }
+      const cardsLeftValues2 = Object.values(cardsLeftValues[i]);
+      for (let j = 0; j < cardsLeftValues2.length; j += 1) {
+        if (cardsLeftValues2[j] !== 0) {
+          const cleanedUpCardsLeftItem = {};
+          cleanedUpCardsLeftItem.name = cardsLeftKeys[i];
 
-      cleanedUpCardsLeft.push(cleanedUpCardsLeftItem);
+          if (j === 0) {
+            cleanedUpCardsLeftItem.suit = 'clubs';
+          } else if (j === 1) {
+            cleanedUpCardsLeftItem.suit = 'spades';
+          } else if (j === 2) {
+            cleanedUpCardsLeftItem.suit = 'hearts';
+          } else {
+            cleanedUpCardsLeftItem.suit = 'diamonds';
+          }
+
+          if (cardsLeftKeys[i] === 'jack') {
+            cleanedUpCardsLeftItem.rank = 11;
+          } else if (cardsLeftKeys[i] === 'queen') {
+            cleanedUpCardsLeftItem.rank = 12;
+          } else if (cardsLeftKeys[i] === 'king') {
+            cleanedUpCardsLeftItem.rank = 13;
+          } else if (cardsLeftKeys[i] === 'ace') {
+            cleanedUpCardsLeftItem.rank = 14;
+          } else {
+            cleanedUpCardsLeftItem.rank = parseInt(cardsLeftKeys[i], 10);
+          }
+          cleanedUpCardsLeft.push(cleanedUpCardsLeftItem);
+        }
+      }
     }
-
-    console.log(`cleanedUpCardsLeft`);
-    console.log(cleanedUpCardsLeft);
-    
-    updateProbabilityUI();
+    buildStats(cleanedUpCardsLeft);
+    // updateProbabilityUI();
   } else if (cardsToBeReplaced === 0) {
     if (checkRoyalFlushHand()) {
       probability.royalFlush = 100;
