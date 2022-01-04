@@ -1477,22 +1477,9 @@ const checkTwoPairCombinations = () => {
   const twoPairHandCardLeft = [];
 
   for (let i = 0; i < rankArray.length; i += 1) {
-    let cardsLeftWithRank;
     const rank = parseInt(rankArray[i], 10);
 
-    if (rank === 1) {
-      cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
-    } else if (rank === 11) {
-      cardsLeftWithRank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
-    } else if (rank === 12) {
-      cardsLeftWithRank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
-    } else if (rank === 13) {
-      cardsLeftWithRank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
-    } else if (rank === 14) {
-      cardsLeftWithRank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
-    } else {
-      cardsLeftWithRank = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
-    }
+    const cardsLeftWithRank = getCardsLeftWithRank(rank);
 
     twoPairHandCardLeft.push(cardsLeftWithRank);
   }
@@ -1651,8 +1638,7 @@ const checkTwoPairCombinations = () => {
         let tempCombi = 0;
         if (cardsLeftKeys[i] !== rank1 && cardsLeftKeys[i] !== rank2) {
           console.log('inside cardsLeftKeys[i] !== rank');
-          const tempCardLeftValue = Object.values(cardsLeftValues[i])
-            .reduce((a, b) => a + b, 0);
+          const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
           if (tempCardLeftValue >= 2) {
             tempCombi = totalCombinations(tempCardLeftValue, 2);
           } else {
@@ -1678,8 +1664,7 @@ const checkTwoPairCombinations = () => {
         let tempCombi = 0;
         if (cardsLeftKeys[i] !== rank1 && cardsLeftKeys[i] !== rank2) {
           console.log('inside cardsLeftKeys[i] !== rank');
-          const tempCardLeftValue = Object.values(cardsLeftValues[i])
-            .reduce((a, b) => a + b, 0);
+          const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
           if (tempCardLeftValue >= 2) {
             tempCombi = totalCombinations(tempCardLeftValue, 2);
           } else {
@@ -1720,8 +1705,7 @@ const checkTwoPairCombinations = () => {
       for (let i = 0; i < cardsLeftKeys.length; i += 1) {
         let tempCombinations = 0;
         if (cardsLeftKeys[i] !== rank) {
-          const tempCardLeftValue = Object.values(cardsLeftValues[i])
-            .reduce((a, b) => a + b, 0);
+          const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
           if (tempCardLeftValue >= 2) {
             // there is enough of this second rank to fill up the second pair
             tempCombinations = totalCombinations(tempCardLeftValue, 2);
@@ -1742,15 +1726,13 @@ const checkTwoPairCombinations = () => {
       for (let i = 0; i < cardsLeftKeys.length; i += 1) {
         let tempCombinations = 0;
         if (cardsLeftKeys[i] !== rank) {
-          const tempCardLeftValue = Object.values(cardsLeftValues[i])
-            .reduce((a, b) => a + b, 0);
+          const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
           if (tempCardLeftValue >= 2) {
             // there is enough of this second rank to fill up the second pair
             tempCombinations = totalCombinations(tempCardLeftValue, 2);
             for (let j = 0; j < cardsLeftKeys.length; j += 1) {
               if (cardsLeftKeys[j] !== cardsLeftKeys[i] && cardsLeftKeys[j] !== rank) {
-                const tempCardLeftValue2 = Object.values(cardsLeftValues[i])
-                  .reduce((a, b) => a + b, 0);
+                const tempCardLeftValue2 = getCardsLeftWithRank(cardsLeftKeys[j]);
 
                 if (tempCardLeftValue2 >= 2) {
                   tempCombinations *= totalCombinations(tempCardLeftValue2, 2);
@@ -1933,11 +1915,11 @@ const checkFullHouseCombinations = () => {
 
     const rank1 = rankArray[0];
     const noOfRank1CardsHeld = fullHouseHand[rank1];
-    const noOfRank1CardsLeft = Object.values(cardsLeft[rank1]).reduce((a, b) => a + b, 0);
+    const noOfRank1CardsLeft = getCardsLeftWithRank(rank1);
 
     const rank2 = rankArray[1];
     const noOfRank2CardsHeld = fullHouseHand[rank2];
-    const noOfRank2CardsLeft = Object.values(cardsLeft[rank2]).reduce((a, b) => a + b, 0);
+    const noOfRank2CardsLeft = getCardsLeftWithRank(rank2);
 
     // 3 of Rank1Cards 2 of Rank2Cards
     if (noOfRank1CardsHeld === 3) {
@@ -1977,14 +1959,14 @@ const checkFullHouseCombinations = () => {
 
     const rank1 = rankArray[0];
     const noOfRank1CardsHeld = fullHouseHand[rank1];
-    const noOfRank1CardsLeft = Object.values(cardsLeft[rank1]).reduce((a, b) => a + b, 0);
+    const noOfRank1CardsLeft = getCardsLeftWithRank(rank1);
     const totalRank1Cards = noOfRank1CardsHeld + noOfRank1CardsLeft;
 
     const cardsLeftKeys = Object.keys(cardsLeft);
     const cardsLeftValues = Object.values(cardsLeft);
 
     for (let i = 0; i < cardsLeftValues.length; i += 1) {
-      cardsLeftValues[i] = Object.values(cardsLeftValues[i]).reduce((a, b) => a + b, 0);
+      cardsLeftValues[i] = getCardsLeftWithRank(cardsLeftKeys[i]);
     }
 
     // 3 of Rank1Cards 2 of Rank2Cards
@@ -2090,8 +2072,7 @@ const checkStraightCombinations = () => {
           // current rank is not in held cards
           // find in cardsLeft
 
-          const cardsLeftWithRank = Object.values(cardsLeft[firstRank + i])
-            .reduce((a, b) => a + b, 0);
+          const cardsLeftWithRank = getCardsLeftWithRank(firstRank + i);
 
           if (cardsLeftWithRank > 0) {
             combinations *= totalCombinations(cardsLeftWithRank, 1);
