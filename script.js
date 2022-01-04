@@ -201,19 +201,38 @@ const shuffleCards = (cards) => {
 };
 
 const getCardsLeftWithRank = (i) => {
-  let rank;
-  if (i === 1) {
+  let rank = i;
+
+  if (typeof (rank) === 'string') {
+    if (rank === 'king') {
+      rank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
+      return rank;
+    } if (rank === 'queen') {
+      rank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
+      return rank;
+    } if (rank === 'jack') {
+      rank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
+      return rank;
+    } if (rank === 'ace') {
+      rank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
+      return rank;
+    }
+    rank = parseInt(rank, 10);
+  }
+
+  if (rank === 1) {
     rank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
-  } else if (i === 11) {
+  } else if (rank === 11) {
     rank = Object.values(cardsLeft.jack).reduce((a, b) => a + b, 0);
-  } else if (i === 12) {
+  } else if (rank === 12) {
     rank = Object.values(cardsLeft.queen).reduce((a, b) => a + b, 0);
-  } else if (i === 13) {
+  } else if (rank === 13) {
     rank = Object.values(cardsLeft.king).reduce((a, b) => a + b, 0);
-  } else if (i === 14) {
+  } else if (rank === 14) {
     rank = Object.values(cardsLeft.ace).reduce((a, b) => a + b, 0);
   } else {
-    rank = Object.values(cardsLeft[i]).reduce((a, b) => a + b, 0);
+    console.log(rank);
+    rank = Object.values(cardsLeft[rank]).reduce((a, b) => a + b, 0);
   }
 
   return rank;
@@ -2423,43 +2442,46 @@ const updateTwoPairProbabilityUI = (input) => {
 const buildStats = (cleanedUpCardsLeft) => {
   const statsList = [];
 
-  for (let i = 0; i < cleanedUpCardsLeft.length; i += 1) {
-    const stats = {};
-    stats.hand = [];
-    stats.name = {
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0,
-      7: 0,
-      8: 0,
-      9: 0,
-      10: 0,
-      ace: 0,
-      jack: 0,
-      king: 0,
-      queen: 0,
-    };
-    stats.suit = {
-      clubs: 0,
-      spades: 0,
-      hearts: 0,
-      diamonds: 0,
-    };
+  for (let i = 0; i < 43; i += 1) {
+    let counter = i;
 
-    stats.hand.push(cleanedUpCardsLeft[i]);
-    stats.name[cleanedUpCardsLeft[i].name] += 1;
+    while (counter !== 43) {
+      const stats = {};
+      stats.hand = [];
+      stats.name = {
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        7: 0,
+        8: 0,
+        9: 0,
+        10: 0,
+        ace: 0,
+        jack: 0,
+        king: 0,
+        queen: 0,
+      };
+      stats.suit = {
+        clubs: 0,
+        spades: 0,
+        hearts: 0,
+        diamonds: 0,
+      };
 
-    if (i + 5 < cleanedUpCardsLeft.length) {
       for (let j = i + 1; j < i + 5; j += 1) {
+        if (j === i + 1) {
+          stats.hand.push(cleanedUpCardsLeft[i]);
+          stats.name[cleanedUpCardsLeft[i].name] += 1;
+        }
         stats.hand.push(cleanedUpCardsLeft[j]);
-
         stats.suit[cleanedUpCardsLeft[i].suit] += 1;
       }
-    }
 
-    statsList.push(stats);
+      statsList.push(stats);
+      counter += 1;
+    }
   }
 
   console.log('inside buildstats');
@@ -2618,6 +2640,8 @@ const calculateProbability = () => {
       updateTwoPairProbabilityUI(twoPairProbability);
     }
   }
+
+  document.getElementById('probabilities').classList.remove('display-none');
 };
 
 const bet5 = () => {
