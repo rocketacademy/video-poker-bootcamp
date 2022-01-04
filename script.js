@@ -656,6 +656,7 @@ const resetGame = () => {
   };
 
   document.getElementById('cards').className = 'display-none';
+  document.getElementById('probabilities').className = 'display-none';
   shuffledDeck = shuffleCards(makeDeck());
   outcome = 'Sorry you lost.';
 };
