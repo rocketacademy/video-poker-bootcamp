@@ -16,6 +16,7 @@ betOneBtn.addEventListener('click', () => {
       updateCredits();
       outputContainer.innerText = 'Come on, you can bet more! 💸';
       gameMode = 'deal';
+      betFiveBtn.disabled = true;
     }
     if (betAmount === 5) {
       gameMode = 'deal';
@@ -24,8 +25,8 @@ betOneBtn.addEventListener('click', () => {
       betFiveBtn.disabled = true;
     }
   }
-  // highlight the pointsBoard that corresponds to the betAmount
 
+  // highlight the pointsBoard that corresponds to the betAmount
   let highLight0 = document.querySelector('.board0');
   let highLight1 = document.querySelector('.board1');
   let highLight2 = document.querySelector('.board2');
