@@ -59,9 +59,6 @@ const playMusic = () => {
 
   // add click event listener to play and pause background music
   startMusic.addEventListener('click', () => {
-    // set audio to false to enable play and pause
-    let audioPlay = false;
-
     // if not playing then start playing
     if (audioPlay === false) {
       // play music

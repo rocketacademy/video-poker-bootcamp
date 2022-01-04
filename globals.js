@@ -60,6 +60,8 @@ let win = false;
 
 // background game music
 let myMusic;
+// set audio to false to enable play and pause
+let audioPlay = false;
 // button click sounds
 const buttonSounds = new Audio('sounds/zipclick.flac');
 // select card sounds
