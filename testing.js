@@ -344,4 +344,4 @@ const test = function (testHandArray) {
   console.log("test script completed.");
 };
 
-test(TH_2Pairs);
+// test(TH_2Pairs);
