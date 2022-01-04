@@ -3,7 +3,7 @@
   src: url("MODE7GX3.TTF");
 }
 body {
-  background-color: skyblue;
+  background-color: #e5c484;
 }
 
 h1 {
@@ -12,7 +12,7 @@ h1 {
 }
 
 .score-table {
-  background-color: darkblue;
+  background-color: #554435;
   margin: 0 auto;
   font-family: Mode7, monospace, courier, fixed;
   border-radius: 8px;
@@ -20,7 +20,7 @@ h1 {
 
 thead {
   background-color: #333;
-  color: red;
+  color: #e5c484;
 }
 
 td {
@@ -45,13 +45,17 @@ td {
 }
 .card-container {
   margin: 0px auto;
-  width: 900px;
-  height: 250px;
+
+  max-width: 900px;
+  min-height: 250px;
+
+  /* width: 300px;
+  height: 2000px; */
   text-align: center;
 
-  background-color: green;
+  background-color: #a0be47;
   border-radius: 8px;
-  border: solid 5px #fff;
+  border: solid 5px #554435;
 }
 
 .card {
@@ -75,16 +79,14 @@ td {
 }
 
 .selected-card {
-  background-color: goldenrod;
+  background-color: #e5c484;
 }
 
 .decision-container {
   margin: 0 auto;
-  width: 900px;
-  height: 20px;
-
+  max-width: 900px;
+  min-height: 20px;
   text-align: center;
-  width: 900px;
 }
 
 .decision {
@@ -107,12 +109,12 @@ td {
   padding: 10px 50px;
   font-family: Mode7, monospace, courier, fixed;
   font-size: 20px;
-  color: red;
+  color: maroon;
   text-shadow: 2px 2px yellow;
 }
 
 .buttons-container {
-  width: 900;
+  max-width: 900;
   text-align: center;
 }
 
@@ -120,11 +122,16 @@ td {
   /* background-color: yellow; */
   margin: 5px 5px;
   padding: 10px 5px;
-  font-family: "Arial Black", sans-serif;
+  /* font-family: "Arial Black", sans-serif; */
+  font-family: Mode7, monospace, courier, fixed;
+  font-weight: bold;
+  color: #554435;
+  border: 2px solid #554435;
+  border-radius: 25px;
 }
 
 .disabled-button {
-  background-color: grey;
+  background-color: #b79e7d;
 }
 
 .blinking {

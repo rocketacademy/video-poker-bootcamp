@@ -103,6 +103,14 @@ const testfhse = [
   testDeck[25],
 ];
 
+const testfhse2 = [
+  testDeck[6],
+  testDeck[18],
+  testDeck[31],
+  testDeck[7],
+  testDeck[21],
+];
+
 const testflush = [
   testDeck[23],
   testDeck[21],

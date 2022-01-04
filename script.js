@@ -174,7 +174,7 @@ const calcHandScore = (hand) => {
           cardNameTally[name] === 2 &&
           !(name === "J" || name === "Q" || name === "K" || name === "A")
         ) {
-          pairsCount = 0;
+          pairsCount = 0.5;
         }
       }
     }
@@ -219,7 +219,10 @@ const calcHandScore = (hand) => {
     return "4 OF A KIND";
   }
 
-  if (isThreeOfKind(cardNameTally) && numPairs(cardNameTally) === 1) {
+  if (
+    isThreeOfKind(cardNameTally) &&
+    (numPairs(cardNameTally) === 1 || numPairs(cardNameTally) === 0.5)
+  ) {
     return "FULL HOUSE";
   }
 
@@ -594,14 +597,14 @@ let loseAudio = new Audio("./Whomp-whomp.mp3");
 
 showCardBacks();
 betButton.addEventListener("click", () => {
-  if (betAmount < 5 && gameMode === "first-draw") {
+  if (betAmount < 5 && gameMode === "first-draw" && credits > 0) {
     coinAudio.play();
     betAmount += 1;
     credits -= 1;
     creditsInfo.innerText = `BET: ${betAmount} CREDITS: ${credits}`;
   }
 
-  if (betAmount === 5) {
+  if (betAmount === 5 || credits === 0) {
     betButton.classList.add("disabled-button");
   }
 });
