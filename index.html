@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Video Poker</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h1 id="header">Video Poker!</h1>
+    <div id="gameDiv">
+      <div id="playerCardsDiv" class="playerCardsDiv">
+        Click 'Deal' to begin your game!
+      </div>
+    </div>
+
+    <div id="points-info-div" class="points-info-div flex1">
+      <div class="number-div">
+        <label for="scoreBox">Points Remaining</label>
+        <p id="scoreBox" class="numberBox">1000</p>
+      </div>
+
+      <div id="button-container" class="flex2">
+        <button id="dealButton" class="button">Deal</button>
+        <button id="playButton" class="button">Play</button>
+      </div>
+
+      <div class="number-div flex1">
+        <label for="points-betted">Points Betted</label>
+        <input
+          type="number"
+          id="points-betted"
+          value="10"
+          min="10"
+          max="100"
+          step="10"
+        />
+      </div>
+    </div>
+
+    <div class="winning-message" id="winningMessage">
+      <div data-winning-message-text>You've run out of cards!</div>
+      <button id="resetGameButton" class="button">Reset Game</button>
+    </div>
+
+    <div id="game-info-div" class="game-info-div">
+      <p id="gameInfo"></p>
+      <div>
+        <button id="continueButton" class="button">Continue</button>
+      </div>
+    </div>
+
+    <div>
+      <table>
+        <tr>
+          <th>Hand Type</th>
+          <th>Score Multiplier</th>
+        </tr>
+        <tr>
+          <td>Royal Flush</td>
+          <td>250</td>
+        </tr>
+        <tr>
+          <td>Straight Flush</td>
+          <td>50</td>
+        </tr>
+        <tr>
+          <td>Flush</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td>Full House</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <td>Four of a Kind</td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td>Three of a Kind</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>Two Pairs</td>
+          <td>2</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Import program logic -->
+    <script src="script.js"></script>
+    <script src="scoring.js"></script>
+    <script src="confetti.js"></script>
+    <script src="testing.js"></script>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+body {
+  font-family: "Roboto Mono", monospace;
+  color: white;
+  background-color: #0f2943;
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1 {
+  margin: auto;
+  text-align: center;
+}
+
+.playerCardsDiv {
+  border: #ed7d3a 0.25rem solid;
+  display: flex;
+  width: 90%;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1rem auto;
+  padding: 0.5%;
+}
+
+.game-info-div {
+  /* background-color: #6b2b06; */
+  display: none;
+  width: 89%;
+  padding: 1%;
+  margin: 1rem auto auto auto;
+  border: #ed7d3a 0.25rem solid;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.game-info-div.show {
+  display: block;
+}
+
+.card {
+  display: flex;
+  height: auto;
+  width: auto;
+  margin: 0.5%;
+}
+
+.card:hover {
+  box-shadow: 4px 4px 0 #ef2d56;
+  transform: translate(-4px, -4px);
+  border-radius: 1%;
+}
+
+.selected-card {
+  border: blueviolet 0px solid;
+}
+
+.points-info-div {
+  display: flex;
+  /* border: #ff7b72 0.125rem solid; */
+  color: #ed7d3a;
+  width: 90%;
+  padding: 0.5%;
+  border: 0.25rem;
+  height: fit-content;
+  margin: auto;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1vw;
+}
+
+.number-div {
+  padding: 1rem;
+  flex-basis: auto;
+  border: #ed7d3a 0.125rem solid;
+}
+
+.numberBox {
+  color: #0f2943;
+  background-color: #ed7d3a;
+  font-size: 1rem;
+  font-weight: 300;
+  width: fit-content;
+  padding: 1rem;
+  margin: auto;
+}
+
+button {
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  border: 0.25rem solid #93e5ab;
+  color: #93e5ab;
+  background: 0 0;
+  padding: 8px;
+  font-size: 3vw;
+  height: fit-content;
+  transition: transform 200ms, background 200ms;
+}
+
+button:hover {
+  background-color: #93e5ab;
+  color: #0f2943;
+  box-shadow: 4px 4px 0 #4e878c;
+  transform: translate(-4px, -4px);
+}
+
+button:focus-visible {
+  outline-offset: 1px;
+}
+
+button:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.flex1 {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+.flex2 {
+  flex-grow: 0;
+  flex-shrink: 2;
+  flex-basis: auto;
+}
+
+.winning-message {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2rem;
+  flex-direction: column;
+}
+
+.winning-message.show {
+  display: flex;
+}
+
+label {
+  display: block;
+  font-size: 0.75rem;
+}
+
+input {
+  color: #0f2943;
+  background-color: #ed7d3a;
+  font-size: 1rem;
+  font-weight: 300;
+  font-family: "Roboto Mono", monospace;
+  width: fit-content;
+  padding: 1rem;
+  margin: auto;
+  text-align: center;
+}
+
+.card-animate {
+  animation: cardflip 1s;
+}
+
+@keyframes cardflip {
+  0% {
+    transform: rotateY(90deg);
+  }
+}
+
+table {
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0.25rem solid #ed7d3a;
+  padding: 0px;
+  width: fit-content;
+}
+
+th {
+  color: #ed7d3a;
+}
