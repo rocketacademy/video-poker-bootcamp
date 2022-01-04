@@ -17,14 +17,14 @@ Pokermon is a video poker game with Pokemon theme, done in 8-bit gaming style.
 - "Bet 5" is to add bet 5 credits at a time.
 - Player can bet as many credits (no max) as he/she wants.
 - Extra multiplier (800x) when getting Royal Flush applies to bet of 5 or more credits.
-- Hint is given during select-cards-to-keep round, if Hints is enabled in Option menu.
-  - Hint is the result of API call to [Flask API wrapper](https://github.com/hertantoirawan/video_poker_analyzer) of [Video Poker Analyzer code by Brad Jacobs](https://github.com/BradAJ/video_poker_analyzer)
 - Pokemon character host, game music, and hints settings can be changed in Option menu.
 - Secret codes
-  - Konami code: Up, Up, Down, Down, Left, Right, Left, Right, B, A
-    - Increase credit by 30
-  - Royal Flush code: Up, Down, Left, Right, B, A
+  - *Konami code*: Up, Up, Down, Down, Left, Right, Left, Right, B, A
+    - Increase credits by 30
+  - *Royal Flush code*: Up, Down, Left, Right, B, A
     - Deals Royal Flush, and deck is not shuffled
+- Hint is given during select-cards-to-keep round, if Hints is enabled in Option menu.
+  - Hint is the result of API call to [Flask API wrapper](https://github.com/hertantoirawan/video_poker_analyzer) of [Video Poker Analyzer code by Brad Jacobs](https://github.com/BradAJ/video_poker_analyzer)
 
 ## Tech Used / Dependencies
 
@@ -43,5 +43,5 @@ Pokermon is a video poker game with Pokemon theme, done in 8-bit gaming style.
 - Code is linted using [ESLint](https://www.npmjs.com/package/eslint) 
 
 ## Documentation
-More documentation about the development of the game in [Github Wiki](https://github.com/hertantoirawan/video-poker-bootcamp/wiki).
+More documentation about the development of the game in [Wiki](https://github.com/hertantoirawan/video-poker-bootcamp/wiki).
 
