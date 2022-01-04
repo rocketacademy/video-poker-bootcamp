@@ -630,7 +630,7 @@ const updateProbabilityUI = () => {
   document.getElementById('probability-straight').innerHTML = Number.parseFloat(probability.straight).toFixed(5);
   document.getElementById('probability-three-of-a-kind').innerHTML = Number.parseFloat(probability.threeOfAKind).toFixed(5);
   document.getElementById('probability-two-pair').innerHTML = Number.parseFloat(probability.twoPairs).toFixed(5);
-  document.getElementById('probability-jack-or-better').innerHTML = Number.parseFloat(probability.jacksOrBetter).toFixed(5);
+  // document.getElementById('probability-jack-or-better').innerHTML = Number.parseFloat(probability.jacksOrBetter).toFixed(5);
 };
 
 const isHeldCardsSameSuit = (statsHand) => {
@@ -1452,7 +1452,6 @@ const checkStraightFlushCombinations = () => {
 };
 
 const checkTwoPairCombinations = () => {
-  console.log('insied checkTwoPairCombinations');
   const result = {
     combinations: 0,
     alreadyWin: false,
@@ -1696,7 +1695,6 @@ const checkTwoPairCombinations = () => {
 
     combinations += tempCombinations;
   } else if (rankArray.length === 1) {
-    console.log('inside rankArray.length === 1');
     let rank = parseInt(rankArray[0], 10);
 
     if (rank === 1) {
@@ -1721,10 +1719,7 @@ const checkTwoPairCombinations = () => {
 
       for (let i = 0; i < cardsLeftKeys.length; i += 1) {
         let tempCombinations = 0;
-        console.log(`cardsLeftKeys[i]: ${cardsLeftKeys[i]}`);
-        console.log(`rank: ${rank}`);
         if (cardsLeftKeys[i] !== rank) {
-          console.log('inside cardsLeftKeys[i] !== rank');
           const tempCardLeftValue = Object.values(cardsLeftValues[i])
             .reduce((a, b) => a + b, 0);
           if (tempCardLeftValue >= 2) {
@@ -2455,6 +2450,50 @@ const calculateProbability = () => {
   if (cardsToBeReplaced === 5) {
     // find all combinations
 
+    const cardsLeftKeys = Object.keys(cardsLeft);
+    const cardsLeftValues = Object.values(cardsLeft);
+
+    const cleanedUpCardsLeft = [];
+
+    console.log('cardsLeftKeys');
+    console.log(cardsLeftKeys);
+    console.log('cardsLeftValues');
+    console.log(cardsLeftValues);
+
+    let counter = 0;
+
+    // convert cardsLeft to stats hand object e.g. has properties name, suit, rank
+    for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+      let cleanedUpCardsLeftItem = {};
+      cleanedUpCardsLeftItem.name = cardsLeftKeys[i];
+      if (i === 1) {
+        cleanedUpCardsLeftItem.rank = 'ace';
+      } else if (i === 11) {
+        cleanedUpCardsLeftItem.rank = 'jack';
+      } else if (i === 12) {
+        cleanedUpCardsLeftItem.rank = 'queen';
+      } else if (i === 13) {
+        cleanedUpCardsLeftItem.rank = 'king';
+      } else {
+        cleanedUpCardsLeftItem.rank = i;
+      }
+      if (cardsLeftValues[i].clubs !== 0) {
+        cleanedUpCardsLeftItem.suit = 'clubs';
+      } else if (cardsLeftValues[i].diamonds !== 0) {
+        cleanedUpCardsLeftItem.suit = 'diamonds';
+      } else if (cardsLeftValues[i].hearts !== 0) {
+        cleanedUpCardsLeftItem.suit = 'hearts';
+      } else if (cardsLeftValues[i].spades !== 0) {
+        cleanedUpCardsLeftItem.suit = 'spades';
+      }
+
+      cleanedUpCardsLeft.push(cleanedUpCardsLeftItem);
+    }
+
+    console.log(`cleanedUpCardsLeft`);
+    console.log(cleanedUpCardsLeft);
+    
+    updateProbabilityUI();
   } else if (cardsToBeReplaced === 0) {
     if (checkRoyalFlushHand()) {
       probability.royalFlush = 100;
