@@ -169,5 +169,5 @@ swapCardsBtn.addEventListener('click', () => {
   dealCardsBtn.disabled = true;
 
   gameContainer.style.fontSize = '1.5rem';
-  gameContainer.innerHTML = 'Start betting to play again!';
+  // gameContainer.innerHTML = 'Start betting to play again!';
 });
