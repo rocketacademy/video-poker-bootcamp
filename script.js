@@ -297,7 +297,7 @@ const removeMarkedCards = function (cardObjArr) {
 /**
  * scans the array for elements matching ""
  * and replaces the element with a new card drawn from the deck
- * @param {*} cardObjArr
+ * @param {array} cardObjArr
  */
 const replaceRemovedCards = function (cardObjArr) {
   for (let i = 0; i < cardObjArr.length; i += 1) {

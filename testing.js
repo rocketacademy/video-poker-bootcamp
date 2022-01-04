@@ -345,5 +345,3 @@ const test = function (testHandArray) {
 };
 
 test(TH_2Pairs);
-
-//forloop everything????
