@@ -17,7 +17,7 @@ h1 {
 .playerCardsDiv {
   border: #ed7d3a 0.25rem solid;
   display: flex;
-  width: 70%;
+  width: 90%;
   align-items: center;
   justify-content: space-around;
   margin: 1rem auto;
@@ -27,9 +27,9 @@ h1 {
 .game-info-div {
   /* background-color: #6b2b06; */
   display: none;
-  width: 69%;
+  width: 89%;
   padding: 1%;
-  margin: 20px auto auto auto;
+  margin: 1rem auto auto auto;
   border: #ed7d3a 0.25rem solid;
   font-size: 0.75rem;
   text-align: center;
@@ -60,7 +60,7 @@ h1 {
   display: flex;
   /* border: #ff7b72 0.125rem solid; */
   color: #ed7d3a;
-  width: 70%;
+  width: 90%;
   padding: 0.5%;
   border: 0.25rem;
   height: fit-content;
@@ -164,4 +164,27 @@ input {
   padding: 1rem;
   margin: auto;
   text-align: center;
+}
+
+.card-animate {
+  animation: cardflip 1s;
+}
+
+@keyframes cardflip {
+  0% {
+    transform: rotateY(90deg);
+  }
+}
+
+table {
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0.25rem solid #ed7d3a;
+  padding: 0px;
+  width: fit-content;
+}
+
+th {
+  color: #ed7d3a;
 }

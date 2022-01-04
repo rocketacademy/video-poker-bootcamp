@@ -78,19 +78,23 @@ continueButton.addEventListener("click", () => {
     playButton.disabled = false;
   } else {
     winningMessage.classList.add("show");
+    if (playerPoints > 1000) {
+      startConfetti();
+    }
   }
 });
 
 const resetGameButton = document.getElementById("resetGameButton");
 resetGameButton.addEventListener("click", () => {
   winningMessage.classList.remove("show");
+  stopConfetti();
   deck = shuffleArray(makeDeck());
   playerPoints = 1000;
   playerHand = [];
   gameInfoDiv.classList.remove("show");
   dealButton.disabled = false;
   playButton.disabled = false;
-  playerCardsDiv.innerText = "Click 'Deal' to begin your game!";
+  playerCardsDiv.innerHTML = "Click 'Deal' to begin your game!";
   refreshDisplay();
 });
 
