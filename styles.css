@@ -122,22 +122,17 @@ td {
 }
 
 .card-element {
-  width: 96%;
-  height: auto;
-  margin: 5px;
-}
-
-.card-box-redraw {
   display: flex;
   width: 15%;
+  margin: 0px 3px 0px 3px;
+  justify-content: center;
+}
+
+.redraw-card-element {
+  display: flex;
+  width: 15%;
+  margin: 0px 3px 0px 3px;
   justify-content: center;
   background-color: grey;
-  border-radius: 10px;
   opacity: 0.2;
-}
-
-.card-box-element {
-  display: flex;
-  width: 15%;
-  justify-content: center;
 }

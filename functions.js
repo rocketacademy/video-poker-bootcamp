@@ -95,25 +95,21 @@ const buildCardElements = (hand) => {
   for (let i = 0; i < 5; i += 1) {
     let suit1 = hand[i].suit;
     let name1 = hand[i].name;
-    /** create box elements first to house 'redraw' message and card image */
-    const cardBoxElement = document.createElement('div');
-    cardBoxElement.className = 'card-box-element';
-    cardBoxElement.id = `${i}`;
-    /** create image element for each card */
     const cardElement = document.createElement('img');
     cardElement.src = `../video-poker-bootcamp/media/${suit1}-${name1}.png`;
+    cardElement.id = `${i}`;
     cardElement.alt = `${name1} of ${suit1}`;
     cardElement.className = 'card-element';
 
-    cardBoxElement.addEventListener('click', (e) => {
-      if (currentGameMode === 'choose redraw' && e.currentTarget.className === 'card-box-element') {
-        e.currentTarget.className = 'card-box-redraw';
+    cardElement.addEventListener('click', (e) => {
+      if (currentGameMode === 'choose redraw' && e.currentTarget.className === 'card-element') {
+        e.currentTarget.className = 'redraw-card-element';
         let index = Number(e.currentTarget.id);
         redrawIndexArr.push(index);
         redrawIndexArr.sort((a, b) => a - b);
         console.log(redrawIndexArr);
-      } else if (currentGameMode === 'choose redraw' && e.currentTarget.className === 'card-box-redraw') {
-        e.currentTarget.className = 'card-box-element';
+      } else if (currentGameMode === 'choose redraw' && e.currentTarget.className === 'redraw-card-element') {
+        e.currentTarget.className = 'card-element';
         let index = Number(e.currentTarget.id);
         console.log(redrawIndexArr);
         for (let j = 0; j < redrawIndexArr.length; j += 1) {
@@ -125,8 +121,8 @@ const buildCardElements = (hand) => {
       }
     });
     redrawIndexes = redrawIndexArr;
-    cardBoxElement.appendChild(cardElement);
-    cardTable.appendChild(cardBoxElement);
+    // cardBoxElement.appendChild(cardElement);
+    cardTable.appendChild(cardElement);
   }
 };
 

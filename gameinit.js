@@ -11,7 +11,9 @@ const playerClick = () => {
     let betInput = betInputField.value;
     /** check if bet input is valid */
     if (betInput === '' || isNaN(betInput)) {
-      output('You gotta type a number!');
+      output('You gotta type a valid number!');
+    } else if (betInput === '0') {
+      output('You can\'t bet 0 credits!');
     } else if (betInput !== '') {
       if (betInput > credits) {
         output('You don\'t have that many credits!');
