@@ -9,6 +9,10 @@ const gameInfoDiv = document.getElementById("game-info-div");
 const gameInfoText = document.getElementById("gameInfo");
 const scoreData = document.getElementById("scoreBox");
 const bettingData = document.getElementById("bettingBox");
+const winningMessage = document.getElementById("winningMessage");
+const winningMessageTextElement = document.querySelector(
+  "[data-winning-message-text]"
+);
 
 const dealButton = document.getElementById("dealButton");
 dealButton.addEventListener("click", () => {
@@ -35,24 +39,59 @@ playButton.addEventListener("click", () => {
     // something to disable the Deal and Play buttons
     dealButton.disabled = true;
     playButton.disabled = true;
+
+    let gameOutcome = "loss";
+    if (playerPoints > 1000) {
+      gameOutcome = "gain";
+    }
+
+    let deltaPoints = playerPoints - 1000;
+
+    let message = `You've run out of cards!\nYou had a net ${gameOutcome} in points, with a ${deltaPoints} change in total.`;
+
+    if (deltaPoints < 0) {
+      message += `\nBetter luck next time!`;
+    } else {
+      message += `\nYou did great!`;
+    }
+
+    winningMessageTextElement.innerText = message;
   }
 });
 
 const continueButton = document.getElementById("continueButton");
 continueButton.addEventListener("click", () => {
   // some function to remove every card from the hand or replace every element with ""
-  for (i = 0; i < 5; i += 1) {
-    playerHand[i] = "";
+
+  if (deck.length >= 10) {
+    for (i = 0; i < 5; i += 1) {
+      playerHand[i] = "";
+    }
+    // redraw all cards
+    replaceRemovedCards(playerHand);
+    // refreshdisplay
+    refreshDisplay();
+    // hide game div
+    gameInfoDiv.classList.remove("show");
+    // re-enable game buttons
+    dealButton.disabled = false;
+    playButton.disabled = false;
+  } else {
+    winningMessage.classList.add("show");
   }
-  // redraw all cards
-  replaceRemovedCards(playerHand);
-  // refreshdisplay
-  refreshDisplay();
-  // hide game div
+});
+
+const resetGameButton = document.getElementById("resetGameButton");
+resetGameButton.addEventListener("click", () => {
+  winningMessage.classList.remove("show");
+  deck = shuffleArray(makeDeck());
+  playerPoints = 1000;
+  playerHand = [];
   gameInfoDiv.classList.remove("show");
-  // re-enable game buttons
   dealButton.disabled = false;
   playButton.disabled = false;
+  playerCardsDiv.innerText = "Click 'Deal' to begin your game!";
+  refreshDisplay();
 });
 
 /** @type {object} */

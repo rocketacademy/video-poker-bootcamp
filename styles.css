@@ -141,7 +141,7 @@ button[disabled] {
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 5rem;
+  font-size: 2rem;
   flex-direction: column;
 }
 
