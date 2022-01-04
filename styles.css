@@ -1,0 +1,210 @@
+/* font face */
+@font-face {
+  font-family: AtariClassicChunky;
+  src: url(font/AtariClassicChunky-PxXP.ttf);
+}
+
+/* body and html */
+body,
+html {
+  background-color: #150064;
+  background-image: url("background/pixel.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+}
+
+/* header */
+h1 {
+  font-family: AtariClassicChunky;
+  color: #ecf0f1;
+  text-align: center;
+  font-size: 50px;
+  padding-top: 30px;
+}
+
+/* card container */
+.card-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  position: relative;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+/* hold status text */
+.hold-status {
+  font-family: AtariClassicChunky;
+  color: #ecf0f1;
+  font-size: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+/* button container */
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+/* buttons */
+.buttons {
+  appearance: button;
+  background-color: #1899d6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: AtariClassicChunky;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 150px;
+}
+
+.buttons:after {
+  background-clip: padding-box;
+  background-color: #1cb0f6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.buttons:main,
+.buttons:focus {
+  user-select: auto;
+}
+
+.buttons:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.buttons:disabled {
+  cursor: auto;
+}
+
+.deal-button {
+  background-color: rgb(216, 59, 31);
+}
+
+.deal-button::after {
+  background-color: rgb(255, 83, 52);
+}
+
+.keep-button {
+  background-color: rgb(216, 59, 31);
+}
+
+.keep-button::after {
+  background-color: rgb(255, 83, 52);
+}
+
+/* game message display */
+.output {
+  display: flex;
+  justify-content: center;
+  font-family: AtariClassicChunky;
+  font-size: 20px;
+  color: #f1c40f;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+/* points container */
+.points-container {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  font-family: AtariClassicChunky;
+  font-size: 15px;
+  color: #ecf0f1;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 10px;
+}
+
+/* points status */
+.points-container > *:first-child {
+  padding-bottom: 30px;
+}
+
+/* background music container */
+#music-container {
+  display: flex;
+  justify-content: end;
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
+/* background music button */
+.music-button {
+  font-family: AtariClassicChunky;
+  font-size: 10px;
+  color: #2c3e50;
+  background-color: #ecf0f1;
+  padding: 5px;
+  margin: 5px;
+}
+
+/* coins falling feature */
+#gimmick {
+  display: block;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* change to larger card image if screen size is min 600px */
+@media screen and (min-width: 600px) {
+  .card-image {
+    height: 180px;
+    width: 180px;
+  }
+}
+
+/* change to smaller card image and header text if screen size is below 600px */
+@media screen and (max-width: 599px) {
+  .card-image {
+    height: 100px;
+    width: 100px;
+  }
+
+  h1 {
+    font-size: 35px;
+  }
+}
