@@ -238,8 +238,18 @@ const getCardsLeftWithRank = (i) => {
   return rank;
 };
 
-const checkFourOfAKindHand = () => {
-  const nameCount = Object.values(stats.name);
+const checkFourOfAKindHand = (input) => {
+  if (input === undefined) {
+    const nameCount = Object.values(stats.name);
+
+    if (nameCount.indexOf(4) !== -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  const nameCount = Object.values(input.name);
 
   if (nameCount.indexOf(4) !== -1) {
     return true;
@@ -248,8 +258,17 @@ const checkFourOfAKindHand = () => {
   return false;
 };
 
-const checkFullHouseHand = () => {
-  const nameCount = Object.values(stats.name);
+const checkFullHouseHand = (input) => {
+  if (input === undefined) {
+    const nameCount = Object.values(stats.name);
+
+    if (nameCount.indexOf(3) !== -1 && nameCount.indexOf(2) !== -1) {
+      return true;
+    }
+
+    return false;
+  }
+  const nameCount = Object.values(input.name);
 
   if (nameCount.indexOf(3) !== -1 && nameCount.indexOf(2) !== -1) {
     return true;
@@ -258,8 +277,17 @@ const checkFullHouseHand = () => {
   return false;
 };
 
-const checkFlushHand = () => {
-  const suitCount = Object.values(stats.suit);
+const checkFlushHand = (input) => {
+  if (input === undefined) {
+    const suitCount = Object.values(stats.suit);
+
+    if (suitCount.indexOf(5) !== -1) {
+      return true;
+    }
+
+    return false;
+  }
+  const suitCount = Object.values(input.suit);
 
   if (suitCount.indexOf(5) !== -1) {
     return true;
@@ -271,8 +299,66 @@ const checkFlushHand = () => {
 /**
  * to check that 5 cards are sequential in order
  */
-const checkStraightHand = () => {
-  const nameCount = Object.values(stats.name);
+const checkStraightHand = (input) => {
+  if (input === undefined) {
+    const nameCount = Object.values(stats.name);
+
+    // check whether there is any names repeated twice or more
+    for (let i = 0; i < nameCount.length; i += 1) {
+      if (nameCount[i] >= 2) {
+        return null;
+      }
+    }
+
+    // put all ranks into a table
+    // if there is an ace, put both rank 1 and 14
+    const rankTable = [];
+    let rankTable2 = null;
+
+    if (stats.name.ace === 1) {
+      rankTable2 = [];
+    }
+
+    for (let i = 0; i < stats.hand.length; i += 1) {
+      rankTable.push(stats.hand[i].rank);
+      if (rankTable2 !== null) {
+        if (stats.hand[i].name === 'ace') {
+          rankTable2.push(14);
+        } else {
+          rankTable2.push(stats.hand[i].rank);
+        }
+      }
+    }
+
+    // check rankTable to see whether sequential
+    rankTable.sort((a, b) => a - b);
+    let sequential = true;
+    for (let i = 1; i < rankTable.length; i += 1) {
+      if (rankTable[i] - 1 === rankTable[i - 1]) {
+        sequential = true;
+      } else {
+        sequential = false;
+        break;
+      }
+    }
+
+    if (rankTable2 !== null && sequential === false) {
+      rankTable2.sort((a, b) => a - b);
+
+      for (let i = 1; i < rankTable2.length; i += 1) {
+        if (rankTable2[i] - 1 === rankTable2[i - 1]) {
+          sequential = true;
+        } else {
+          sequential = false;
+          break;
+        }
+      }
+    }
+
+    return sequential;
+  }
+
+  const nameCount = Object.values(input.name);
 
   // check whether there is any names repeated twice or more
   for (let i = 0; i < nameCount.length; i += 1) {
@@ -286,17 +372,17 @@ const checkStraightHand = () => {
   const rankTable = [];
   let rankTable2 = null;
 
-  if (stats.name.ace === 1) {
+  if (input.name.ace === 1) {
     rankTable2 = [];
   }
 
-  for (let i = 0; i < stats.hand.length; i += 1) {
-    rankTable.push(stats.hand[i].rank);
+  for (let i = 0; i < input.hand.length; i += 1) {
+    rankTable.push(input.hand[i].rank);
     if (rankTable2 !== null) {
-      if (stats.hand[i].name === 'ace') {
+      if (input.hand[i].name === 'ace') {
         rankTable2.push(14);
       } else {
-        rankTable2.push(stats.hand[i].rank);
+        rankTable2.push(input.hand[i].rank);
       }
     }
   }
@@ -332,8 +418,17 @@ const checkStraightHand = () => {
 /**
  * to check that there are 3 cards of the same name
  */
-const checkThreeOfAKindHand = () => {
-  const nameCount = Object.values(stats.name);
+const checkThreeOfAKindHand = (input) => {
+  if (input === undefined) {
+    const nameCount = Object.values(stats.name);
+
+    if (nameCount.indexOf(3) !== -1) {
+      return true;
+    }
+
+    return false;
+  }
+  const nameCount = Object.values(input.name);
 
   if (nameCount.indexOf(3) !== -1) {
     return true;
@@ -345,10 +440,27 @@ const checkThreeOfAKindHand = () => {
 /**
  * to check there are at least two pairs of cards
  */
-const checkTwoPairHand = () => {
+const checkTwoPairHand = (input) => {
+  if (input === undefined) {
+    let noOfPairs = 0;
+
+    const nameCount = Object.values(stats.name);
+
+    for (let i = 0; i < nameCount.length; i += 1) {
+      if (nameCount[i] >= 2) {
+        noOfPairs += 1;
+      }
+    }
+
+    if (noOfPairs === 2) {
+      return true;
+    }
+
+    return false;
+  }
   let noOfPairs = 0;
 
-  const nameCount = Object.values(stats.name);
+  const nameCount = Object.values(input.name);
 
   for (let i = 0; i < nameCount.length; i += 1) {
     if (nameCount[i] >= 2) {
@@ -374,16 +486,31 @@ const checkJacksOrBetterHand = () => {
   return false;
 };
 
-const checkStraightFlushHand = () => {
-  if (checkStraightHand() && checkFlushHand()) {
+const checkStraightFlushHand = (input) => {
+  if (input === undefined) {
+    if (checkStraightHand() && checkFlushHand()) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (checkStraightHand(input) && checkFlushHand(input)) {
     return true;
   }
 
   return false;
 };
 
-const checkRoyalFlushHand = () => {
-  if (checkFlushHand() && stats.name.ace === 1 && stats.name.king === 1 && stats.name.queen === 1 && stats.name.jack === 1 && stats.name['10'] === 1) {
+const checkRoyalFlushHand = (input) => {
+  if (input === undefined) {
+    if (checkFlushHand() && stats.name.ace === 1 && stats.name.king === 1 && stats.name.queen === 1 && stats.name.jack === 1 && stats.name['10'] === 1) {
+      return true;
+    }
+
+    return false;
+  }
+  if (checkFlushHand(input) && input.name.ace === 1 && input.name.king === 1 && input.name.queen === 1 && input.name.jack === 1 && input.name['10'] === 1) {
     return true;
   }
 
@@ -859,6 +986,8 @@ const checkStraightFlushCombinations = () => {
         if (rankArray.indexOf((firstRank + i).toString()) === -1) {
           // current rank is not in held cards
           // find in cardsLeft
+          console.log('cardsLeft[(firstRank + i).toString()]');
+          console.log(cardsLeft[(firstRank + i).toString()]);
           if (cardsLeft[(firstRank + i).toString()][suit] === 0) {
             straightPossible = false;
           }
@@ -2442,50 +2571,103 @@ const updateTwoPairProbabilityUI = (input) => {
 const buildStats = (cleanedUpCardsLeft) => {
   const statsList = [];
 
-  for (let i = 0; i < 43; i += 1) {
-    let counter = i;
+  for (let i = 0; i < cleanedUpCardsLeft.length; i += 1) {
+    for (let j = i + 1; j < cleanedUpCardsLeft.length; j += 1) {
+      for (let k = j + 1; k < cleanedUpCardsLeft.length; k += 1) {
+        for (let l = k + 1; l < cleanedUpCardsLeft.length; l += 1) {
+          for (let m = l + 1; m < cleanedUpCardsLeft.length; m += 1) {
+            const stats = {};
+            stats.hand = [];
+            stats.name = {
+              2: 0,
+              3: 0,
+              4: 0,
+              5: 0,
+              6: 0,
+              7: 0,
+              8: 0,
+              9: 0,
+              10: 0,
+              ace: 0,
+              jack: 0,
+              king: 0,
+              queen: 0,
+            };
+            stats.suit = {
+              clubs: 0,
+              spades: 0,
+              hearts: 0,
+              diamonds: 0,
+            };
 
-    while (counter !== 43) {
-      const stats = {};
-      stats.hand = [];
-      stats.name = {
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-        6: 0,
-        7: 0,
-        8: 0,
-        9: 0,
-        10: 0,
-        ace: 0,
-        jack: 0,
-        king: 0,
-        queen: 0,
-      };
-      stats.suit = {
-        clubs: 0,
-        spades: 0,
-        hearts: 0,
-        diamonds: 0,
-      };
+            stats.name[cleanedUpCardsLeft[i].name] += 1;
+            stats.name[cleanedUpCardsLeft[j].name] += 1;
+            stats.name[cleanedUpCardsLeft[k].name] += 1;
+            stats.name[cleanedUpCardsLeft[l].name] += 1;
+            stats.name[cleanedUpCardsLeft[m].name] += 1;
 
-      for (let j = i + 1; j < i + 5; j += 1) {
-        if (j === i + 1) {
-          stats.hand.push(cleanedUpCardsLeft[i]);
-          stats.name[cleanedUpCardsLeft[i].name] += 1;
+            stats.suit[cleanedUpCardsLeft[i].suit] += 1;
+            stats.suit[cleanedUpCardsLeft[j].suit] += 1;
+            stats.suit[cleanedUpCardsLeft[k].suit] += 1;
+            stats.suit[cleanedUpCardsLeft[l].suit] += 1;
+            stats.suit[cleanedUpCardsLeft[m].suit] += 1;
+
+            stats.hand.push(cleanedUpCardsLeft[i]);
+            stats.hand.push(cleanedUpCardsLeft[j]);
+            stats.hand.push(cleanedUpCardsLeft[k]);
+            stats.hand.push(cleanedUpCardsLeft[l]);
+            stats.hand.push(cleanedUpCardsLeft[m]);
+
+            statsList.push(stats);
+          }
         }
-        stats.hand.push(cleanedUpCardsLeft[j]);
-        stats.suit[cleanedUpCardsLeft[i].suit] += 1;
       }
-
-      statsList.push(stats);
-      counter += 1;
     }
   }
 
-  console.log('inside buildstats');
-  console.log(statsList);
+  return statsList;
+};
+
+const runStatsAgainstOutcomes = (statsList) => {
+  const statOutcome = {
+    royalFlushCombinations: 0,
+    straightFlushCombinations: 0,
+    fourOfAKindCombinations: 0,
+    fullHouseCombinations: 0,
+    flushCombinations: 0,
+    straightCombinations: 0,
+    threeOfAKindCombinations: 0,
+    twoPairCombinations: 0,
+  };
+
+  for (let i = 0; i < statsList.length; i += 1) {
+    if (checkRoyalFlushHand(statsList[i])) {
+      statOutcome.royalFlushCombinations += 1;
+    }
+    if (checkStraightFlushHand(statsList[i])) {
+      statOutcome.straightFlushCombinations += 1;
+    }
+    if (checkFourOfAKindHand(statsList[i])) {
+      statOutcome.fourOfAKindCombinations += 1;
+    }
+    if (checkFullHouseHand(statsList[i])) {
+      statOutcome.fullHouseCombinations += 1;
+    }
+    if (checkFlushHand(statsList[i])) {
+      statOutcome.flushCombinations += 1;
+    }
+    if (checkStraightHand(statsList[i])) {
+      statOutcome.straightCombinations += 1;
+    }
+    if (checkThreeOfAKindHand(statsList[i])) {
+      statOutcome.threeOfAKindCombinations += 1;
+    }
+    if (checkTwoPairHand(statsList[i])) {
+      statOutcome.twoPairCombinations += 1;
+    }
+  }
+
+  return statOutcome;
 };
 
 const calculateProbability = () => {
@@ -2536,8 +2718,42 @@ const calculateProbability = () => {
         }
       }
     }
-    buildStats(cleanedUpCardsLeft);
-    // updateProbabilityUI();
+    const statsList = buildStats(cleanedUpCardsLeft);
+    const statOutcome = runStatsAgainstOutcomes(statsList);
+
+    console.log(statOutcome);
+
+    const royalFlushProbability = (statOutcome.royalFlushCombinations
+      / totalCombinationsAvailable) * 100;
+    updateRoyalFlushProbabilityUI(royalFlushProbability);
+
+    const straightFlushProbability = (statOutcome.straightFlushCombinations
+      / totalCombinationsAvailable) * 100;
+    updateStraightFlushProbabilityUI(straightFlushProbability);
+
+    const fourOfAKindProbability = (statOutcome.fourOfAKindCombinations
+        / totalCombinationsAvailable) * 100;
+    updateFourOfAKindProbabilityUI(fourOfAKindProbability);
+
+    const fullHouseProbability = (statOutcome.fullHouseCombinations
+        / totalCombinationsAvailable) * 100;
+    updateFullHouseProbabilityUI(fullHouseProbability);
+
+    const flushProbability = (statOutcome.flushCombinations
+        / totalCombinationsAvailable) * 100;
+    updateFlushProbabilityUI(flushProbability);
+
+    const straightProbability = (statOutcome.straightCombinations
+        / totalCombinationsAvailable) * 100;
+    updateStraightProbabilityUI(straightProbability);
+
+    const threeOfAKindProbability = (statOutcome.threeOfAKindCombinations
+        / totalCombinationsAvailable) * 100;
+    updateThreeOfAKindProbabilityUI(threeOfAKindProbability);
+
+    const twoPairProbability = (statOutcome.twoPairCombinations
+        / totalCombinationsAvailable) * 100;
+    updateTwoPairProbabilityUI(twoPairProbability);
   } else if (cardsToBeReplaced === 0) {
     if (checkRoyalFlushHand()) {
       probability.royalFlush = 100;
