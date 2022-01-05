@@ -463,7 +463,7 @@ const findProbabilities = (decisionTracker) => {
   return winningHandsTally;
 };
 
-const expectedProbabilities = (probTally) => {
+const statsOutput = (probTally) => {
   const total = probTally["TOTAL"];
   let expectedPayout = 0;
   let outputString = `TOTAL POSSIBLE HAND COMBIS: ${total}<br><br>`;
@@ -510,9 +510,7 @@ const giveSelectionAdvice = () => {
   for (let i = 0; i < sampleSelectionList.length; i += 1) {
     expectedPayoutList.push({
       choices: sampleSelectionList[i],
-      value: expectedProbabilities(
-        findProbabilities(sampleSelectionList[i])
-      )[1],
+      value: statsOutput(findProbabilities(sampleSelectionList[i]))[1],
     });
   }
 
@@ -552,7 +550,7 @@ let dealButton = document.createElement("button");
 dealButton.innerText = "DEAL";
 
 let betButton = document.createElement("button");
-betButton.innerText = "BET ONE";
+betButton.innerText = `INSERT COIN`;
 
 let probButton = document.createElement("button");
 probButton.innerText = "CALC PROBS";
@@ -616,9 +614,7 @@ probButton.addEventListener("click", () => {
     probContainer.innerHTML = `Calculating...`;
 
     setTimeout(() => {
-      let outputList = expectedProbabilities(
-        findProbabilities(handClickTracker)
-      );
+      let outputList = statsOutput(findProbabilities(handClickTracker));
       let outputString = outputList[0];
       probContainer.innerHTML = outputString;
     }, 1);
