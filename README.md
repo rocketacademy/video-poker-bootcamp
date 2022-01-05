@@ -31,4 +31,9 @@ What could have been better?
 
 - Not sure if UI layout and colour combinations are the best
 
-## What would you do differently next time?
+What would you do differently next time?
+
+- Learn about new features like "click to popup" to show table or prob table separately in mobile layout
+- or hamburger menu for user to toggle between features
+
+##End
