@@ -133,6 +133,12 @@ let outcome = 'Sorry you lost.';
 let foundHand = '';
 let totalCombinationsAvailable = 0;
 
+
+/**
+ *
+ * @param {String|Number} string or number representing the rank 
+ * @returns {Number} number of cards left with the rank
+ */
 const getCardsLeftWithRank = (i) => {
   let rank = i;
 
@@ -170,6 +176,11 @@ const getCardsLeftWithRank = (i) => {
   return rank;
 };
 
+/**
+ *
+ * run through the current hand of cards through all winning combinations starting with royal flush down to two pairs
+ * if we find any winning combination, solution will not search for other winning outcomes
+ */
 const calcHandScore = () => {
   if (checkRoyalFlushHand(stats)) {
     outcome = 'Royal flush found!';
@@ -212,6 +223,10 @@ const calcHandScore = () => {
   }
 };
 
+/**
+ *
+ * count the number of credits that player has won if they get a winning hand
+ */
 const countPlayerCredits = () => {
   if (outcome === 'Royal flush found!' && playerBet === 5) {
     playerCredits += 4000;
@@ -227,6 +242,10 @@ const countPlayerCredits = () => {
   }
 };
 
+/**
+ *
+ * resets game, updates instructions
+ */
 const resetGame = () => {
   playerBet = 0;
   mode = '';
@@ -261,6 +280,10 @@ const resetGame = () => {
   outcome = 'Sorry you lost.';
 };
 
+/**
+ *
+ * replace the cards that are not held in current hand with new cards from the deck 
+ */
 const refreshHand = () => {
   let drawnCard;
 
@@ -284,6 +307,11 @@ const refreshHand = () => {
   }
 };
 
+/**
+ *
+ * @param {Array} array of stats objects that represent the cards that are left and yet to be drawn 
+ * @returns {Array} array of different combination stats objects that can be built via 5 cards
+ */
 const buildStats = (cleanedUpCardsLeft) => {
   const statsList = [];
 
@@ -344,6 +372,11 @@ const buildStats = (cleanedUpCardsLeft) => {
   return statsList;
 };
 
+/**
+ *
+ * @param {Array} array of stats objects containing the current hand with number of suits and number of ranks
+ * @returns {Object} object containing probabilities for each winning hand based on statsList
+ */
 const runStatsAgainstOutcomes = (statsList) => {
   const statOutcome = {
     royalFlushCombinations: 0,
@@ -386,6 +419,10 @@ const runStatsAgainstOutcomes = (statsList) => {
   return statOutcome;
 };
 
+/**
+ *
+ * calculates the probability of each winning hand depending on what cards player hold or don't hold
+ */
 const calculateProbability = () => {
   // take into account the hand and the amount
   // of cards being held or to be replaced
@@ -461,6 +498,10 @@ const calculateProbability = () => {
   }
 };
 
+/**
+ *
+ * bet 1 credit
+ */
 const bet1 = () => {
   if (mode === 'finalDeal') {
     resetGame();
@@ -484,6 +525,10 @@ const bet1 = () => {
   }
 };
 
+/**
+ *
+ * bet 5 credits
+ */
 const bet5 = () => {
   if (mode === 'finalDeal') {
     resetGame();
@@ -507,6 +552,11 @@ const bet5 = () => {
   highlightRewardColumn();
 };
 
+
+/**
+ *
+ * deal cards. depending on which stage player is at, either at first draw or second draw, update the instructions or outcomes accordingly
+ */
 const deal = () => {
   disableButton('bet-1');
   disableButton('bet-5');
@@ -527,15 +577,12 @@ const deal = () => {
       drawnCard = shuffledDeck.pop();
       drawnCard.hold = false;
 
-      // stats.hand.push(drawnCard);
-      // stats.name[drawnCard.name] += 1;
-      // stats.suit[drawnCard.suit] += 1;
+      stats.hand.push(drawnCard);
+      stats.name[drawnCard.name] += 1;
+      stats.suit[drawnCard.suit] += 1;
 
-      // cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
+      cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
     }
-
-    stats = threeOfAKindHand;
-    cardsLeft = threeOfAKindCardsLeft;
 
     updateCardsUI();
     updateInstructions(
@@ -561,6 +608,11 @@ const deal = () => {
   }
 };
 
+
+/**
+ *
+ * start the game
+ */
 const initGame = () => {
   shuffledDeck = shuffleCards(makeDeck());
 
@@ -570,6 +622,11 @@ const initGame = () => {
   document.getElementById('calculate-probability').addEventListener('click', () => calculateProbability());
 };
 
+
+/**
+ *
+ * game is over. update instructions
+ */
 const gameOver = () => {
   updateInstructions('Game over.');
 };

@@ -1,9 +1,20 @@
+/**
+ *
+ * @param {Number} number of items to be rearranged
+ * @returns {Number} number of permutations to arrange num distinct objects into an ordered sequence
+ */
 const factorialize = (num) => {
   if (num < 0) return -1;
   if (num === 0) return 1;
   return (num * factorialize(num - 1));
 };
 
+/**
+ *
+ * @param {Number} [numberOfCardsLeft] - number of cards still left in the deck yet to be drawn
+ * @param {Number} [cardsToDraw] - number of cards to be drawn
+ * @returns {Number} number of ways to choose a sample of [cardsToDraw] cards from a set of [numberOfCardsLeft] cards where order does not matter and replacements are allowed.
+ */
 const countTotalCombinations = (numberOfCardsLeft, cardsToDraw) => {
   const numerator = factorialize(numberOfCardsLeft);
   const denominator = (factorialize(numberOfCardsLeft - cardsToDraw) * factorialize(cardsToDraw));
@@ -11,6 +22,10 @@ const countTotalCombinations = (numberOfCardsLeft, cardsToDraw) => {
   return numerator / denominator;
 };
 
+/**
+ *
+ * @returns {Number} number of royal flush combinations that can be achieved with cards being held
+ */
 const checkRoyalFlushCombinations = () => {
   const royalResult = isHeldCardsRoyal(stats.hand);
   const flushResult = isHeldCardsSameSuit(stats.hand);
@@ -58,6 +73,10 @@ const checkRoyalFlushCombinations = () => {
   return 0;
 };
 
+/**
+ *
+ * @returns {Number} number of straight flush combinations that can be achieved with cards being held
+ */
 const checkStraightFlushCombinations = () => {
   const flushResult = isHeldCardsSameSuit(stats.hand);
   const withinStraightResult = isHeldCardsWithinStraight(stats.hand);
@@ -701,6 +720,10 @@ const checkStraightFlushCombinations = () => {
   return 0;
 };
 
+/**
+ *
+ * @returns {Number} number of two pair combinations that can be achieved with cards being held
+ */
 const checkTwoPairCombinations = () => {
   const result = {
     combinations: 0,
@@ -1011,6 +1034,10 @@ const checkTwoPairCombinations = () => {
   return result;
 };
 
+/**
+ *
+ * @returns {Number} number of three of a kind combinations that can be achieved with cards being held
+ */
 const checkThreeOfAKindCombinations = () => {
   const result = {
     combinations: 0,
@@ -1058,6 +1085,10 @@ const checkThreeOfAKindCombinations = () => {
   return result;
 };
 
+/**
+ *
+ * @returns {Number} number of four of a kind combinations that can be achieved with cards being held
+ */
 const checkFourOfAKindCombinations = () => {
   const result = {
     combinations: 0,
@@ -1104,6 +1135,10 @@ const checkFourOfAKindCombinations = () => {
   return result;
 };
 
+/**
+ *
+ * @returns {Number} number of full house combinations that can be achieved with cards being held
+ */
 const checkFullHouseCombinations = () => {
   const result = {
     combinations: 0,
@@ -1252,6 +1287,10 @@ const checkFullHouseCombinations = () => {
   return result;
 };
 
+/**
+ *
+ * @returns {Number} number of flush combinations that can be achieved with cards being held
+ */
 const checkFlushCombinations = () => {
   let combinations = 0;
   const flushHand = {};
@@ -1286,6 +1325,10 @@ const checkFlushCombinations = () => {
   return combinations;
 };
 
+/**
+ *
+ * @returns {Number} number of straight combinations that can be achieved with cards being held
+ */
 const checkStraightCombinations = () => {
   const withinStraightResult = isHeldCardsWithinStraight(stats.hand);
 

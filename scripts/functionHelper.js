@@ -1,3 +1,8 @@
+/**
+ *
+ * @param {Object} object of objects with keys from 'ace' to 'king' containing the number of cards still in the deck
+ * @returns {Array} array of stats objects
+ */
 const convertCardsLeftToStats = (cardsLeft) => {
   const cardsLeftKeys = Object.keys(cardsLeft);
   const cardsLeftValues = Object.values(cardsLeft);
@@ -40,6 +45,10 @@ const convertCardsLeftToStats = (cardsLeft) => {
   return cleanedUpCardsLeft;
 };
 
+/**
+ *
+ * @returns {Number} number of cards that are being held by the player and will not be replaced with fresh cards
+ */
 const countHeldCards = () => {
   let counter = 0;
 
@@ -52,6 +61,10 @@ const countHeldCards = () => {
   return counter;
 };
 
+/**
+ *
+ * @returns {Number} number of cards that are to be replaced with fresh cards
+ */
 const countReplacedCards = () => {
   let replaceCounter = 0;
   for (let i = 0; i < stats.hand.length; i += 1) {

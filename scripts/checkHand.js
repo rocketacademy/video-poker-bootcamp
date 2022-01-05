@@ -1,3 +1,8 @@
+/**
+ *
+ * @param {Object} stats object containing the current hand with number of suits and number of ranks
+ * @returns {Boolean} true if current hand is four of a kind
+ */
 const checkFourOfAKindHand = (input) => {
   const nameCount = Object.values(input.name);
 
@@ -8,6 +13,11 @@ const checkFourOfAKindHand = (input) => {
   return false;
 };
 
+/**
+ *
+ * @param {Object} stats object containing the current hand with number of suits and number of ranks
+ * @returns {Boolean} true if current hand is full house
+ */
 const checkFullHouseHand = (input) => {
   const nameCount = Object.values(input.name);
 
@@ -18,6 +28,11 @@ const checkFullHouseHand = (input) => {
   return false;
 };
 
+/**
+ *
+ * @param {Object} stats object containing the current hand with number of suits and number of ranks
+ * @returns {Boolean} true if current hand is flush
+ */
 const checkFlushHand = (input) => {
   const suitCount = Object.values(input.suit);
 
@@ -28,6 +43,11 @@ const checkFlushHand = (input) => {
   return false;
 };
 
+/**
+ *
+ * @param {Object} stats object containing the current hand with number of suits and number of ranks
+ * @returns {Boolean} true if current hand is straight
+ */
 const checkStraightHand = (input) => {
   const nameCount = Object.values(input.name);
 
@@ -86,6 +106,11 @@ const checkStraightHand = (input) => {
   return sequential;
 };
 
+/**
+ *
+ * @param {Object} stats object containing the current hand with number of suits and number of ranks
+ * @returns {Boolean} true if current hand is three of a kind
+ */
 const checkThreeOfAKindHand = (input) => {
   const nameCount = Object.values(input.name);
 
@@ -96,6 +121,11 @@ const checkThreeOfAKindHand = (input) => {
   return false;
 };
 
+/**
+ *
+ * @param {Object} stats object containing the current hand with number of suits and number of ranks
+ * @returns {Boolean} true if current hand is two pair
+ */
 const checkTwoPairHand = (input) => {
   let noOfPairs = 0;
 
@@ -114,6 +144,11 @@ const checkTwoPairHand = (input) => {
   return false;
 };
 
+/**
+ *
+ * @param {Object} stats object containing the current hand with number of suits and number of ranks
+ * @returns {Boolean} true if current hand is straight flush
+ */
 const checkStraightFlushHand = (input) => {
   if (checkStraightHand(input) && checkFlushHand(input)) {
     return true;
@@ -122,6 +157,11 @@ const checkStraightFlushHand = (input) => {
   return false;
 };
 
+/**
+ *
+ * @param {Object} stats object containing the current hand with number of suits and number of ranks
+ * @returns {Boolean} true if current hand is royal flush
+ */
 const checkRoyalFlushHand = (input) => {
   if (checkFlushHand(input) && input.name.ace === 1 && input.name.king === 1 && input.name.queen === 1 && input.name.jack === 1 && input.name['10'] === 1) {
     return true;
@@ -130,6 +170,11 @@ const checkRoyalFlushHand = (input) => {
   return false;
 };
 
+/**
+ *
+ * @param {Object} stats.hand object containing the current hand
+ * @returns {Boolean} true if current hand contains cards of the same suit
+ */
 const isHeldCardsSameSuit = (statsHand) => {
   const result = {
     suit: '',
@@ -153,6 +198,11 @@ const isHeldCardsSameSuit = (statsHand) => {
   return result;
 };
 
+/**
+ *
+ * @param {Object} stats.hand object containing the current hand
+ * @returns {Boolean} true if current hand contains cards of the same rank
+ */
 const isHeldCardsSameName = (statsHand) => {
   let cardsAreSameName = true;
   let namePlaceholder = '';
@@ -170,6 +220,11 @@ const isHeldCardsSameName = (statsHand) => {
   return cardsAreSameName;
 };
 
+/**
+ *
+ * @param {Object} stats.hand object containing the current hand
+ * @returns {Boolean} true if current hand contains cards from the royal flush group
+ */
 const isHeldCardsRoyal = (statsHand) => {
   const result = {
     royalHand: {},
@@ -210,6 +265,11 @@ const isHeldCardsRoyal = (statsHand) => {
   return result;
 };
 
+/**
+ *
+ * @param {Object} stats.hand object containing the current hand
+ * @returns {Boolean} true if lowest rank and highest rank of cards being held are within 5 of each other
+ */
 const isHeldCardsWithinStraight = (statsHand) => {
   const result = {
     straightHand: {},

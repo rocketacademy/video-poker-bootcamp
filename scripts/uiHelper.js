@@ -1,8 +1,18 @@
+/**
+ *
+ * To disable the button so that user cannot click it
+ * @param {String} id of button to be disabled
+ */
 const disableButton = (buttonId) => {
   document.getElementById(buttonId).className = 'nes-btn is-disabled';
   document.getElementById(buttonId).disabled = true;
 };
 
+/**
+ *
+ * To enable the button so that user can click it
+ * @param {String} id of button to be enabled
+ */
 const enableButton = (buttonId) => {
   document.getElementById(buttonId).classList.remove('is-disabled');
   document.getElementById(buttonId).disabled = false;
@@ -18,6 +28,11 @@ const enableButton = (buttonId) => {
   }
 };
 
+/**
+ *
+ * To designate cards that are to be held and cards that are to be replaced
+ * @param {String} id of card to be held
+ */
 const toggleHold = (cardId) => {
   if (mode === 'firstDeal') {
     if (document.getElementById(`hold-${cardId}`).className === 'unhold') {
@@ -30,18 +45,34 @@ const toggleHold = (cardId) => {
   }
 };
 
+/**
+ *
+ * To update the display of player bet
+ */
 const updatePlayerBetUI = () => {
   document.getElementById('player-bet').innerHTML = playerBet;
 };
 
+/**
+ *
+ * To update the display of player credits
+ */
 const updatePlayerCreditsUI = () => {
   document.getElementById('player-credits').innerHTML = playerCredits;
 };
 
+/**
+ *
+ * To update the display of player instructions
+ */
 const updateInstructions = (instructions) => {
   document.getElementById('instructions').innerHTML = instructions;
 };
 
+/**
+ *
+ * To update the cards displayed 
+ */
 const updateCardsUI = () => {
   let counter = 0;
 
@@ -89,6 +120,10 @@ const updateCardsUI = () => {
   }, 100);
 };
 
+/**
+ *
+ * To highlight the column of potential rewards depending on size of player bets
+ */
 const highlightRewardColumn = () => {
   const scoreTable = document.getElementById('score-table');
 
@@ -103,12 +138,27 @@ const highlightRewardColumn = () => {
   }
 };
 
+/**
+ *
+ * To present long number properly with commas
+ * @param {Number} any number
+ * @returns {String} string of a number with properly denoted commas e.g. 1000000 -> 1,000,000
+ */
 const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+/**
+ *
+ * To update the total number of combinations available with current hand and cards to be replaced
+ * @param {Number} number of card combinations
+ */
 const updateTotalCombinationsAvailableUI = (totalCombinations) => {
   document.getElementById('total-combinations').innerHTML = numberWithCommas(totalCombinations.toFixed(0));
 };
 
+/**
+ *
+ * To update the respective probabilities for each winning hand
+ */
 const updateProbabilityUI = () => {
   document.getElementById('probabilities').classList.remove('display-none');
   document.getElementById('probability-royal-flush').innerHTML = Number.parseFloat(probability.royalFlush).toFixed(5);
