@@ -19,7 +19,7 @@ Pokermon is a video poker game with Pokemon theme, done in 8-bit gaming style.
 - Extra multiplier (800x) when getting Royal Flush applies to bet of 5 or more credits.
 - Pokemon character host, game music, and hints settings can be changed in Option menu.
 - Secret codes
-  - *Konami code*: Up, Up, Down, Down, Left, Right, Left, Right, B, A
+  - [*Konami code*](https://en.wikipedia.org/wiki/Konami_Code): Up, Up, Down, Down, Left, Right, Left, Right, B, A
     - Increase credits by 30
   - *Royal Flush code*: Up, Down, Left, Right, B, A
     - Deals Royal Flush, and deck is not shuffled
