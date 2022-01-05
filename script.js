@@ -331,34 +331,15 @@ const givePayout = (payAmount) => {
 
 const cardClick = (cardElement, i) => {
   if (handClickTracker[i] === REPLACE && gameMode != "end-round") {
-    // gameMode = "calc-score";
-
     cardElement.classList.add("selected-card");
     handClickTracker[i] = KEEP;
-
-    // const clickedCard = hand[i];
-
-    const clickedCard = hand[i];
-
     printDecision();
     return;
-    // let newCard = deck.pop();
-    // hand[i] = newCard;
-    // handClickTracker[i] = true;
   }
 
   if (handClickTracker[i] === KEEP && gameMode != "end-round") {
-    // gameMode = "calc-score";
-
     cardElement.classList.remove("selected-card");
     handClickTracker[i] = REPLACE;
-    // const clickedCard = hand[i];
-
-    const clickedCard = hand[i];
-
-    // let newCard = deck.pop();
-    // hand[i] = newCard;
-    // handClickTracker[i] = true;
     printDecision();
     return;
   }
@@ -421,8 +402,6 @@ const findProbabilities = (decisionTracker) => {
     if (decisionTracker[i] === REPLACE) {
       indexToReplace.push(i);
       numToReplace += 1;
-      // let newCard = deck.pop();
-      // hand[i] = newCard;
     }
   }
   let deckIndices = indexPossibilities(numToReplace, 47);
@@ -486,8 +465,6 @@ const statsOutput = (probTally) => {
   }
   outputString += `<br>EXPECTED PAYOUT: ${expectedPayout.toFixed(5)}`;
 
-  // probContainer.innerHTML = outputString;
-
   return [outputString, expectedPayout];
 };
 
@@ -527,23 +504,24 @@ gameInfo.innerText = "Place bet and click deal to start";
 gameInfo.className = "game-info";
 document.body.appendChild(gameInfo);
 
-//2. Card container (and slider buttons for keep or discard?)
+//2. Card container
 let cardContainer = document.createElement("div");
 cardContainer.classList.add("card-container");
 cardContainer.classList.add("gradient-border");
 document.body.appendChild(cardContainer);
 
+//3. Tracks the keep or replace decisions
 let decisionContainer = document.createElement("div");
 decisionContainer.classList.add("decision-container");
 document.body.appendChild(decisionContainer);
 
-//Credits tracker container
+//4. Credits tracker container
 let creditsInfo = document.createElement("div");
 creditsInfo.innerText = "BET: 0 CREDITS: 100";
 creditsInfo.className = "credits-tracker";
 document.body.appendChild(creditsInfo);
 
-//Buttons
+//5. Buttons
 let buttonsContainer = document.createElement("div");
 buttonsContainer.classList.add("buttons-container");
 let dealButton = document.createElement("button");
@@ -569,15 +547,8 @@ document.body.appendChild(buttonsContainer);
 let probContainer = document.createElement("div");
 probContainer.classList.add("game-info");
 document.body.appendChild(probContainer);
-// probText = `hello <br> did br work`;
-// probContainer.innerHTML = probText;
-
-const output = (message) => {
-  gameInfo.innerText = message;
-};
 
 //start of game logic
-
 const KEEP = "KEEP";
 const REPLACE = "REPLACE";
 let betAmount = 0;
@@ -609,8 +580,6 @@ betButton.addEventListener("click", () => {
 
 probButton.addEventListener("click", () => {
   if (gameMode === "calc-score") {
-    // const drStrangeImage =
-    //   '<img src="https://c.tenor.com/nDhUSRc7Q-8AAAAd/timeline-doctor-strange.gif"/>';
     probContainer.innerHTML = `Calculating...`;
 
     setTimeout(() => {
@@ -622,8 +591,6 @@ probButton.addEventListener("click", () => {
 });
 
 dealButton.addEventListener("click", () => {
-  // buildCardElements();
-
   if (gameMode === "first-draw" && betAmount > 0) {
     betButton.classList.add("disabled-button");
     probButton.classList.remove("disabled-button");
