@@ -17,11 +17,6 @@ const checkRoyalFlushCombinations = () => {
 
   // check whether same suit first
   if (flushResult.result && royalResult.result) {
-    // check whether user is already holding onto a royal flush hand
-    if (countHeldCards() === 5 && checkRoyalFlushHand(stats) === true) {
-      return 1;
-    }
-
     // check what are the remaining cards to draw to get a royal flush
     if (royalResult.royalHand.ace !== 1) {
       // check if card is available
@@ -753,44 +748,6 @@ const checkTwoPairCombinations = () => {
     result.alreadyWin = true;
     combinations = 1;
   } else if (rankArray.length === 3) {
-    let tempCombinations = 0;
-
-    let rank1 = parseInt(rankArray[0], 10);
-
-    if (rank1 === 1) {
-      rank1 = 'ace';
-    } else if (rank1 === 11) {
-      rank1 = 'jack';
-    } else if (rank1 === 12) {
-      rank1 = 'queen';
-    } else if (rank1 === 13) {
-      rank1 = 'king';
-    }
-
-    let rank2 = parseInt(rankArray[1], 10);
-
-    if (rank2 === 1) {
-      rank2 = 'ace';
-    } else if (rank2 === 11) {
-      rank2 = 'jack';
-    } else if (rank2 === 12) {
-      rank2 = 'queen';
-    } else if (rank2 === 13) {
-      rank2 = 'king';
-    }
-
-    let rank3 = parseInt(rankArray[1], 10);
-
-    if (rank3 === 1) {
-      rank3 = 'ace';
-    } else if (rank3 === 11) {
-      rank3 = 'jack';
-    } else if (rank3 === 12) {
-      rank3 = 'queen';
-    } else if (rank3 === 13) {
-      rank3 = 'king';
-    }
-
     const rank1Held = twoPairHandValues[0];
     const rank1Left = twoPairHandCardLeft[0];
 
@@ -800,205 +757,251 @@ const checkTwoPairCombinations = () => {
     const rank3Held = twoPairHandValues[2];
     const rank3Left = twoPairHandCardLeft[2];
 
-    const cardsLeftKeys = Object.keys(cardsLeft);
-    const cardsLeftValues = Object.values(cardsLeft);
+    if (rank1Held <= 2 && rank2Held <= 2 && rank3Held <= 2) {
 
-    // set 1: 2 of Rank A 2 of Rank B 1 of Rank C
-    if ((rank1Left + rank1Held >= 2) && (rank2Left + rank2Held >= 2)) {
-      const rank1Combinations = countTotalCombinations(rank1Left, 2 - rank1Held);
-      const rank2Combinations = countTotalCombinations(rank2Left, 2 - rank2Held);
+      let tempCombinations = 0;
 
-      tempCombinations += (rank1Combinations * rank2Combinations);
-    } else {
+      let rank1 = parseInt(rankArray[0], 10);
+
+      if (rank1 === 1) {
+        rank1 = 'ace';
+      } else if (rank1 === 11) {
+        rank1 = 'jack';
+      } else if (rank1 === 12) {
+        rank1 = 'queen';
+      } else if (rank1 === 13) {
+        rank1 = 'king';
+      }
+
+      let rank2 = parseInt(rankArray[1], 10);
+
+      if (rank2 === 1) {
+        rank2 = 'ace';
+      } else if (rank2 === 11) {
+        rank2 = 'jack';
+      } else if (rank2 === 12) {
+        rank2 = 'queen';
+      } else if (rank2 === 13) {
+        rank2 = 'king';
+      }
+
+      let rank3 = parseInt(rankArray[1], 10);
+
+      if (rank3 === 1) {
+        rank3 = 'ace';
+      } else if (rank3 === 11) {
+        rank3 = 'jack';
+      } else if (rank3 === 12) {
+        rank3 = 'queen';
+      } else if (rank3 === 13) {
+        rank3 = 'king';
+      }
+
+      const cardsLeftKeys = Object.keys(cardsLeft);
+      const cardsLeftValues = Object.values(cardsLeft);
+
+      // set 1: 2 of Rank A 2 of Rank B 1 of Rank C
+      if ((rank1Left + rank1Held >= 2) && (rank2Left + rank2Held >= 2)) {
+        const rank1Combinations = countTotalCombinations(rank1Left, 2 - rank1Held);
+        const rank2Combinations = countTotalCombinations(rank2Left, 2 - rank2Held);
+
+        tempCombinations += (rank1Combinations * rank2Combinations);
+      } else {
+        tempCombinations = 0;
+      }
+
+      combinations += tempCombinations;
+
       tempCombinations = 0;
-    }
 
-    combinations += tempCombinations;
+      // set 2: 2 of Rank A 1 of Rank B 2 of Rank C
+      if ((rank1Left + rank1Held >= 2) && (rank3Left + rank3Held >= 2)) {
+        const rank1Combinations = countTotalCombinations(rank1Left, 2 - rank1Held);
+        const rank3Combinations = countTotalCombinations(rank3Left, 2 - rank3Held);
 
-    tempCombinations = 0;
+        tempCombinations += (rank1Combinations * rank3Combinations);
+      } else {
+        tempCombinations = 0;
+      }
 
-    // set 2: 2 of Rank A 1 of Rank B 2 of Rank C
-    if ((rank1Left + rank1Held >= 2) && (rank3Left + rank3Held >= 2)) {
-      const rank1Combinations = countTotalCombinations(rank1Left, 2 - rank1Held);
-      const rank3Combinations = countTotalCombinations(rank3Left, 2 - rank3Held);
+      combinations += tempCombinations;
 
-      tempCombinations += (rank1Combinations * rank3Combinations);
-    } else {
       tempCombinations = 0;
+
+      // set 3: 1 of Rank A 2 of Rank B 2 of Rank C
+      if ((rank2Left + rank2Held >= 2) && (rank3Left + rank3Held >= 2)) {
+        const rank2Combinations = countTotalCombinations(rank2Left, 2 - rank2Held);
+        const rank3Combinations = countTotalCombinations(rank3Left, 2 - rank3Held);
+
+        tempCombinations += (rank2Combinations * rank3Combinations);
+      } else {
+        tempCombinations = 0;
+      }
+
+      combinations += tempCombinations;
     }
-
-    combinations += tempCombinations;
-
-    tempCombinations = 0;
-
-    // set 3: 1 of Rank A 2 of Rank B 2 of Rank C
-    if ((rank2Left + rank2Held >= 2) && (rank3Left + rank3Held >= 2)) {
-      const rank2Combinations = countTotalCombinations(rank2Left, 2 - rank2Held);
-      const rank3Combinations = countTotalCombinations(rank3Left, 2 - rank3Held);
-
-      tempCombinations += (rank2Combinations * rank3Combinations);
-    } else {
-      tempCombinations = 0;
-    }
-
-    combinations += tempCombinations;
   } else if (rankArray.length === 2) {
-    let tempCombinations = 0;
-
-    // if i am holding to 2 and 4
-    // i need to have different conditions
-
-    let rank1 = parseInt(rankArray[0], 10);
-
-    if (rank1 === 1) {
-      rank1 = 'ace';
-    } else if (rank1 === 11) {
-      rank1 = 'jack';
-    } else if (rank1 === 12) {
-      rank1 = 'queen';
-    } else if (rank1 === 13) {
-      rank1 = 'king';
-    }
-
-    let rank2 = parseInt(rankArray[1], 10);
-
-    if (rank2 === 1) {
-      rank2 = 'ace';
-    } else if (rank2 === 11) {
-      rank2 = 'jack';
-    } else if (rank2 === 12) {
-      rank2 = 'queen';
-    } else if (rank2 === 13) {
-      rank2 = 'king';
-    }
-
     const rank1Held = twoPairHandValues[0];
     const rank1Left = twoPairHandCardLeft[0];
 
     const rank2Held = twoPairHandValues[1];
     const rank2Left = twoPairHandCardLeft[1];
 
-    const cardsLeftKeys = Object.keys(cardsLeft);
-    const cardsLeftValues = Object.values(cardsLeft);
+    if (rank1Held <= 2 && rank2Held <= 2) {
 
-    // set 1: two 2s one 4 and two of other cards
-    if (rank1Left + rank1Held >= 2) {
-      const rank1Combinations = countTotalCombinations(rank1Left, 2 - rank1Held);
+      let tempCombinations = 0;
 
-      for (let i = 0; i < cardsLeftKeys.length; i += 1) {
-        let tempCombi = 0;
-        if (cardsLeftKeys[i] !== rank1 && cardsLeftKeys[i] !== rank2) {
-          const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
-          if (tempCardLeftValue >= 2) {
-            tempCombi = countTotalCombinations(tempCardLeftValue, 2);
-          } else {
-            tempCombi = 0;
-          }
+      // if i am holding to 2 and 4
+      // i need to have different conditions
 
-          tempCombinations += (rank1Combinations * tempCombi);
-        }
+      let rank1 = parseInt(rankArray[0], 10);
+
+      if (rank1 === 1) {
+        rank1 = 'ace';
+      } else if (rank1 === 11) {
+        rank1 = 'jack';
+      } else if (rank1 === 12) {
+        rank1 = 'queen';
+      } else if (rank1 === 13) {
+        rank1 = 'king';
       }
-    } else {
-      tempCombinations = 0;
-    }
 
-    combinations += tempCombinations;
+      let rank2 = parseInt(rankArray[1], 10);
 
-    tempCombinations = 0;
-
-    // set 2: one 2 two 4s and two of other cards
-    if (rank2Left + rank2Held >= 2) {
-      const rank2Combinations = countTotalCombinations(rank2Left, 2 - rank2Held);
-
-      for (let i = 0; i < cardsLeftKeys.length; i += 1) {
-        let tempCombi = 0;
-        if (cardsLeftKeys[i] !== rank1 && cardsLeftKeys[i] !== rank2) {
-          const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
-          if (tempCardLeftValue >= 2) {
-            tempCombi = countTotalCombinations(tempCardLeftValue, 2);
-          } else {
-            tempCombi = 0;
-          }
-
-          tempCombinations += (rank2Combinations * tempCombi);
-        }
+      if (rank2 === 1) {
+        rank2 = 'ace';
+      } else if (rank2 === 11) {
+        rank2 = 'jack';
+      } else if (rank2 === 12) {
+        rank2 = 'queen';
+      } else if (rank2 === 13) {
+        rank2 = 'king';
       }
-    } else {
-      tempCombinations = 0;
-    }
 
-    combinations += tempCombinations;
+      const cardsLeftKeys = Object.keys(cardsLeft);
+      const cardsLeftValues = Object.values(cardsLeft);
+
+      // set 1: two 2s one 4 and two of other cards
+      if (rank1Left + rank1Held >= 2) {
+        const rank1Combinations = countTotalCombinations(rank1Left, 2 - rank1Held);
+
+        for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+          let tempCombi = 0;
+          if (cardsLeftKeys[i] !== rank1 && cardsLeftKeys[i] !== rank2) {
+            const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
+            if (tempCardLeftValue >= 2) {
+              tempCombi = countTotalCombinations(tempCardLeftValue, 2);
+            } else {
+              tempCombi = 0;
+            }
+
+            tempCombinations += (rank1Combinations * tempCombi);
+          }
+        }
+      } else {
+        tempCombinations = 0;
+      }
+
+      combinations += tempCombinations;
+
+      tempCombinations = 0;
+
+      // set 2: one 2 two 4s and two of other cards
+      if (rank2Left + rank2Held >= 2) {
+        const rank2Combinations = countTotalCombinations(rank2Left, 2 - rank2Held);
+
+        for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+          let tempCombi = 0;
+          if (cardsLeftKeys[i] !== rank1 && cardsLeftKeys[i] !== rank2) {
+            const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
+            if (tempCardLeftValue >= 2) {
+              tempCombi = countTotalCombinations(tempCardLeftValue, 2);
+            } else {
+              tempCombi = 0;
+            }
+
+            tempCombinations += (rank2Combinations * tempCombi);
+          }
+        }
+      } else {
+        tempCombinations = 0;
+      }
+
+      combinations += tempCombinations;
+    }
   } else if (rankArray.length === 1) {
-    let rank = parseInt(rankArray[0], 10);
-
-    if (rank === 1) {
-      rank = 'ace';
-    } else if (rank === 11) {
-      rank = 'jack';
-    } else if (rank === 12) {
-      rank = 'queen';
-    } else if (rank === 13) {
-      rank = 'king';
-    }
-
     const rankHeld = twoPairHandValues[0];
     const rankLeft = twoPairHandCardLeft[0];
 
-    const cardsLeftKeys = Object.keys(cardsLeft);
-    const cardsLeftValues = Object.values(cardsLeft);
+    if (rankHeld <= 2) {
+      let rank = parseInt(rankArray[0], 10);
 
-    // set 1: 2 of rank 1, 2 of any other number, 1 of any other number
-    if ((rankLeft + rankHeld) >= 2) {
-      const rankCombinations = countTotalCombinations(rankLeft, 2 - rankHeld);
-
-      for (let i = 0; i < cardsLeftKeys.length; i += 1) {
-        let tempCombinations = 0;
-        if (cardsLeftKeys[i] !== rank) {
-          const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
-          if (tempCardLeftValue >= 2) {
-            // there is enough of this second rank to fill up the second pair
-            tempCombinations = countTotalCombinations(tempCardLeftValue, 2);
-          } else {
-            // there is not enough of this second rank to fill up the second pair
-            // need to rely on third rank
-            tempCombinations = 0;
-          }
-
-          const totalCardsLeft = 47 - tempCardLeftValue;
-          const remainingCombinations = countTotalCombinations(totalCardsLeft, 1);
-
-          combinations += (rankCombinations * tempCombinations * remainingCombinations);
-        }
+      if (rank === 1) {
+        rank = 'ace';
+      } else if (rank === 11) {
+        rank = 'jack';
+      } else if (rank === 12) {
+        rank = 'queen';
+      } else if (rank === 13) {
+        rank = 'king';
       }
-    } else {
-      // set 2: 1 of rank 1, 2 of any other number, 2 of any other number
-      for (let i = 0; i < cardsLeftKeys.length; i += 1) {
-        let tempCombinations = 0;
-        if (cardsLeftKeys[i] !== rank) {
-          const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
-          if (tempCardLeftValue >= 2) {
-            // there is enough of this second rank to fill up the second pair
-            tempCombinations = countTotalCombinations(tempCardLeftValue, 2);
-            for (let j = 0; j < cardsLeftKeys.length; j += 1) {
-              if (cardsLeftKeys[j] !== cardsLeftKeys[i] && cardsLeftKeys[j] !== rank) {
-                const tempCardLeftValue2 = getCardsLeftWithRank(cardsLeftKeys[j]);
 
-                if (tempCardLeftValue2 >= 2) {
-                  tempCombinations *= countTotalCombinations(tempCardLeftValue2, 2);
-                } else {
-                  tempCombinations = 0;
-                }
+      const cardsLeftKeys = Object.keys(cardsLeft);
+      const cardsLeftValues = Object.values(cardsLeft);
 
-                combinations += tempCombinations;
-              }
+      // set 1: 2 of rank 1, 2 of any other number, 1 of any other number
+      if ((rankLeft + rankHeld) >= 2) {
+        const rankCombinations = countTotalCombinations(rankLeft, 2 - rankHeld);
+
+        for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+          let tempCombinations = 0;
+          if (cardsLeftKeys[i] !== rank) {
+            const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
+            if (tempCardLeftValue >= 2) {
+              // there is enough of this second rank to fill up the second pair
+              tempCombinations = countTotalCombinations(tempCardLeftValue, 2);
+            } else {
+              // there is not enough of this second rank to fill up the second pair
+              // need to rely on third rank
+              tempCombinations = 0;
             }
-          } else {
-            // there is not enough of this second rank to fill up the second pair
-            // need to rely on third rank
-            tempCombinations = 0;
-          }
 
-          combinations += tempCombinations;
+            const totalCardsLeft = 47 - tempCardLeftValue;
+            const remainingCombinations = countTotalCombinations(totalCardsLeft, 1);
+
+            combinations += (rankCombinations * tempCombinations * remainingCombinations);
+          }
+        }
+      } else {
+        // set 2: 1 of rank 1, 2 of any other number, 2 of any other number
+        for (let i = 0; i < cardsLeftKeys.length; i += 1) {
+          let tempCombinations = 0;
+          if (cardsLeftKeys[i] !== rank) {
+            const tempCardLeftValue = getCardsLeftWithRank(cardsLeftKeys[i]);
+            if (tempCardLeftValue >= 2) {
+              // there is enough of this second rank to fill up the second pair
+              tempCombinations = countTotalCombinations(tempCardLeftValue, 2);
+              for (let j = 0; j < cardsLeftKeys.length; j += 1) {
+                if (cardsLeftKeys[j] !== cardsLeftKeys[i] && cardsLeftKeys[j] !== rank) {
+                  const tempCardLeftValue2 = getCardsLeftWithRank(cardsLeftKeys[j]);
+
+                  if (tempCardLeftValue2 >= 2) {
+                    tempCombinations *= countTotalCombinations(tempCardLeftValue2, 2);
+                  } else {
+                    tempCombinations = 0;
+                  }
+
+                  combinations += tempCombinations;
+                }
+              }
+            } else {
+              // there is not enough of this second rank to fill up the second pair
+              // need to rely on third rank
+              tempCombinations = 0;
+            }
+
+            combinations += tempCombinations;
+          }
         }
       }
     }

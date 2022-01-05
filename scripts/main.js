@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const stats = {
+let stats = {
   hand: [],
   suit: {
     clubs: 0,
@@ -45,7 +45,7 @@ const probability = {
   twoPairs: 0,
   jacksOrBetter: 0,
 };
-const cardsLeft = {
+let cardsLeft = {
   ace: {
     clubs: 1,
     spades: 1,
@@ -527,12 +527,15 @@ const deal = () => {
       drawnCard = shuffledDeck.pop();
       drawnCard.hold = false;
 
-      stats.hand.push(drawnCard);
-      stats.name[drawnCard.name] += 1;
-      stats.suit[drawnCard.suit] += 1;
+      // stats.hand.push(drawnCard);
+      // stats.name[drawnCard.name] += 1;
+      // stats.suit[drawnCard.suit] += 1;
 
-      cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
+      // cardsLeft[drawnCard.name][drawnCard.suit] -= 1;
     }
+
+    stats = threeOfAKindHand;
+    cardsLeft = threeOfAKindCardsLeft;
 
     updateCardsUI();
     updateInstructions(

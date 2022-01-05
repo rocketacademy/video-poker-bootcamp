@@ -184,6 +184,7 @@ const isHeldCardsRoyal = (statsHand) => {
     10: 0,
   };
 
+  // if held cards do not contain royal cards, return false
   for (let i = 0; i < statsHand.length; i += 1) {
     if (statsHand[i].hold === true) {
       if (royalHand[statsHand[i].name] === undefined) {
@@ -216,6 +217,7 @@ const isHeldCardsWithinStraight = (statsHand) => {
     result: false,
   };
 
+  // if there is more than 2 cards of the same rank, it is not within straight result
   for (let i = 0; i < statsHand.length; i += 1) {
     if (statsHand[i].hold === true) {
       if (result.straightHand[statsHand[i].rank] === undefined) {
@@ -226,7 +228,7 @@ const isHeldCardsWithinStraight = (statsHand) => {
     }
   }
 
-  // check if within 5
+  // if there is not more than 1 card per rank, check if the lowest rank and highest rank are within 5 of each other
   const rankArray = Object.keys(result.straightHand);
   const diff = parseInt(rankArray[rankArray.length - 1], 10) - parseInt(rankArray[0], 10);
   if (diff <= 4) {
