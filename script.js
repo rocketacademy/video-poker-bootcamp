@@ -85,8 +85,8 @@ const playGameOverAudio = () => {
 
 /**
  * Display game state message.
- * @param {*} message Message
- * @param {*} color Color of message text
+ * @param {string} message Message
+ * @param {string} color Color of message text
  */
 const displayMessage = (message, color = 'black') => {
   const balloonMessage = document.querySelector('.balloon-message');
@@ -112,9 +112,9 @@ const displayMessage = (message, color = 'black') => {
 
 /**
  * Reveal card to player
- * @param {*} cardElement Card
- * @param {*} cardInfo Card information
- * @param {*} order Order in group of cards
+ * @param {Element} cardElement Card
+ * @param {json} cardInfo Card information
+ * @param {number} order Order in group of cards
  * @returns Card
  */
 const revealCard = (cardElement, cardInfo, order = 0) => {
@@ -151,7 +151,7 @@ const closeCards = () => {
 
 /**
  * Update wins info.
- * @param {*} creditWin Credits won
+ * @param {number} creditWin Credits won
  */
 const updateWins = (creditWin) => {
   const wins = document.querySelector('.wins');
@@ -164,7 +164,7 @@ const updateWins = (creditWin) => {
 
 /**
  * Update bets.
- * @param {*} newBet
+ * @param {number} newBet
  */
 const updateBets = (newBet) => {
   bet += newBet;
@@ -174,7 +174,7 @@ const updateBets = (newBet) => {
 
 /**
  * Update credits after a game.
- * @param {*} creditChange Change of credit
+ * @param {number} creditChange Change of credit
  */
 const updateCredits = (creditChange) => {
   const credits = document.querySelector('.credits');
@@ -217,8 +217,8 @@ const updateCredits = (creditChange) => {
 
 /**
  * Calculate winnings based on score and bet.
- * @param {*} score Score of hand
- * @param {*} gameBet Bet placed for game
+ * @param {number} score Score of hand
+ * @param {number} gameBet Bet placed for game
  */
 const calcWinnings = (score, gameBet) => {
   let winCredits = gameBet;
@@ -233,8 +233,8 @@ const calcWinnings = (score, gameBet) => {
 
 /**
  * Hold selected card.
- * @param {*} cardElement Card selected
- * @param {*} index
+ * @param {Element} cardElement Card selected
+ * @param {number} index
  */
 const holdCard = (cardElement) => {
   // ignore card click if not in drawing mode
@@ -253,7 +253,7 @@ const holdCard = (cardElement) => {
 
 /**
  * Handle card click
- * @param {*} cardElement Card
+ * @param {Element} cardElement Card
  */
 const cardClick = (cardElement) => {
   holdCard(cardElement);
@@ -261,14 +261,14 @@ const cardClick = (cardElement) => {
 
 /**
  * Get a random index ranging from 0 (inclusive) to max (exclusive).
- * @param {*} max Max index limit
+ * @param {number} max Max index limit
  * @returns Random index in range
  */
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
 /**
  * Shuffle an array of cards.
- * @param {*} cards Deck of cards
+ * @param {json[]} cards Deck of cards
  * @returns Shuffled cards
  */
 const shuffleCards = (cards) => {
@@ -357,7 +357,7 @@ const makeDeck = () => {
 
 /**
  * Tally the occurence of cards in hand.
- * @param {*} cards Cards in hand
+ * @param {json[]} cards Cards in hand
  * @returns Object that contains card rank tally and card suit tally.
  */
 const tallyCards = (cards) => {
@@ -392,7 +392,7 @@ const tallyCards = (cards) => {
 
 /**
  * Check if there is one pair in hand.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is one pair. False, otherwise.
  */
 const isOnePair = (cardTally) => {
@@ -412,7 +412,7 @@ const isOnePair = (cardTally) => {
 
 /**
  * Check if there is two pair in hand.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is two pair. False, otherwise.
  */
 const isTwoPair = (cardTally) => {
@@ -425,7 +425,7 @@ const isTwoPair = (cardTally) => {
 
 /**
  * Check if there is a three of a kind in hand.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is a three of a kind. False, otherwise.
  */
 const isThreeOfAKind = (cardTally) => {
@@ -438,14 +438,14 @@ const isThreeOfAKind = (cardTally) => {
 
 /**
  * Check if the cards in hand make a flush.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is a flush. False, otherwise.
  */
 const isFlush = (cardTally) => (Object.keys(cardTally.suits).length === 1);
 
 /**
  * Check if the cards in hand make a straight.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is a straight. False, otherwise.
  */
 const isStraight = (cardTally) => {
@@ -468,7 +468,7 @@ const isStraight = (cardTally) => {
 
 /**
  * Check if the cards in hand make a full house.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is a full house. False, otherwise.
  */
 const isFullHouse = (cardTally) => {
@@ -479,7 +479,7 @@ const isFullHouse = (cardTally) => {
 
 /**
  * Check if there is a four of a kind in hand.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is a four of a kind. False, otherwise.
  */
 const isFourOfAKind = (cardTally) => {
@@ -490,14 +490,14 @@ const isFourOfAKind = (cardTally) => {
 
 /**
  * Check if the cards in hand make a straight flush.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is a straight flush. False, otherwise.
  */
 const isStraightFlush = (cardTally) => isStraight(cardTally) && isFlush(cardTally);
 
 /**
  * Check if the cards in hand make a royal flush.
- * @param {*} cardTally Tally of cards in hand
+ * @param {json} cardTally Tally of cards in hand
  * @returns True, if there is a royal flush. False, otherwise.
  */
 const isRoyalFlush = (cardTally) => {
@@ -517,7 +517,7 @@ const isRoyalFlush = (cardTally) => {
 
 /**
  * Calculate score for the cards in hand.
- * @param {*} cards Array of card objects
+ * @param {json[]} cards Array of card objects
  * @returns Number of points that the user scored for the cards in their hand
  */
 const calcHandScore = (cards) => {
@@ -538,7 +538,7 @@ const calcHandScore = (cards) => {
 
 /**
  * Handle deal button click with dealing cards.
- * @param {*} cardElements Cards on hand
+ * @param {Element[]} cardElements Cards on hand
  */
 const dealCards = (cardElements) => {
   board = [];
@@ -552,8 +552,8 @@ const dealCards = (cardElements) => {
 
 /**
  * Deal any cards you want.
- * @param {*} cardElements Cards on hand
- * @param {*} hand Cards you want
+ * @param {Element[]} cardElements Cards on hand
+ * @param {json[]} hand Cards you want
  */
 const dealSelectedCards = (cardElements, hand) => {
   board = [];
@@ -573,7 +573,7 @@ const dealSelectedCards = (cardElements, hand) => {
 
 /**
  * Deal royal flush.
- * @param {*} cardElements Cards on hand
+ * @param {Element[]} cardElements Cards on hand
  */
 const dealRoyalFlush = (cardElements) => {
   const royalFlushHand = [
@@ -589,7 +589,7 @@ const dealRoyalFlush = (cardElements) => {
 
 /**
  * Handle draw button click by replacing cards not held.
- * @param {*} cardElements Cards on hand
+ * @param {Element[]} cardElements Cards on hand
  */
 const drawCards = (cardElements) => {
   for (let i = 0; i < cardElements.length; i += 1) {
@@ -617,7 +617,7 @@ const buttonColorsByType = {
 
 /**
  * Enable or disable buttons.
- * @param {*} buttonsGroup Bet/Deal/Draw buttons
+ * @param {string} buttonsGroup Bet/Deal/Draw buttons
  */
 const setButtons = (buttonsGroup) => {
   const buttons = document.querySelectorAll('.buttons > .nes-btn');
@@ -711,7 +711,7 @@ const betMaxClick = () => {
 
 /**
  * Handle DEAL button click.
- * @param {*} cardsElement Cards
+ * @param {Element} cardsElement Cards
  */
 const dealClick = (cardsElement) => {
   displayMessage('Select cards to keep ...');
@@ -736,7 +736,7 @@ const dealClick = (cardsElement) => {
 
 /**
  * Handle DRAW button click.
- * @param {*} cardsElement Cards
+ * @param {Element} cardsElement Cards
  */
 const drawClick = (cardsElement) => {
   drawCards(cardsElement.children);
@@ -780,9 +780,9 @@ const drawClick = (cardsElement) => {
 
 /**
  * Dialog builder.
- * @param {*} id Id of dialog
- * @param {*} title Title of dialog content
- * @param {*} contentHTML Dialog content
+ * @param {number} id Id of dialog
+ * @param {string} title Title of dialog content
+ * @param {HTMLElement} contentHTML Dialog content
  * @returns Dialog element
  */
 const buildDialog = (id, title, contentHTML) => {
@@ -1043,7 +1043,7 @@ const buildGameStateElements = () => {
 
 /**
  * Create buttons to play game.
- * @param {*} cardsElement Cards
+ * @param {Element} cardsElement Cards
  * @returns The game buttons
  */
 const buildGameButtons = (cardsElement) => {
@@ -1248,7 +1248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Read hand analysis result from video_poker_analyze API.
- * @param {*} resp API response
+ * @param {json} resp API response
  * @returns Cards to keep based on analysis
  */
 const readHandAnalysis = (resp) => {
@@ -1279,7 +1279,7 @@ const readHandAnalysis = (resp) => {
 
 /**
  * Convert cards object into string input for video_poker_analyze API.
- * @param {*} cards Cards
+ * @param {json[]} cards Cards
  * @returns Cards string
  */
 const convertCardsToString = (cards) => {
@@ -1298,7 +1298,7 @@ const convertCardsToString = (cards) => {
 
 /**
  * Display hints of cards to keep.
- * @param {*} cards Cards to keep
+ * @param {json[]} cards Cards to keep
  */
 const displayCardsToKeep = (cards) => {
   if (cards.length === 5) {
@@ -1339,7 +1339,7 @@ const displayCardsToKeep = (cards) => {
 
 /**
  * Analyze hand using video_poker_analyze API.
- * @param {*} cards Cards to analyze
+ * @param {json[]} cards Cards to analyze
  * @returns Cards to keep
  */
 const analyzeHand = (cards) => {
