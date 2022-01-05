@@ -682,16 +682,9 @@ const betClick = () => {
     displayMessage('Click DEAL button to play.');
   }
 
-  // close cards
   closeCards();
-
-  // remove win info
-  updateWins(0);
-
-  // subtract credit count
+  updateWins(0); // remove win info
   updateCredits(-1);
-
-  // add bet count
   updateBets(1);
 
   setButtons('deal');
@@ -708,16 +701,9 @@ const betMaxClick = () => {
     displayMessage('Click DEAL button to play.');
   }
 
-  // close cards
   closeCards();
-
-  // remove win info
-  updateWins(0);
-
-  // subtract credit count by max_bet
+  updateWins(0); // remove win info
   updateCredits(-1 * MAX_BET);
-
-  // add bet count by max_bet
   updateBets(MAX_BET);
 
   setButtons('deal');
