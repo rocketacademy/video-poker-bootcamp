@@ -236,11 +236,9 @@ td {
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-
   margin-top: 50px;
   width: 100px;
   height: 20px;
-
   background-color: rgba(255, 255, 255, 0.795);
 }
 
@@ -250,4 +248,73 @@ p {
   font-family: monospace;
   font-size: 10px;
   color: rgba(255, 255, 255, 0.068);
+}
+
+.modal {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  margin: 0px;
+  padding: 20px;
+  background-color: rgba(128, 128, 128, 0.521);
+}
+
+.modal-content {
+  margin: 32% auto 0px auto;
+  border: solid 1px;
+  width: 15vw;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.678);
+}
+
+#popuptext {
+  color: white;
+}
+
+#amount {
+  font-size: 15px;
+  text-align: center;
+  border-radius: 5px;
+  width: 10vw;
+  border: 0;
+}
+
+#submit {
+  z-index: 2;
+}
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.submit:hover,
+.submit:focus {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  cursor: pointer;
 }

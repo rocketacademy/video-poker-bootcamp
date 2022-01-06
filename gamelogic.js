@@ -322,29 +322,55 @@ const initGame = () => {
   introAudio.src = "intro.wav";
   introAudio.play();
   gameMessage.innerHTML = "";
-  // This will prompt user how much they want to start the game with
-  balanceAmount = Number(
-    window.prompt(
-      "How much money do you want to start with?",
-      "Enter amount here"
-    )
-  );
-  if (balanceAmount === 777) {
-    balanceAmount = Number(
-      window.prompt(
-        "How much money do you REALLY want to start with?",
-        "Enter amount here"
-      )
-    );
-    removeElement("ready-button");
-    playerClick7();
-    buttonFunctions7();
-  } else {
-    removeElement("ready-button");
-    playerClick();
-    buttonFunctions();
+  let modal = document.getElementById("myModal");
+  let submit = document.getElementsByClassName("submit")[0];
+  modal.style.display = "block";
+  submit.onclick = function () {
+    modal.style.display = "none";
+    let amount = Number(document.getElementById("amount").value);
+    balanceAmount = amount;
     outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Start betting to begin game.`;
-  }
+    if (amount === 777) {
+      balanceAmount = 100;
+      removeElement("ready-button");
+      playerClick7();
+      buttonFunctions7();
+      outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Start betting to begin game.`;
+    } else {
+      removeElement("ready-button");
+      playerClick();
+      buttonFunctions();
+    }
+    // removeElement("ready-button");
+    // playerClick();
+    // buttonFunctions();
+    // outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Start betting to begin game.`;
+  };
+
+  // This will prompt user how much they want to start the game with
+  // balanceAmount = Number(
+  //   window.prompt(
+  //     "How much money do you want to start with?",
+  //     "Enter amount here"
+  //   )
+  // );
+  // if (balanceAmount === 777) {
+  //   balanceAmount = Number(
+  //     window.prompt(
+  //       "How much money do you REALLY want to start with?",
+  //       "Enter amount here"
+  //     )
+  //   );
+  //   removeElement("ready-button");
+  //   playerClick7();
+  //   buttonFunctions7();
+  // }
+  // } else {
+  //   removeElement("ready-button");
+  //   playerClick();
+  //   buttonFunctions();
+  //   outputMessage.innerHTML = `Money in hand: $${balanceAmount} <br><br> Start betting to begin game.`;
+  // }
 };
 
 // CALLING OUT 5 CARDS INTO CONTAINER TO BE DISPLAYED FOR THE FIRST FLIP CARD //
