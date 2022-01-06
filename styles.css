@@ -110,8 +110,7 @@ td {
 .card-table {
   width: 100vw;
   max-width: 600px;
-  min-height: 280px;
-  max-height: 31vh;
+  min-height: 30vh;
   display: flex;
   align-items: center;
   justify-content: center;
