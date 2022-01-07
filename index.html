@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Shaz's Video Poker Game!</title>
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="video-poker-machine">
+      <div id="signboard">
+        <div class="nes-container is-rounded is-dark">
+          <img src="./images/logo.png" id="logo" />
+          <h1>Video Poker</h1>
+        </div>
+      </div>
+      <div>
+        <table class="nes-table is-bordered is-dark" id="score-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Royal Flush</td>
+              <td>250</td>
+              <td>500</td>
+              <td>750</td>
+              <td>1000</td>
+              <td>4000</td>
+            </tr>
+            <tr>
+              <td>Straight Flush</td>
+              <td>50</td>
+              <td>100</td>
+              <td>150</td>
+              <td>200</td>
+              <td>250</td>
+            </tr>
+            <tr>
+              <td>Four Of A Kind</td>
+              <td>25</td>
+              <td>50</td>
+              <td>75</td>
+              <td>100</td>
+              <td>125</td>
+            </tr>
+            <tr>
+              <td>Full House</td>
+              <td>9</td>
+              <td>18</td>
+              <td>27</td>
+              <td>36</td>
+              <td>45</td>
+            </tr>
+            <tr>
+              <td>Flush</td>
+              <td>6</td>
+              <td>12</td>
+              <td>18</td>
+              <td>24</td>
+              <td>30</td>
+            </tr>
+            <tr>
+              <td>Straight</td>
+              <td>4</td>
+              <td>8</td>
+              <td>12</td>
+              <td>16</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>Three Of A Kind</td>
+              <td>3</td>
+              <td>6</td>
+              <td>9</td>
+              <td>12</td>
+              <td>15</td>
+            </tr>
+            <tr>
+              <td>Two Pair</td>
+              <td>2</td>
+              <td>4</td>
+              <td>6</td>
+              <td>8</td>
+              <td>10</td>
+            </tr>
+            <!-- <tr>
+              <td>Jacks Or Better</td>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>5</td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+      <div class="nes-container is-rounded is-dark">
+        <div id="instructions">
+          Start by pressing <span class="nes-text is-warning">Bet 1</span> or
+          <span class="nes-text is-error">Bet 5</span> and pressing
+          <span class="nes-text is-primary">Deal</span> after.
+        </div>
+        <div id="cards" class="display-none">
+          <div id="card-0" class="card"></div>
+          <div id="card-1" class="card"></div>
+          <div id="card-2" class="card"></div>
+          <div id="card-3" class="card"></div>
+          <div id="card-4" class="card"></div>
+        </div>
+        <div id="probabilities" class="display-none">
+          <hr />
+          <p>
+            Total Combinations Available:
+            <span id="total-combinations">1,533,939</span>
+          </p>
+          <hr />
+          <p>Royal Flush: <span id="probability-royal-flush">0.00</span>%</p>
+          <p>
+            Straight Flush: <span id="probability-straight-flush">0.00</span>%
+          </p>
+          <p>
+            Four Of A Kind: <span id="probability-four-of-a-kind">0.00</span>%
+          </p>
+          <p>Full House: <span id="probability-full-house">0.00</span>%</p>
+          <p>Flush: <span id="probability-flush">0.00</span>%</p>
+          <p>Straight: <span id="probability-straight">0.00</span>%</p>
+          <p>
+            Three Of A Kind: <span id="probability-three-of-a-kind">0.00</span>%
+          </p>
+          <p>Two Pair: <span id="probability-two-pair">0.00</span>%</p>
+          <!-- <p>
+            Jack Or Better: <span id="probability-jack-or-better">0.00</span>%
+          </p> -->
+        </div>
+      </div>
+      <div id="buttons">
+        <div class="is-rounded is-dark flex space-evenly align-items-center">
+          <div>
+            <button type="button" class="nes-btn is-warning" id="bet-1">
+              Bet 1
+            </button>
+            <button type="button" class="nes-btn is-error" id="bet-5">
+              Bet 5
+            </button>
+            <button
+              type="button"
+              class="nes-btn is-disabled"
+              id="deal"
+              disabled
+            >
+              Deal
+            </button>
+            <button
+              type="button"
+              class="nes-btn is-disabled"
+              id="calculate-probability"
+              disabled
+            >
+              Calculate Probability
+            </button>
+          </div>
+        </div>
+        <div>
+          <div class="text-white">
+            <span>Bet: <span id="player-bet">0</span></span>
+            <span>/</span>
+            <span>Credits: <span id="player-credits">100</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./scripts/functionHelper.js" async defer></script>
+    <script src="./scripts/uiHelper.js" async defer></script>
+    <script src="./scripts/testHands.js" async defer></script>
+    <script src="./scripts/checkCombination.js" async defer></script>
+    <script src="./scripts/checkHand.js" async defer></script>
+    <script src="./scripts/main.js" async defer></script>
+  </body>
+</html>

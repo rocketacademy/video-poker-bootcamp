@@ -1,0 +1,81 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  font-family: "Press Start 2P", cursive;
+}
+
+body {
+  background: #212529;
+}
+
+#logo {
+  width: 100px;
+}
+
+#score-table {
+  width: 100%;
+  font-size: 12px;
+  table-layout: auto;
+}
+
+.hold {
+  color: #212529;
+  background: #f7d51d;
+  top: -50%;
+  position: relative;
+}
+
+.unhold {
+  top: -50%;
+  position: relative;
+  display: none;
+}
+
+#video-poker-machine {
+  width: 800px;
+  height: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.nes-container {
+  width: 100%;
+}
+
+.display-none {
+  display: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.text-white {
+  color: white;
+}
+
+.card {
+  width: 20%;
+  padding: 5px;
+}
+
+.space-evenly {
+  justify-content: space-evenly;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+img {
+  width: 100%;
+}
+
+#probabilities > p {
+  margin-bottom: 0;
+}
