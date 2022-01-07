@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta charset="UTF-8" />
+    <title>Video Poker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <p id="popuptext">How much money do you want to start with?</p>
+        <form id="myForm">
+          <input type="number" id="amount" name="amount" />
+        </form>
+        <button class="submit">SUBMIT</button>
+      </div>
+    </div>
+    <table id="table">
+      <tr>
+        <td>Coins</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>Royal Flush</td>
+        <td>250</td>
+        <td>500</td>
+        <td>750</td>
+        <td>1000</td>
+        <td>4000</td>
+      </tr>
+      <tr>
+        <td>Straight Flush</td>
+        <td>50</td>
+        <td>100</td>
+        <td>150</td>
+        <td>200</td>
+        <td>250</td>
+      </tr>
+      <tr>
+        <td>Four of a Kind</td>
+        <td>25</td>
+        <td>50</td>
+        <td>75</td>
+        <td>100</td>
+        <td>125</td>
+      </tr>
+      <tr>
+        <td>Full House</td>
+        <td>9</td>
+        <td>18</td>
+        <td>27</td>
+        <td>36</td>
+        <td>45</td>
+      </tr>
+      <tr>
+        <td>Flush</td>
+        <td>6</td>
+        <td>12</td>
+        <td>18</td>
+        <td>24</td>
+        <td>30</td>
+      </tr>
+      <tr>
+        <td>Straight</td>
+        <td>4</td>
+        <td>8</td>
+        <td>12</td>
+        <td>16</td>
+        <td>20</td>
+      </tr>
+      <tr>
+        <td>Three of a Kind</td>
+        <td>3</td>
+        <td>6</td>
+        <td>9</td>
+        <td>12</td>
+        <td>15</td>
+      </tr>
+      <tr>
+        <td>Two Pair</td>
+        <td>2</td>
+        <td>4</td>
+        <td>6</td>
+        <td>8</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>Jacks or Better</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+    </table>
+    <script src="globals.js"></script>
+    <script src="doms.js"></script>
+    <script src="gamelogic.js"></script>
+    <script src="7cardstudrules.js"></script>
+    <script src="winningcombinations.js"></script>
+    <p id="secret">Key in 777 in the amount of money to enter 7 Stud Game.</p>
+  </body>
+</html>
