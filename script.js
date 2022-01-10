@@ -70,7 +70,11 @@ const makeDeck = () => {
   // Return the completed card deck
   return newDeck;
 };
-
+/**
+ * @param  cardInfo {object} card object
+ * @param  tracker {list} user's keep or replace decision
+ * @return {html element}   image of the dealt card
+ */
 const createCard = (cardInfo, tracker) => {
   let img = document.createElement("img");
   img.className = "card";
@@ -82,7 +86,7 @@ const createCard = (cardInfo, tracker) => {
 
   return img;
 };
-
+//display a row of 5 card backs
 const showCardBacks = () => {
   cardContainer.innerHTML = "";
   const handElement = document.createElement("div");
@@ -96,7 +100,7 @@ const showCardBacks = () => {
   }
   cardContainer.appendChild(handElement);
 };
-
+//push 5 random cards into hand, set decision tracker to all replace
 const dealFirstHands = () => {
   hand = [];
   handClickTracker = [REPLACE, REPLACE, REPLACE, REPLACE, REPLACE];
@@ -248,7 +252,7 @@ const calcHandScore = (hand) => {
 
   return "NIL";
 };
-
+//display user's keep or replace decision
 const printDecision = () => {
   decisionContainer.innerHTML = "";
   for (let i = 0; i < 5; i += 1) {
@@ -258,7 +262,7 @@ const printDecision = () => {
     decisionContainer.appendChild(decision);
   }
 };
-
+//display advice to user which to keep or replace
 const revealAdvice = (decisionTracker) => {
   probContainer.innerHTML = "";
   for (let i = 0; i < 5; i += 1) {
@@ -270,6 +274,7 @@ const revealAdvice = (decisionTracker) => {
 };
 
 const printResultHand = () => {
+  //deal random cards into card positions where user chose to replace
   for (let i = 0; i < 5; i += 1) {
     if (handClickTracker[i] === REPLACE) {
       let newCard = deck.pop();
@@ -278,9 +283,9 @@ const printResultHand = () => {
   }
   cardContainer.innerHTML = "";
   const handElement = document.createElement("div");
+  //display the result dealt hand
   for (let i = 0; i < 5; i += 1) {
     const cardElement = createCard(hand[i], handClickTracker[i]);
-
     handElement.appendChild(cardElement);
   }
   cardContainer.appendChild(handElement);
@@ -344,7 +349,12 @@ const cardClick = (cardElement, i) => {
     return;
   }
 };
-
+/**
+ * function that returns all possible ways to pick X elements from a list of size Y
+ * @param  numToReplace {number} X no of indices I want to pick from a given list
+ * @param  listLength {number} expected length Y of a list
+ * @return {list}   each element is a list of possible chosen indices
+ */
 const indexPossibilities = (numToReplace, listLength) => {
   let combis = [];
   if (numToReplace === 1) {
