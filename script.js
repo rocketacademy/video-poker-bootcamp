@@ -25,6 +25,7 @@ let deck = [];
 
 // An object that contains the points system of the game
 const comboPoints = {
+  // do differently
   royalFlush: [250, 500, 750, 1000, 4000],
   straightFlush: [50, 100, 150, 200, 250],
   quads: [25, 50, 75, 100, 125],
@@ -47,6 +48,7 @@ const comboPoints = {
  */
 
 const calcHandScore = (cardHand) => {
+  // biggest challenge faced
   checkForStraight(cardHand);
   checkForFlush(cardHand);
   checkForRoyalFlush(cardHand);
@@ -203,9 +205,9 @@ const comboPoints = {
 }; */
 
 ///////////////////////
-// create scoreboard // DOING
+// create scoreboard //
 ///////////////////////
-// create 5 boxes with scores for each bet (1-5).
+// create 5 boxes with scores for each bet (1-5). // what went well
 let index = 0;
 for (let i = 0; i < 5; i += 1) {
   // create a div for each bet amt
