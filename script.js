@@ -29,7 +29,6 @@ what do i need to do?:
 //to check for same suit--> similar to object tally, return an object with suits of cards as keys and values the represent the frequency of the suit appearing --> if all same suit --> flush 
 
 
-
 /*to check for same cards --> using the object tally -->should return an object with names of cards as keys and values represent the freq:
   1. Find the freq of card appearing: use a for--in loop --> for card in cardTally --> let freqOfCard = cardTally[card]  --> push the number into an array 
   2. if any number in the array ===4 --> 4 of a kind exists 
@@ -129,21 +128,160 @@ const deck = shuffleCards(makeDeck());
 
 
 
+
+
+
+//========================HELPER FUNCTIONS ========================================
 /** function to give 5 cards to player
  * @return {array} containing 5 cards --> each as an object 
  */
-const dealHand = () =>{
+
 let hand = [];
+const dealHand = () =>{
 for (let i = 0; i < 5; i += 1) {
   hand.push(deck.pop());
 }
 console.log("playerHand", hand)
 }
-
 dealHand()
 
-
+//========================PART 1: TO CHECK FOR WINNING COMBINATIONS========================================
 
 /** 
- * a function that calculates hand score 
+ * a function that check for winning combinations 
 */
+
+/** function that creates card name as keys and freq of card appearing as value 
+ * @param {array} - player hand 
+ * @return {object} - tally of cards and freq of cards appearing 
+ */
+
+let cardNameTally = {};
+const createTally = (playerHand) =>{
+// Create Object as tally
+
+// Loop over hand
+for (let i = 0; i < playerHand.length; i += 1) {
+  let cardName = playerHand[i].name;
+  // If we have seen the card name before, increment its count
+    if (cardName in cardNameTally) {
+    cardNameTally[cardName] += 1;
+     }
+  // Else, initialise count of this card name to 1
+    else {
+    cardNameTally[cardName] = 1;
+    }
+  }
+}
+
+
+let flush;
+
+/** function to check for the same suit 
+ * @param {array} - player hand 
+ * @return {boolean} whether running sequence exists 
+ */
+const checkSameSuit = (cards) =>{
+  //iterate through each card object in player hand array, 
+  let cardSuits = []
+  //gives an array containing the card suits 
+cards.forEach(card => cardSuits.push(card.suit))
+console.log(cardSuits)
+//check if every suit in the array are the same 
+cardSuits.every(suit => suit === cardSuits[0])? flush = true : flush = false 
+}
+
+ 
+
+let straightExist; 
+/**function to check for whether a running squence exist 
+ * @param {object} tally --> tally of all cards 
+ * @return {boolean} --> whether straight exists? 
+ */
+ const checkStraights = (tally) =>{
+   let listOfCardNames = [];
+   listOfCardNames = Object.keys(tally)
+listOfCardNames.sort(function(a,b) {return a-b})
+
+console.log(listOfCardNames)
+
+   //you need to sort the numbers in order from smallest to greatest
+  console.log(listOfCardNames)
+  for (let i =0; i<listOfCardNames.length-1; i+=1){
+    if(Math.abs(listOfCardNames[i]- listOfCardNames[i+1]) ===1){
+    straightExist= true
+    }
+    else straightExist = false 
+  }
+   
+ }
+
+/*to check for same cards --> using the object tally -->should return an object with names of cards as keys and values represent the freq:
+  1. Find the freq of card appearing: use a for--in loop --> for card in cardTally --> let freqOfCard = cardTally[card]  --> push the number into an array 
+  2. if any number in the array ===4 --> 4 of a kind exists 
+  3. if any number in the array ===3 ---> card appear 3 times  ---> can be 3 of a kind/full house 
+      ---> if the other number ===2 --> if card appears 3 times and another card appears 2 time -->full house exists 
+      ---> else 3 of a kind 
+*/
+let fourOfaKind;
+let fullHouse;
+let threeOfaKind;
+let twoPair;
+
+const checker = (cardArray,target)=> {
+return cardArray.some(element => target.includes(element))
+}
+
+
+const checkForSameKind = (tally) =>{
+  let highValueCards = ["J","Q","K","A"]
+  let freqOfCardAppearing = []
+  for (let card in tally){
+    freqOfCardAppearing.push(tally[card])
+    //iterate through each element in the card array and if some of them includes the highvalue card in highvaluecards array, then true
+  }
+
+  
+
+console.log(checker(tally,high))
+
+  console.log(freqOfCardAppearing)
+
+  //to check 4kind,3kind,2pairs
+  freqOfCardAppearing.forEach(frequency => {
+    if (frequency ===4){
+      fourOfaKind = true 
+    }
+    if (frequency ===3){
+      if (freqOfCardAppearing.length ===2){
+        console.log("fullhouse")
+      fullHouse = true
+    }
+    else {
+      console.log("3ofakind")
+      threeOfaKind = true 
+    }
+  }
+  if (frequency ===2) { 
+    if (freqOfCardAppearing.length ===3){
+      console.log("2pair")
+      twoPair = true 
+     }
+  }
+}
+
+  )
+  
+}
+
+const playerHand7 = [
+  { rank: 2, suit: 'hearts', name: 'K' },
+  { rank: 2, suit: 'hearts', name: 'Q' },
+  { rank: 5, suit: 'hearts', name: 'J' },
+  { rank: 7, suit: 'hearts', name: 'J' },
+  { rank: 9, suit: 'hearts', name: '1' },
+]
+createTally(playerHand7)
+console.log("tally", cardNameTally)
+ checkStraights(cardNameTally)
+checkForSameKind(cardNameTally)
