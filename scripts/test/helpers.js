@@ -7,8 +7,8 @@
 
 /**
  *
- * @param {Object} expected
- * @param {Object} actual
+ * @param {*} expected
+ * @param {*} actual
  * @param {descIfFalseCallback} descIfFalse
  */
 const assertLog = (expected, actual, descIfFalse) => {
