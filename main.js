@@ -8,7 +8,9 @@ const getMode = () => document.getElementById(`root`).getAttribute(`mode`);
 (() => {
   const mode = getMode();
   if (mode === MODES.TEST) {
-    console.log(`test phase`);
+    console.group(`test phase`);
+    TEST_ALL();
+    console.groupEnd();
   }
 
   if (mode === MODES.DEMO) {

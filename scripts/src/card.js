@@ -43,11 +43,22 @@ const newCard = (cardValue, suit) => {
 /**
  *
  * @param {Card} card
- * @returns
+ * @returns {string} Card Value
  */
 const getCardValue = (card) => card.cardValue;
+
+/**
+ *
+ * @param {Card} card
+ * @returns {string} Card Suit
+ */
 const getCardSuit = (card) => card.suit;
 
+/**
+ *
+ * @param {Card} card
+ * @returns {number} The numerical value of the card.
+ */
 const getCardOrdinal = (card) => {
   const cardValue = getCardValue(card);
   switch (cardValue) {

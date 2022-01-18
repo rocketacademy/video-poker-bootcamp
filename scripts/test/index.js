@@ -1,1 +1,3 @@
-TEST_CARDS();
+const TEST_ALL = () => {
+  TEST_CARDS();
+};
