@@ -1,4 +1,4 @@
-const CARD_VALUES = {
+const CARD_RANK = {
   ONE: `ONE`,
   TWO: `TWO`,
   THREE: `THREE`,
@@ -62,31 +62,85 @@ const getCardSuit = (card) => card.suit;
 const getCardOrdinal = (card) => {
   const cardValue = getCardValue(card);
   switch (cardValue) {
-    case CARD_VALUES.ONE:
+    case CARD_RANK.ONE:
       return 1;
-    case CARD_VALUES.TWO:
+    case CARD_RANK.TWO:
       return 2;
-    case CARD_VALUES.THREE:
+    case CARD_RANK.THREE:
       return 3;
-    case CARD_VALUES.FOUR:
+    case CARD_RANK.FOUR:
       return 4;
-    case CARD_VALUES.FIVE:
+    case CARD_RANK.FIVE:
       return 5;
-    case CARD_VALUES.SIX:
+    case CARD_RANK.SIX:
       return 6;
-    case CARD_VALUES.SEVEN:
+    case CARD_RANK.SEVEN:
       return 7;
-    case CARD_VALUES.EIGHT:
+    case CARD_RANK.EIGHT:
       return 8;
-    case CARD_VALUES.NINE:
+    case CARD_RANK.NINE:
       return 9;
-    case CARD_VALUES.TEN:
+    case CARD_RANK.TEN:
       return 10;
-    case CARD_VALUES.JACK:
+    case CARD_RANK.JACK:
       return 11;
-    case CARD_VALUES.QUEEN:
+    case CARD_RANK.QUEEN:
       return 12;
-    case CARD_VALUES.KING:
+    case CARD_RANK.KING:
       return 13;
   }
 };
+
+/**
+ * @typedef {Object} InPlayCard
+ * @property {Card} value
+ * @property {HTMLElement} element
+ * @property {boolean} faceUp
+ * @property {boolean} isDiscarded
+ */
+
+const getInPlayCardValue = (inPlayCard) => inPlayCard.value;
+const getInPlayCardElement = (inPlayCard) => inPlayCard.element;
+const isInPlayCardFaceUp = (inPlayCard) => inPlayCard.faceUp;
+const isInPlayCardDiscarded = (inPlayCard) => inPlayCard.isDiscarded;
+
+/**
+ *
+ * @param {Card} card
+ * @returns {InPlayCard}
+ */
+const newInPlayCard = (card) => {
+  return {
+    value: card,
+    element: null,
+    faceUp: true,
+    isDiscarded: false,
+  };
+};
+
+/**
+ * @typedef {Array<InPlayCard>} Hand
+ */
+
+/**
+ *
+ * @param {Hand} hand
+ * @returns {number} Size of hand
+ */
+const getHandSize = (hand) => hand.length;
+/**
+ *
+ * @returns {Hand}
+ */
+const newHand = () => {
+  return [];
+};
+
+/**
+ *
+ * @param {Hand} hand
+ * @param {card} card
+ */
+const addCardToHand = (hand, card) => hand.push(newInPlayCard(card));
+
+const getHandCombinations = () => {};
