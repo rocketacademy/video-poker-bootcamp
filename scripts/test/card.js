@@ -1,7 +1,11 @@
 const TEST_CARDS = () => {
   runTest(`testSingleCardOrdinal`, () => {
     const cardAce = newCard(CARD_RANK.ONE, CARD_SUITS.CLUB);
-    assertLog(1, getCardOrdinal(cardAce), () => `[testSingleCardOrdinal] Fail`);
+    assertLogTrue(
+      1,
+      getCardOrdinal(cardAce),
+      () => `[testSingleCardOrdinal] Fail`
+    );
   });
 
   runTest(`testGetHandCombinations`, () => {
@@ -19,13 +23,23 @@ const TEST_CARDS = () => {
       addCardToHand(hand, card);
     }
 
-    assertLog(
-      7,
+    const expectedHandSize = 7;
+    assertLogTrue(
+      expectedHandSize,
       getHandSize(hand),
       (e, a) => `[testGetHandCombinations] Hand Size Fail`
     );
 
-    const sizePerHand = 5;
-    const handCombinations = getHandCombinations(hand, sizePerHand);
+    const sizePerHandCombination = 5;
+
+    const expectedCombinations = 21; // C(7,5)
+    const handCombinations = getHandCombinations(hand, sizePerHandCombination);
+    console.log(handCombinations);
+    assertLogTrue(
+      expectedCombinations,
+      handCombinations.length,
+      () => `[testGetHandCombinations] Combinations not matching`
+    );
+    assertToDo();
   });
 };

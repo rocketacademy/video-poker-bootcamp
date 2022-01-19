@@ -1,3 +1,5 @@
+const POKER_HAND_SIZE = 5;
+
 const CARD_RANK = {
   ONE: `ONE`,
   TWO: `TWO`,
@@ -63,7 +65,7 @@ const getCardOrdinal = (card) => {
   const cardValue = getCardValue(card);
   switch (cardValue) {
     case CARD_RANK.ONE:
-      return 1;
+      return 14;
     case CARD_RANK.TWO:
       return 2;
     case CARD_RANK.THREE:
@@ -99,7 +101,11 @@ const getCardOrdinal = (card) => {
  * @property {boolean} isDiscarded
  */
 
-const getInPlayCardValue = (inPlayCard) => inPlayCard.value;
+const getInPlayCardSuit = (inPlayCard) => getCardSuit(inPlayCard.value);
+const getInPlayCardValue = (inPlayCard) => getCardValue(inPlayCard.value);
+const getInPlayCardRankAndSuitString = (inPlayCard) =>
+  `${getCardSuit(inPlayCard.value)}-${getCardValue(inPlayCard.value)}`;
+const getInPlayCardOrdinal = (inPlayCard) => getCardOrdinal(inPlayCard.value);
 const getInPlayCardElement = (inPlayCard) => inPlayCard.element;
 const isInPlayCardFaceUp = (inPlayCard) => inPlayCard.faceUp;
 const isInPlayCardDiscarded = (inPlayCard) => inPlayCard.isDiscarded;
@@ -143,4 +149,72 @@ const newHand = () => {
  */
 const addCardToHand = (hand, card) => hand.push(newInPlayCard(card));
 
-const getHandCombinations = () => {};
+/**
+ *
+ * @param {*} hand
+ * @param {*} currentIndex
+ * @param {*} sizePerHandCombination
+ * @param {*} toTake
+ * @param {*} result
+ * @param {*} currentCombination
+ * @returns
+ */
+const _addHandCombinations = (
+  hand,
+  currentIndex,
+  sizePerHandCombination,
+  toTake,
+  result,
+  currentCombination
+) => {
+  if (currentCombination.length === sizePerHandCombination) {
+    result.push(currentCombination);
+    return;
+  }
+  if (0 === toTake) {
+    return;
+  }
+
+  if (currentIndex === hand.length) {
+    return;
+  }
+
+  const combination = [...currentCombination, hand[currentIndex]];
+
+  _addHandCombinations(
+    hand,
+    currentIndex + 1,
+    sizePerHandCombination,
+    toTake,
+    result,
+    currentCombination
+  );
+  _addHandCombinations(
+    hand,
+    currentIndex + 1,
+    sizePerHandCombination,
+    toTake - 1,
+    result,
+    combination
+  );
+};
+
+/**
+ *
+ * @param {Hand} hand
+ * @param {number} sizePerHandCombination
+ */
+const getHandCombinations = (hand, sizePerHandCombination) => {
+  const result = [];
+  const currentCombination = [];
+
+  _addHandCombinations(
+    hand,
+    0,
+    sizePerHandCombination,
+    sizePerHandCombination,
+    result,
+    currentCombination
+  );
+  return result;
+};

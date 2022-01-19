@@ -11,7 +11,7 @@
  * @param {*} actual
  * @param {descIfFalseCallback} descIfFalse
  */
-const assertLog = (expected, actual, descIfFalse) => {
+const assertLogTrue = (expected, actual, descIfFalse) => {
   const predicate = expected === actual;
   if (predicate === true) {
   } else if (predicate === false) {
@@ -20,9 +20,30 @@ const assertLog = (expected, actual, descIfFalse) => {
         `    Expected ${expected} Actual ${actual}`
     );
   } else {
-    console.warn(`[assertLog] assertion not specified.`);
+    console.warn(`[assertLogTrue] assertion not specified.`);
   }
 };
+
+/**
+ *
+ * @param {*} unexpected The value that should not be actual
+ * @param {*} actual
+ * @param {descIfFalseCallback} descIfTrue
+ */
+const assertLogNotTrue = (unexpected, actual, descIfTrue) => {
+  const predicate = unexpected === actual;
+  if (predicate === true) {
+    console.warn(
+      descIfTrue(unexpected, actual) +
+        `    Expected Unequal Values But Values are Equal. Value: ${actual}`
+    );
+  } else if (predicate === false) {
+  } else {
+    console.warn(`[assertLogNotTrue] assertion not specified.`);
+  }
+};
+
+const assertToDo = (desc = `??`) => console.warn(`Yet to implement: ${desc}`);
 
 /**
  * Runs a test.
