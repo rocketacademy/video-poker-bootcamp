@@ -8,6 +8,8 @@ const SCORING = {
   TRIPS: `SCORING_TYPE_TRIPS`,
   STRAIGHT_FLUSH: `SCORING_TYPE_STRAIGHT_FLUSH`,
   DOUBLE: `SCORING_TYPE_DOUBLE`,
+  PAIR: `SCORING_TYPE_PAIR`,
+  HIGH: `SCORING_TYPE_HIGH`,
 };
 
 const incrementOneToObjProp = (obj, property) => {
@@ -86,7 +88,7 @@ const newAscendingArray = (hand) => {
 };
 
 const _isHandFullHouse = (hand) => {
-  console.group(`[isHandFullHouse]`);
+  console.group(`[_isHandFullHouse]`);
 
   const bagValueByCount = getBagValueByCount(hand);
   const is = bagValueByCount[3].length === 1 && bagValueByCount[2].length === 1;
@@ -96,7 +98,7 @@ const _isHandFullHouse = (hand) => {
 };
 
 const _isHandTrips = (hand) => {
-  console.group(`[isHandTrips]`);
+  console.group(`[_isHandTrips]`);
 
   const bagValueByCount = getBagValueByCount(hand);
   const is = bagValueByCount[3].length === 1 && bagValueByCount[2].length !== 1;
@@ -113,8 +115,17 @@ const _isHandDouble = (hand) => {
   return is;
 };
 
+const _isHandPair = (hand) => {
+  console.group(`[_isHandPair]`);
+
+  const bagValueByCount = getBagValueByCount(hand);
+  const is = bagValueByCount[2].length === 1 && bagValueByCount[1].length === 3;
+  console.groupEnd();
+  return is;
+};
+
 const _isHandFourOfAKind = (hand) => {
-  console.group(`[isHandFourOfAKind]`);
+  console.group(`[_isHandFourOfAKind]`);
   const bagValueByCount = getBagValueByCount(hand);
   const is = bagValueByCount[4].length === 1;
 
@@ -122,13 +133,13 @@ const _isHandFourOfAKind = (hand) => {
   return is;
 };
 const _isHandStraightFlush = (hand) => {
-  console.group(`[isHandStraightFlush]`);
+  console.group(`[_isHandStraightFlush]`);
   const is = _isHandStraight(hand) && _isHandFlush(hand);
   console.groupEnd();
   return is;
 };
 const _isHandFlush = (hand) => {
-  console.group(`[isHandFlush]`);
+  console.group(`[_isHandFlush]`);
   const bagSuitByCount = getBagSuitByCount(hand);
   const is = bagSuitByCount[5].length === 1;
 
@@ -136,7 +147,7 @@ const _isHandFlush = (hand) => {
   return is;
 };
 const _isHandStraight = (hand) => {
-  console.group(`[isHandStraight]`);
+  console.group(`[_isHandStraight]`);
 
   const thisHand = newAscendingArray(hand);
 
@@ -154,10 +165,21 @@ const _isHandStraight = (hand) => {
   return true;
 };
 
+const _isHandHigh = (hand) => {
+  console.group(`[_isHandHigh]`);
+
+  const bagValueByCount = getBagValueByCount(hand);
+  const is = bagValueByCount[1].length === 5;
+  console.groupEnd();
+
+  return is;
+};
+
 const getScoreType = (hand) => {
   if (getHandSize(hand) !== POKER_HAND_SIZE) {
     return SCORING.SIZE_MISMATCH;
   }
+
   if (_isHandStraightFlush(hand)) {
     return SCORING.STRAIGHT_FLUSH;
   }
@@ -178,6 +200,14 @@ const getScoreType = (hand) => {
   }
   if (_isHandStraight(hand)) {
     return SCORING.STRAIGHTS;
+  }
+
+  if (_isHandPair(hand)) {
+    return SCORING.PAIR;
+  }
+
+  if (_isHandHigh(hand)) {
+    return SCORING.HIGH;
   }
 
   return SCORING.UNKNOWN;

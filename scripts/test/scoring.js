@@ -343,14 +343,14 @@ const TEST_SCORINGS = () => {
   runTest(`testCardScoreShouldBeDoubs`, () => {
     const functionName = `testCardScoreShouldBeDoubs`;
     const cardPair1_1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const cardPack1_2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
+    const cardPair1_2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
     const cardPair2_1 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const cardPack2_2 = newCard(CARD_RANK.FOUR, CARD_SUITS.DIAMOND);
+    const cardPair2_2 = newCard(CARD_RANK.FOUR, CARD_SUITS.DIAMOND);
     const cardHigh = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
     const cardRange = [
       cardPair1_1,
-      cardPack2_2,
-      cardPack1_2,
+      cardPair2_2,
+      cardPair1_2,
       cardPair2_1,
       cardHigh,
     ];
@@ -385,6 +385,85 @@ const TEST_SCORINGS = () => {
       () => `[${functionName}]  Score Type assertion failed.`
     );
   });
-  assertToDo(`One Pair`);
-  assertToDo(`High Card`);
+
+
+  runTest(`testCardScoreShouldBePair`, () => {
+    const functionName = `testCardScoreShouldBePair`;
+    const cardPair1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
+    const cardPair2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
+    const cardHigh2 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const cardHigh3 = newCard(CARD_RANK.JACK, CARD_SUITS.DIAMOND);
+    const cardHigh1 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardRange = [cardPair1, cardHigh3, cardPair2, cardHigh2, cardHigh1];
+    const doubsHand = newHand();
+    const sizePerHandCombination = 5;
+    for (const card of cardRange) {
+      addCardToHand(doubsHand, card);
+    }
+    const handCombinations = getHandCombinations(
+      doubsHand,
+      sizePerHandCombination
+    );
+    assertLogTrue(
+      1,
+      handCombinations.length,
+      () => `[${functionName}] Combinations not matching`
+    );
+    const combination = handCombinations[0];
+
+    for (let i = 0; i < doubsHand.length; i++) {
+      assertLogTrue(
+        doubsHand[i],
+        combination[i],
+        () =>
+          `[${functionName}] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
+      );
+    }
+    const scoreType = getScoreType(doubsHand);
+    assertLogTrue(
+      SCORING.PAIR,
+      scoreType,
+      () => `[${functionName}]  Score Type assertion failed.`
+    );
+  });
+
+  runTest(`testCardScoreShouldBeHigh`, () => {
+    const functionName = `testCardScoreShouldBeHigh`;
+    const cardPair1 = newCard(CARD_RANK.KING, CARD_SUITS.HEART);
+    const cardPair2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
+    const cardHigh2 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const cardHigh3 = newCard(CARD_RANK.JACK, CARD_SUITS.DIAMOND);
+    const cardHigh1 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardRange = [cardPair1, cardHigh3, cardPair2, cardHigh2, cardHigh1];
+    const doubsHand = newHand();
+    const sizePerHandCombination = 5;
+    for (const card of cardRange) {
+      addCardToHand(doubsHand, card);
+    }
+    const handCombinations = getHandCombinations(
+      doubsHand,
+      sizePerHandCombination
+    );
+    assertLogTrue(
+      1,
+      handCombinations.length,
+      () => `[${functionName}] Combinations not matching`
+    );
+    const combination = handCombinations[0];
+
+    for (let i = 0; i < doubsHand.length; i++) {
+      assertLogTrue(
+        doubsHand[i],
+        combination[i],
+        () =>
+          `[${functionName}] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
+      );
+    }
+    const scoreType = getScoreType(doubsHand);
+    assertLogTrue(
+      SCORING.HIGH,
+      scoreType,
+      () => `[${functionName}]  Score Type assertion failed.`
+    );
+  });
 };
