@@ -386,7 +386,6 @@ const TEST_SCORINGS = () => {
     );
   });
 
-
   runTest(`testCardScoreShouldBePair`, () => {
     const functionName = `testCardScoreShouldBePair`;
     const cardPair1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);

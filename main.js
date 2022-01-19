@@ -10,6 +10,8 @@ const getMode = () => document.getElementById(`root`).getAttribute(`mode`);
   if (mode === MODES.TEST) {
     console.group(`test phase`);
     TEST_ALL();
+    console.log(`end of test phase`);
+
     console.groupEnd();
   }
 
