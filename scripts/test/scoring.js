@@ -149,7 +149,7 @@ const TEST_SCORINGS = () => {
         themedHand[i],
         combination[i],
         () =>
-          `[testCardsScoreShouldBeFlush] The five cards chosen from a pool of five should be the same in order (don't need to change card order as we are testing for colors)`
+          `[testCardsScoreShouldBeFlush] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
       );
     }
 
@@ -198,7 +198,7 @@ const TEST_SCORINGS = () => {
         themedHand[i],
         combination[i],
         () =>
-          `[testCardScoreShouldBeFourOfAKind] The five cards chosen from a pool of five should be the same in order (don't need to change card order as we are testing for colors)`
+          `[testCardScoreShouldBeFourOfAKind] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
       );
     }
 
@@ -213,11 +213,12 @@ const TEST_SCORINGS = () => {
   runTest(`testCardScoreShouldBeHouse`, () => {
     const functionName = `testCardScoreShouldBeHouse`;
     const cardPack1 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
-    const cardPack2 = newCard(CARD_RANK.JACK, CARD_SUITS.CLUB);
-    const cardPack3 = newCard(CARD_RANK.TWO, CARD_SUITS.DIAMOND);
-    const cardPack4 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
-    const cardHigh = newCard(CARD_RANK.JACK, CARD_SUITS.HEART);
-    const cardRange = [cardPack1, cardPack2, cardPack3, cardPack4, cardHigh];
+    const cardPack2 = newCard(CARD_RANK.TWO, CARD_SUITS.DIAMOND);
+    const cardPack3 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
+    const cardPair1 = newCard(CARD_RANK.JACK, CARD_SUITS.CLUB);
+    const cardPair2 = newCard(CARD_RANK.JACK, CARD_SUITS.HEART);
+
+    const cardRange = [cardPack1, cardPair1, cardPack2, cardPack3, cardPair2];
     const housedHand = newHand();
     const sizePerHandCombination = 5;
     for (const card of cardRange) {
@@ -239,16 +240,151 @@ const TEST_SCORINGS = () => {
         housedHand[i],
         combination[i],
         () =>
-          `[${functionName}] The five cards chosen from a pool of five should be the same in order (don't need to change card order as we are testing for colors)`
+          `[${functionName}] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
       );
     }
-
     const scoreType = getScoreType(housedHand);
     assertLogTrue(
       SCORING.FULL_HOUSE,
       scoreType,
       () => `[${functionName}]  Score Type assertion failed.`
     );
+
+    assertLogNotTrue(
+      SCORING.TRIPS,
+      scoreType,
+      () =>
+        `[testCardsScoreShouldBeFlush] Unexpected Score Type, three of a Kind and TWO of another`
+    );
+
     assertToDo();
   });
+
+  runTest(`testCardScoreShouldBeTrips`, () => {
+    const functionName = `testCardScoreShouldBeTrips`;
+    const cardHigh1 = newCard(CARD_RANK.JACK, CARD_SUITS.CLUB);
+    const cardHigh2 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
+    const cardPack1 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
+    const cardPack2 = newCard(CARD_RANK.TWO, CARD_SUITS.DIAMOND);
+    const cardPack3 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
+    const cardRange = [cardPack1, cardHigh1, cardPack2, cardPack3, cardHigh2];
+    const housedHand = newHand();
+    const sizePerHandCombination = 5;
+    for (const card of cardRange) {
+      addCardToHand(housedHand, card);
+    }
+    const handCombinations = getHandCombinations(
+      housedHand,
+      sizePerHandCombination
+    );
+    assertLogTrue(
+      1,
+      handCombinations.length,
+      () => `[${functionName}] Combinations not matching`
+    );
+    const combination = handCombinations[0];
+
+    for (let i = 0; i < housedHand.length; i++) {
+      assertLogTrue(
+        housedHand[i],
+        combination[i],
+        () =>
+          `[${functionName}] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
+      );
+    }
+    const scoreType = getScoreType(housedHand);
+    assertLogTrue(
+      SCORING.TRIPS,
+      scoreType,
+      () => `[${functionName}]  Score Type assertion failed.`
+    );
+  });
+
+  runTest(`testCardScoreShouldBeStraightFlush`, () => {
+    const functionName = `testCardScoreShouldBeStraightFlush`;
+    const cardPack1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
+    const cardPack2 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
+    const cardPack3 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const cardPack4 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
+    const cardPack5 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardRange = [cardPack1, cardPack2, cardPack3, cardPack4, cardPack5];
+    const housedHand = newHand();
+    const sizePerHandCombination = 5;
+    for (const card of cardRange) {
+      addCardToHand(housedHand, card);
+    }
+    const handCombinations = getHandCombinations(
+      housedHand,
+      sizePerHandCombination
+    );
+    assertLogTrue(
+      1,
+      handCombinations.length,
+      () => `[${functionName}] Combinations not matching`
+    );
+    const combination = handCombinations[0];
+
+    for (let i = 0; i < housedHand.length; i++) {
+      assertLogTrue(
+        housedHand[i],
+        combination[i],
+        () =>
+          `[${functionName}] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
+      );
+    }
+    const scoreType = getScoreType(housedHand);
+    assertLogTrue(
+      SCORING.STRAIGHT_FLUSH,
+      scoreType,
+      () => `[${functionName}]  Score Type assertion failed.`
+    );
+  });
+
+  runTest(`testCardScoreShouldBeDoubs`, () => {
+    const functionName = `testCardScoreShouldBeDoubs`;
+    const cardPair1_1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
+    const cardPack1_2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
+    const cardPair2_1 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const cardPack2_2 = newCard(CARD_RANK.FOUR, CARD_SUITS.DIAMOND);
+    const cardHigh = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardRange = [
+      cardPair1_1,
+      cardPack2_2,
+      cardPack1_2,
+      cardPair2_1,
+      cardHigh,
+    ];
+    const doubsHand = newHand();
+    const sizePerHandCombination = 5;
+    for (const card of cardRange) {
+      addCardToHand(doubsHand, card);
+    }
+    const handCombinations = getHandCombinations(
+      doubsHand,
+      sizePerHandCombination
+    );
+    assertLogTrue(
+      1,
+      handCombinations.length,
+      () => `[${functionName}] Combinations not matching`
+    );
+    const combination = handCombinations[0];
+
+    for (let i = 0; i < doubsHand.length; i++) {
+      assertLogTrue(
+        doubsHand[i],
+        combination[i],
+        () =>
+          `[${functionName}] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
+      );
+    }
+    const scoreType = getScoreType(doubsHand);
+    assertLogTrue(
+      SCORING.DOUBLE,
+      scoreType,
+      () => `[${functionName}]  Score Type assertion failed.`
+    );
+  });
+  assertToDo(`One Pair`);
+  assertToDo(`High Card`);
 };
