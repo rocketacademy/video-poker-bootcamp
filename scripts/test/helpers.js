@@ -55,3 +55,13 @@ const runTest = (desc, testFunction) => {
   testFunction();
   console.groupEnd();
 };
+
+/**
+ * Ignores a test operation.
+ * @param {string} desc Test description
+ * @param {function} testFunction Test function
+ */
+const ignoreTest = (desc, testFunction) => {
+  console.group(`${desc} - Test Ignored`);
+  console.groupEnd();
+};

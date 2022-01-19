@@ -465,4 +465,83 @@ const TEST_SCORINGS = () => {
       () => `[${functionName}]  Score Type assertion failed.`
     );
   });
+
+  ignoreTest(`testSingleSuitDeckProbabilities`, () => {
+    const functionName = `testSingleSuitDeckProbabilities`;
+
+    const singleSuitDeck = newSampleSingleSuitDeck();
+    assertLogTrue(
+      13,
+      getDeckSize(singleSuitDeck),
+      () => `[${functionName}] Combinations not matching`
+    );
+    const sizePerHandCombination = 5;
+
+    const handCombinations = getHandCombinations(
+      singleSuitDeck,
+      sizePerHandCombination
+    );
+    assertLogTrue(
+      1287,
+      handCombinations.length,
+      () => `[${functionName}] No. of Combinations`
+    );
+
+    const actualScoringDistribution =
+      calcActualScoringDistribution(singleSuitDeck);
+
+    assertLogTrue(
+      9,
+      actualScoringDistribution[SCORING.STRAIGHT_FLUSH],
+      (e, a) =>
+        `[${functionName}] No. of ${SCORING.STRAIGHT_FLUSH} Combinations`
+    );
+
+    assertLogTrue(
+      1278,
+      actualScoringDistribution[SCORING.FLUSH],
+      (e, a) =>
+        `[${functionName}] No. of ${SCORING.STRAIGHT_FLUSH} Combinations`
+    );
+
+    assertLogTrue(
+      0,
+      actualScoringDistribution[SCORING.STRAIGHTS],
+      (e, a) => `[${functionName}] No. of ${SCORING.STRAIGHTS} Combinations`
+    );
+    assertLogTrue(
+      0,
+      actualScoringDistribution[SCORING.FOUR_OF_A_KIND],
+      (e, a) =>
+        `[${functionName}] No. of ${SCORING.FOUR_OF_A_KIND} Combinations`
+    );
+    assertLogTrue(
+      0,
+      actualScoringDistribution[SCORING.FULL_HOUSE],
+      (e, a) => `[${functionName}] No. of ${SCORING.FULL_HOUSE} Combinations`
+    );
+    assertLogTrue(
+      0,
+      actualScoringDistribution[SCORING.DOUBLE],
+      (e, a) => `[${functionName}] No. of ${SCORING.DOUBLE} Combinations`
+    );
+    assertLogTrue(
+      0,
+      actualScoringDistribution[SCORING.PAIR],
+      (e, a) => `[${functionName}] No. of ${SCORING.PAIR} Combinations`
+    );
+    assertLogTrue(
+      0,
+      actualScoringDistribution[SCORING.HIGH],
+      (e, a) => `[${functionName}] No. of ${SCORING.HIGH} Combinations`
+    );
+
+    assertToDo(`Distribution `);
+    assertToDo(``);
+    assertToDo(`The  probabilities`);
+    assertToDo(`The  probabilities`);
+    assertToDo(`The  probabilities`);
+  });
+
+  assertToDo(`Distribution:Samples `);
 };

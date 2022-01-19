@@ -2,9 +2,9 @@ const TEST_CARDS = () => {
   runTest(`testSingleCardOrdinal`, () => {
     const cardAce = newCard(CARD_RANK.ONE, CARD_SUITS.CLUB);
     assertLogTrue(
-      1,
+      14,
       getCardOrdinal(cardAce),
-      () => `[testSingleCardOrdinal] Fail`
+      () => `[testSingleCardOrdinal] Ordinal mismatch`
     );
   });
 

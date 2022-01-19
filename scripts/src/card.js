@@ -200,7 +200,7 @@ const _addHandCombinations = (
 };
 
 /**
- *
+ * WARNING: If no. of combinations is expected to be big, this method will fry your browser.
  * @param {Hand} hand
  * @param {number} sizePerHandCombination
  */
@@ -217,4 +217,27 @@ const getHandCombinations = (hand, sizePerHandCombination) => {
     currentCombination
   );
   return result;
+};
+
+/**
+ * @typedef {Hand} Deck
+ *
+ */
+const newDeck = newHand;
+const addCardToDeck = addCardToHand;
+const getDeckSize = getHandSize;
+
+/**
+ * @returns {Deck}
+ */
+const newSampleSingleSuitDeck = (suit) => {
+  const deck = newDeck();
+  suit = suit || CARD_SUITS.HEART;
+
+  for (const rank of Object.values(CARD_RANK)) {
+    const card = newCard(rank, suit);
+    addCardToDeck(deck, card);
+  }
+
+  return deck;
 };
