@@ -4,6 +4,7 @@ const SCORING = {
   UNKNOWN: `SCORING_TYPE_UNKNOWN`,
   SIZE_MISMATCH: `SCORING_SIZE_MISMATCH`,
   FOUR_OF_A_KIND: `SCORING_TYPE_FOOK`,
+  FULL_HOUSE: `SCORING_TYPE_FULL_HOUSE`,
 };
 
 const incrementOneToObjProp = (obj, property) => {
@@ -52,11 +53,9 @@ const getBagValueByCount = (hand) => {
     incrementOneToObjProp(bagCountByValue, value);
   }
 
-  console.log(bagCountByValue);
   for (const [value, count] of Object.entries(bagCountByValue)) {
     addElementToPropInObject(bagValueByCount, count, value);
   }
-  console.log(bagValueByCount);
   return bagValueByCount;
 };
 
@@ -83,12 +82,21 @@ const newAscendingArray = (hand) => {
   return thisHand;
 };
 
+const isHandFullHouse = (hand) => {
+  console.group(`[isHandFullHouse]`);
+
+  const bagValueByCount = getBagValueByCount(hand);
+  const is = bagValueByCount[3].length === 1 && bagValueByCount[2].length === 1;
+  console.groupEnd();
+
+  return is;
+};
+
 const isHandFourOfAKind = (hand) => {
   console.group(`[isHandFourOfAKind]`);
   const bagValueByCount = getBagValueByCount(hand);
   const is = bagValueByCount[4].length === 1;
 
-  console.log(bagValueByCount);
   console.groupEnd();
   return is;
 };
@@ -120,6 +128,9 @@ const getScoreType = (hand) => {
 
   if (isHandFourOfAKind(hand)) {
     return SCORING.FOUR_OF_A_KIND;
+  }
+  if (isHandFullHouse(hand)) {
+    return SCORING.FULL_HOUSE;
   }
   if (isHandFlush(hand)) {
     return SCORING.FLUSH;

@@ -164,7 +164,6 @@ const TEST_SCORINGS = () => {
       scoreType,
       () => `[testCardsScoreShouldBeFlush] Unexpected Score Type`
     );
-    assertToDo();
   });
 
   runTest(`testCardScoreShouldBeFourOfAKind`, () => {
@@ -208,6 +207,47 @@ const TEST_SCORINGS = () => {
       SCORING.FOUR_OF_A_KIND,
       scoreType,
       () => `[testCardScoreShouldBeFourOfAKind] Score Type assertion failed.`
+    );
+  });
+
+  runTest(`testCardScoreShouldBeHouse`, () => {
+    const functionName = `testCardScoreShouldBeHouse`;
+    const cardPack1 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
+    const cardPack2 = newCard(CARD_RANK.JACK, CARD_SUITS.CLUB);
+    const cardPack3 = newCard(CARD_RANK.TWO, CARD_SUITS.DIAMOND);
+    const cardPack4 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
+    const cardHigh = newCard(CARD_RANK.JACK, CARD_SUITS.HEART);
+    const cardRange = [cardPack1, cardPack2, cardPack3, cardPack4, cardHigh];
+    const housedHand = newHand();
+    const sizePerHandCombination = 5;
+    for (const card of cardRange) {
+      addCardToHand(housedHand, card);
+    }
+    const handCombinations = getHandCombinations(
+      housedHand,
+      sizePerHandCombination
+    );
+    assertLogTrue(
+      1,
+      handCombinations.length,
+      () => `[${functionName}] Combinations not matching`
+    );
+    const combination = handCombinations[0];
+
+    for (let i = 0; i < housedHand.length; i++) {
+      assertLogTrue(
+        housedHand[i],
+        combination[i],
+        () =>
+          `[${functionName}] The five cards chosen from a pool of five should be the same in order (don't need to change card order as we are testing for colors)`
+      );
+    }
+
+    const scoreType = getScoreType(housedHand);
+    assertLogTrue(
+      SCORING.FULL_HOUSE,
+      scoreType,
+      () => `[${functionName}]  Score Type assertion failed.`
     );
     assertToDo();
   });
