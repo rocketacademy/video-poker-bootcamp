@@ -1,0 +1,33 @@
+body {
+  background-color: #437b99;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  text-align: center;
+  font-size: 1em;
+}
+
+.card {
+  display: inline-block;
+  border: 2px solid#ffd966;
+  height: 4em;
+  width: 3em;
+  font-family: "Poppins", sans-serif;
+  font-size: 2em;
+  margin: 0.5em;
+}
+
+.button {
+  background-color: white;
+  color: salmon;
+  border: none;
+  font-size: 30px;
+  font-family: "Poppins", sans-serif;
+  width: max-content;
+  height: 35px;
+  line-height: 35px;
+  margin: 30px;
+}
+
+.button:active {
+  background-color: yellow;
+}
