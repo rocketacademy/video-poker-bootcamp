@@ -5,56 +5,99 @@
 }
 
 body {
-	font-family: monospace;
-	background-color: azure;
+	font-family: 'Press Start 2P', monospace;
+	color: white;
+	text-transform: uppercase;
+	background-color: #8c7ae6;
 	text-align: center;
 }
 
-.main {
-	background-color: papayawhip;
+h1 {
+	padding: 10px;
+	margin: 20px auto;
+	font-size: 1.5rem;
+}
+
+li {
+	list-style: none;
+	font-size: 0.8rem;
+	line-height: 1rem;
+}
+
+/* For main divs */
+#main {
+	color: black;
+	background-color: #fbc531;
 	width: 80vw;
 	max-width: 600px;
 	margin: 10px auto;
 	padding: 10px;
 }
 
-.game-instructions {
-	font-size: 1.2rem;
-	margin: 5px;
+#message-board {
+	margin: 10px;
 }
 
-.card-container {
-	background-color: white;
+#card-container {
 	vertical-align: top;
 	padding: 10px;
 }
 
-#deal-button,
-#reset-button {
-	background-color: white;
-	font-size: 1rem;
-	font-family: monospace;
+#points {
+	padding: 10px;
 	margin: 10px;
-	padding: 10px 30px;
 }
 
+#game-instructions {
+	margin: 5px;
+}
+
+#deal-button {
+	background-color: #f5f6fa;
+	text-transform: uppercase;
+	font-family: 'Press Start 2P', monospace;
+	margin: 5px;
+	padding: 10px 30px;
+	border-width: 3px;
+	border-style: solid;
+	border-color: #7f8fa6 #2f3640 #2f3640 #7f8fa6;
+}
+
+/* For cards */
 .card-div {
 	display: inline-block;
 	padding: 10px;
 }
 
 .card {
-	font-size: 2em;
+	font-size: 1.3rem;
 	text-align: center;
-	background-image: linear-gradient(moccasin, coral);
-	border-radius: 5px;
-	border: 1px solid #555555;
-	padding: 20px;
+	background-color: #f5f6fa;
+	border: 3px solid #2f3640;
+	padding: 20px 10px;
 	width: 80px;
 	height: 120px;
 }
 
+.down {
+	background-color: #e84118;
+}
+
+.symbol {
+	font-size: 1.7rem;
+	font-family: 'Press Start 2P', monospace;
+}
+
 .hold {
 	height: 25px;
-	font-weight: bold;
+	font-size: 1rem;
+	text-transform: uppercase;
+}
+
+.red {
+	color: #c23616;
+}
+
+.black {
+	color: #2f3640;
 }
