@@ -134,6 +134,7 @@ const newInPlayCard = (card) => {
  * @returns {number} Size of hand
  */
 const getHandSize = (hand) => hand.length;
+
 /**
  *
  * @returns {Hand}
@@ -148,6 +149,31 @@ const newHand = () => {
  * @param {card} card
  */
 const addCardToHand = (hand, card) => hand.push(newInPlayCard(card));
+
+const getHandAsString = (hand) => {
+  const cardStrings = [];
+  for (const card of hand) {
+    cardStrings.push(getInPlayCardRankAndSuitString(card));
+  }
+  return `[ ${cardStrings.join(` | `)} ]`;
+};
+/**
+ *
+ * @param {Hand} hand
+ * @param {card} card
+ */
+const addCardsToHand = (hand, cards) => {
+  console.log(cards);
+  cards.forEach((card) => addCardToHand(hand, card));
+};
+
+const newHandWithCards = (cards) => {
+  console.log(`newHandWithCards`);
+  console.log(cards);
+  const hand = newHand();
+  addCardsToHand(hand, cards);
+  return hand;
+};
 
 /**
  *

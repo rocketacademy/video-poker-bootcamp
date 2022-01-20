@@ -15,12 +15,12 @@ const assertLogTrue = (expected, actual, descIfFalse) => {
   const predicate = expected === actual;
   if (predicate === true) {
   } else if (predicate === false) {
-    console.warn(
+    console.error(
       descIfFalse(expected, actual) +
         `    Expected ${expected} Actual ${actual}`
     );
   } else {
-    console.warn(`[assertLogTrue] assertion not specified.`);
+    console.error(`[assertLogTrue] assertion not specified.`);
   }
 };
 
@@ -33,17 +33,17 @@ const assertLogTrue = (expected, actual, descIfFalse) => {
 const assertLogNotTrue = (unexpected, actual, descIfTrue) => {
   const predicate = unexpected === actual;
   if (predicate === true) {
-    console.warn(
+    console.error(
       descIfTrue(unexpected, actual) +
         `    Expected Unequal Values But Values are Equal. Value: ${actual}`
     );
   } else if (predicate === false) {
   } else {
-    console.warn(`[assertLogNotTrue] assertion not specified.`);
+    console.error(`[assertLogNotTrue] assertion not specified.`);
   }
 };
 
-const assertToDo = (desc = `??`) => console.warn(`Yet to implement: ${desc}`);
+const assertToDo = (desc = `??`) => console.info(`Yet to implement: ${desc}`);
 
 /**
  * Runs a test.

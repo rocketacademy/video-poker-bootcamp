@@ -30,7 +30,7 @@ const TEST_SCORINGS = () => {
     );
     const combination = handCombinations[0];
 
-    const thisHand = newAscendingArray(combination);
+    const thisHand = newAscendingHand(combination);
 
     for (let i = 0; i < thisHand.length; i++) {
       assertLogTrue(
@@ -100,7 +100,7 @@ const TEST_SCORINGS = () => {
       );
       const combination = handCombinations[0];
 
-      const thisHand = newAscendingArray(combination);
+      const thisHand = newAscendingHand(combination);
 
       assertLogNotTrue(
         SCORING.STRAIGHTS,
@@ -543,5 +543,296 @@ const TEST_SCORINGS = () => {
     assertToDo(`The  probabilities`);
   });
 
-  assertToDo(`Distribution:Samples `);
+  runTest(`testTopCombinationShouldBeHighestStraightFlush`, () => {
+    const functionName = `testTopCombinationShouldBeHighestStraightFlush`;
+
+    const handSevenCard = newHand();
+
+    const card1 = newCard(CARD_RANK.ONE, CARD_SUITS.HEART);
+    const card2 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
+    const card3 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
+    const card4 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const card5 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
+    const card6 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
+    const card7 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+
+    for (const card of [card6, card1, card3, card2, card5, card4, card7]) {
+      addCardToHand(handSevenCard, card);
+    }
+
+    const expectedHandSize = 7;
+    assertLogTrue(
+      expectedHandSize,
+      getHandSize(handSevenCard),
+      (e, a) => `[${functionName}] Hand Size Fail`
+    );
+
+    const sizePerHandCombination = 5;
+    const expectedCombinations = 21; // C(7,5)
+
+    const handCombinations = getHandCombinations(
+      handSevenCard,
+      sizePerHandCombination
+    );
+    assertLogTrue(
+      expectedCombinations,
+      handCombinations.length,
+      () => `[${functionName}] No. of Combinations not matching`
+    );
+
+    const expectedBestHandOfSeven = newHandWithCards([
+      card7,
+      card6,
+      card5,
+      card4,
+      card3,
+    ]);
+
+    const actualBestHandOfSeven = getBestCombination(handCombinations);
+
+    console.log(expectedBestHandOfSeven);
+    const scoringType = getScoreType(expectedBestHandOfSeven);
+
+    assertLogTrue(
+      SCORING.STRAIGHT_FLUSH,
+      scoringType,
+      () => `[${functionName}] Scoring Type of best hand not matching`
+    );
+
+    const rankOfScoringType = getRankOfScoringType(scoringType);
+
+    assertLogTrue(
+      15,
+      rankOfScoringType,
+      () => `[${functionName}] Rank of Scoring Type of best hand not matching`
+    );
+
+    const sortedHand = newAscendingHand(expectedBestHandOfSeven);
+    const prettiedHand = getPrettiedHand(expectedBestHandOfSeven);
+
+    for (let i = 0; i < prettiedHand.length; i++) {
+      assertLogTrue(
+        sortedHand[i],
+        prettiedHand[i],
+        () =>
+          `[${functionName}] Straight flush should be presented as a straight.`
+      );
+    }
+  });
+
+  runTest(`testComparisionStraighFlushes`, () => {
+    const functionName = `testComparisionStraighFlushes`;
+
+    const card1 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
+    const card2 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
+    const card3 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const card4 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
+    const card5 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
+    const card6 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+
+    const lowerStraightFlush = newHand();
+    const higherStraightFlush = newHand();
+
+    for (const card of [card1, card3, card2, card5, card4]) {
+      addCardToHand(lowerStraightFlush, card);
+    }
+
+    for (const card of [card6, card3, card2, card5, card4]) {
+      addCardToHand(higherStraightFlush, card);
+    }
+    const expectedHandSize = 5;
+
+    for (const hand of [lowerStraightFlush, higherStraightFlush]) {
+      assertLogTrue(
+        expectedHandSize,
+        getHandSize(hand),
+        (e, a) => `[${functionName}] Hand Size Fail`
+      );
+    }
+
+    assertLogTrue(
+      true,
+      comparatorHandRanking(lowerStraightFlush, higherStraightFlush) < 0,
+      () => `[${functionName}] Comparision should be lesser`
+    );
+  });
+
+  runTest(`testComparisionStraight`, () => {
+    const functionName = `testComparisionStraight`;
+
+    const card1 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
+    const card2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
+    const card3 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const card4 = newCard(CARD_RANK.FIVE, CARD_SUITS.DIAMOND);
+    const card5 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
+    const card6 = newCard(CARD_RANK.SEVEN, CARD_SUITS.SPADE);
+
+    const lowerStraight = newHand();
+    const higherStraight = newHand();
+
+    for (const card of [card1, card3, card2, card5, card4]) {
+      addCardToHand(lowerStraight, card);
+    }
+
+    for (const card of [card6, card3, card2, card5, card4]) {
+      addCardToHand(higherStraight, card);
+    }
+    const expectedHandSize = 5;
+
+    for (const hand of [lowerStraight, higherStraight]) {
+      assertLogTrue(
+        expectedHandSize,
+        getHandSize(hand),
+        (e, a) => `[${functionName}] Hand Size Fail`
+      );
+    }
+
+    const comparisonResult = comparatorHandRanking(
+      lowerStraight,
+      higherStraight
+    );
+
+    assertLogTrue(
+      true,
+      isNoU(comparisonResult) ? comparisonResult : comparisonResult < 0,
+      () => {
+        const lowerHandString = getHandAsString(lowerStraight);
+        const higherHandString = getHandAsString(higherStraight);
+
+        return `[${functionName}] Comparision should be lesser ${lowerHandString} < ${higherHandString}`;
+      }
+    );
+  });
+
+  runTest(`testComparisionFlush`, () => {
+    const functionName = `testComparisionFlush`;
+
+        const cardClubs1 = newCard(CARD_RANK.FIVE, CARD_SUITS.CLUB);
+    const cardClubs2 = newCard(CARD_RANK.SIX, CARD_SUITS.CLUB);
+    const cardClubs3 = newCard(CARD_RANK.SEVEN, CARD_SUITS.CLUB);
+    const cardClubs4 = newCard(CARD_RANK.EIGHT, CARD_SUITS.CLUB);
+    const cardClubs5 = newCard(CARD_RANK.NINE, CARD_SUITS.CLUB);
+
+    const clubsRange = [
+      cardClubs1,
+      cardClubs3,
+      cardClubs4,
+      cardClubs5,
+      cardClubs2,
+    ];
+
+
+    const cardDiamonds1 = newCard(CARD_RANK.FOUR, CARD_SUITS.DIAMOND);
+    const cardDiamonds2 = newCard(CARD_RANK.FIVE, CARD_SUITS.DIAMOND);
+    const cardDiamonds3 = newCard(CARD_RANK.SIX, CARD_SUITS.DIAMOND);
+    const cardDiamonds4 = newCard(CARD_RANK.SEVEN, CARD_SUITS.DIAMOND);
+    const cardDiamonds5 = newCard(CARD_RANK.EIGHT, CARD_SUITS.DIAMOND);
+
+    const diamondsRange = [
+      cardDiamonds1,
+      cardDiamonds2,
+      cardDiamonds3,
+      cardDiamonds4,
+      cardDiamonds5,
+    ];
+
+        const cardHearts1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
+    const cardHearts2 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const cardHearts3 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
+    const cardHearts4 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
+    const cardHearts5 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+
+    const heartsRange = [
+      cardHearts1,
+      cardHearts2,
+      cardHearts3,
+      cardHearts4,
+      cardHearts5,
+    ];
+
+
+
+
+    const cardSpadeLower1 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
+    const cardSpadeLower2 = newCard(CARD_RANK.THREE, CARD_SUITS.SPADE);
+    const cardSpadeLower3 = newCard(CARD_RANK.FOUR, CARD_SUITS.SPADE);
+    const cardSpadeLower4 = newCard(CARD_RANK.FIVE, CARD_SUITS.SPADE);
+    const cardSpadeLower5 = newCard(CARD_RANK.SIX, CARD_SUITS.SPADE);
+
+    const spadeLowRange = [
+      cardSpadeLower1,
+      cardSpadeLower2,
+      cardSpadeLower4,
+      cardSpadeLower5,
+      cardSpadeLower3,
+    ];
+    const cardSpadeHigher1 = newCard(CARD_RANK.TEN, CARD_SUITS.SPADE);
+    const cardSpadeHigher2 = newCard(CARD_RANK.JACK, CARD_SUITS.SPADE);
+    const cardSpadeHigher3 = newCard(CARD_RANK.QUEEN, CARD_SUITS.SPADE);
+    const cardSpadeHigher4 = newCard(CARD_RANK.KING, CARD_SUITS.SPADE);
+    const cardSpadeHigher5 = newCard(CARD_RANK.ONE, CARD_SUITS.SPADE);
+
+    const spadeHighRange = [
+      cardSpadeHigher1,
+      cardSpadeHigher3,
+      cardSpadeHigher2,
+      cardSpadeHigher4,
+      cardSpadeHigher5,
+    ];
+
+
+
+
+
+    const handSpadeLower = newHand();
+    const handSpadeHigher = newHand();
+    const handHeart = newHand();
+    const handDiamond = newHand();
+    const handClub = newHand();
+
+    const ranges = [
+      clubsRange,
+      diamondsRange,
+      heartsRange,
+      spadeLowRange,
+      spadeHighRange,
+    ];
+    const hands = [
+      handClub,
+      handDiamond,
+      handHeart,
+      handSpadeLower,
+      handSpadeHigher,
+    ];
+
+    for (let i = 0; i < ranges.length; i += 1) {
+      addCardsToHand(hands[i], ranges[i]);
+    }
+
+    const expectedHandSize = 5;
+
+    for (const hand of hands) {
+      assertLogTrue(
+        expectedHandSize,
+        getHandSize(hand),
+        (e, a) => `[${functionName}] Hand Size Fail`
+      );
+    }
+    for (let i = 1; i < hands.length; i += 1) {
+      const thisHand = hands[i - 1];
+      const forward = hands[i];
+      const comparisonResult = comparatorHandRanking(thisHand, forward);
+
+      assertLogTrue(
+        true,
+        isNoU(comparisonResult) ? comparisonResult : comparisonResult > 0,
+        () => {
+          const thisHandAsString = getHandAsString(thisHand);
+          const forwardAsString = getHandAsString(forward);
+
+          return `[${functionName}] [${i}] Comparision expects ${thisHandAsString} > ${forwardAsString}`;
+        }
+      );
+    }
+  });
 };

@@ -12,57 +12,63 @@ const SCORING = {
   UNKNOWN: `SCORING_TYPE_UNKNOWN`,
 };
 
-const incrementOneToObjProp = (obj, property) => {
-  if (typeof obj[property] !== `number`) {
-    if (isNoU(obj[property])) {
-      obj[property] = 0;
-    } else {
-      console.warn(
-        `[addOneToObjProp] the property ${property} of object is assigned to a non-scalar value.`
-      );
-      return;
-    }
+const getRankOfScoringType = (scoringType) => {
+  switch (scoringType) {
+    case SCORING.STRAIGHT_FLUSH:
+      return 15;
+    case SCORING.FOUR_OF_A_KIND:
+      return 14;
+    case SCORING.FULL_HOUSE:
+      return 13;
+    case SCORING.FLUSH:
+      return 12;
+    case SCORING.STRAIGHTS:
+      return 11;
+    case SCORING.TRIPS:
+      return 10;
+    case SCORING.DOUBLE:
+      return 9;
+    case SCORING.PAIR:
+      return 8;
+    case SCORING.HIGH:
+      return 7;
+    default:
+      return 0;
   }
-  obj[property] += 1;
+};
+
+const getPrettiedHand = (hand) => {
+  const scoreType = getScoreType(hand);
+  if (scoreType === SCORING.STRAIGHT_FLUSH) {
+    return newAscendingHand(hand);
+  }
 };
 
 /**
- *
- * @param {*} obj
- * @param {Array<*>} prop
- * @param {*} element
+ * SCORING TYPES
  */
-const addElementToPropInObject = (obj, prop, element) => {
-  obj[prop].push(element);
+
+const getBagPropByCount = (pokerHand, accessor) => {
+  if (getHandSize(pokerHand) !== POKER_HAND_SIZE) {
+    throw new Error(`hand must be a poker hand`);
+  }
+  const bagCountByProp = {};
+  const bagPropByCount = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+  for (const card of pokerHand) {
+    const prop = accessor(card);
+    incrementOneToObjProp(bagCountByProp, prop);
+  }
+  for (const [prop, count] of Object.entries(bagCountByProp)) {
+    addElementToPropInObject(bagPropByCount, count, prop);
+  }
+  return bagPropByCount;
 };
 
-const getBagSuitByCount = (hand) => {
-  const bagCountBySuit = {};
-  const bagSuitByCount = { 1: [], 2: [], 3: [], 4: [], 5: [] };
-  for (const card of hand) {
-    const suit = getInPlayCardSuit(card);
-    incrementOneToObjProp(bagCountBySuit, suit);
-  }
-  for (const [suit, count] of Object.entries(bagCountBySuit)) {
-    addElementToPropInObject(bagSuitByCount, count, suit);
-  }
+const getBagSuitByCount = (pokerHand) =>
+  getBagPropByCount(pokerHand, getInPlayCardSuit);
 
-  return bagSuitByCount;
-};
-
-const getBagValueByCount = (hand) => {
-  const bagCountByValue = {};
-  const bagValueByCount = { 1: [], 2: [], 3: [], 4: [], 5: [] };
-  for (const card of hand) {
-    const value = getInPlayCardValue(card);
-    incrementOneToObjProp(bagCountByValue, value);
-  }
-
-  for (const [value, count] of Object.entries(bagCountByValue)) {
-    addElementToPropInObject(bagValueByCount, count, value);
-  }
-  return bagValueByCount;
-};
+const getBagValueByCount = (pokerHand) =>
+  getBagPropByCount(pokerHand, getInPlayCardValue);
 
 /**
  *
@@ -81,7 +87,7 @@ const comparatorCardOrdinal = usingPrimer(getInPlayCardOrdinal);
 
 const getCardRankDifference = comparatorCardOrdinal;
 
-const newAscendingArray = (hand) => {
+const newAscendingHand = (hand) => {
   const thisHand = hand.slice();
   thisHand.sort(comparatorCardOrdinal);
   return thisHand;
@@ -149,7 +155,7 @@ const _isHandFlush = (hand) => {
 const _isHandStraight = (hand) => {
   console.group(`[_isHandStraight]`);
 
-  const thisHand = newAscendingArray(hand);
+  const thisHand = newAscendingHand(hand);
 
   for (let i = 1; i < POKER_HAND_SIZE; i += 1) {
     const thisCard = thisHand[i - 1];
@@ -179,7 +185,6 @@ const _getScoreType = (hand) => {
   if (getHandSize(hand) !== POKER_HAND_SIZE) {
     return SCORING.SIZE_MISMATCH;
   }
-
   if (_isHandStraightFlush(hand)) {
     return SCORING.STRAIGHT_FLUSH;
   }
@@ -201,11 +206,9 @@ const _getScoreType = (hand) => {
   if (_isHandStraight(hand)) {
     return SCORING.STRAIGHTS;
   }
-
   if (_isHandPair(hand)) {
     return SCORING.PAIR;
   }
-
   if (_isHandHigh(hand)) {
     return SCORING.HIGH;
   }
@@ -214,12 +217,86 @@ const _getScoreType = (hand) => {
 
 const getScoreType = (hand) => {
   console.group(`[getScoreType]`);
+  const type = _getScoreType(hand);
+  console.groupEnd();
+  return type;
+};
 
-  const result = _getScoreType(hand);
+const _comparatorSubRankStraightFlush = (handA, handB) => {
+  console.log(`_comparatorSubRankStraightFlush`);
+  if (isAnyNoU(handA, handB)) {
+    console.groupEnd();
+
+    throw new Error(`Null received. handA ${handA} handB ${handB}`);
+  }
+
+  const sortedFirstCardA = newAscendingHand(handA)[0];
+  const sortedFirstCardB = newAscendingHand(handB)[0];
+
+  console.groupEnd();
+  return (
+    getInPlayCardOrdinal(sortedFirstCardA) -
+    getInPlayCardOrdinal(sortedFirstCardB)
+  );
+};
+
+const _comparatorSubRankStraight = _comparatorSubRankStraightFlush;
+
+const _isSameScoringTypesLessThan = (handA, handB) => {
+  const scoringTypeA = getScoreType(handA);
+  const scoringTypeB = getScoreType(handB);
+  if (scoringTypeA !== scoringTypeB) {
+    throw new Error(
+      `This method should be called only if scoring types are different`
+    );
+  }
+  if (_isHandStraightFlush(handA)) {
+    return _comparatorSubRankStraightFlush(handA, handB);
+  }
+
+  if (_isHandStraight(handA)) {
+    return _comparatorSubRankStraight(handA, handB);
+  }
+
+  return undefined;
+};
+
+/**
+ *
+ * @param {*} handA
+ * @param {*} handB
+ * @returns {number|undefined}
+ */
+const comparatorHandRanking = (handA, handB) => {
+  console.group(`comparatorHandRanking`);
+  const scoringTypeA = getScoreType(handA);
+  const scoringTypeB = getScoreType(handB);
+  const rankA = getRankOfScoringType(scoringTypeA);
+  const rankB = getRankOfScoringType(scoringTypeB);
+
+  if (rankA === rankB) {
+    console.groupEnd();
+    return _isSameScoringTypesLessThan(handA, handB);
+  }
   console.groupEnd();
 
-  return result;
+  return rankA - rankB;
 };
+
+const getCombinationsSortedByRankAscending = (handCombinations) => {
+  const hands = handCombinations.slice();
+  hands.sort(comparatorHandRanking);
+  return hands;
+};
+
+const getBestCombination = (handCombinations) => {
+  const hands = getCombinationsSortedByRankAscending(handCombinations);
+  return hands[hands.length - 1];
+};
+
+/**
+ * STATISTICS
+ */
 
 /**
  *
@@ -256,7 +333,7 @@ const addToScoringDistribution = (distribution, scoreType) => {
  * @param {number} currentIndex
  * @param {number} sizePerHandCombination constant throughout iterations
  * @param {number} toTake
- * @param {ScoringDistribution} distribution
+ * @param {ScoringDistribution} distribution Counts the scoring type occurrence of valid poker hands in a multi-card hand
  * @param {Hand} currentCombination
  * @returns
  */
