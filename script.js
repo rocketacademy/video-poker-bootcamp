@@ -72,6 +72,15 @@ const p1Hand = [];
 let logForExport;
 
 /// ////////////CALLBACK FUNCTIONS/////////
+
+const cardLog = (hand) => {
+  const log = [];
+  for (i in hand) {
+    log.push(hand[i].name, hand[i].suit);
+  }
+  return log.join(' ');
+};
+
 const player1Click = () => {
   if (canClick === true) {
     canClick = false;
@@ -98,14 +107,6 @@ const player1Click = () => {
 };
 
 export { logForExport };
-
-const cardLog = (hand) => {
-  const log = [];
-  for (i in hand) {
-    log.push(hand[i].name, hand[i].suit);
-  }
-  return log.join(' ');
-};
 
 /// ////////////INITISATION///////////////
 const initGame = () => {
