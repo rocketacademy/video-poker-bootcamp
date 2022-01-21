@@ -1,14 +1,63 @@
-const DEFAULT_PLAYER_NAME = "NEW PLAYER";
+const DEFAULT_PLAYER_NAME = "PLAYER 1";
 const DEFAULT_PLAYER_CREDIT = 100;
-
-const getPlayerCredit = (player) => player.credit;
 
 /**
  * @typedef {Object} Player
- * @property {Card[]} hand
+ * @property {Hand} hand
  * @property {string} name
  * @property {number} credit
  */
+
+/**
+ *
+ * @param {Player} player
+ * @returns
+ */
+const getPlayerCredit = (player) => player.credit;
+/**
+ *
+ * @param {Player} player
+ * @returns
+ */
+const getPlayerHand = (player) => player.hand;
+/**
+ *
+ * @param {Player} player
+ * @returns
+ */
+const getPlayerName = (player) => player.name;
+
+/**
+ *
+ * @param {Player} player
+ * @returns
+ */
+const setPlayerCredit = (player, credit) => (player.credit = credit);
+/**
+ *
+ * @param {Player} player
+ * @returns
+ */
+const setPlayerHand = (player, hand) => (player.hand = hand);
+/**
+ *
+ * @param {Player} player
+ * @returns
+ */
+const setPlayerName = (player, name) => (player.name = name);
+
+//                        CONSTRUCTOR
+
+/**
+ *
+ * @returns {Player} A plain Player object
+ */
+const _playerStruct = () => {
+  return {
+    name: null,
+    credit: null,
+  };
+};
 
 /**
  *
@@ -17,9 +66,8 @@ const getPlayerCredit = (player) => player.credit;
  * @returns {Player}
  */
 const newPlayer = (name, credit) => {
-  return {
-    hand: [],
-    name: name || DEFAULT_PLAYER_NAME,
-    credit: credit || DEFAULT_PLAYER_CREDIT,
-  };
+  const player = _playerStruct();
+  setPlayerName(player, name || DEFAULT_PLAYER_NAME);
+  setPlayerCredit(player, credit || DEFAULT_PLAYER_CREDIT);
+  return player;
 };

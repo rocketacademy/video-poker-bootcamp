@@ -1,0 +1,1 @@
+const GAME_MODE_STUD_7 = `GAME_MODE_STUD_7`;

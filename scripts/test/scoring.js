@@ -707,7 +707,7 @@ const TEST_SCORINGS = () => {
   runTest(`testComparisionFlush`, () => {
     const functionName = `testComparisionFlush`;
 
-        const cardClubs1 = newCard(CARD_RANK.FIVE, CARD_SUITS.CLUB);
+    const cardClubs1 = newCard(CARD_RANK.FIVE, CARD_SUITS.CLUB);
     const cardClubs2 = newCard(CARD_RANK.SIX, CARD_SUITS.CLUB);
     const cardClubs3 = newCard(CARD_RANK.SEVEN, CARD_SUITS.CLUB);
     const cardClubs4 = newCard(CARD_RANK.EIGHT, CARD_SUITS.CLUB);
@@ -720,7 +720,6 @@ const TEST_SCORINGS = () => {
       cardClubs5,
       cardClubs2,
     ];
-
 
     const cardDiamonds1 = newCard(CARD_RANK.FOUR, CARD_SUITS.DIAMOND);
     const cardDiamonds2 = newCard(CARD_RANK.FIVE, CARD_SUITS.DIAMOND);
@@ -736,7 +735,7 @@ const TEST_SCORINGS = () => {
       cardDiamonds5,
     ];
 
-        const cardHearts1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
+    const cardHearts1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
     const cardHearts2 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
     const cardHearts3 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
     const cardHearts4 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
@@ -749,9 +748,6 @@ const TEST_SCORINGS = () => {
       cardHearts4,
       cardHearts5,
     ];
-
-
-
 
     const cardSpadeLower1 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
     const cardSpadeLower2 = newCard(CARD_RANK.THREE, CARD_SUITS.SPADE);
@@ -779,10 +775,6 @@ const TEST_SCORINGS = () => {
       cardSpadeHigher4,
       cardSpadeHigher5,
     ];
-
-
-
-
 
     const handSpadeLower = newHand();
     const handSpadeHigher = newHand();
