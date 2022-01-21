@@ -1,4 +1,4 @@
-const royalFlush = [
+const royalFlushHand = [
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
 	{ name: 'J', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 11 },
 	{ name: '10', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 10 },
@@ -6,7 +6,7 @@ const royalFlush = [
 	{ name: 'A', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 1 },
 ];
 
-const straightFlush = [
+const straightFlushHand = [
 	{ name: '4', suit: 'clubs', symbol: '♣️', color: 'black', rank: 4 },
 	{ name: '5', suit: 'clubs', symbol: '♣️', color: 'black', rank: 5 },
 	{ name: '3', suit: 'clubs', symbol: '♣️', color: 'black', rank: 3 },
@@ -14,7 +14,7 @@ const straightFlush = [
 	{ name: '2', suit: 'clubs', symbol: '♣️', color: 'black', rank: 2 },
 ];
 
-const kind4 = [
+const kind4Hand = [
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
@@ -22,7 +22,7 @@ const kind4 = [
 	{ name: '2', suit: 'hearts', symbol: '♥️', color: 'red', rank: 2 },
 ];
 
-const fullHouse = [
+const fullHouseHand = [
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
@@ -30,7 +30,7 @@ const fullHouse = [
 	{ name: 'J', suit: 'clubs', symbol: '♣️', color: 'black', rank: 11 },
 ];
 
-const flush = [
+const flushHand = [
 	{ name: '9', suit: 'clubs', symbol: '♣️', color: 'black', rank: 9 },
 	{ name: '6', suit: 'clubs', symbol: '♣️', color: 'black', rank: 6 },
 	{ name: 'J', suit: 'clubs', symbol: '♣️', color: 'black', rank: 11 },
@@ -38,7 +38,7 @@ const flush = [
 	{ name: '8', suit: 'clubs', symbol: '♣️', color: 'black', rank: 8 },
 ];
 
-const straight = [
+const straightHand = [
 	{ name: '9', suit: 'clubs', symbol: '♣️', color: 'black', rank: 9 },
 	{ name: '6', suit: 'clubs', symbol: '♣️', color: 'black', rank: 6 },
 	{ name: '7', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 7 },
@@ -46,7 +46,7 @@ const straight = [
 	{ name: '8', suit: 'clubs', symbol: '♣️', color: 'black', rank: 8 },
 ];
 
-const straightAce = [
+const straightAceHand = [
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
 	{ name: 'J', suit: 'clubs', symbol: '♣️', color: 'black', rank: 11 },
 	{ name: '10', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 10 },
@@ -54,7 +54,7 @@ const straightAce = [
 	{ name: 'A', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 1 },
 ];
 
-const kind3 = [
+const kind3Hand = [
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
@@ -62,7 +62,7 @@ const kind3 = [
 	{ name: '2', suit: 'hearts', symbol: '♥️', color: 'red', rank: 2 },
 ];
 
-const pair2 = [
+const pair2Hand = [
 	{ name: 'J', suit: 'clubs', symbol: '♣️', color: 'black', rank: 11 },
 	{ name: 'J', suit: 'clubs', symbol: '♣️', color: 'black', rank: 11 },
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },
@@ -70,7 +70,7 @@ const pair2 = [
 	{ name: '2', suit: 'hearts', symbol: '♥️', color: 'red', rank: 2 },
 ];
 
-const pairJacks = [
+const pairJacksHand = [
 	{ name: 'J', suit: 'clubs', symbol: '♣️', color: 'black', rank: 11 },
 	{ name: 'J', suit: 'clubs', symbol: '♣️', color: 'black', rank: 11 },
 	{ name: 'Q', suit: 'diamonds', symbol: '♦️', color: 'red', rank: 12 },

@@ -1,23 +1,32 @@
-/* Game flow
- * User starts with 100 points => global variable
- * User clicks Deal button
- * User draws 5 cards => array
- * User can choose how many cards to keep
- * Replace those not kept with new cards
- * Check user's hand for winning combination
- * Assign points based on combination
+/*
+ ********************************************************************
+ ********** GLOBAL VARIABLES ****************************************
+ ********************************************************************
  */
 
-// ***** GLOBAL VARIABLES *********************************
 // For gameplay
 let points = 100;
+
 const hand = [];
+// const hand = [...pair2Hand];
 const heldCardsIndex = [];
 let deck;
 let bet = 1;
 
 const cardNameTally = {};
 const cardSuitTally = {};
+
+const payout = {
+	'Royal Flush': 800,
+	'Straight Flush': 50,
+	'Four of a Kind': 25,
+	'Full House': 9,
+	Flush: 6,
+	Straight: 4,
+	'Three of a Kind': 3,
+	'Two Pairs': 2,
+	'Jacks or Better': 1,
+};
 
 // For HTML elements
 const mainContainer = document.createElement('div');
@@ -27,10 +36,18 @@ const cardContainer = document.createElement('div');
 const dealBtn = document.createElement('button');
 const gameInfoContainer = document.createElement('div');
 const gameInstructions = document.createElement('div');
-const payTable = document.createElement('div');
+const howToWin = document.createElement('div');
 
-// ***** HELPER FUNCTIONS *********************************
-// Functions for the deck-----------------------------
+/*
+ ********************************************************************
+ ********** HELPER FUNCTIONS ****************************************
+ ********************************************************************
+ */
+
+// -----------------------------------------
+// ##### Functions for the deck ############
+// -----------------------------------------
+
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
 const makeDeck = () => {
@@ -100,7 +117,10 @@ const shuffleCards = (cards) => {
 	// Return the shuffled deck
 	return cards;
 };
-// ---------------------------------------------------
+
+// -----------------------------------------
+// ##### Functions for DOM #################
+// -----------------------------------------
 
 // Function to create empty card elements
 const createEmptyCardElements = () => {
@@ -165,13 +185,19 @@ const createCardElement = () => {
 
 		// Add event listener to each card
 		cardWrapper.addEventListener('click', () => {
-			// // Add "hold" message
-			// holdMsg.innerHTML = 'Hold';
-			// // Store index of held cards in array
-			// heldCardsIndex.push(i);
 			toggleHold(holdMsg, i);
 		});
 	}
+};
+
+// Function to update points in
+const updatePoints = () => {
+	pointsContainer.innerText = `CREDITS: ${points}`;
+};
+
+// Function to update message board
+const updateMessage = (message) => {
+	messageBoard.innerText = message;
 };
 
 // Function to allow players to hold / un-hold a card
@@ -190,15 +216,9 @@ const toggleHold = (msg, currentCardIndex) => {
 	}
 };
 
-// Function to update points in
-const updatePoints = () => {
-	pointsContainer.innerText = `CREDIT ${points}`;
-};
-
-// Function to update message board
-const updateMessage = (message) => {
-	messageBoard.innerText = message;
-};
+// -----------------------------------------
+// ##### Gameplay Helper Functions #########
+// -----------------------------------------
 
 // Function to deal cards & play the game
 const dealCards = () => {
@@ -210,6 +230,7 @@ const dealCards = () => {
 		}
 		// Display cards
 		createCardElement();
+		updateMessage('Select cards to hold');
 		dealBtn.innerText = `Draw`;
 	}
 
@@ -228,8 +249,6 @@ const dealCards = () => {
 
 		dealBtn.disabled = true;
 		setTimeout(newGame, 3000);
-
-		dealBtn.innerText = `Deal`;
 	}
 };
 
@@ -262,6 +281,10 @@ const tallyCards = () => {
 	}
 };
 
+const getWinnings = (result) => {
+	return bet * payout[result];
+};
+
 // Function to start a new game with same bet
 const newGame = () => {
 	deck.length = 0;
@@ -269,171 +292,184 @@ const newGame = () => {
 
 	hand.length = 0;
 	heldCardsIndex.length = 0;
+
 	updatePoints();
 	updateMessage(`Ready to play?`);
 	createEmptyCardElements();
+
 	dealBtn.disabled = false;
+	dealBtn.innerText = `Deal`;
 };
 
-// ***** GAMEPLAY *****************************************
+/*
+ ********************************************************************
+ ********** GAMEPLAY ************************************************
+ ********************************************************************
+ */
 
-// To check for win
-const checkForWin = () => {
-	let winAmount = 0;
-	let lose = false;
+/* ---------------------------------------------------
+##### Check for consecutive ranks among cards ######## 
+1. Checks card ranks for running numbers (eg 1, 2, 3, 4, 5)
+2. Different runningRank count for hands with A & K (1, 10, 11, 12, 13)
+3. Returns the runningRank 
+--------------------------------------------------- */
+const countRunningRank = () => {
+	let runningRank = 1;
+
+	// Create copy of hand and sort according to rank
+	const handCopy = [...hand];
+	handCopy.sort(function (a, b) {
+		return a.rank - b.rank;
+	});
+
+	// For high straight (10, J, Q, K, A), runningRank should be 4
+	if (
+		Object.keys(cardNameTally).includes('A') &&
+		Object.keys(cardNameTally).includes('K')
+	) {
+		for (let i = 1; i < handCopy.length - 1; i += 1) {
+			if (handCopy[i].rank === handCopy[i + 1].rank - 1) {
+				runningRank += 1;
+			}
+		}
+	}
+	// For other straights, runningRank should be 5
+	else {
+		for (let i = 0; i < handCopy.length - 1; i += 1) {
+			if (handCopy[i].rank === handCopy[i + 1].rank - 1) {
+				runningRank += 1;
+			}
+		}
+	}
+
+	return runningRank;
+};
+
+/* ---------------------------------------------------
+##### Determine if hand is Royal Flush, Straight Flush or Flush #####
+1. Should be executed only if all cards have the same suit 
+2. Output is 'Royal Flush' or 'Straight Flush' or 'Flush'
+--------------------------------------------------- */
+const determineFlush = () => {
+	// Royal flush - 10, J, Q, K, A
+	if (
+		countRunningRank() === 4 &&
+		Object.keys(cardNameTally).includes('A') &&
+		Object.keys(cardNameTally).includes('K')
+	) {
+		return 'Royal Flush';
+	}
+
+	// Straight flush - straight but all same suit
+	else if (countRunningRank() === 5) {
+		return 'Straight flush';
+	}
+
+	// Flush - all same suit
+	else {
+		return 'Flush';
+	}
+};
+
+/* ---------------------------------------------------
+##### Check hand for winning combinations ############
+--------------------------------------------------- */
+const checkForWin = (hand) => {
 	tallyCards();
+	let lose = false;
+	let result;
 
-	/* If all cards have the same suit, could be
-	- Royal Flush
-	- Straight Flush
-	- Flush */
+	/* Checking for Royal Flush / Straight Flush / Flush
+	If all cards have the same suit (flush), determine type of flush */
 	if (Object.values(cardSuitTally).includes(5)) {
-		const handCopy = [...hand];
-		handCopy.sort(function (a, b) {
-			return a.rank - b.rank;
-		});
-		let runningRank = 1;
-
-		if (
-			Object.keys(cardNameTally).includes('A') &&
-			Object.keys(cardNameTally).includes('K')
-		) {
-			for (let i = 1; i < handCopy.length - 1; i += 1) {
-				if (handCopy[i].rank === handCopy[i + 1].rank - 1) {
-					runningRank += 1;
-				}
-			}
-		} else {
-			for (let i = 0; i < handCopy.length - 1; i += 1) {
-				if (handCopy[i].rank === handCopy[i + 1].rank - 1) {
-					runningRank += 1;
-				}
-			}
-		}
-
-		// Royal flush (*800) - 10, J, Q, K, A
-		if (
-			Object.keys(cardNameTally).includes('A') &&
-			Object.keys(cardNameTally).includes('K') &&
-			runningRank === 4
-		) {
-			winAmount = bet * 800;
-			updateMessage('Royal flush');
-		}
-		// Straight flush (*50) - straight but all same suit
-		else if (runningRank === 5) {
-			winAmount = bet * 50;
-			updateMessage('Straight flush');
-		}
-		// Flush (*6) - all same suit
-		else {
-			winAmount = bet * 6;
-			updateMessage('Flush');
-		}
+		result = determineFlush();
+		points += getWinnings(result);
 	}
-
-	// Four of a kind (*25)
+	//
+	/* Checking for Four of a Kind
+	If there are four cards with the same card name */
 	else if (Object.values(cardNameTally).includes(4)) {
-		points += bet * 25;
-		updateMessage('Four of a kind');
+		result = 'Four of a Kind';
+		points += getWinnings(result);
 	}
-
-	// Full house (*9)
+	//
+	/* Checking for Full House 
+	If there are 2 cards + 3 cards with same card name */
 	else if (
 		Object.values(cardNameTally).includes(2) &&
 		Object.values(cardNameTally).includes(3)
 	) {
-		winAmount = bet * 9;
-		updateMessage('Full house');
+		result = 'Full House';
+		points += getWinnings(result);
 	}
-
-	// Straight (*4)
-	else if (Object.keys(cardNameTally).length === 5) {
-		const handCopy = [...hand];
-		handCopy.sort(function (a, b) {
-			return a.rank - b.rank;
-		});
-		let runningRank = 1;
-
-		// For 10, J, Q, K, A straight
-		if (
-			Object.keys(cardNameTally).includes('A') &&
-			Object.keys(cardNameTally).includes('K')
-		) {
-			for (let i = 1; i < handCopy.length - 1; i += 1) {
-				if (handCopy[i].rank === handCopy[i + 1].rank - 1) {
-					runningRank += 1;
-				}
-			}
-		}
-		// For all other straights
-		else {
-			for (let i = 0; i < handCopy.length - 1; i += 1) {
-				if (handCopy[i].rank === handCopy[i + 1].rank - 1) {
-					runningRank += 1;
-				}
-			}
-		}
-
-		if (
-			(Object.keys(cardNameTally).includes('A') &&
-				Object.keys(cardNameTally).includes('K') &&
-				runningRank === 4) ||
-			runningRank === 5
-		) {
-			winAmount = bet * 4;
-			updateMessage('Straight');
-		}
-		// If not straight
-		else {
-			lose = true;
-		}
-	}
-
-	// Three of a kind (*3)
+	//
+	/* Checking for Three of a Kind
+	If there are three cards with the same name	*/
 	else if (Object.values(cardNameTally).includes(3)) {
-		winAmount = bet * 3;
-		updateMessage('Three of a kind');
+		result = 'Three of a Kind';
+		points += getWinnings(result);
 	}
-
-	// 2 pairs (*2)
+	//
+	/* Checking for Two Pairs
+	If there are two pairs of cards with the same names (and one without)	*/
 	else if (
 		Object.values(cardNameTally).includes(2) &&
 		Object.values(cardNameTally).length === 3
 	) {
-		winAmount = bet * 2;
-		updateMessage('Two pairs');
+		result = 'Two Pairs';
+		points += getWinnings(result);
 	}
-
-	// Jacks or better (*1)
+	//
+	/* Checking for Jacks or Better
+	If there is a pair of J / Q / K / A	*/
 	else if (
 		cardNameTally['J'] === 2 ||
 		cardNameTally['Q'] === 2 ||
 		cardNameTally['K'] === 2 ||
 		cardNameTally['A'] === 2
 	) {
-		winAmount = bet * 1;
-		updateMessage('Jacks or better');
+		result = 'Jacks or Better';
+		points += getWinnings(result);
 	}
-
-	// Lose
+	//
+	/* Checking for Straight
+	If the cards have consecutive card ranks */
+	else if (Object.keys(cardNameTally).length === 5) {
+		if (
+			countRunningRank() === 5 ||
+			(countRunningRank() === 4 &&
+				Object.keys(cardNameTally).includes('A') &&
+				Object.keys(cardNameTally).includes('K'))
+		) {
+			result = 'Straight';
+			points += getWinnings(result);
+		}
+		// If not straight
+		else {
+			lose = true;
+		}
+	}
+	// For all other combinations
 	else {
 		lose = true;
 	}
 
-	points += winAmount;
-	// Show winAmount next to points
+	// Show winnings next to points
 
 	if (lose) {
+		result = 'Better luck next round';
 		points -= bet;
-		updateMessage(`Better luck next round`);
 	}
 
+	updateMessage(result);
 	createCardElement(hand);
 };
 
-// ***** GAME INITIALISATION ******************************
-//
+/*
+ ********************************************************************
+ ********** GAME INITIALISATION *************************************
+ ********************************************************************
+ */
 
 const initGame = () => {
 	deck = shuffleCards(makeDeck());
@@ -445,7 +481,7 @@ const initGame = () => {
 	cardContainer.setAttribute('id', 'card-container');
 	gameInfoContainer.setAttribute('id', 'game-info');
 	gameInstructions.setAttribute('id', 'game-instructions');
-	payTable.setAttribute('id', 'pay-table');
+	// payTable.setAttribute('id', 'pay-table');
 	mainContainer.setAttribute('id', 'main');
 
 	// Add content to the elements
@@ -462,8 +498,8 @@ const initGame = () => {
 		li.innerText = howToPlay[i];
 		ul.appendChild(li);
 	}
-	gameInstructions.appendChild(ul);
-	gameInfoContainer.appendChild(gameInstructions);
+	// gameInstructions.appendChild(ul);
+	// gameInfoContainer.appendChild(gameInstructions);
 	updatePoints();
 	messageBoard.innerHTML = `Ready to play?`;
 	dealBtn.innerText = `Deal`;

@@ -6,10 +6,18 @@
 
 body {
 	font-family: 'Press Start 2P', monospace;
-	color: white;
+	color: #f0f0f0;
 	text-transform: uppercase;
-	background-color: #8c7ae6;
 	text-align: center;
+	background-color: #000;
+	background-image: url('images/body-background.jpg');
+	background-size: fill;
+	background-position: 0 -5vh;
+	background-repeat: no-repeat;
+	/* border: 15px solid white; */
+	height: 620px;
+	padding: 10px;
+	margin: 0;
 }
 
 h1 {
@@ -26,16 +34,24 @@ li {
 
 /* For main divs */
 #main {
-	color: black;
-	background-color: #fbc531;
+	font-size: 0.9rem;
+	line-height: 1rem;
+	background-color: #000;
+	border: 10px solid #f0f0f0;
 	width: 80vw;
 	max-width: 600px;
-	margin: 10px auto;
+	margin: 10px auto 30px;
 	padding: 10px;
 }
 
+#points {
+	color: #c40093;
+	padding: 10px;
+	margin: 10px auto 20px;
+}
+
 #message-board {
-	margin: 10px;
+	margin: 20px;
 }
 
 #card-container {
@@ -43,24 +59,21 @@ li {
 	padding: 10px;
 }
 
-#points {
-	padding: 10px;
+#deal-button {
+	background-color: #f0f0f0;
+
+	text-transform: uppercase;
+	font-family: 'Press Start 2P', monospace;
 	margin: 10px;
+	padding: 10px 30px;
+	border-width: 3px;
+	border-style: solid;
+	/* border-color: #7f8fa6 #2f3640 #2f3640 #7f8fa6; */
+	border-color: #9300c0 #7300d0 #7300d0 #9300c0;
 }
 
 #game-instructions {
 	margin: 5px;
-}
-
-#deal-button {
-	background-color: #f5f6fa;
-	text-transform: uppercase;
-	font-family: 'Press Start 2P', monospace;
-	margin: 5px;
-	padding: 10px 30px;
-	border-width: 3px;
-	border-style: solid;
-	border-color: #7f8fa6 #2f3640 #2f3640 #7f8fa6;
 }
 
 /* For cards */
@@ -70,17 +83,21 @@ li {
 }
 
 .card {
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	text-align: center;
 	background-color: #f5f6fa;
-	border: 3px solid #2f3640;
-	padding: 20px 10px;
-	width: 80px;
-	height: 120px;
+	border: 3px solid #bc01db;
+	padding: 25px 5px;
+	width: 60px;
+	height: 90px;
 }
 
 .down {
-	background-color: #e84118;
+	background-color: #fef1ac;
+	background-image: url('images/body-background-3.jpg');
+	background-position: 40% 15%;
+	background-size: fill;
+	border-color: #ac00aa;
 }
 
 .symbol {
@@ -89,9 +106,10 @@ li {
 }
 
 .hold {
-	height: 25px;
-	font-size: 1rem;
+	height: 20px;
+	font-size: 0.8rem;
 	text-transform: uppercase;
+	color: #bc01db;
 }
 
 .red {
