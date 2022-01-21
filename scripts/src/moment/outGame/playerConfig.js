@@ -20,10 +20,24 @@ const setPlayerNameOfPlayerConfig = (config, name) => {
 
 /**
  *
- * @param {PlayerConfig} config
+ * @param {PlayerConfig} playerConfig
  * @returns {Object.<string,HTMLElement>} the group of elements related to player name
  */
-const getElementNameGroupOfPlayerConfig = (config) => config.elements.name;
+const getElementNameGroupOfPlayerConfig = (playerConfig) =>
+  playerConfig.elements.name;
+
+const getElementGameModeButtonGroupOfPlayerConfig = (playerConfig) =>
+  playerConfig.elements.gameMode;
+
+const getElementGameModeWrapperOfPlayerConfig = (config) =>
+  getElementNameGroupOfPlayerConfig(config).wrapper;
+
+const getElementGameModeStud7OfPlayerConfig = (config) =>
+  getElementNameGroupOfPlayerConfig(config).sevenStud;
+const setElementGameModeWrapperOfPlayerConfig = (playerConfig, wrapper) =>
+  (getElementNameGroupOfPlayerConfig(playerConfig).wrapper = wrapper);
+const setElementGameModeStud7OfPlayerConfig = (playerConfig, button) =>
+  (getElementNameGroupOfPlayerConfig(playerConfig).sevenStud = button);
 
 /**
  *
@@ -86,11 +100,11 @@ const setElementNameDisplayOfPlayerConfig = (config, element) =>
 const _playerConfigStruct = (core) => {
   return {
     core,
-    elements: {
-      name: { input: null, wrapper: null, display: null },
-      gameMode: {},
-    },
     gameMode: null,
+    elements: {
+      name: { wrapper: null, input: null, display: null },
+      gameMode: { wrapper: null, sevenStud: null },
+    },
   };
 };
 
@@ -105,8 +119,8 @@ const getElementRootOfPlayerConfig = (playerConfig) => {
  * @param {PlayerConfig} playerConfig
  * @returns {PlayerConfig}
  */
-const _playerConfigReadyPaint = (playerConfig) => {
-  const elementNameWrapper = newElementNameWrapper();
+const _playerConfigReadyInteractivePaint = (playerConfig) => {
+  const elementNameWrapper = newElementWrapperNameConfig();
   setElementNameWrapperOfPlayerConfig(playerConfig, elementNameWrapper);
 
   const elementNameDisplay = newElementNameDisplay(playerConfig);
@@ -116,8 +130,24 @@ const _playerConfigReadyPaint = (playerConfig) => {
     newElementNameInputWhichUpdatesPlayerNameOnInput(playerConfig);
   setElementNameInputOfPlayerConfig(playerConfig, elementNameInput);
   elementNameInput.value = getPlayerNameOfPlayerConfig(playerConfig);
+
+  const elementButtonGameModeWrapper = newElementWrapperButtonGameMode();
+  const elementButtonGameModeStud7 = newElementButtonGameMode(desc);
+
+  setElementGameModeWrapperOfPlayerConfig(
+    playerConfig,
+    elementButtonGameModeWrapper
+  );
+  setElementGameModeStud7OfPlayerConfig(
+    playerConfig,
+    elementButtonGameModeStud7
+  );
+
   return playerConfig;
 };
+
+// i did some ui tried to organise my code
+// tried to organise my code
 
 const _playerConfigGoPaint = (playerConfig) => {
   const elementRoot = getElementRootOfPlayerConfig(playerConfig);
@@ -128,6 +158,7 @@ const _playerConfigGoPaint = (playerConfig) => {
 
   updateNameDisplayOfPlayerConfig(playerConfig);
   appendChilds(elementNameWrapper, [elementNameInput, elementNameDisplay]);
+
   appendChilds(elementRoot, [elementNameWrapper]);
 };
 
@@ -139,7 +170,6 @@ const newPlayerConfig = (core) => _playerConfigStruct(core);
  */
 const goToPlayerConfigPage = (core) => {
   const playerConfig = newPlayerConfig(core);
-
-  _playerConfigReadyPaint(playerConfig);
+  _playerConfigReadyInteractivePaint(playerConfig);
   _playerConfigGoPaint(playerConfig);
 };
