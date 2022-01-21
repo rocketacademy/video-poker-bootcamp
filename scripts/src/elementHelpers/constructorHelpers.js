@@ -1,9 +1,11 @@
 const CLASS_NAME_INPUT = `poker-name-input`;
 const CLASS_WRAPPER_NAME_CONFIG = `poker-wrapper-config-name`;
-const CLASS_BUTTON_WRAPPER_INPUT = `poker-wrapper`;
+const CLASS_BUTTON_WRAPPER_INPUT = `poker-wrapper-game-modes`;
 const CLASS_NAME_DISPLAY = `poker-name-display`;
 
 const CLASS_BUTTON_GAME_MODE = `poker-game-mode`;
+
+const CLASS_GAME_MODE_DISPLAY = `poker-game-mode-display`;
 
 const _addClassToElement = (element, className) =>
   (element.className += ` ${className}`);
@@ -38,3 +40,5 @@ const newElementWrapperButtonGameMode = () =>
 
 const newElementButtonGameMode = (desc) =>
   _newElementButton(CLASS_BUTTON_GAME_MODE, desc);
+
+const newElementDisplayGameMode = () => _newElementDiv(CLASS_GAME_MODE_DISPLAY);
