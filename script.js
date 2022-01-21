@@ -18,11 +18,11 @@ const makeDeck = () => {
   const suits = ['♥', '♦', '♣', '♠'];
   for (let i = 0; i < suits.length; i += 1) {
     const currentSuit = suits[i];
-    for (let rankCounter = 2; rankCounter <= 14; rankCounter += 1) {
+    for (let rankCounter = 1; rankCounter <= 13; rankCounter += 1) {
       let cardName = `${rankCounter}`;
 
       // Set cardName For J,Q,K,A
-      if (cardName === '14') {
+      if (cardName === '1') {
         cardName = 'A';
       } else if (cardName === '11') {
         cardName = 'J';
@@ -69,17 +69,9 @@ const gameInfo = document.createElement('div');
 let canClick = true;
 let cardContainerP1;
 const p1Hand = [];
-let logForExport;
+let playerHand;
 
 /// ////////////CALLBACK FUNCTIONS/////////
-
-const cardLog = (hand) => {
-  const log = [];
-  for (i in hand) {
-    log.push(hand[i].name, hand[i].suit);
-  }
-  return log.join(' ');
-};
 
 const player1Click = () => {
   if (canClick === true) {
@@ -88,9 +80,11 @@ const player1Click = () => {
   for (let i = 0; i < numberOfCards; i += 1) {
     p1Hand[i] = deck.pop();
   }
-  p1Hand.sort((a, b) => a.rank - b.rank);
+  console.log(p1Hand);
+  console.log(p1Hand.name);
+  console.log(p1Hand.suit);
 
-  // loop to create cards into card container
+  // p1Hand.sort((a, b) => a.rank - b.rank);
   // setTimeout method to show cards one by one
   let x = 0;
   for (let i = 0; i < numberOfCards; i += 1) {
@@ -100,13 +94,26 @@ const player1Click = () => {
       cardContainerP1.appendChild(cardElement);
     }, x);
   }
-  logForExport = cardlog(p1Hand);
-  console.log(cardLog(p1Hand));
-
   canClick = true;
 };
 
-export { logForExport };
+const analyzeHand = (hand) => {
+  const flush = card.suit.every((i) => i === card.suit[0]);
+  const groups = card.name.map((n, i) => card.name.filter((j) => i === j).length).sort((x, y) => y - x);
+  const distance = Math.max(...card.rank) - Math.min(...card.rank);
+  const straight = groups[0] === 1 && distance < 5;
+
+  if (straight && flush) return 'straight-flush';
+  if (groups[0] === 4) return 'four-of-a-kind';
+  if (groups[0] === 3 && groups[1] === 2) return 'full-house';
+  if (flush) return 'flush';
+  if (straight) return 'straight';
+  if (groups[0] === 3) return 'three-of-a-kind';
+  if (groups[0] === 2 && groups[1] === 2) return 'two-pair';
+  if (groups[0] === 2) return 'one-pair';
+  return 'high-card';
+};
+// for (hand of playerHand) console.log(`${hand}: ${analyzeHand(hand)}`);
 
 /// ////////////INITISATION///////////////
 const initGame = () => {
