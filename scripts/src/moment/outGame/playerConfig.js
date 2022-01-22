@@ -1,3 +1,11 @@
+const GAME_MODE_STUD_SEVEN = `stud-seven`;
+
+const GAME_MODES = [GAME_MODE_STUD_SEVEN];
+
+const getGameModeFromPlayerConfig = (config) => config.gameMode;
+
+const setGameModeForPlayerConfig = (config, mode) => (config.gameMode = mode);
+
 const getCoreOfPlayerConfig = (config) => config.core;
 
 const getPlayerOfPlayerConfig = (config) => {
@@ -20,18 +28,35 @@ const getElementGameGroupOfPlayerConfig = (playerConfig) =>
 
 const getElementGameModeWrapperOfPlayerConfig = (config) =>
   getElementGameGroupOfPlayerConfig(config).wrapper;
-const getElementGameModeStud7OfPlayerConfig = (config) =>
-  getElementGameGroupOfPlayerConfig(config).sevenStud;
+const getElementGameModeOfPlayerConfig = (config, mode) =>
+  getElementGameGroupOfPlayerConfig(config).modes[mode];
 const getElementGameDisplayOfPlayerConfig = (config) =>
   getElementGameGroupOfPlayerConfig(config).display;
 
+const setElementGameModeActiveOfPlayerConfig = (config, element) =>
+  (getElementGameGroupOfPlayerConfig(config).active = element);
+const getElementGameModeActiveOfPlayerConfig = (config) =>
+  getElementGameGroupOfPlayerConfig(config).active;
+const getElementButtonsGameModeOfPlayerConfigAsObject = (config) =>
+  getElementGameGroupOfPlayerConfig(config).modes;
+const getElementButtonsGameModeOfPlayerConfigAsList = (config) =>
+  Object.entries(getElementButtonsGameModeOfPlayerConfigAsObject(config));
+
 const setElementGameModeWrapperOfPlayerConfig = (playerConfig, wrapper) =>
   (getElementGameGroupOfPlayerConfig(playerConfig).wrapper = wrapper);
-const setElementGameModeStud7OfPlayerConfig = (playerConfig, button) =>
-  (getElementGameGroupOfPlayerConfig(playerConfig).sevenStud = button);
+const setElementGameModeOfPlayerConfig = (playerConfig, button, mode) =>
+  (getElementGameGroupOfPlayerConfig(playerConfig).modes[mode] = button);
 const setElementGameDisplayOfPlayerConfig = (playerConfig, display) => {
   getElementGameGroupOfPlayerConfig(playerConfig).display = display;
 };
+
+const getElementGameModeCurrentOfPlayerConfig = (config) =>
+  getElementGameGroupOfPlayerConfig(config).current;
+const setElementGameModeCurrentOfPlayerConfig = (config) =>
+  (getElementGameGroupOfPlayerConfig(config, element).current = element);
+
+const setElementButtonStartOfPlayConfig = (playerConfig, element) =>
+  (playerConfig.elements.start = element);
 
 const getElementPlayerOfPlayerConfig = (playerConfig) =>
   playerConfig.elements.player;
@@ -40,7 +65,7 @@ const getElementPlayerOfPlayerConfig = (playerConfig) =>
  * @param {PlayerConfig} playerConfig
  * @returns {Object.<string,HTMLElement>} the group of elements related to player name
  */
-const getElementNameGroupOfPlayerConfig = (playerConfig) =>
+const getElementPlayerGroupOfPlayerConfig = (playerConfig) =>
   getElementPlayerOfPlayerConfig(playerConfig).name;
 
 /**
@@ -49,7 +74,7 @@ const getElementNameGroupOfPlayerConfig = (playerConfig) =>
  * @returns {HTMLElement} element which wraps the name elements
  */
 const getElementPlayerWrapperOfPlayerConfig = (config) =>
-  getElementNameGroupOfPlayerConfig(config).wrapper;
+  getElementPlayerGroupOfPlayerConfig(config).wrapper;
 
 /**
  *
@@ -57,7 +82,7 @@ const getElementPlayerWrapperOfPlayerConfig = (config) =>
  * @returns {HTMLElement} element which allows player input
  */
 const getElementNameInputOfPlayerConfig = (config) =>
-  getElementNameGroupOfPlayerConfig(config).input;
+  getElementPlayerGroupOfPlayerConfig(config).input;
 
 /**
  *
@@ -65,8 +90,12 @@ const getElementNameInputOfPlayerConfig = (config) =>
  * @returns {HTMLElement} element which displays the player name
  */
 const getElementNameDisplayOfPlayerConfig = (config) =>
-  getElementNameGroupOfPlayerConfig(config).display;
+  getElementPlayerGroupOfPlayerConfig(config).display;
 
+const getElementPlayerCreditOfPlayerConfig = (config) =>
+  getElementPlayerGroupOfPlayerConfig(config).credit;
+
+const getElementButtonStartOfPlayerConfig = (config) => config.elements.start;
 /**
  * set wrapper element for the group of elements related to player name
  * @param {PlayerConfig} config
@@ -74,7 +103,7 @@ const getElementNameDisplayOfPlayerConfig = (config) =>
  * @returns
  */
 const setElementNameWrapperOfPlayerConfig = (config, element) =>
-  (getElementNameGroupOfPlayerConfig(config).wrapper = element);
+  (getElementPlayerGroupOfPlayerConfig(config).wrapper = element);
 
 /**
  * set input element for the group of elements related to player name
@@ -83,7 +112,9 @@ const setElementNameWrapperOfPlayerConfig = (config, element) =>
  * @returns
  */
 const setElementNameInputOfPlayerConfig = (config, element) =>
-  (getElementNameGroupOfPlayerConfig(config).input = element);
+  (getElementPlayerGroupOfPlayerConfig(config).input = element);
+const setElementPlayerCreditOfPlayerConfig = (config, element) =>
+  (getElementPlayerGroupOfPlayerConfig(config).credit = element);
 
 /**
  * set display element for the group of elements related to player name
@@ -92,7 +123,12 @@ const setElementNameInputOfPlayerConfig = (config, element) =>
  * @returns
  */
 const setElementNameDisplayOfPlayerConfig = (config, element) =>
-  (getElementNameGroupOfPlayerConfig(config).display = element);
+  (getElementPlayerGroupOfPlayerConfig(config).display = element);
+
+const getMoneyOfPlayerConfig = (config) => {
+  const player = getPlayerOfPlayerConfig(config);
+  return getPlayerCredit(player);
+};
 
 //                        CONSTRUCTOR
 
@@ -108,9 +144,14 @@ const _playerConfigStruct = (core) => {
     elements: {
       player: {
         name: { wrapper: null, input: null, display: null },
-        money: { display: null },
+        credit: { display: null },
       },
-      gameMode: { wrapper: null, sevenStud: null },
+      gameMode: {
+        wrapper: null,
+        modes: { [GAME_MODE_STUD_SEVEN]: null },
+        current: null,
+      },
+      start: { button: null },
     },
   };
 };
@@ -122,12 +163,12 @@ const getElementRootOfPlayerConfig = (playerConfig) => {
 };
 
 /**
- * assigns default HTML elements of this game.
+ * Create default HTML elements with default props and attach event listeners.
  * @param {PlayerConfig} playerConfig
  * @returns {PlayerConfig}
  */
 const _playerConfigReadyInteractivePaint = (playerConfig) => {
-  // Player info elements
+  // Elements: Player Info : Name
   const elementPlayerWrapper = newElementWrapperNameConfig();
   setElementNameWrapperOfPlayerConfig(playerConfig, elementPlayerWrapper);
 
@@ -139,29 +180,37 @@ const _playerConfigReadyInteractivePaint = (playerConfig) => {
   setElementNameInputOfPlayerConfig(playerConfig, elementNameInput);
 
   elementNameInput.value = getPlayerNameOfPlayerConfig(playerConfig);
-  updateNameDisplayOfPlayerConfig(playerConfig);
+  updateNameDisplayInGameConfig(playerConfig);
 
-  // Game mode elements
+  // Elements: Player Info : Money
+
+  const elementCredit = newElementPlayerCreditDisplay(playerConfig);
+  setElementPlayerCreditOfPlayerConfig(playerConfig, elementCredit);
+
+  // Elements: Game Mode
   const elementButtonGameModeWrapper = newElementWrapperButtonGameMode();
-  const elementButtonGameModeStud7 = newElementButtonGameMode(`Stud Seven`);
-  const elementGameModeDisplay = newElementDisplayGameMode();
+
+  for (const mode of GAME_MODES) {
+    const elementButtonGameMode = newElementButtonGameModeAndSetToggle(
+      `Stud Seven`,
+      mode,
+      playerConfig
+    );
+    setElementGameModeOfPlayerConfig(playerConfig, elementButtonGameMode, mode);
+  }
 
   setElementGameModeWrapperOfPlayerConfig(
     playerConfig,
     elementButtonGameModeWrapper
   );
-  setElementGameModeStud7OfPlayerConfig(
-    playerConfig,
-    elementButtonGameModeStud7
-  );
-  setElementGameDisplayOfPlayerConfig(playerConfig, elementGameModeDisplay);
 
+  // Start button
+  const elementButtonStart = newElementButtonStartGameWithStart(playerConfig);
+  setElementButtonStartOfPlayConfig(playerConfig, elementButtonStart);
   return playerConfig;
 };
 
-// i did some ui tried to organise my code
-// tried to organise my code
-
+// Tree Building
 const _playerConfigGoPaint = (playerConfig) => {
   const elementRoot = getElementRootOfPlayerConfig(playerConfig);
 
@@ -170,22 +219,33 @@ const _playerConfigGoPaint = (playerConfig) => {
   const elementNameInput = getElementNameInputOfPlayerConfig(playerConfig);
   const elementNameDisplay = getElementNameDisplayOfPlayerConfig(playerConfig);
 
-  appendChilds(elementPlayerWrapper, [elementNameInput, elementNameDisplay]);
+  const elementCredit = getElementPlayerCreditOfPlayerConfig(playerConfig);
+
+  appendChilds(elementPlayerWrapper, [
+    elementNameInput,
+    elementNameDisplay,
+    elementCredit,
+  ]);
 
   const elementWrapperGameMode =
     getElementGameModeWrapperOfPlayerConfig(playerConfig);
-  const elementButtonGameModeStud7 =
-    getElementGameModeStud7OfPlayerConfig(playerConfig);
-  const elementDisplayGameMode =
-    getElementGameDisplayOfPlayerConfig(playerConfig);
-  console.log(elementWrapperGameMode);
-  console.log(elementButtonGameModeStud7);
-  appendChilds(elementWrapperGameMode, [
-    elementButtonGameModeStud7,
-    elementDisplayGameMode,
-  ]);
 
-  appendChilds(elementRoot, [elementPlayerWrapper, elementWrapperGameMode]);
+  const elementGameModeButtons =
+    getElementButtonsGameModeOfPlayerConfigAsList(playerConfig);
+
+  const buttons = [];
+  for (const [_, button] of elementGameModeButtons) {
+    buttons.push(button);
+  }
+  appendChilds(elementWrapperGameMode, buttons);
+
+  const elementStartButton = getElementButtonStartOfPlayerConfig(playerConfig);
+
+  appendChilds(elementRoot, [
+    elementPlayerWrapper,
+    elementWrapperGameMode,
+    elementStartButton,
+  ]);
 };
 
 const newPlayerConfig = (core) => _playerConfigStruct(core);
@@ -195,10 +255,15 @@ const newPlayerConfig = (core) => _playerConfigStruct(core);
  * @param {Core} core
  */
 const goToPlayerConfigPage = (core) => {
-  // data
+  // data structure
   const playerConfig = newPlayerConfig(core);
 
   // ui
   _playerConfigReadyInteractivePaint(playerConfig);
+
+  // defaults
+  setGameModeAndUpdateDisability(playerConfig, GAME_MODE_STUD_SEVEN);
+
+  // ui
   _playerConfigGoPaint(playerConfig);
 };

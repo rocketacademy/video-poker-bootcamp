@@ -1,1 +1,5 @@
-const GAME_MODE_STUD_7 = `GAME_MODE_STUD_7`;
+const goToGame = (core, mode) => {
+  if (mode === GAME_MODE_STUD_SEVEN) {
+    goToGameStudSeven(core);
+  }
+};

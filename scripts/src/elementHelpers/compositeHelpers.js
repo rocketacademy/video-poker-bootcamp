@@ -1,11 +1,28 @@
+// Player Config Page
+
 const _updatePlayerInputHandler =
   (playerConfig) =>
   ({ target: { value } }) => {
-    const player = getPlayerOfPlayerConfig(playerConfig);
+    if (value === ``) {
+      hideStartButton(playerConfig);
+    } else {
+      showStartButton(playerConfig);
+    }
     setPlayerNameOfPlayerConfig(playerConfig, value);
-    updateNameDisplayOfPlayerConfig(playerConfig);
-    console.log(player);
+    updateNameDisplayInGameConfig(playerConfig);
   };
+
+const setGameModeAndUpdateDisability = (playerConfig, mode) => {
+  console.group(`setGameModeAndUpdateDisability`);
+  setGameModeForPlayerConfig(playerConfig, mode);
+
+  console.log(getGameModeFromPlayerConfig(playerConfig) === mode);
+  updateDisablitiyGameMode(playerConfig);
+
+  console.groupEnd();
+};
+const _toggleGameModeHandler = (playerConfig, mode) => () =>
+  setGameModeAndUpdateDisability(playerConfig, mode);
 
 /**
  *
@@ -13,13 +30,27 @@ const _updatePlayerInputHandler =
  * @returns
  */
 const newElementNameInputWhichUpdatesPlayerNameOnInput = (playerConfig) => {
-  console.log(playerConfig);
   const element = newElementNameInput();
-
   element.addEventListener(
     `input`,
     _updatePlayerInputHandler(playerConfig, element)
   );
+  return element;
+};
+
+const newElementButtonStartGameWithStart = (playerConfig) => {
+  const element = newElementButtonStartGame();
+  element.addEventListener(`click`, () => {
+    _clearPlayerConfigDisplayAndGoToGame(playerConfig);
+  });
 
   return element;
 };
+
+const newElementButtonGameModeAndSetToggle = (desc, mode, config) => {
+  const element = newElementButtonGameMode(desc);
+  element.addEventListener(`click`, _toggleGameModeHandler(config, mode));
+  return element;
+};
+
+// Stud Seven Page
