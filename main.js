@@ -23,8 +23,11 @@ const newCore = () => {
 
 const getPlayerOfCore = (core) => core.player;
 const getPlayerCreditOfCore = (core) => getPlayerCredit(core.player);
+const minusPlayerCreditOfCore = (core, credit) =>
+  minusPlayerCredit(getPlayerOfCore(core), credit);
+const addPlayerCreditOfCore = (core, credit) =>
+  addPlayerCredit(getPlayerOfCore(core), credit);
 const getPlayerNameOfCore = (core) => getPlayerName(core.player);
-const getPlayerHandOfCore = (core) => getPlayerHand(core.player);
 const getElementRootOfCore = (core) => core.elementRoot;
 
 // -------- START --------

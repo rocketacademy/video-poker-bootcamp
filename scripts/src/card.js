@@ -18,9 +18,9 @@ const CARD_RANK = {
 
 const CARD_SUITS = {
   HEART: `HEARTS`,
-  CLUB: `CLUB`,
-  SPADE: `SPADE`,
-  DIAMOND: `DIAMOND`,
+  CLUB: `CLUBS`,
+  SPADE: `SPADES`,
+  DIAMOND: `DIAMONDS`,
 };
 
 /**
@@ -146,7 +146,7 @@ const newHand = () => {
 /**
  *
  * @param {Hand} hand
- * @param {card} card
+ * @param {Card} card
  */
 const addCardToHand = (hand, card) => hand.push(newInPlayCard(card));
 

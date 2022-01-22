@@ -25,7 +25,6 @@ const setPlayerNameOfPlayerConfig = (config, name) => {
 
 const getElementGameGroupOfPlayerConfig = (playerConfig) =>
   playerConfig.elements.gameMode;
-
 const getElementGameModeWrapperOfPlayerConfig = (config) =>
   getElementGameGroupOfPlayerConfig(config).wrapper;
 const getElementGameModeOfPlayerConfig = (config, mode) =>

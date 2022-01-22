@@ -7,6 +7,12 @@
  */
 const appendChild = (element, child) => element.appendChild(child);
 
+/**
+ *
+ * @param {HTMLElement} element
+ * @param {HTMLElement[]} childs
+ * @returns
+ */
 const appendChilds = (element, childs) =>
   childs.forEach((c) => appendChild(element, c));
 

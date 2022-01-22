@@ -14,6 +14,9 @@ const DEFAULT_PLAYER_CREDIT = 100;
  * @returns
  */
 const getPlayerCredit = (player) => player.credit;
+
+const minusPlayerCredit = (player, credit) => (player.credit -= credit);
+const addPlayerCredit = (player, credit) => (player.credit += credit);
 /**
  *
  * @param {Player} player

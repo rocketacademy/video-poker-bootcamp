@@ -1,0 +1,23 @@
+.poker-root {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-img {
+  display: flex;
+  height: 80px;
+  width: 40px;
+  border: 1px solid red;
+}
+
+.card-holder {
+  display: flex;
+  height: 100%;
+  width: auto;
+  border: 1px dotted red;
+}
+
+.hand {
+  display: flex;
+  flex-direction: row;
+}

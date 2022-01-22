@@ -32,6 +32,14 @@ const _newElementButton = (className, desc) => {
   return element;
 };
 
+const _newElementImg = (className, src, alt) => {
+  const element = document.createElement(`img`);
+  element.className += ` ${className}`;
+  element.setAttribute(`src`, src);
+  element.setAttribute(`alt`, alt);
+  return element;
+};
+
 // New Elements
 
 // New Elements: Players
