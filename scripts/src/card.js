@@ -103,8 +103,11 @@ const getCardOrdinal = (card) => {
 
 const getInPlayCardSuit = (inPlayCard) => getCardSuit(inPlayCard.value);
 const getInPlayCardValue = (inPlayCard) => getCardValue(inPlayCard.value);
-const getInPlayCardRankAndSuitString = (inPlayCard) =>
-  `${getCardSuit(inPlayCard.value)}-${getCardValue(inPlayCard.value)}`;
+const getInPlayCardRankAndSuitString = (inPlayCard) => {
+  console.log(`getInPlayCardSuit(inPlayCard)`);
+
+  return `${getInPlayCardSuit(inPlayCard)}-${getInPlayCardSuit(inPlayCard)}`;
+};
 const getInPlayCardOrdinal = (inPlayCard) => getCardOrdinal(inPlayCard.value);
 const getInPlayCardElement = (inPlayCard) => inPlayCard.element;
 const isInPlayCardFaceUp = (inPlayCard) => inPlayCard.faceUp;
@@ -147,6 +150,14 @@ const newHand = () => {
  * @param {Card} card
  */
 const addCardToHand = (hand, card) => hand.push(newInPlayCard(card));
+
+/**
+ *
+ * @param {Hand} hand
+ * @param {InPlayCard} inPlayCard
+ * @returns
+ */
+const addInPlayCardToHand = (hand, inPlayCard) => hand.push(inPlayCard);
 
 const getHandAsString = (hand) => {
   const cardStrings = [];
@@ -228,7 +239,7 @@ const _addHandCombinations = (
  * @param {Hand} hand
  * @param {number} sizePerHandCombination
  */
-const getHandCombinations = (hand, sizePerHandCombination) => {
+const ______WARN_getHandCombinations = (hand, sizePerHandCombination) => {
   const result = [];
   const currentCombination = [];
 

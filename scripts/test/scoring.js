@@ -19,7 +19,7 @@ const TEST_SCORINGS = () => {
       addCardToHand(sortedHand, card);
     }
 
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       sortedHand,
       sizePerHandCombination
     );
@@ -89,7 +89,7 @@ const TEST_SCORINGS = () => {
         addCardToHand(sortedHand, card);
       }
 
-      const handCombinations = getHandCombinations(
+      const handCombinations = ______WARN_getHandCombinations(
         sortedHand,
         sizePerHandCombination
       );
@@ -133,7 +133,7 @@ const TEST_SCORINGS = () => {
       addCardToHand(themedHand, card);
     }
 
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       themedHand,
       sizePerHandCombination
     );
@@ -182,7 +182,7 @@ const TEST_SCORINGS = () => {
       addCardToHand(themedHand, card);
     }
 
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       themedHand,
       sizePerHandCombination
     );
@@ -224,7 +224,7 @@ const TEST_SCORINGS = () => {
     for (const card of cardRange) {
       addCardToHand(housedHand, card);
     }
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       housedHand,
       sizePerHandCombination
     );
@@ -273,7 +273,7 @@ const TEST_SCORINGS = () => {
     for (const card of cardRange) {
       addCardToHand(housedHand, card);
     }
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       housedHand,
       sizePerHandCombination
     );
@@ -313,7 +313,7 @@ const TEST_SCORINGS = () => {
     for (const card of cardRange) {
       addCardToHand(housedHand, card);
     }
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       housedHand,
       sizePerHandCombination
     );
@@ -359,7 +359,7 @@ const TEST_SCORINGS = () => {
     for (const card of cardRange) {
       addCardToHand(doubsHand, card);
     }
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       doubsHand,
       sizePerHandCombination
     );
@@ -399,7 +399,7 @@ const TEST_SCORINGS = () => {
     for (const card of cardRange) {
       addCardToHand(doubsHand, card);
     }
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       doubsHand,
       sizePerHandCombination
     );
@@ -439,7 +439,7 @@ const TEST_SCORINGS = () => {
     for (const card of cardRange) {
       addCardToHand(doubsHand, card);
     }
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       doubsHand,
       sizePerHandCombination
     );
@@ -477,7 +477,7 @@ const TEST_SCORINGS = () => {
     );
     const sizePerHandCombination = 5;
 
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       singleSuitDeck,
       sizePerHandCombination
     );
@@ -570,7 +570,7 @@ const TEST_SCORINGS = () => {
     const sizePerHandCombination = 5;
     const expectedCombinations = 21; // C(7,5)
 
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       handSevenCard,
       sizePerHandCombination
     );

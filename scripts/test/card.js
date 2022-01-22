@@ -33,7 +33,7 @@ const TEST_CARDS = () => {
     const sizePerHandCombination = 5;
 
     const expectedCombinations = 21; // C(7,5)
-    const handCombinations = getHandCombinations(
+    const handCombinations = ______WARN_getHandCombinations(
       handSevenCard,
       sizePerHandCombination
     );

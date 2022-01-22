@@ -8,6 +8,11 @@ const CLASS_NAME_BUTTON_BET = `action-bet-button`;
 const CLASS_NAME_SLIDER_BET = `slider-bet`;
 const CLASS_NAME_BUSTED = `desc busted`;
 
+const PHASE_BET_INITIAL = 0;
+const PHASE_BET_ROUND_ONE = 1;
+const PHASE_BET_ROUND_TWO = 2;
+const PHASE_BET_ROUND_THREE = 3;
+
 /**
  *
  * @returns {CardHolder}
@@ -65,6 +70,10 @@ const newGameStudSeven = (core) => {
   let activeBet = 0;
   let pot = 0;
   const addToPot = (credit) => (pot += credit);
+
+  let phase = PHASE_BET_INITIAL;
+
+  const togglePhase = () => (phase += 1); // do this after current phase wants to end
   /**
    *
    * @param {number} pos
@@ -85,7 +94,7 @@ const newGameStudSeven = (core) => {
     console.group(`drawCard`);
 
     const card = drawCard(deck);
-    addCardToHand(hand, card);
+    addInPlayCardToHand(hand, card);
 
     const lastIndex = getHandSize(hand) - 1; // this is abit hacky, assumes added card is in the last position.
     updateDisplayOfCardHolder(lastIndex, card);
@@ -126,7 +135,47 @@ const newGameStudSeven = (core) => {
     slider.max = getBetLimit();
     slider.value = 0;
     refreshBetButtonVisibility();
-    drawCardAndUpdateDisplay();
+
+    if (phase === PHASE_BET_INITIAL) {
+      drawCardAndUpdateDisplay();
+      drawCardAndUpdateDisplay();
+    } else if (phase === PHASE_BET_ROUND_ONE) {
+      drawCardAndUpdateDisplay();
+    } else if (phase === PHASE_BET_ROUND_TWO) {
+      drawCardAndUpdateDisplay();
+    } else if (phase === PHASE_BET_ROUND_THREE) {
+      drawCardAndUpdateDisplay();
+      drawCardAndUpdateDisplay();
+      drawCardAndUpdateDisplay();
+      detachAllChildren(elementActionArea);
+      console.log(hand);
+
+      const combs = ______WARN_getHandCombinations(hand, POKER_HAND_SIZE);
+      console.log(combs);
+
+      const best = getBestCombination(combs);
+      const handCombinations = getCombinationsSortedByRankAscending(combs);
+
+      const handTable = [];
+
+      for (const hand of handCombinations) {
+        const handRow = [];
+
+        for (const card of hand) {
+          handRow.push(getInPlayCardRankAndSuitString(card));
+        }
+
+        handTable.push(handRow, getScoreType(hand));
+      }
+      console.log(`Table`);
+
+      console.table(handTable);
+
+      console.log(`BEST`);
+      console.log(best);
+    }
+
+    togglePhase();
     console.groupEnd();
   });
 

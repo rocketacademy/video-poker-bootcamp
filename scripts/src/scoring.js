@@ -215,6 +215,11 @@ const _getScoreType = (hand) => {
   return SCORING.UNKNOWN;
 };
 
+/**
+ *
+ * @param {Hand} hand
+ * @returns
+ */
 const getScoreType = (hand) => {
   console.group(`[getScoreType]`);
   const type = _getScoreType(hand);
