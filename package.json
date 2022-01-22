@@ -1,5 +1,6 @@
 {
   "name": "video-poker-swe1",
+  "type": "module",
   "version": "1.0.0",
   "description": "SWE1 Video Poker",
   "main": "script.js",
