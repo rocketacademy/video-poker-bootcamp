@@ -20,7 +20,7 @@ const newSampleSingleSuitDeck = (suit) => {
   return deck;
 };
 
-const newStandardDeck = () => {
+const newStandardDeck = (isToRiffle = true) => {
   const values = Object.values(CARD_VALUE);
   const suits = Object.values(CARD_SUITS);
 
@@ -31,5 +31,14 @@ const newStandardDeck = () => {
       addCardToDeck(deck, card);
     }
   }
+
+  if (isToRiffle) {
+    const le = deck.length;
+    for (let i = 0; i < le; i += 1) {
+      const j = Math.floor(Math.random() * (le - i)) + i;
+      [deck[j], deck[i]] = [deck[i], deck[j]];
+    }
+  }
+
   return deck;
 };
