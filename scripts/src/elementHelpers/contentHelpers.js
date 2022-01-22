@@ -70,10 +70,8 @@ const updateDisablitiyGameMode = (config) => {
   const activeElementGameModeButton =
     getElementGameModeActiveOfPlayerConfig(config);
   _enableClick(activeElementGameModeButton);
-  console.log(`activeElementGameModeButton ${activeElementGameModeButton}`);
 
   const currentMode = getGameModeFromPlayerConfig(config);
-  console.log(`currentMode ${currentMode}`);
 
   const elementCurrentMode = getElementGameModeOfPlayerConfig(
     config,

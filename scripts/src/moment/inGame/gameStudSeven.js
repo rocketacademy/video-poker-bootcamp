@@ -6,6 +6,7 @@ const URL_CARD_FACE_DOWN = `static/img/cards/JOKER-RED.png`;
 const CLASS_NAME_ACTION_AREA = `action-area`;
 const CLASS_NAME_BUTTON_BET = `action-bet-button`;
 const CLASS_NAME_SLIDER_BET = `slider-bet`;
+const CLASS_NAME_BUSTED = `desc busted`;
 
 /**
  *
@@ -27,8 +28,13 @@ const newElementHand = () => _newElementDiv(CLASS_NAME_HAND);
 
 const newElementActionArea = () => _newElementDiv(CLASS_NAME_ACTION_AREA);
 
+const newElementBusted = () => {
+  const element = _newElementDiv(CLASS_NAME_BUSTED);
+  element.innerText = `No more 🍯`;
+
+  return element;
+};
 const cardToImgUrl = (card) => {
-  console.log(getInPlayCardOrdinal(card));
   const ordinal = getInPlayCardOrdinal(card).toString().padStart(2, "0");
   const suit = getInPlayCardSuit(card);
   return `static/img/cards/${ordinal}-${suit}.png`;
@@ -40,7 +46,8 @@ const newElementCoin = () => {
 };
 const newElementBetButton = () => {
   // TODO
-  return _newElementButton(CLASS_NAME_BUTTON_BET, `BET`);
+  const element = _newElementButton(CLASS_NAME_BUTTON_BET, `BET`);
+  return element;
 };
 
 const newElementSliderBet = (min, max) => {
@@ -57,7 +64,7 @@ const newGameStudSeven = (core) => {
 
   let activeBet = 0;
   let pot = 0;
-
+  const addToPot = (credit) => (pot += credit);
   /**
    *
    * @param {number} pos
@@ -65,6 +72,8 @@ const newGameStudSeven = (core) => {
    */
   const getElementCardHolderByPosition = (pos) =>
     elements.hand.cardHolders[pos];
+
+  const getElementSliderBet = () => elements.action.bet.slider;
   const updateDisplayOfCardHolder = (pos, card) => {
     const elementCardHolder = getElementCardHolderByPosition(pos);
     const imgSrc = cardToImgUrl(card);
@@ -98,27 +107,60 @@ const newGameStudSeven = (core) => {
   const elementActionArea = newElementActionArea();
   const elementButtonBet = newElementBetButton();
 
+  const isBusted = () => getPlayerCreditOfCore(core) <= 0;
   elementButtonBet.addEventListener(`click`, () => {
-    console.log(activeBet);
+    console.group(`bet button clicked`);
+    setInitialBetIfNull(activeBet);
+    addToPot(activeBet);
+    minusPlayerCreditOfCore(core, activeBet);
 
     activeBet = 0; // reset
 
+    console.log(`remaining credit` + getPlayerCreditOfCore(core));
+    if (isBusted()) {
+      detachAllChildren(elementActionArea);
+      elementActionArea.appendChild(newElementBusted());
+      return;
+    }
+    const slider = getElementSliderBet();
+    slider.max = getBetLimit();
+    slider.value = 0;
+    refreshBetButtonVisibility();
     drawCardAndUpdateDisplay();
+    console.groupEnd();
   });
 
   elementActionArea.appendChild(elementButtonBet);
   const isInitialBetSet = () => initialBet !== null;
-
-  const getMaxBet = () => {
+  const setInitialBetIfNull = (activeBet) => {
+    if (initialBet === null) {
+      initialBet = activeBet;
+    }
+  };
+  const getBetLimit = () => {
     if (isInitialBetSet()) {
-      return initialBet;
+      return Math.min(initialBet, getPlayerCreditOfCore(core));
     }
     return getPlayerCreditOfCore(core);
   };
-  const elementSliderBet = newElementSliderBet(0, getMaxBet());
+  const refreshBetButtonVisibility = () => {
+    if (activeBet > 0) {
+      setInnerText(elementButtonBet, `BET`);
+      showElement(elementButtonBet);
+    } else {
+      if (isInitialBetSet()) {
+        setInnerText(elementButtonBet, `CHECK`);
+      } else {
+        hideElement(elementButtonBet);
+      }
+    }
+  };
+  const elementSliderBet = newElementSliderBet(0, getBetLimit());
   elementSliderBet.addEventListener(`input`, ({ target: { value } }) => {
     console.log(value);
+
     activeBet = value;
+    refreshBetButtonVisibility();
   });
 
   elementActionArea.appendChild(elementSliderBet);
@@ -128,10 +170,10 @@ const newGameStudSeven = (core) => {
     action: {
       area: elementActionArea,
       coin: newElementCoin(),
-      buttons: { bet: elementButtonBet },
+      bet: { button: elementButtonBet, slider: elementSliderBet },
     },
   };
-
+  refreshBetButtonVisibility();
   return {
     getElementRoot: () => getElementRootOfCore(core),
     getPlayerName: () => getPlayerNameOfCore(core),
@@ -140,8 +182,6 @@ const newGameStudSeven = (core) => {
     addPlayerCredit: (credit) => addPlayerCreditOfCore(core, credit),
     getHand: () => hand,
     getCardByPosition: (pos) => hand[pos],
-    addToPot: (credit) => (pot += credit),
-
     getCardPosition: () => currentCardPosition,
     incrementCardPosition: () => (currentCardPosition += 1),
 

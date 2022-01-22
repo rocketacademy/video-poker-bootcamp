@@ -54,11 +54,7 @@ const getCardValue = (card) => card.cardValue;
  * @param {Card} card
  * @returns {string} Card Suit
  */
-const getCardSuit = (card) => {
-  console.log(card.suit);
-  console.log(`getCardSuit ${card.suit}`);
-  return card.suit;
-};
+const getCardSuit = (card) => card.suit;
 
 /**
  *

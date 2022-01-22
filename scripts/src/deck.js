@@ -28,10 +28,8 @@ const newStandardDeck = () => {
   for (const v of values) {
     for (const s of suits) {
       const card = newCard(v, s);
-      console.log(card);
       addCardToDeck(deck, card);
     }
   }
-  console.log(deck);
   return deck;
 };
