@@ -1,6 +1,6 @@
 const POKER_HAND_SIZE = 5;
 
-const CARD_RANK = {
+const CARD_VALUE = {
   ONE: `ONE`,
   TWO: `TWO`,
   THREE: `THREE`,
@@ -54,7 +54,11 @@ const getCardValue = (card) => card.cardValue;
  * @param {Card} card
  * @returns {string} Card Suit
  */
-const getCardSuit = (card) => card.suit;
+const getCardSuit = (card) => {
+  console.log(card.suit);
+  console.log(`getCardSuit ${card.suit}`);
+  return card.suit;
+};
 
 /**
  *
@@ -64,31 +68,31 @@ const getCardSuit = (card) => card.suit;
 const getCardOrdinal = (card) => {
   const cardValue = getCardValue(card);
   switch (cardValue) {
-    case CARD_RANK.ONE:
+    case CARD_VALUE.ONE:
       return 14;
-    case CARD_RANK.TWO:
+    case CARD_VALUE.TWO:
       return 2;
-    case CARD_RANK.THREE:
+    case CARD_VALUE.THREE:
       return 3;
-    case CARD_RANK.FOUR:
+    case CARD_VALUE.FOUR:
       return 4;
-    case CARD_RANK.FIVE:
+    case CARD_VALUE.FIVE:
       return 5;
-    case CARD_RANK.SIX:
+    case CARD_VALUE.SIX:
       return 6;
-    case CARD_RANK.SEVEN:
+    case CARD_VALUE.SEVEN:
       return 7;
-    case CARD_RANK.EIGHT:
+    case CARD_VALUE.EIGHT:
       return 8;
-    case CARD_RANK.NINE:
+    case CARD_VALUE.NINE:
       return 9;
-    case CARD_RANK.TEN:
+    case CARD_VALUE.TEN:
       return 10;
-    case CARD_RANK.JACK:
+    case CARD_VALUE.JACK:
       return 11;
-    case CARD_RANK.QUEEN:
+    case CARD_VALUE.QUEEN:
       return 12;
-    case CARD_RANK.KING:
+    case CARD_VALUE.KING:
       return 13;
   }
 };
@@ -118,9 +122,7 @@ const isInPlayCardDiscarded = (inPlayCard) => inPlayCard.isDiscarded;
 const newInPlayCard = (card) => {
   return {
     value: card,
-    element: null,
     faceUp: true,
-    isDiscarded: false,
   };
 };
 
@@ -243,27 +245,4 @@ const getHandCombinations = (hand, sizePerHandCombination) => {
     currentCombination
   );
   return result;
-};
-
-/**
- * @typedef {Hand} Deck
- *
- */
-const newDeck = newHand;
-const addCardToDeck = addCardToHand;
-const getDeckSize = getHandSize;
-
-/**
- * @returns {Deck}
- */
-const newSampleSingleSuitDeck = (suit) => {
-  const deck = newDeck();
-  suit = suit || CARD_SUITS.HEART;
-
-  for (const rank of Object.values(CARD_RANK)) {
-    const card = newCard(rank, suit);
-    addCardToDeck(deck, card);
-  }
-
-  return deck;
 };

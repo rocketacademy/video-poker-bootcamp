@@ -3,6 +3,9 @@ const CLASS_NAME_CARD = `card`;
 const CLASS_NAME_CARD_IMG = `card-img`;
 const CLASS_NAME_HAND = `hand`;
 const URL_CARD_FACE_DOWN = `static/img/cards/JOKER-RED.png`;
+const CLASS_NAME_ACTION_AREA = `action-area`;
+const CLASS_NAME_BUTTON_BET = `action-bet-button`;
+const CLASS_NAME_SLIDER_BET = `slider-bet`;
 
 /**
  *
@@ -22,19 +25,63 @@ const newElementCardEmpty = () => newElementCard(null, ``);
 
 const newElementHand = () => _newElementDiv(CLASS_NAME_HAND);
 
-const cardToImgUrl = (card) => {
-  const ordinal = getCardOrdinal(card).getRank().toString().padStart(2, "0");
+const newElementActionArea = () => _newElementDiv(CLASS_NAME_ACTION_AREA);
 
-  const suit = getCardSuit(card);
+const cardToImgUrl = (card) => {
+  console.log(getInPlayCardOrdinal(card));
+  const ordinal = getInPlayCardOrdinal(card).toString().padStart(2, "0");
+  const suit = getInPlayCardSuit(card);
   return `static/img/cards/${ordinal}-${suit}.png`;
+};
+
+const newElementCoin = () => {
+  // TODO
+  return _newElementDiv(`dummy-coin`);
+};
+const newElementBetButton = () => {
+  // TODO
+  return _newElementButton(CLASS_NAME_BUTTON_BET, `BET`);
+};
+
+const newElementSliderBet = (min, max) => {
+  return _newElementSlider(CLASS_NAME_SLIDER_BET, min, max);
 };
 
 const newGameStudSeven = (core) => {
   const handSizeToSettle = 7;
   const hand = newHand();
+  const deck = newStandardDeck();
   let currentCardPosition = 0;
 
-  const pot = 0;
+  let initialBet = null;
+
+  let activeBet = 0;
+  let pot = 0;
+
+  /**
+   *
+   * @param {number} pos
+   * @returns {CardHolder}
+   */
+  const getElementCardHolderByPosition = (pos) =>
+    elements.hand.cardHolders[pos];
+  const updateDisplayOfCardHolder = (pos, card) => {
+    const elementCardHolder = getElementCardHolderByPosition(pos);
+    const imgSrc = cardToImgUrl(card);
+    const elementCardImg = newElementCard(imgSrc);
+    elementCardHolder.replaceChildren(elementCardImg);
+  };
+
+  const drawCardAndUpdateDisplay = () => {
+    console.group(`drawCard`);
+
+    const card = drawCard(deck);
+    addCardToHand(hand, card);
+
+    const lastIndex = getHandSize(hand) - 1; // this is abit hacky, assumes added card is in the last position.
+    updateDisplayOfCardHolder(lastIndex, card);
+    console.groupEnd();
+  };
 
   /** @typedef {CardHolder[]} cardHolders*/
   const cardHolders = [];
@@ -46,24 +93,45 @@ const newGameStudSeven = (core) => {
   }
 
   const wrapper = newElementHand();
-  console.log(wrapper);
   appendChilds(wrapper, cardHolders);
+
+  const elementActionArea = newElementActionArea();
+  const elementButtonBet = newElementBetButton();
+
+  elementButtonBet.addEventListener(`click`, () => {
+    console.log(activeBet);
+
+    activeBet = 0; // reset
+
+    drawCardAndUpdateDisplay();
+  });
+
+  elementActionArea.appendChild(elementButtonBet);
+  const isInitialBetSet = () => initialBet !== null;
+
+  const getMaxBet = () => {
+    if (isInitialBetSet()) {
+      return initialBet;
+    }
+    return getPlayerCreditOfCore(core);
+  };
+  const elementSliderBet = newElementSliderBet(0, getMaxBet());
+  elementSliderBet.addEventListener(`input`, ({ target: { value } }) => {
+    console.log(value);
+    activeBet = value;
+  });
+
+  elementActionArea.appendChild(elementSliderBet);
+
   const elements = {
     hand: { wrapper, cardHolders },
+    action: {
+      area: elementActionArea,
+      coin: newElementCoin(),
+      buttons: { bet: elementButtonBet },
+    },
   };
 
-  /**
-   *
-   * @param {number} pos
-   * @returns {CardHolder}
-   */
-  const getElementCardHolderByPosition = (pos) => elements.cardHolders[pos];
-  const updateDisplayOfCardHolder = (pos, card) => {
-    const elementCardHolder = getElementCardHolderByPosition(pos);
-    const imgSrc = cardToImgUrl(card);
-    const elementCardImg = newElementCard(imgSrc);
-    elementCardHolder.replaceChildren(elementCardImg);
-  };
   return {
     getElementRoot: () => getElementRootOfCore(core),
     getPlayerName: () => getPlayerNameOfCore(core),
@@ -78,13 +146,7 @@ const newGameStudSeven = (core) => {
     incrementCardPosition: () => (currentCardPosition += 1),
 
     getElementHand: () => elements.hand.wrapper,
-
-    drawCard: () => {
-      const card = newCard();
-      addCardToHand(hand, card);
-      const lastIndex = getHandSize(hand) - 1; // this is abit hacky, assumes added card is in the last position.
-      updateDisplayOfCardHolder(lastIndex, card);
-    },
+    getElementActionArea: () => elements.action.area,
   };
 };
 
@@ -96,7 +158,7 @@ const studSevenGoPaint = (game) => {
   const childPlayerName = _newElementDiv(`dummy-playername`);
   const childPot = _newElementDiv(`dummy-pot`);
   const childHand = game.getElementHand();
-  const childAction = _newElementDiv(`dummy-action`);
+  const childAction = game.getElementActionArea();
   const childCredit = _newElementDiv(`dummy-credit`);
 
   appendChilds(root, [

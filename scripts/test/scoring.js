@@ -1,11 +1,11 @@
 const TEST_SCORINGS = () => {
   runTest(`testScoreShouldBeFourOfAKind`, () => {});
   runTest(`testScoreShouldBeStraight`, () => {
-    const cardYoungest = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const cardYounger = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const cardYoung = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
-    const cardOld = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
-    const cardOldest = newCard(CARD_RANK.SEVEN, CARD_SUITS.CLUB);
+    const cardYoungest = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const cardYounger = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const cardYoung = newCard(CARD_VALUE.FIVE, CARD_SUITS.HEART);
+    const cardOld = newCard(CARD_VALUE.SIX, CARD_SUITS.HEART);
+    const cardOldest = newCard(CARD_VALUE.SEVEN, CARD_SUITS.CLUB);
     const sortedHand = newHand();
     const sizePerHandCombination = 5;
 
@@ -49,14 +49,14 @@ const TEST_SCORINGS = () => {
     );
   });
   runTest(`testCardsScoreShouldNotBeStraight`, () => {
-    const cardYoungest = newCard(CARD_RANK.JACK, CARD_SUITS.HEART);
-    const cardYounger = newCard(CARD_RANK.QUEEN, CARD_SUITS.HEART);
-    const cardYoung = newCard(CARD_RANK.KING, CARD_SUITS.HEART);
-    const cardNotYoung = newCard(CARD_RANK.ONE, CARD_SUITS.HEART);
-    const cardNotOld = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
-    const cardOld = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
-    const cardOlder = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const cardOldest = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
+    const cardYoungest = newCard(CARD_VALUE.JACK, CARD_SUITS.HEART);
+    const cardYounger = newCard(CARD_VALUE.QUEEN, CARD_SUITS.HEART);
+    const cardYoung = newCard(CARD_VALUE.KING, CARD_SUITS.HEART);
+    const cardNotYoung = newCard(CARD_VALUE.ONE, CARD_SUITS.HEART);
+    const cardNotOld = newCard(CARD_VALUE.TWO, CARD_SUITS.HEART);
+    const cardOld = newCard(CARD_VALUE.THREE, CARD_SUITS.CLUB);
+    const cardOlder = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const cardOldest = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
 
     const cardRange = [
       cardYoungest,
@@ -112,11 +112,11 @@ const TEST_SCORINGS = () => {
   });
 
   runTest(`testCardsScoreShouldBeFlush`, () => {
-    const cardThemed1 = newCard(CARD_RANK.JACK, CARD_SUITS.HEART);
-    const cardThemed2 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const cardThemed3 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
-    const cardThemed4 = newCard(CARD_RANK.ONE, CARD_SUITS.HEART);
-    const cardThemed5 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
+    const cardThemed1 = newCard(CARD_VALUE.JACK, CARD_SUITS.HEART);
+    const cardThemed2 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const cardThemed3 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
+    const cardThemed4 = newCard(CARD_VALUE.ONE, CARD_SUITS.HEART);
+    const cardThemed5 = newCard(CARD_VALUE.TWO, CARD_SUITS.HEART);
 
     const cardRange = [
       cardThemed1,
@@ -167,11 +167,11 @@ const TEST_SCORINGS = () => {
   });
 
   runTest(`testCardScoreShouldBeFourOfAKind`, () => {
-    const cardPack1 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
-    const cardPack2 = newCard(CARD_RANK.TWO, CARD_SUITS.CLUB);
-    const cardPack3 = newCard(CARD_RANK.TWO, CARD_SUITS.DIAMOND);
-    const cardPack4 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
-    const cardHigh = newCard(CARD_RANK.JACK, CARD_SUITS.HEART);
+    const cardPack1 = newCard(CARD_VALUE.TWO, CARD_SUITS.HEART);
+    const cardPack2 = newCard(CARD_VALUE.TWO, CARD_SUITS.CLUB);
+    const cardPack3 = newCard(CARD_VALUE.TWO, CARD_SUITS.DIAMOND);
+    const cardPack4 = newCard(CARD_VALUE.TWO, CARD_SUITS.SPADE);
+    const cardHigh = newCard(CARD_VALUE.JACK, CARD_SUITS.HEART);
 
     const cardRange = [cardPack1, cardPack2, cardPack3, cardPack4, cardHigh];
 
@@ -212,11 +212,11 @@ const TEST_SCORINGS = () => {
 
   runTest(`testCardScoreShouldBeHouse`, () => {
     const functionName = `testCardScoreShouldBeHouse`;
-    const cardPack1 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
-    const cardPack2 = newCard(CARD_RANK.TWO, CARD_SUITS.DIAMOND);
-    const cardPack3 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
-    const cardPair1 = newCard(CARD_RANK.JACK, CARD_SUITS.CLUB);
-    const cardPair2 = newCard(CARD_RANK.JACK, CARD_SUITS.HEART);
+    const cardPack1 = newCard(CARD_VALUE.TWO, CARD_SUITS.HEART);
+    const cardPack2 = newCard(CARD_VALUE.TWO, CARD_SUITS.DIAMOND);
+    const cardPack3 = newCard(CARD_VALUE.TWO, CARD_SUITS.SPADE);
+    const cardPair1 = newCard(CARD_VALUE.JACK, CARD_SUITS.CLUB);
+    const cardPair2 = newCard(CARD_VALUE.JACK, CARD_SUITS.HEART);
 
     const cardRange = [cardPack1, cardPair1, cardPack2, cardPack3, cardPair2];
     const housedHand = newHand();
@@ -262,11 +262,11 @@ const TEST_SCORINGS = () => {
 
   runTest(`testCardScoreShouldBeTrips`, () => {
     const functionName = `testCardScoreShouldBeTrips`;
-    const cardHigh1 = newCard(CARD_RANK.JACK, CARD_SUITS.CLUB);
-    const cardHigh2 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
-    const cardPack1 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
-    const cardPack2 = newCard(CARD_RANK.TWO, CARD_SUITS.DIAMOND);
-    const cardPack3 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
+    const cardHigh1 = newCard(CARD_VALUE.JACK, CARD_SUITS.CLUB);
+    const cardHigh2 = newCard(CARD_VALUE.FIVE, CARD_SUITS.HEART);
+    const cardPack1 = newCard(CARD_VALUE.TWO, CARD_SUITS.HEART);
+    const cardPack2 = newCard(CARD_VALUE.TWO, CARD_SUITS.DIAMOND);
+    const cardPack3 = newCard(CARD_VALUE.TWO, CARD_SUITS.SPADE);
     const cardRange = [cardPack1, cardHigh1, cardPack2, cardPack3, cardHigh2];
     const housedHand = newHand();
     const sizePerHandCombination = 5;
@@ -302,11 +302,11 @@ const TEST_SCORINGS = () => {
 
   runTest(`testCardScoreShouldBeStraightFlush`, () => {
     const functionName = `testCardScoreShouldBeStraightFlush`;
-    const cardPack1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const cardPack2 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
-    const cardPack3 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const cardPack4 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
-    const cardPack5 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardPack1 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const cardPack2 = newCard(CARD_VALUE.SIX, CARD_SUITS.HEART);
+    const cardPack3 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const cardPack4 = newCard(CARD_VALUE.FIVE, CARD_SUITS.HEART);
+    const cardPack5 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
     const cardRange = [cardPack1, cardPack2, cardPack3, cardPack4, cardPack5];
     const housedHand = newHand();
     const sizePerHandCombination = 5;
@@ -342,11 +342,11 @@ const TEST_SCORINGS = () => {
 
   runTest(`testCardScoreShouldBeDoubs`, () => {
     const functionName = `testCardScoreShouldBeDoubs`;
-    const cardPair1_1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const cardPair1_2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
-    const cardPair2_1 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const cardPair2_2 = newCard(CARD_RANK.FOUR, CARD_SUITS.DIAMOND);
-    const cardHigh = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardPair1_1 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const cardPair1_2 = newCard(CARD_VALUE.THREE, CARD_SUITS.CLUB);
+    const cardPair2_1 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const cardPair2_2 = newCard(CARD_VALUE.FOUR, CARD_SUITS.DIAMOND);
+    const cardHigh = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
     const cardRange = [
       cardPair1_1,
       cardPair2_2,
@@ -388,11 +388,11 @@ const TEST_SCORINGS = () => {
 
   runTest(`testCardScoreShouldBePair`, () => {
     const functionName = `testCardScoreShouldBePair`;
-    const cardPair1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const cardPair2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
-    const cardHigh2 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const cardHigh3 = newCard(CARD_RANK.JACK, CARD_SUITS.DIAMOND);
-    const cardHigh1 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardPair1 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const cardPair2 = newCard(CARD_VALUE.THREE, CARD_SUITS.CLUB);
+    const cardHigh2 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const cardHigh3 = newCard(CARD_VALUE.JACK, CARD_SUITS.DIAMOND);
+    const cardHigh1 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
     const cardRange = [cardPair1, cardHigh3, cardPair2, cardHigh2, cardHigh1];
     const doubsHand = newHand();
     const sizePerHandCombination = 5;
@@ -428,11 +428,11 @@ const TEST_SCORINGS = () => {
 
   runTest(`testCardScoreShouldBeHigh`, () => {
     const functionName = `testCardScoreShouldBeHigh`;
-    const cardPair1 = newCard(CARD_RANK.KING, CARD_SUITS.HEART);
-    const cardPair2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
-    const cardHigh2 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const cardHigh3 = newCard(CARD_RANK.JACK, CARD_SUITS.DIAMOND);
-    const cardHigh1 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardPair1 = newCard(CARD_VALUE.KING, CARD_SUITS.HEART);
+    const cardPair2 = newCard(CARD_VALUE.THREE, CARD_SUITS.CLUB);
+    const cardHigh2 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const cardHigh3 = newCard(CARD_VALUE.JACK, CARD_SUITS.DIAMOND);
+    const cardHigh1 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
     const cardRange = [cardPair1, cardHigh3, cardPair2, cardHigh2, cardHigh1];
     const doubsHand = newHand();
     const sizePerHandCombination = 5;
@@ -548,13 +548,13 @@ const TEST_SCORINGS = () => {
 
     const handSevenCard = newHand();
 
-    const card1 = newCard(CARD_RANK.ONE, CARD_SUITS.HEART);
-    const card2 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
-    const card3 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const card4 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const card5 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
-    const card6 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
-    const card7 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const card1 = newCard(CARD_VALUE.ONE, CARD_SUITS.HEART);
+    const card2 = newCard(CARD_VALUE.TWO, CARD_SUITS.HEART);
+    const card3 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const card4 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const card5 = newCard(CARD_VALUE.FIVE, CARD_SUITS.HEART);
+    const card6 = newCard(CARD_VALUE.SIX, CARD_SUITS.HEART);
+    const card7 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
 
     for (const card of [card6, card1, card3, card2, card5, card4, card7]) {
       addCardToHand(handSevenCard, card);
@@ -623,12 +623,12 @@ const TEST_SCORINGS = () => {
   runTest(`testComparisionStraighFlushes`, () => {
     const functionName = `testComparisionStraighFlushes`;
 
-    const card1 = newCard(CARD_RANK.TWO, CARD_SUITS.HEART);
-    const card2 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const card3 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const card4 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
-    const card5 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
-    const card6 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const card1 = newCard(CARD_VALUE.TWO, CARD_SUITS.HEART);
+    const card2 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const card3 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const card4 = newCard(CARD_VALUE.FIVE, CARD_SUITS.HEART);
+    const card5 = newCard(CARD_VALUE.SIX, CARD_SUITS.HEART);
+    const card6 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
 
     const lowerStraightFlush = newHand();
     const higherStraightFlush = newHand();
@@ -660,12 +660,12 @@ const TEST_SCORINGS = () => {
   runTest(`testComparisionStraight`, () => {
     const functionName = `testComparisionStraight`;
 
-    const card1 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
-    const card2 = newCard(CARD_RANK.THREE, CARD_SUITS.CLUB);
-    const card3 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const card4 = newCard(CARD_RANK.FIVE, CARD_SUITS.DIAMOND);
-    const card5 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
-    const card6 = newCard(CARD_RANK.SEVEN, CARD_SUITS.SPADE);
+    const card1 = newCard(CARD_VALUE.TWO, CARD_SUITS.SPADE);
+    const card2 = newCard(CARD_VALUE.THREE, CARD_SUITS.CLUB);
+    const card3 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const card4 = newCard(CARD_VALUE.FIVE, CARD_SUITS.DIAMOND);
+    const card5 = newCard(CARD_VALUE.SIX, CARD_SUITS.HEART);
+    const card6 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.SPADE);
 
     const lowerStraight = newHand();
     const higherStraight = newHand();
@@ -707,11 +707,11 @@ const TEST_SCORINGS = () => {
   runTest(`testComparisionFlush`, () => {
     const functionName = `testComparisionFlush`;
 
-    const cardClubs1 = newCard(CARD_RANK.FIVE, CARD_SUITS.CLUB);
-    const cardClubs2 = newCard(CARD_RANK.SIX, CARD_SUITS.CLUB);
-    const cardClubs3 = newCard(CARD_RANK.SEVEN, CARD_SUITS.CLUB);
-    const cardClubs4 = newCard(CARD_RANK.EIGHT, CARD_SUITS.CLUB);
-    const cardClubs5 = newCard(CARD_RANK.NINE, CARD_SUITS.CLUB);
+    const cardClubs1 = newCard(CARD_VALUE.FIVE, CARD_SUITS.CLUB);
+    const cardClubs2 = newCard(CARD_VALUE.SIX, CARD_SUITS.CLUB);
+    const cardClubs3 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.CLUB);
+    const cardClubs4 = newCard(CARD_VALUE.EIGHT, CARD_SUITS.CLUB);
+    const cardClubs5 = newCard(CARD_VALUE.NINE, CARD_SUITS.CLUB);
 
     const clubsRange = [
       cardClubs1,
@@ -721,11 +721,11 @@ const TEST_SCORINGS = () => {
       cardClubs2,
     ];
 
-    const cardDiamonds1 = newCard(CARD_RANK.FOUR, CARD_SUITS.DIAMOND);
-    const cardDiamonds2 = newCard(CARD_RANK.FIVE, CARD_SUITS.DIAMOND);
-    const cardDiamonds3 = newCard(CARD_RANK.SIX, CARD_SUITS.DIAMOND);
-    const cardDiamonds4 = newCard(CARD_RANK.SEVEN, CARD_SUITS.DIAMOND);
-    const cardDiamonds5 = newCard(CARD_RANK.EIGHT, CARD_SUITS.DIAMOND);
+    const cardDiamonds1 = newCard(CARD_VALUE.FOUR, CARD_SUITS.DIAMOND);
+    const cardDiamonds2 = newCard(CARD_VALUE.FIVE, CARD_SUITS.DIAMOND);
+    const cardDiamonds3 = newCard(CARD_VALUE.SIX, CARD_SUITS.DIAMOND);
+    const cardDiamonds4 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.DIAMOND);
+    const cardDiamonds5 = newCard(CARD_VALUE.EIGHT, CARD_SUITS.DIAMOND);
 
     const diamondsRange = [
       cardDiamonds1,
@@ -735,11 +735,11 @@ const TEST_SCORINGS = () => {
       cardDiamonds5,
     ];
 
-    const cardHearts1 = newCard(CARD_RANK.THREE, CARD_SUITS.HEART);
-    const cardHearts2 = newCard(CARD_RANK.FOUR, CARD_SUITS.HEART);
-    const cardHearts3 = newCard(CARD_RANK.FIVE, CARD_SUITS.HEART);
-    const cardHearts4 = newCard(CARD_RANK.SIX, CARD_SUITS.HEART);
-    const cardHearts5 = newCard(CARD_RANK.SEVEN, CARD_SUITS.HEART);
+    const cardHearts1 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const cardHearts2 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const cardHearts3 = newCard(CARD_VALUE.FIVE, CARD_SUITS.HEART);
+    const cardHearts4 = newCard(CARD_VALUE.SIX, CARD_SUITS.HEART);
+    const cardHearts5 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
 
     const heartsRange = [
       cardHearts1,
@@ -749,11 +749,11 @@ const TEST_SCORINGS = () => {
       cardHearts5,
     ];
 
-    const cardSpadeLower1 = newCard(CARD_RANK.TWO, CARD_SUITS.SPADE);
-    const cardSpadeLower2 = newCard(CARD_RANK.THREE, CARD_SUITS.SPADE);
-    const cardSpadeLower3 = newCard(CARD_RANK.FOUR, CARD_SUITS.SPADE);
-    const cardSpadeLower4 = newCard(CARD_RANK.FIVE, CARD_SUITS.SPADE);
-    const cardSpadeLower5 = newCard(CARD_RANK.SIX, CARD_SUITS.SPADE);
+    const cardSpadeLower1 = newCard(CARD_VALUE.TWO, CARD_SUITS.SPADE);
+    const cardSpadeLower2 = newCard(CARD_VALUE.THREE, CARD_SUITS.SPADE);
+    const cardSpadeLower3 = newCard(CARD_VALUE.FOUR, CARD_SUITS.SPADE);
+    const cardSpadeLower4 = newCard(CARD_VALUE.FIVE, CARD_SUITS.SPADE);
+    const cardSpadeLower5 = newCard(CARD_VALUE.SIX, CARD_SUITS.SPADE);
 
     const spadeLowRange = [
       cardSpadeLower1,
@@ -762,11 +762,11 @@ const TEST_SCORINGS = () => {
       cardSpadeLower5,
       cardSpadeLower3,
     ];
-    const cardSpadeHigher1 = newCard(CARD_RANK.TEN, CARD_SUITS.SPADE);
-    const cardSpadeHigher2 = newCard(CARD_RANK.JACK, CARD_SUITS.SPADE);
-    const cardSpadeHigher3 = newCard(CARD_RANK.QUEEN, CARD_SUITS.SPADE);
-    const cardSpadeHigher4 = newCard(CARD_RANK.KING, CARD_SUITS.SPADE);
-    const cardSpadeHigher5 = newCard(CARD_RANK.ONE, CARD_SUITS.SPADE);
+    const cardSpadeHigher1 = newCard(CARD_VALUE.TEN, CARD_SUITS.SPADE);
+    const cardSpadeHigher2 = newCard(CARD_VALUE.JACK, CARD_SUITS.SPADE);
+    const cardSpadeHigher3 = newCard(CARD_VALUE.QUEEN, CARD_SUITS.SPADE);
+    const cardSpadeHigher4 = newCard(CARD_VALUE.KING, CARD_SUITS.SPADE);
+    const cardSpadeHigher5 = newCard(CARD_VALUE.ONE, CARD_SUITS.SPADE);
 
     const spadeHighRange = [
       cardSpadeHigher1,

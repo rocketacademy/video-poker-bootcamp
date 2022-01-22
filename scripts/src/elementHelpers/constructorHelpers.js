@@ -20,6 +20,18 @@ const _newElementTextInput = (className) => {
   _addClassToElement(element, className);
   return element;
 };
+
+const _newElementSlider = (className, min, max) => {
+  const element = document.createElement("input");
+  element.className += ` ${className}`;
+  element.setAttribute(`type`, `range`);
+  element.setAttribute(`step`, 1);
+  element.value = min;
+  element.min = min;
+  element.max = max;
+  return element;
+};
+
 const _newElementDiv = (className) => {
   const element = document.createElement(`div`);
   _addClassToElement(element, className);
