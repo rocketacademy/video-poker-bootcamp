@@ -6,12 +6,22 @@ body {
   font-size: 1em;
 }
 
-.cardContainer {
+.front-container {
   display: inline-block;
   border: 3px solid#ffd966;
   height: 4em;
   width: 3em;
   font-family: "Poppins", sans-serif;
+  font-size: 2em;
+  margin: 0.5em;
+}
+
+.back-container {
+  background: url("images/cookie_monster.jpeg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 4em;
+  width: 3em;
   font-size: 2em;
   margin: 0.5em;
 }

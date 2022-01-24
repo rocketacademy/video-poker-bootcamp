@@ -1,27 +1,5 @@
-/// ///////GLOBAL VARIABLES//////////
-let deck = [];
-const numberOfCards = 5;
-const gameScoreContainer = document.createElement('div');
-const gameScore = 100;
-const gameScoreStep = 20;
-const hand = [];
-let canClick = true;
-let fiveCardContainer;
-let cardContainer;
-let discardHand;
-let swapHand;
-
-// message container
-const messageContainer = document.createElement('div');
-messageContainer.classList.add('message');
-document.body.appendChild(messageContainer);
-
-// message output
-const messageOutput = document.createElement('span');
-messageContainer.append(messageOutput);
-messageOutput.innerText = '';
-
 /// ///////HELPER FUNCTIONS//////////
+
 // Create shuffled card deck
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
 const shuffleCards = (cards) => {
@@ -55,18 +33,48 @@ const makeDeck = () => {
         cardName = 'K';
       }
       // Create a new card with the current name, suit, rank
-      const card = {
+      const cardInfo = {
         name: cardName,
         suit: currentSuit,
         rank: rankCounter,
       };
       // Add the new card to the deck
-      newDeck.push(card);
+      newDeck.push(cardInfo);
     }
   }
   // Return the completed card deck
   return newDeck;
 };
+
+/// ///////GLOBAL VARIABLES//////////
+
+let cardContainer;
+const cardTally = [];
+let cardSelectIndex = [];
+let cardDeck;
+const toggleDeal = true;
+const swapOnce = false;
+let dealCounter = 0;
+
+const numberOfCards = 5;
+const gameScoreContainer = document.createElement('div');
+const gameScore = 100;
+const gameScoreStep = 20;
+let fiveCardContainer;
+let playerHand = [];
+let playerScore;
+
+// message container
+const messageContainer = document.createElement('div');
+messageContainer.classList.add('message');
+document.body.appendChild(messageContainer);
+
+// message output
+const messageOutput = document.createElement('span');
+messageContainer.append(messageOutput);
+messageOutput.innerText = '';
+
+/// ////////////CALLBACK FUNCTIONS/////////
 
 const buildFiveCardContainer = () => {
   fiveCardContainer = document.getElementById('fiveCardContainer');
@@ -74,45 +82,46 @@ const buildFiveCardContainer = () => {
 
   for (let i = 0; i < numberOfCards; i += 1) {
     cardContainer = document.createElement('div');
-    cardContainer.classList.add('cardContainer');
+    cardContainer.classList.add('card-container');
     cardContainer.setAttribute('id', `card${i}`);
     fiveCardContainer.appendChild(cardContainer);
   }
 };
 
-const enterSwapHand = () => {
-  discardHand = 
-  for (let i = 0; i < discardHand.length; i += 1) {
-    swapHand[i] = deck.pop();
+const dealCards = (noOfCards) => {
+  const listOfCards = [];
+  for (let i = 0; i < noOfCards; i += 1) {
+    const card = cardDeck.pop();
+    listOfCards.push(card);
   }
-  console.log(discardHand);
-  console.log(swapHand);
+  console.log(listOfCards);
+  return listOfCards;
 };
 
-const openHand = () => {
-  for (let i = 0; i < numberOfCards; i += 1) {
-    hand[i] = deck.pop();
-    cardContainer = document.getElementById(`card${i}`);
-    cardContainer.innerHTML = `${hand[i].name} <br> ${hand[i].suit}`;
-    cardContainer.classList.add('cardContainer');
-    cardContainer.addEventListener('click', enterSwapHand);
+const replaceCard = (newCards, playerHand, cardSelectIndex) => {
+  for (index in cardSelectIndex) {
+  // The index of the hand of which cards to be replaced
+    const cardIndex = cardSelectIndex[index];
+    // Obtain the element of the new card
+    const newCard = newCards[index];
+    console.log(newCard);
+    // Replace the old card using index, 1 time, with the new element card
+    playerHand.splice(cardIndex, 1, newCard);
   }
+  return playerHand;
 };
-
-/// ////////////CALLBACK FUNCTIONS/////////
 
 const analyseHand = () => {
-  const handSuit = hand.map(({ suit }) => suit);
-  const handRank = hand.map(({ rank }) => rank);
+  const playerHandSuit = playerHand.map(({ suit }) => suit);
+  const playerHandRank = playerHand.map(({ rank }) => rank);
 
-  const ELE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  const ELE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-  const ele = handRank;
-  const eleSuit = handSuit;
+  const ele = playerHandRank;
+  const eleSuit = playerHandSuit;
 
-  // testing ele, eleSuit
-  // const ele = [2, 2, 4, 5, 6];
-  // const eleSuit = ['♥', '♥', '♥', '♥', '♥'];
+  // const ele = [9, 13, 11, 13, 11];
+  // const eleSuit = ['♥', '♠', '♠', '♠', '♠'];
 
   const flush = eleSuit.every((i) => i === eleSuit[0]);
   const group = ELE.map((n, i) => ele.filter((j) => i === j).length).sort((x, y) => y - x);
@@ -129,10 +138,10 @@ const analyseHand = () => {
   if (group[0] === 3) return 'three-of-a-kind';
   if (group[0] === 2 && group[1] === 2) return 'two-pair';
   if (group[0] === 2) return 'one-pair';
-  return 'You din catch anything';
+  return 'You din get anything';
 };
 
-const calScore = () => {
+const getScore = () => {
   const result = analyseHand();
 
   if (result === 'straight-flush') return Math.round(gameScoreStep / 0.0012);
@@ -143,38 +152,88 @@ const calScore = () => {
   if (result === 'three-of-a-kind') return Math.round(gameScoreStep / 0.5211);
   if (result === 'two-pair') return Math.round(gameScoreStep / 0.747);
   if (result === 'one-pair') return Math.round(gameScoreStep / 0.942);
-  if (result === 'You din catch anything') return '0';
+  if (result === 'You din get anything') return [];
+};
+
+const cardSelect = (cardInfo, index) => {
+  // if index is not inside, append. Otherwise remove.
+  if (cardSelectIndex.includes(Number(index)) === false) {
+    cardSelectIndex.push(Number(index));
+    console.log(cardSelectIndex);
+  }
+  else {
+    // Obtain the index of which the number is repeated
+    const removeIndex = cardSelectIndex.indexOf(Number(index));
+    // Remove the card base on the index, 1 time.
+    cardSelectIndex.splice(removeIndex, 1);
+  }
+  console.log(cardSelectIndex);
+  return cardSelectIndex;
+};
+
+const createCard = (cardInfo, index) => {
+  const suit = document.createElement('div');
+  suit.classList.add(cardInfo.suit, cardInfo.color);
+  suit.innerText = cardInfo.suit;
+
+  const name = document.createElement('div');
+  name.classList.add('name', cardInfo.color);
+  name.innerText = cardInfo.name;
+
+  const card = document.createElement('div');
+  card.classList.add('card');
+
+  const frontContainer = document.createElement('div');
+  frontContainer.classList.add('front-container');
+
+  frontContainer.appendChild(name);
+  frontContainer.appendChild(suit);
+
+  card.addEventListener('click', (e) => {
+    cardSelect(cardInfo, index);
+  });
+  card.appendChild(frontContainer);
+
+  return card;
 };
 
 const drawClick = () => {
-  if (canClick === true) {
-    canClick = false;
-  }
-  messageOutput.innerText = '';
-  cardContainer.innerHTML = '';
-  deck = shuffleCards(makeDeck());
+  // This line resets and reshuffle the deck for subsequent plays
+  if (dealCounter % 2 === 0) {
+    cardContainer.innerHTML = '';
+    cardDeck = shuffleCards(makeDeck());
 
-  canClick = true;
-  openHand();
-  setTimeout(() => {
-    messageOutput.innerText = `${analyseHand()}; Pick any card to swap!`;
-    gameScoreContainer.innerText = `${gameScore + calScore()}`;
-    console.log(`${calScore()}`);
-  }, 2500);
+    playerHand = dealCards(numberOfCards);
+
+    for (index in playerHand) {
+      const card = createCard(playerHand[index], index);
+      cardContainer.appendChild(card);
+    }
+  }
 };
 
 const swapClick = () => {
-  enterSwapHand();
-  swapHand.sort((a, b) => a - b);
-  for (let i = 0; i < swapHand.length; i += 1) {
-    cardContainer = document.getElementById(`card${swapHand[i]}`);
-    cardContainer.innerHTML = `${swapHand[i].name}${swapHand[i].suit}`;
-    cardContainer.classList.add('cardContainer');
+// Draw new cards base on length;
+  const noOfCards = cardSelectIndex.length;
+  const newCards = dealCards(noOfCards);
+
+  // Replace cards in player's Hand
+  playerHand = replaceCard(newCards, playerHand, cardSelectIndex);
+
+  // Get score for new cards
+
+  // Update DOM with new cards
+  cardContainer.innerHTML = ''; // Empty the container
+  for (index in playerHand) {
+    const card = createCard(playerHand[index], index);
+    cardContainer.appendChild(card);
   }
 };
 
 const resetClick = () => {
-  initGame();
+  dealCounter = 0;
+  cardSelectIndex = [];
+  buildFiveCardContainer();
 };
 
 /// ////////////INITISATION///////////////
@@ -191,7 +250,7 @@ const initGame = () => {
   fiveCardContainer.setAttribute('id', 'fiveCardContainer');
   document.body.appendChild(fiveCardContainer);
 
-  // prepare 3 buttons for draw, swap, reset
+  // set up 3 buttons for draw, swap, reset
   const drawButton = document.createElement('button');
   drawButton.innerText = 'DRAW';
   document.body.appendChild(drawButton);
@@ -206,8 +265,8 @@ const initGame = () => {
   resetButton.innerText = 'RESET';
   document.body.appendChild(resetButton);
   resetButton.addEventListener('click', resetClick);
-
-  // build card container to hold five cards
-  buildFiveCardContainer();
 };
 initGame();
+
+// build card container to hold five cards
+buildFiveCardContainer();
