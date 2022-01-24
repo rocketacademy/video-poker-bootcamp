@@ -1,0 +1,403 @@
+@import url("https://fonts.googleapis.com/css2?family=Bungee&family=Lobster&family=Marcellus&family=Pacifico&family=Play:wght@400;700&family=Raleway:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,300&display=swap");
+
+body {
+  font-family: play;
+  font-size: 1.5em;
+  font-weight: 600;
+  background-image: url("Images/Gradient-Background-Best-Wallpaper-16349-Baltana.jpeg");
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container {
+  max-width: 60vw;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  align-self: center;
+}
+
+h1 {
+  margin: 2.5vh;
+  font-weight: 100;
+  font-family: Bungee;
+  font-size: 9vh;
+  text-align: center;
+  color: white;
+  text-shadow: 0 0 2vh #acedee;
+}
+
+header {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+#payout-info {
+  display: flex;
+  gap: 6vh;
+  justify-content: center;
+}
+
+#left-side > table {
+  border: 1vh solid #01171a;
+  outline: 0.5vh inset #98edee;
+  background-image: radial-gradient(#0c4a54, #0a5c6a, #01171a);
+  font-size: 0.5em;
+  border-radius: 2vh;
+  box-shadow: 0vh 0vh 1vh #01171a;
+}
+
+#left-side td {
+  font-family: Play;
+  text-transform: uppercase;
+  padding: 1vh 1vh;
+  text-shadow: 0.1vh 0.1vh #26111b;
+}
+#left-side td:nth-child(1) {
+  color: #ffa73f;
+}
+
+#left-side td:nth-child(2) {
+  color: #ffa73f;
+  padding: 0.5vh 3vh;
+  white-space: nowrap;
+  text-shadow: 0.2vh 0.2vh #26111b;
+}
+
+#left-side td:nth-child(3) {
+  color: #fafbe3;
+}
+
+#right-side {
+  display: flex;
+  align-items: center;
+  font-family: bungee;
+}
+
+.row {
+  color: #fafbe3;
+  display: flex;
+  border: 1vh solid #01171a;
+  outline: 0.5vh inset #98edee;
+  background-image: radial-gradient(#0c4a54, #0a5c6a, #01171a);
+  border-radius: 1vh;
+  box-shadow: rgba(0, 0, 0, 0.1) 0vh 1vh 1.2vh -0.5vh,
+    rgba(0, 0, 0, 0.05) 0px 1vh 1.5vh -1vh;
+  text-shadow: 0.4vh 0.4vh #0d3950;
+}
+.column {
+  flex: 50%;
+  border: 0.2vh solid #0a5c6a8c;
+}
+
+table {
+  vertical-align: top;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  font-size: 1.8vh;
+}
+.column td {
+  padding: 1.5vh 2vh;
+}
+.column tr {
+  box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+}
+
+.output {
+  border-radius: 5vh;
+  width: 107vh;
+  margin: 2vh auto;
+  box-shadow: #98edee 3px 3px 6px 0px inset,
+    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  flex: 1;
+  padding: 3vh;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  display: inline-block;
+  width: 14vh;
+  height: 20vh;
+  background-image: url(Images/background-image2.jpg);
+  background-size: 14vh, 20vh;
+  background-color: white;
+  margin: 2vh;
+  border-radius: 1vh;
+  box-shadow: 0px 0px 1vh #31312c;
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+button {
+  width: 18vh;
+  background-image: linear-gradient(#015369, #2592b4, #096c7a);
+  padding: 0vh 1vh;
+  font-family: Bungee;
+  color: #0d3950;
+  border-radius: 1vh;
+  border: 0.5vh outset #015369;
+  box-shadow: 0 0.8vh #0d3950;
+  text-shadow: 0.2vh 0.2vh #2592b4;
+}
+button:hover {
+  box-shadow: 0 0 3vh #0d3950;
+}
+button:active {
+  box-shadow: 0 0.4vh #096c7a;
+  transform: translateY(0.5vh);
+}
+
+.change-bet {
+  width: 8vh;
+  font-size: 1.2vh;
+  position: absolute;
+  font-size: 2em;
+  text-shadow: 1px 1px #98edee;
+}
+
+.change-bet:hover {
+  cursor: pointer;
+}
+#decrease-bet {
+  left: 0.2vh;
+}
+
+#increase-bet {
+  right: 0.2vh;
+}
+.playing-buttons {
+  display: flex;
+  gap: 15vh;
+  justify-content: space-evenly;
+  margin: 2vh 10vh;
+  align-items: center;
+}
+
+.play-function {
+  width: 15vw;
+  flex-wrap: wrap;
+  max-height: 10vh;
+  border: 0.5vh solid #015369;
+  outline: 0.5vh outset #2592b4;
+  padding: 1vh;
+  flex: 1;
+  border-radius: 2vh;
+  position: relative;
+  box-shadow: 0px 0px 1vh #31312c;
+  background-image: linear-gradient(to bottom right, #2592b4, #0d3950);
+}
+.play-function:nth-child(2) {
+  all: unset;
+}
+
+#bet-function {
+  display: flex;
+  justify-content: center;
+  gap: 5vw;
+  font-size: 0.8em;
+  font-family: bungee;
+  text-shadow: 0.4vh 0.4vh #0d3950;
+  flex-wrap: wrap;
+}
+
+#bet-text {
+  display: flex;
+  flex-direction: column;
+  color: #98edee;
+}
+
+#bet-amount {
+  text-align: center;
+  font-family: Bungee;
+  font-size: 0.8em;
+  width: 6vh;
+  border-radius: 1vh;
+  background-color: #015369;
+  border: inset #015369;
+  color: #98edee;
+}
+
+#deal-btn {
+  border-color: #fafbe3;
+  font-size: 1.3em;
+  padding: 1.5vh;
+  color: #fafbe3;
+  text-shadow: 0.4vh 0.4vh #26111b;
+  background-image: linear-gradient(#ffcc26, #ffa73f, #fd7649);
+}
+
+#deal-btn:hover {
+  box-shadow: 0 0 2vh #fafbe3;
+  cursor: pointer;
+}
+
+.flip:hover {
+  cursor: pointer;
+  color: #111;
+  border: #fafbe3;
+  box-shadow: 0 0 3vh #fafbe3;
+  transform: translateY(-1vh);
+  position: relative;
+}
+
+#how-to-play {
+  z-index: 2;
+  position: absolute;
+  left: 0vw;
+}
+
+header {
+  position: relative;
+}
+i {
+  color: #98edee;
+  text-shadow: 0 0 2vh #acedee;
+  position: absolute;
+  top: 4vh;
+}
+i:hover {
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+  font-family: Bungee;
+  color: #fafbe3;
+  position: absolute;
+  top: 1vh;
+  border-radius: 0.4vh;
+  margin: auto;
+  background-image: linear-gradient(#ffcc26, #ffa73f, #fd7649);
+  width: 14vh;
+  text-align: center;
+  box-shadow: 0px 0px 1vh #31312c;
+  -webkit-text-stroke: 0.2vh #31312c;
+}
+
+.flip:hover > .hide {
+  display: block;
+}
+.clicked > .hide {
+  display: block;
+  transform: none;
+  box-shadow: none;
+}
+.clicked {
+  position: relative;
+  transform: translateY(-1vh);
+  box-shadow: 0 0 3vh #fafbe3;
+}
+
+.hold-show {
+  transform: none;
+}
+
+#cards-display {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.message {
+  font-family: Bungee;
+  font-weight: 100;
+  position: absolute;
+  top: 8vh;
+  width: 90vh;
+  height: auto;
+  border: solid;
+  background-image: linear-gradient(#ffcc26, #ffa73f, #fd7649);
+  border-radius: 10px;
+  text-shadow: 0.2vh 0.2vh #26111b;
+  text-align: center;
+  padding: 0.8vh;
+  font-size: 0.8em;
+}
+
+.hidden {
+  display: none;
+}
+
+#total-credit {
+  font-size: 0.8em;
+  flex-direction: column;
+  text-align: center;
+  font-family: Bungee;
+  color: #98edee;
+  text-shadow: 0.2vh 0.2vh #26111b;
+  display: flex;
+}
+
+#credits-value {
+  width: 7vh;
+  border-radius: 1vh;
+  background-color: #015369;
+  border: inset #015369;
+  color: #98edee;
+  margin: auto;
+}
+
+.combo-cards {
+  width: 5vh;
+  height: 2vh;
+  border-radius: 0.5vh;
+  border: 1px solid #98edee;
+}
+
+.combo-cards:hover {
+  transform: scale(2.5);
+}
+
+.win-row {
+  background-color: #acedee5e;
+  border-radius: 1vh;
+  box-shadow: 0px 0px 1vh #98edee;
+}
+
+.modal {
+  display: none;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #05141d;
+  box-shadow: #abe6f3 3px 3px 6px 0px inset, #abe6f3 -3px -3px 6px 1px inset;
+  color: #fafbe3;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+  border-radius: 2vh;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #05141d;
+  text-decoration: none;
+  cursor: pointer;
+}
