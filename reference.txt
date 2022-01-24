@@ -1,0 +1,45 @@
+d
+
+1) 5-of-a-Kind = 4 same rank + 1 Wild card ( rank of cards matter)??
+
+1) Royal-Flush =  A, K, Q, J, 10, of the same suit
+
+2) Straight-Flush = 5 same suit + all in sequential rank 
+
+3) Four of a kind(quads) = 4 same rank + 1 kicker (rank matters) (suit doesn't matter)
+
+4) Full House = 3 same rank + 2 of another rank (' 1 triplet + 1 pair')
+
+5) Flush = all cards are in the same suit, + not in sequential rank
+
+6) Straight = all cards are in sequential rank + not same suit
+
+7) Three-of-a-Kind = 3 same rank + 2 kickers
+
+8) Two Pairs = 2 same rank + 1 kicker(rank matters)
+
+9) 1 Pair = 1 same rank + 3 kickers (rank matters)
+
+10) High Card = 5 kickers no pair 
+            (suit doesn't matter)
+            (if p1 = p2 = 5 cards same rank, it's a tie)
+
+
+
+  (rank.sort.highToLow then> compare highest to highest of other player, 
+   if tie, move to next index)
+
+
+Ace can be 11 or 1. 
+
+[Chicago Rules]
+High Card -? 
+One pair - 1 point.
+Two pair - 2 points.
+Three of a kind - 3 points.
+Straight - 4 points.
+Flush - 5 points.
+Full house - 6 points.
+Four of a kind - 7 points 
+Straight flush - 8 points 
+Royal Flush - 20 points 
