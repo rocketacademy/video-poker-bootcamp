@@ -1,46 +1,10 @@
-/*
-Game logic: 
-The user starts with 100 points.
-When they click the "Deal" button the computer deals a hand of 5 cards. The user can choose any number of their cards to replace with new, random cards.
-After the user finishes replacing cards, the game assigns points based on the resulting hand. See rankings of Poker hands here.
 
-*/
-
-/*
-OBJECTIVES:
-1. to deal 5 cards to player 
-2. Add winning logic 
-what do i need to do?: 
-1. player get an array of 5 cards 
-2. create a function that can detect any winning combinations --> helper function for each winning condition 
-    1. Check for same suit (done) 
-    2. Check for running sequence (done)
-    3. Check for 4 cards same (4 of a kind) (done)
-    4. Check for 3 cards same, the rest 2 cards same (full house)(done)
-    5. Check for 3 cards same, rest 2 cards can be different (3 of a kind)(done)
-    6. Check for 2 pairs (2 pairs) (done)
-    7. Check for 1 pair of J/Q/K/A (done)
-*/
-
-/************************   FIRST PART TO GET WINNING COMBINATIONS ********************************* */
-// get Object.keys --> return an array. then use a for loop to check for running sequence, iterate through each object key and check that each number is just one number difference e.g. let playerCards = Object.keys() --> then find difference of playerCards[i] - playerCards[i+1] 0,1; 1,2; 2,3; 3;4, if there is a difference of 1 then it is indeed a running sequence, else not 
-
-
-//to check for same suit--> similar to object tally, return an object with suits of cards as keys and values the represent the frequency of the suit appearing --> if all same suit --> flush 
-
-
-/*to check for same cards --> using the object tally -->should return an object with names of cards as keys and values represent the freq:
-  1. Find the freq of card appearing: use a for--in loop --> for card in cardTally --> let freqOfCard = cardTally[card]  --> push the number into an array 
-  2. if any number in the array ===4 --> 4 of a kind exists 
-  3. if any number in the array ===3 ---> card appear 3 times  ---> can be 3 of a kind/full house 
-      ---> if the other number ===2 --> if card appears 3 times and another card appears 2 time -->full house exists 
-      ---> else 3 of a kind 
-*/
-
-/*to check for 1 pair of J/Q/K/A:
-  iterate object tally, if J/Q/K/A exists, then look at the value, if freq ===2, then pair exists --> else no 
   
-//========================HELPER FUNCTIONS ========================================
+//Global Variables 
+
+let deck; 
+
+//<---------------Functions to make deck and give cards ---------> 
 /**
  * a function that gives a deck of card 
  * @return {array}  new deck with each card contained in an object 
@@ -104,8 +68,6 @@ const getRandomIndex = (max) => Math.floor(Math.random() * max);
  * @param {array} of cards 
  * @return {array} of cards that are shuffled 
  */
-
-// Shuffle an array of cards
 const shuffleCards = (cards) => {
   // Loop over the card deck array once
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
@@ -122,20 +84,10 @@ const shuffleCards = (cards) => {
   // Return the shuffled deck
   return cards;
 };
-//====================GLOBAL SETUP ===============/
-const deck = shuffleCards(makeDeck());
 
-
-
-
-
-
-
-//========================HELPER FUNCTIONS ========================================
 /** function to give 5 cards to player
  * @return {array} containing 5 cards --> each as an object 
  */
-
 let hand = [];
 const dealHand = () =>{
 for (let i = 0; i < 5; i += 1) {
@@ -143,21 +95,18 @@ for (let i = 0; i < 5; i += 1) {
 }
 console.log("playerHand", hand)
 }
-dealHand()
 
-//========================PART 1: TO CHECK FOR WINNING COMBINATIONS========================================
-
-/** 
- * a function that check for winning combinations 
-*/
+//<-----------To Check for Winning Combinations ----> 
+let order = 0
+let cardNameTally = {};
 
 /** function that creates card name as keys and freq of card appearing as value 
  * @param {array} - player hand 
  * @return {object} - tally of cards and freq of cards appearing 
  */
 
-let cardNameTally = {};
 const createTally = (playerHand) =>{
+  cardNameTally = {}
 // Create Object as tally
 
 // Loop over hand
@@ -174,13 +123,12 @@ for (let i = 0; i < playerHand.length; i += 1) {
   }
 }
 
-
-let flush;
-
 /** function to check for the same suit 
  * @param {array} - player hand 
  * @return {boolean} whether running sequence exists 
  */
+
+let flush;
 const checkSameSuit = (cards) =>{
   //iterate through each card object in player hand array, 
   let cardSuits = []
@@ -188,100 +136,454 @@ const checkSameSuit = (cards) =>{
 cards.forEach(card => cardSuits.push(card.suit))
 console.log(cardSuits)
 //check if every suit in the array are the same 
-cardSuits.every(suit => suit === cardSuits[0])? flush = true : flush = false 
+if (cardSuits.every(suit => suit === cardSuits[0]))
+ {
+  flush = true 
+  order =5 
 }
-
+else flush = false
+}
  
 
-let straightExist; 
+let straightExist;
 /**function to check for whether a running squence exist 
  * @param {object} tally --> tally of all cards 
  * @return {boolean} --> whether straight exists? 
  */
- const checkStraights = (tally) =>{
-   let listOfCardNames = [];
-   listOfCardNames = Object.keys(tally)
-listOfCardNames.sort(function(a,b) {return a-b})
 
-console.log(listOfCardNames)
+ const checkStraights = (cards) =>{
+let listOfCardRank = [];
+cards.forEach(card => listOfCardRank.push(card.rank))
+listOfCardRank.sort(function(a,b) {return a-b})
+console.log(listOfCardRank)
+
 
    //you need to sort the numbers in order from smallest to greatest
-  console.log(listOfCardNames)
-  for (let i =0; i<listOfCardNames.length-1; i+=1){
-    if(Math.abs(listOfCardNames[i]- listOfCardNames[i+1]) ===1){
-    straightExist= true
-    }
-    else straightExist = false 
-  }
-   
- }
-
-/*to check for same cards --> using the object tally -->should return an object with names of cards as keys and values represent the freq:
-  1. Find the freq of card appearing: use a for--in loop --> for card in cardTally --> let freqOfCard = cardTally[card]  --> push the number into an array 
-  2. if any number in the array ===4 --> 4 of a kind exists 
-  3. if any number in the array ===3 ---> card appear 3 times  ---> can be 3 of a kind/full house 
-      ---> if the other number ===2 --> if card appears 3 times and another card appears 2 time -->full house exists 
-      ---> else 3 of a kind 
-*/
-let fourOfaKind;
-let fullHouse;
-let threeOfaKind;
-let twoPair;
+   let difference =[]
+  for (let i =0; i<listOfCardRank.length-1; i+=1){
+    difference.push(Math.abs(listOfCardRank[i]- listOfCardRank[i+1]))
+}
+if (difference.every(element => element === 1 )){
+  straightExist = true 
+  order =4
+}
+}
 
 const checker = (cardArray,target)=> {
 return cardArray.some(element => target.includes(element))
 }
 
 
+/**function to check for X of the same kind 
+ * 
+ * @param {object} tally  -- tally that records the freq of cards appearing 
+ * @return {boolean} 
+ */
+
 const checkForSameKind = (tally) =>{
   let highValueCards = ["J","Q","K","A"]
   let freqOfCardAppearing = []
+  console.log(tally)
+ 
   for (let card in tally){
     freqOfCardAppearing.push(tally[card])
     //iterate through each element in the card array and if some of them includes the highvalue card in highvaluecards array, then true
-  }
 
-  
-
-console.log(checker(tally,high))
-
-  console.log(freqOfCardAppearing)
-
+    for (let i =0; i<highValueCards.length; i+=1){
+      if (card === highValueCards[i]){
+        let freq =  tally[card]
+        if (freq === 2){
+          order =1 
+        }
+      }
+    }
+}
   //to check 4kind,3kind,2pairs
   freqOfCardAppearing.forEach(frequency => {
     if (frequency ===4){
-      fourOfaKind = true 
+      console.log("4kind")
+      order = 7 
     }
-    if (frequency ===3){
-      if (freqOfCardAppearing.length ===2){
-        console.log("fullhouse")
-      fullHouse = true
-    }
-    else {
+    if (frequency ===3 ){
       console.log("3ofakind")
-      threeOfaKind = true 
-    }
+      order = 3
+    if (freqOfCardAppearing.length ===2){
+        console.log("fullhouse")
+        order = 6
+      }
   }
   if (frequency ===2) { 
     if (freqOfCardAppearing.length ===3){
       console.log("2pair")
-      twoPair = true 
+      order =2 
      }
+   }
+  }
+  )
+}
+
+const checkForStraightFlush = (cards) => {
+  if(flush === true && straightExist ===true){
+    order = 8 
   }
 }
 
-  )
+//if cards are of the same suits, if A exists, let A = 14
+const checkForRoyalFlush = (cards) =>{
+  if (flush === true){
+    cards.forEach(card => {
+      if (card.name ==="A"){
+       card.rank = 14 
+      }
+    }
+    )
+
+   checkStraights(cards)
+   //need to add check for straight flush if not order will be disrupted  
+   checkForStraightFlush(cards)
+   for(let i =0;i<cards.length;i+=1){
+     if (cards[i].name ==="A" && straightExist === true){
+    order =9 
   
+    cards[i].rank = 1 
+  }
+  }
+}
 }
 
-const playerHand7 = [
-  { rank: 2, suit: 'hearts', name: 'K' },
-  { rank: 2, suit: 'hearts', name: 'Q' },
-  { rank: 5, suit: 'hearts', name: 'J' },
-  { rank: 7, suit: 'hearts', name: 'J' },
-  { rank: 9, suit: 'hearts', name: '1' },
-]
-createTally(playerHand7)
-console.log("tally", cardNameTally)
- checkStraights(cardNameTally)
+ //<-----------To Calculate score for Winning Combinations ----> 
+
+  //check for order of winning combo, higher number is higher value combo 
+const checkForWinningCombo = (playerHand) => {
+order = 0 
+  //same suit and straights and X of a kind mutually exclusive - order does not matter
+createTally(playerHand)
+checkSameSuit(playerHand)
+checkStraights(playerHand)
 checkForSameKind(cardNameTally)
+
+//the following - order does matter 
+checkForStraightFlush(playerHand)
+checkForRoyalFlush(playerHand)
+
+}
+
+//key --> order, value --> payout value 
+let payout = {
+  1:[1,"Jacks or better"],
+  2:[2,"Two pairs"],
+  3:[3,"Three of a Kind"],
+  4:[4, "Straight" ],
+  5:[6,"Flush" ],
+  6:[9,"Full house" ],
+  7:[25,"Four of a Kind" ],
+  8:[50, "Straight Flush" ],
+  9:[250, "Royal Flush" ],
+}
+
+let totalCredit = 100
+let betAmount = 1
+let win
+let totalPayout = 0
+
+const calcHandScore = (handOrder) =>{
+  const betValueEl = document.getElementById("bet-amount")
+    betAmount = betValueEl.innerHTML 
+ for (let comboOrder in payout){
+   if (handOrder == comboOrder){
+     win = true 
+     let comboPayout = payout[handOrder][0]
+
+     if (handOrder ===9 && betAmount ===5){
+       comboPayout =800
+      } 
+    
+     totalPayout += betAmount*comboPayout
+     totalCredit += totalPayout
+   }
+   else win = false 
+ }
+ if (!win){
+   totalCredit -= betAmount
+ }
+} 
+
+const calculateTotalCredits = () =>{
+  const creditEl = document.getElementById("credits-value")
+  console.log(totalCredit)
+  creditEl.innerHTML = totalCredit
+}
+
+
+ //======================DOM Manipulation ===================
+
+ const messageDiv = document.createElement("div")
+const cardEl = document.getElementsByClassName("card")
+  const payoutRow = document.getElementsByClassName("payout-row")
+
+/** Function to show message of win/lose
+ * @param {number} - which order does the card combo belongs to 
+ * @return {String} - lose/win message
+ */
+const showMessageDiv =(handOrder) =>{
+ messageDiv.classList.add("message")
+
+for (let comboOrder in payout){
+  if (handOrder == comboOrder){
+     const winAudio = document.getElementById("win-sound")
+  winAudio.play()
+    console.log(payoutRow)
+    payoutRow[9-handOrder].classList.add("win-row")
+    messageDiv.innerHTML = `${handOrder}. ${payout[handOrder][1]}`
+  }
+}
+if (handOrder ==0) {
+  const loseAudio = document.getElementById("lose-sound")
+  loseAudio.play()
+
+  
+  let loseMsg = `Sorry, no luck this time round!<br> Play the deal button to start the game again`
+  messageDiv.innerHTML = loseMsg
+}
+
+const cardsLayoutEl = document.getElementById("cards-display")
+console.log(cardsLayoutEl)
+cardsLayoutEl.appendChild(messageDiv)
+
+//to restart the dom card manipualtion 
+console.log(cardEl)
+for (let i =0; i<cardEl.length;i+=1){
+  cardEl[i].removeEventListener("click", holdCards)
+  if (cardEl[i].classList.contains("flip")){
+    cardEl[i].classList.remove("flip")
+  }
+  if (cardEl[i].classList.contains("clicked", "hold-show")){
+    cardEl[i].classList.remove("clicked", "hold-show")
+  }
+
+  const hideEl = document.createElement("hide")
+  hideEl.innerHTML= "Hold"
+  hideEl.classList.add("hide")
+  cardEl[i].appendChild(hideEl)
+}
+}
+
+/**Function to show player cards 
+ *  @param {array} playerHand 
+ */
+const playCardSound = document.getElementById("deal-card")
+
+const showPlayerCards = (playerHand) =>
+{
+console.log(cardEl)
+//to show cards one by one using setTimeout 
+for (let i =0; i<cardEl.length; i+=1){
+  let k=i
+  setTimeout(()=>{
+   cardEl[i].style.backgroundImage = `url(Images/card-images-52/${playerHand[i].name}_of_${playerHand[i].suit}.png`
+   console.log(playCardSound)
+   playCardSound.play()
+  cardEl[i].classList.add('flip')
+   cardEl[i].addEventListener("click", holdCards)
+},700*(k+1))
+}
+
+for (let j =0;j<payoutRow.length; j+=1){
+  if (payoutRow[j].classList.contains("win-row")){
+    payoutRow[j].classList.remove("win-row")
+  }
+}
+
+decreaseBet.disabled = true;
+increaseBet.disabled = true;
+}
+
+
+let betInputEl = document.querySelector("#bet-amount")
+const payoutColumn = document.querySelectorAll(".payout-column")
+console.log(payoutColumn)
+ const royalFlushEl =document.getElementById("royal-flush")
+
+
+const coinAudio = document.getElementById("coin-sound")
+//function to decrease bet amount 
+const decreaseBetAmount = () =>{
+  coinAudio.play()
+betAmount -=1 
+if (betAmount<= 1){
+  betAmount =1 
+}
+
+betInputEl.innerHTML = betAmount
+console.log(payoutColumn)
+
+for (let i =0;i<payoutColumn.length;i+=1){
+  payoutColumn[i].innerHTML = `${betAmount}x${payout[9-i][0]}`
+}
+
+if (betAmount <5){
+royalFlushEl.innerHTML = "x250"
+}
+}
+
+//function to increase bet amount 
+const increaseBetAmount = () =>{
+  coinAudio.play()
+betAmount +=1 
+if (betAmount >=5){
+  betAmount =5 
+}
+betInputEl.innerHTML = betAmount
+
+for (let i =0;i<payoutColumn.length;i+=1){
+  payoutColumn[i].innerHTML = `${betAmount}x${payout[9-i][0]}`
+}
+ 
+if (betAmount ===5){
+ payoutColumn[0].innerHTML = `${betAmount}x800`
+ console.log(royalFlushEl)
+ royalFlushEl.innerHTML = "x800"
+}
+
+}
+
+//function to hold cards --> to click and unclick cards
+const holdCards = (e) =>{
+  const holdAudio = document.getElementById("hold-sound")
+  holdAudio.play()
+//check which is the card that was clicked, 
+let clickedEl = e.target
+console.log("clickedEl", clickedEl)
+if (!clickedEl.classList.contains("clicked")){
+  clickedEl.classList.remove("flip")
+  clickedEl.classList.add("clicked")
+}
+else 
+{
+clickedEl.classList.remove("clicked")
+}
+}
+
+/**function when called will show new cards that are clicked (hold)
+ * 
+ */
+const makeNewHand = () =>{
+  firstGame = false 
+let holdEl = document.getElementsByClassName("clicked")
+let numberOfCardsHold =  holdEl.length
+messageDiv.classList.remove("hidden")
+let newCards = []
+
+//to make cards return to original position 
+for (let i=0;i<holdEl.length;i+=1){
+  holdEl[i].classList.add("hold-show")
+}
+//to deal new cards depending on how many cards need to be changed
+for (let i =0;i<(5-numberOfCardsHold);i+=1){
+   newCards.push(deck.pop());
+}
+
+//find cards that are not clicked 
+const notClickedCards = document.getElementsByClassName("flip")
+console.log(notClickedCards)
+
+
+ let indexOfClickedElements =[]
+for (let i=0;i<notClickedCards.length;i+=1){
+  
+  notClickedCards[i].style.backgroundImage=`url(Images/background-image2.jpg)`
+  notClickedCards[i].style.backgroundImage = `url(Images/card-images-52/${newCards[i].name}_of_${newCards[i].suit}.png`
+console.log(cardEl)
+
+ //to find out how many cards are clicked 
+}
+
+for (let k=0;k<cardEl.length;k+=1){
+if(cardEl[k].classList.contains("clicked")){
+  //to remove the hold element 
+  cardEl[k].innerHTML = ""
+    indexOfClickedElements.push(k)
+}
+}
+
+console.log(indexOfClickedElements)
+//to find out which cards are not changed (hold not clicked)
+let exisitingCards = []
+indexOfClickedElements.forEach(index => 
+exisitingCards.push(hand[index])
+  )
+  console.log(exisitingCards)
+
+//to get the new set of cards by combining new cards and exisiting cards array 
+ let newSetHand = [...newCards,...exisitingCards]
+console.log(newSetHand)
+checkForWinningCombo(newSetHand)
+ calcHandScore(order)
+showMessageDiv(order)
+calculateTotalCredits()
+ console.log(totalCredit)
+
+ decreaseBet.disabled = false;
+increaseBet.disabled = false;
+}
+
+const restartGame = () =>{
+  messageDiv.classList.add("hidden")
+  console.log(messageDiv)
+
+}
+
+let firstGame = true ;
+const initGame = () =>{
+  for (let i =0; i<cardEl.length; i+=1){
+   cardEl[i].style.backgroundImage = `url(Images/background-image2.jpg)`
+  }
+  if (!firstGame ) {
+ restartGame()}
+ deck = shuffleCards(makeDeck());
+  hand =  []
+  dealHand()
+ showPlayerCards(hand)
+ console.log("secondgame", cardEl)
+ 
+}
+ 
+const decreaseBet = document.getElementById("decrease-bet")
+const increaseBet = document.getElementById("increase-bet")
+decreaseBet.addEventListener("click",decreaseBetAmount)
+increaseBet.addEventListener("click",increaseBetAmount)
+
+const dealBtn = document.getElementById("deal-btn")
+
+dealBtn.addEventListener("click", function(){
+  if(this.value === "1"){
+    initGame()
+    this.value = "2"
+  }
+  else if (this.value =="2"){
+    makeNewHand()
+    this.value = "1"
+
+  }
+})
+
+const modal = document.getElementsByClassName("modal")[0]
+const closeBtn = document.getElementsByClassName("close")[0]
+const playInstructions = document.getElementsByTagName("i")[0]
+playInstructions.onclick = function(){
+  modal.style.display = "block"
+}
+
+closeBtn.onclick=function(){
+    modal.style.display = "none"
+}
+
+window.onclick=function(e){
+  console.log(e.target)
+  if(e.target == modal){
+    modal.style.display = "none"
+  }
+}
+
+console.log(modal)
+console.log(playInstructions)
