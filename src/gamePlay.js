@@ -106,7 +106,7 @@ drawButton.addEventListener("click", function () {
   //reset states for each round
   setTimeout(function () {
     squares.forEach((item) => {
-      item.innerHTML = `<img src ="../assets/snowman.png"/>`;
+      item.innerHTML = `<img src ="../public/snowman.png"/>`;
     });
   buttonWrapper.classList.remove("visible");
   betField.classList.add("visible");
