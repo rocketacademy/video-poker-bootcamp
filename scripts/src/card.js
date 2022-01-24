@@ -168,14 +168,10 @@ const getHandAsString = (hand) => {
  * @param {Hand} hand
  * @param {card} card
  */
-const addCardsToHand = (hand, cards) => {
-  console.log(cards);
+const addCardsToHand = (hand, cards) =>
   cards.forEach((card) => addCardToHand(hand, card));
-};
 
 const newHandWithCards = (cards) => {
-  console.log(`newHandWithCards`);
-  console.log(cards);
   const hand = newHand();
   addCardsToHand(hand, cards);
   return hand;

@@ -66,21 +66,14 @@ const _disableClick = (element) => toggleDisabilityClick(element, true);
 const _enableClick = (element) => toggleDisabilityClick(element, false);
 
 const updateDisablitiyGameMode = (config) => {
-  console.group(`updateDisablitiyGameMode`);
   const activeElementGameModeButton =
     getElementGameModeActiveOfPlayerConfig(config);
   _enableClick(activeElementGameModeButton);
-
   const currentMode = getGameModeFromPlayerConfig(config);
-
   const elementCurrentMode = getElementGameModeOfPlayerConfig(
     config,
     currentMode
   );
-  console.log(`elementCurrentMode ${elementCurrentMode}`);
   _disableClick(elementCurrentMode);
-
   setElementGameModeActiveOfPlayerConfig(config, elementCurrentMode);
-
-  console.groupEnd();
 };

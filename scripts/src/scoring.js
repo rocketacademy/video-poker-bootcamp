@@ -112,94 +112,59 @@ const newAscendingHand = (hand) => {
 };
 
 const _isHandFullHouse = (hand) => {
-  console.group(`[_isHandFullHouse]`);
-
   const bagValueByCount = getBagValueByCount(hand);
-  const is = bagValueByCount[3].length === 1 && bagValueByCount[2].length === 1;
-  console.groupEnd();
-
-  return is;
+  return bagValueByCount[3].length === 1 && bagValueByCount[2].length === 1;
 };
 
 const _isHandTrips = (hand) => {
-  console.group(`[_isHandTrips]`);
-
   const bagValueByCount = getBagValueByCount(hand);
-  const is = bagValueByCount[3].length === 1 && bagValueByCount[2].length !== 1;
-  console.groupEnd();
-  return is;
+  return bagValueByCount[3].length === 1 && bagValueByCount[2].length !== 1;
 };
 
 const _isHandDouble = (hand) => {
-  console.group(`[_isHandDouble]`);
-
   const bagValueByCount = getBagValueByCount(hand);
-  const is = bagValueByCount[2].length === 2;
-  console.groupEnd();
-  return is;
+  return bagValueByCount[2].length === 2;
 };
 
 const _isHandPair = (hand) => {
-  console.group(`[_isHandPair]`);
-
   const bagValueByCount = getBagValueByCount(hand);
-  const is = bagValueByCount[2].length === 1 && bagValueByCount[1].length === 3;
-  console.groupEnd();
-  return is;
+  return bagValueByCount[2].length === 1 && bagValueByCount[1].length === 3;
 };
-
 const _isHandFourOfAKind = (hand) => {
-  console.group(`[_isHandFourOfAKind]`);
   const bagValueByCount = getBagValueByCount(hand);
   const is = bagValueByCount[4].length === 1;
-
-  console.groupEnd();
   return is;
 };
-const _isHandStraightFlush = (hand) => {
-  console.group(`[_isHandStraightFlush]`);
-  const is = _isHandStraight(hand) && _isHandFlush(hand);
-  console.groupEnd();
-  return is;
-};
+const _isHandStraightFlush = (hand) =>
+  _isHandStraight(hand) && _isHandFlush(hand);
 const _isHandFlush = (hand) => {
-  console.group(`[_isHandFlush]`);
   const bagSuitByCount = getBagSuitByCount(hand);
-  const is = bagSuitByCount[5].length === 1;
-
-  console.groupEnd();
-  return is;
+  return bagSuitByCount[5].length === 1;
 };
 const _isHandStraight = (hand) => {
-  console.group(`[_isHandStraight]`);
-
   const thisHand = newAscendingHand(hand);
-
   for (let i = 1; i < POKER_HAND_SIZE; i += 1) {
     const thisCard = thisHand[i - 1];
     const forward = thisHand[i];
     if (getCardRankDifference(forward, thisCard) !== 1) {
-      console.groupEnd();
-
       return false;
     }
   }
-  console.groupEnd();
-
   return true;
 };
 
 const _isHandHigh = (hand) => {
-  console.group(`[_isHandHigh]`);
-
   const bagValueByCount = getBagValueByCount(hand);
   const is = bagValueByCount[1].length === 5;
-  console.groupEnd();
-
   return is;
 };
 
-const _getScoreType = (hand) => {
+/**
+ *
+ * @param {Hand} hand
+ * @returns {string} SCORING
+ */
+const getScoreType = (hand) => {
   if (getHandSize(hand) !== POKER_HAND_SIZE) {
     return SCORING.SIZE_MISMATCH;
   }
@@ -233,23 +198,8 @@ const _getScoreType = (hand) => {
   return SCORING.UNKNOWN;
 };
 
-/**
- *
- * @param {Hand} hand
- * @returns
- */
-const getScoreType = (hand) => {
-  console.group(`[getScoreType]`);
-  const type = _getScoreType(hand);
-  console.groupEnd();
-  return type;
-};
-
-const _comparatorSubRankSuitOfInPlayCards = (handA, handB) => {
-  const aColorRank = getInPlayCardSuitAsRank(handA);
-  const bColorRank = getInPlayCardSuitAsRank(handB);
-  return aColorRank - bColorRank;
-};
+const _comparatorSubRankSuitOfInPlayCards = (handA, handB) =>
+  getInPlayCardSuitAsRank(handA) - getInPlayCardSuitAsRank(handB);
 
 /**
  * Compares suits then value of the lowest card
@@ -259,7 +209,6 @@ const _comparatorSubRankSuitOfInPlayCards = (handA, handB) => {
  */
 const _comparatorSubRankStraightFlush = (handA, handB) => {
   // NOTE: Call this only if both hands are straight flush.
-  console.log(`_comparatorSubRankStraightFlush`);
   if (isAnyNoU(handA, handB)) {
     throw new Error(`Null received. handA ${handA} handB ${handB}`);
   }
@@ -287,7 +236,6 @@ const _comparatorSubRankStraightFlush = (handA, handB) => {
  * @returns
  */
 const _comparatorSubRankStraight = (handA, handB) => {
-  console.log(`_comparatorSubRankStraight`);
   if (isAnyNoU(handA, handB)) {
     throw new Error(`Null received. handA ${handA} handB ${handB}`);
   }
@@ -325,17 +273,13 @@ const _isSameScoringTypesLessThan = (handA, handB) => {
  * @returns {number}
  */
 const comparatorHandRanking = (handA, handB) => {
-  console.group(`comparatorHandRanking`);
   const scoringTypeA = getScoreType(handA);
   const scoringTypeB = getScoreType(handB);
   const rankA = getRankOfScoringType(scoringTypeA);
   const rankB = getRankOfScoringType(scoringTypeB);
-
   if (rankA === rankB) {
-    console.groupEnd();
     return _isSameScoringTypesLessThan(handA, handB);
   }
-  console.groupEnd();
   return rankA - rankB;
 };
 

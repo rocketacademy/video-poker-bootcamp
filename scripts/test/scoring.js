@@ -256,8 +256,6 @@ const TEST_SCORINGS = () => {
       () =>
         `[testCardsScoreShouldBeFlush] Unexpected Score Type, three of a Kind and TWO of another`
     );
-
-    assertToDo();
   });
 
   runTest(`testCardScoreShouldBeTrips`, () => {
@@ -466,7 +464,7 @@ const TEST_SCORINGS = () => {
     );
   });
 
-  ignoreTest(`testSingleSuitDeckDistributionAgainstCombinationsV1`, () => {
+  runTest(`testSingleSuitDeckDistributionAgainstCombinationsV1`, () => {
     const functionName = `testSingleSuitDeckDistributionAgainstCombinationsV1`;
 
     const singleSuitDeck = newSampleSingleSuitDeck();
@@ -547,8 +545,6 @@ const TEST_SCORINGS = () => {
       (e, a) => `[${functionName}] No. of ${SCORING.HIGH} Combinations`
     );
   });
-  assertToDo(`Distribution V2`);
-
   runTest(`testTopCombinationShouldBeHighestStraightFlush`, () => {
     const functionName = `testTopCombinationShouldBeHighestStraightFlush`;
 
@@ -596,7 +592,6 @@ const TEST_SCORINGS = () => {
 
     const actualBestHandOfSeven = getBestCombination(handCombinations);
 
-    console.log(expectedBestHandOfSeven);
     const scoringType = getScoreType(expectedBestHandOfSeven);
 
     assertLogTrue(
@@ -815,14 +810,6 @@ const TEST_SCORINGS = () => {
         forwardBigger,
         thisHandSmaller
       );
-      console.log(comparisonResult);
-      console.log(`comparisonResult`);
-      const thisHandAsString = getHandAsString(thisHandSmaller);
-      console.log(`thisHandAsString`);
-      console.log(thisHandAsString);
-      const forwardAsString = getHandAsString(forwardBigger);
-      console.log(`forwardAsString`);
-      console.log(forwardAsString);
       assertLogTrue(
         true,
         isNoU(comparisonResult) ? comparisonResult : comparisonResult > 0,

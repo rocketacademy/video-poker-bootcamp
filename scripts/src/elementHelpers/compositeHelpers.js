@@ -13,13 +13,8 @@ const _updatePlayerInputHandler =
   };
 
 const setGameModeAndUpdateDisability = (playerConfig, mode) => {
-  console.group(`setGameModeAndUpdateDisability`);
   setGameModeForPlayerConfig(playerConfig, mode);
-
-  console.log(getGameModeFromPlayerConfig(playerConfig) === mode);
   updateDisablitiyGameMode(playerConfig);
-
-  console.groupEnd();
 };
 const _toggleGameModeHandler = (playerConfig, mode) => () =>
   setGameModeAndUpdateDisability(playerConfig, mode);

@@ -91,14 +91,10 @@ const newGameStudSeven = (core) => {
   };
 
   const drawCardAndUpdateDisplay = () => {
-    console.group(`drawCard`);
-
     const card = drawCard(deck);
     addInPlayCardToHand(hand, card);
-
     const lastIndex = getHandSize(hand) - 1; // this is abit hacky, assumes added card is in the last position.
     updateDisplayOfCardHolder(lastIndex, card);
-    console.groupEnd();
   };
 
   /** @typedef {CardHolder[]} cardHolders*/
@@ -118,14 +114,12 @@ const newGameStudSeven = (core) => {
 
   const isBusted = () => getPlayerCreditOfCore(core) <= 0;
   elementButtonBet.addEventListener(`click`, () => {
-    console.group(`bet button clicked`);
     setInitialBetIfNull(activeBet);
     addToPot(activeBet);
     minusPlayerCreditOfCore(core, activeBet);
 
     activeBet = 0; // reset
 
-    console.log(`remaining credit` + getPlayerCreditOfCore(core));
     if (isBusted()) {
       detachAllChildren(elementActionArea);
       elementActionArea.appendChild(newElementBusted());
@@ -148,35 +142,20 @@ const newGameStudSeven = (core) => {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
       detachAllChildren(elementActionArea);
-      console.log(hand);
-
       const combs = ______WARN_getHandCombinations(hand, POKER_HAND_SIZE);
-      console.log(combs);
-
       const best = getBestCombination(combs);
       const handCombinations = getCombinationsSortedByRankAscending(combs);
-
       const handTable = [];
-
       for (const hand of handCombinations) {
         const handRow = [];
-
         for (const card of hand) {
           handRow.push(getInPlayCardRankAndSuitString(card));
         }
-
         handTable.push(handRow, getScoreType(hand));
       }
-      console.log(`Table`);
-
-      console.table(handTable);
-
-      console.log(`BEST`);
-      console.log(best);
     }
 
     togglePhase();
-    console.groupEnd();
   });
 
   elementActionArea.appendChild(elementButtonBet);
@@ -206,8 +185,6 @@ const newGameStudSeven = (core) => {
   };
   const elementSliderBet = newElementSliderBet(0, getBetLimit());
   elementSliderBet.addEventListener(`input`, ({ target: { value } }) => {
-    console.log(value);
-
     activeBet = value;
     refreshBetButtonVisibility();
   });
@@ -240,7 +217,6 @@ const newGameStudSeven = (core) => {
 };
 
 const studSevenGoPaint = (game) => {
-  console.log(game.getElementRoot());
   const root = game.getElementRoot();
 
   const childGameName = _newElementDiv(`dummy-gamename`);
@@ -261,9 +237,6 @@ const studSevenGoPaint = (game) => {
 };
 
 const goToGameStudSeven = (core) => {
-  console.log(`gone to game stud seven ${core}`);
-
   const game = newGameStudSeven(core);
-
   studSevenGoPaint(game);
 };

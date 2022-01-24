@@ -51,9 +51,7 @@ const assertToDo = (desc = `??`) => console.info(`Yet to implement: ${desc}`);
  * @param {function} testFunction Test function
  */
 const runTest = (desc, testFunction) => {
-  console.group(`${desc}`);
   testFunction();
-  console.groupEnd();
 };
 
 /**

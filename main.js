@@ -36,15 +36,10 @@ const getElementRootOfCore = (core) => core.elementRoot;
   console.log(`START`);
   const mode = getMode();
   if (mode === MODES.TEST) {
-    console.group(`Test Mode`);
     TEST_ALL();
-    console.log(`end of test phase`);
-
-    console.groupEnd();
   }
   if (mode === MODES.DEMO) {
     const core = newCore();
     goToPlayerConfigPage(core);
-    console.log(`Demo Mode`);
   }
 })();
