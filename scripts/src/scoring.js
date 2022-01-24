@@ -32,9 +32,27 @@ const getRankOfScoringType = (scoringType) => {
       return 8;
     case SCORING.HIGH:
       return 7;
-    default:
-      return 0;
   }
+  throw new Error(`Undefined rank`);
+};
+
+/**
+ *
+ * @param {InPlayCard} card
+ */
+const getInPlayCardSuitAsRank = (card) => {
+  const color = getInPlayCardSuit(card);
+  switch (color) {
+    case CARD_SUITS.HEART:
+      return 3;
+    case CARD_SUITS.CLUB:
+      return 1;
+    case CARD_SUITS.SPADE:
+      return 4;
+    case CARD_SUITS.DIAMOND:
+      return 2;
+  }
+  throw new Error(`Undefined rank`);
 };
 
 const getPrettiedHand = (hand) => {
@@ -227,35 +245,69 @@ const getScoreType = (hand) => {
   return type;
 };
 
-const _comparatorSubRankStraightFlush = (handA, handB) => {
-  console.log(`_comparatorSubRankStraightFlush`);
-  if (isAnyNoU(handA, handB)) {
-    console.groupEnd();
-
-    throw new Error(`Null received. handA ${handA} handB ${handB}`);
-  }
-
-  const sortedFirstCardA = newAscendingHand(handA)[0];
-  const sortedFirstCardB = newAscendingHand(handB)[0];
-
-  console.groupEnd();
-  return (
-    getInPlayCardOrdinal(sortedFirstCardA) -
-    getInPlayCardOrdinal(sortedFirstCardB)
-  );
+const _comparatorSubRankSuitOfInPlayCards = (handA, handB) => {
+  const aColorRank = getInPlayCardSuitAsRank(handA);
+  const bColorRank = getInPlayCardSuitAsRank(handB);
+  return aColorRank - bColorRank;
 };
 
-const _comparatorSubRankStraight = _comparatorSubRankStraightFlush;
+/**
+ * Compares suits then value of the lowest card
+ * @param {InPlayCard} handA A straight flush
+ * @param {InPlayCard} handB A straight flush
+ * @returns {number}
+ */
+const _comparatorSubRankStraightFlush = (handA, handB) => {
+  // NOTE: Call this only if both hands are straight flush.
+  console.log(`_comparatorSubRankStraightFlush`);
+  if (isAnyNoU(handA, handB)) {
+    throw new Error(`Null received. handA ${handA} handB ${handB}`);
+  }
+  const handALowestCard = newAscendingHand(handA)[0];
+  const handBLowestCard = newAscendingHand(handB)[0];
+  const suitComparison = _comparatorSubRankSuitOfInPlayCards(
+    handALowestCard,
+    handBLowestCard
+  );
+
+  if (suitComparison === 0) {
+    return (
+      getInPlayCardOrdinal(handALowestCard) -
+      getInPlayCardOrdinal(handBLowestCard)
+    );
+  } else {
+    return suitComparison;
+  }
+};
+
+/**
+ *
+ * @param {InPlayCard} handA
+ * @param {InPlayCard} handB
+ * @returns
+ */
+const _comparatorSubRankStraight = (handA, handB) => {
+  console.log(`_comparatorSubRankStraight`);
+  if (isAnyNoU(handA, handB)) {
+    throw new Error(`Null received. handA ${handA} handB ${handB}`);
+  }
+  const handALowestCard = newAscendingHand(handA)[0];
+  const handBLowestCard = newAscendingHand(handB)[0];
+  return (
+    getInPlayCardOrdinal(handALowestCard) -
+    getInPlayCardOrdinal(handBLowestCard)
+  );
+};
 
 const _isSameScoringTypesLessThan = (handA, handB) => {
   const scoringTypeA = getScoreType(handA);
   const scoringTypeB = getScoreType(handB);
   if (scoringTypeA !== scoringTypeB) {
     throw new Error(
-      `This method should be called only if scoring types are different`
+      `This method should be called only if scoring types are same`
     );
   }
-  if (_isHandStraightFlush(handA)) {
+  if (scoringTypeA === SCORING.STRAIGHT_FLUSH) {
     return _comparatorSubRankStraightFlush(handA, handB);
   }
 
@@ -270,7 +322,7 @@ const _isSameScoringTypesLessThan = (handA, handB) => {
  *
  * @param {*} handA
  * @param {*} handB
- * @returns {number|undefined}
+ * @returns {number}
  */
 const comparatorHandRanking = (handA, handB) => {
   console.group(`comparatorHandRanking`);
@@ -284,7 +336,6 @@ const comparatorHandRanking = (handA, handB) => {
     return _isSameScoringTypesLessThan(handA, handB);
   }
   console.groupEnd();
-
   return rankA - rankB;
 };
 

@@ -103,11 +103,8 @@ const getCardOrdinal = (card) => {
 
 const getInPlayCardSuit = (inPlayCard) => getCardSuit(inPlayCard.value);
 const getInPlayCardValue = (inPlayCard) => getCardValue(inPlayCard.value);
-const getInPlayCardRankAndSuitString = (inPlayCard) => {
-  console.log(`getInPlayCardSuit(inPlayCard)`);
-
-  return `${getInPlayCardSuit(inPlayCard)}-${getInPlayCardSuit(inPlayCard)}`;
-};
+const getInPlayCardRankAndSuitString = (inPlayCard) =>
+  `${getInPlayCardSuit(inPlayCard)}-${getInPlayCardValue(inPlayCard)}`;
 const getInPlayCardOrdinal = (inPlayCard) => getCardOrdinal(inPlayCard.value);
 const getInPlayCardElement = (inPlayCard) => inPlayCard.element;
 const isInPlayCardFaceUp = (inPlayCard) => inPlayCard.faceUp;

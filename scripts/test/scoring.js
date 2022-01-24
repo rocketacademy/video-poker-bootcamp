@@ -466,8 +466,8 @@ const TEST_SCORINGS = () => {
     );
   });
 
-  ignoreTest(`testSingleSuitDeckProbabilities`, () => {
-    const functionName = `testSingleSuitDeckProbabilities`;
+  ignoreTest(`testSingleSuitDeckDistributionAgainstCombinationsV1`, () => {
+    const functionName = `testSingleSuitDeckDistributionAgainstCombinationsV1`;
 
     const singleSuitDeck = newSampleSingleSuitDeck();
     assertLogTrue(
@@ -484,11 +484,22 @@ const TEST_SCORINGS = () => {
     assertLogTrue(
       1287,
       handCombinations.length,
-      () => `[${functionName}] No. of Combinations`
+      () =>
+        `[${functionName}] [______WARN_getHandCombinations] No. of Combinations`
     );
-
     const actualScoringDistribution =
       calcActualScoringDistribution(singleSuitDeck);
+
+    const totalSamples = Object.values(actualScoringDistribution).reduce(
+      (sum, i) => sum + i,
+      0
+    );
+
+    assertLogTrue(
+      1287,
+      totalSamples,
+      () => `[${functionName}] [actualScoringDistribution] No. of Combinations`
+    );
 
     assertLogTrue(
       9,
@@ -535,13 +546,8 @@ const TEST_SCORINGS = () => {
       actualScoringDistribution[SCORING.HIGH],
       (e, a) => `[${functionName}] No. of ${SCORING.HIGH} Combinations`
     );
-
-    assertToDo(`Distribution `);
-    assertToDo(``);
-    assertToDo(`The  probabilities`);
-    assertToDo(`The  probabilities`);
-    assertToDo(`The  probabilities`);
   });
+  assertToDo(`Distribution V2`);
 
   runTest(`testTopCombinationShouldBeHighestStraightFlush`, () => {
     const functionName = `testTopCombinationShouldBeHighestStraightFlush`;
@@ -707,6 +713,8 @@ const TEST_SCORINGS = () => {
   runTest(`testComparisionFlush`, () => {
     const functionName = `testComparisionFlush`;
 
+    // arrange from small ranking hand to big ranking hand
+
     const cardClubs1 = newCard(CARD_VALUE.FIVE, CARD_SUITS.CLUB);
     const cardClubs2 = newCard(CARD_VALUE.SIX, CARD_SUITS.CLUB);
     const cardClubs3 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.CLUB);
@@ -758,9 +766,9 @@ const TEST_SCORINGS = () => {
     const spadeLowRange = [
       cardSpadeLower1,
       cardSpadeLower2,
+      cardSpadeLower3,
       cardSpadeLower4,
       cardSpadeLower5,
-      cardSpadeLower3,
     ];
     const cardSpadeHigher1 = newCard(CARD_VALUE.TEN, CARD_SUITS.SPADE);
     const cardSpadeHigher2 = newCard(CARD_VALUE.JACK, CARD_SUITS.SPADE);
@@ -776,12 +784,6 @@ const TEST_SCORINGS = () => {
       cardSpadeHigher5,
     ];
 
-    const handSpadeLower = newHand();
-    const handSpadeHigher = newHand();
-    const handHeart = newHand();
-    const handDiamond = newHand();
-    const handClub = newHand();
-
     const ranges = [
       clubsRange,
       diamondsRange,
@@ -789,16 +791,12 @@ const TEST_SCORINGS = () => {
       spadeLowRange,
       spadeHighRange,
     ];
-    const hands = [
-      handClub,
-      handDiamond,
-      handHeart,
-      handSpadeLower,
-      handSpadeHigher,
-    ];
+    const hands = [];
 
     for (let i = 0; i < ranges.length; i += 1) {
-      addCardsToHand(hands[i], ranges[i]);
+      const hand = newHand();
+      addCardsToHand(hand, ranges[i]);
+      hands.push(hand);
     }
 
     const expectedHandSize = 5;
@@ -807,22 +805,31 @@ const TEST_SCORINGS = () => {
       assertLogTrue(
         expectedHandSize,
         getHandSize(hand),
-        (e, a) => `[${functionName}] Hand Size Fail`
+        (e, a) => `[${functionName}] No. of Hands Fail`
       );
     }
     for (let i = 1; i < hands.length; i += 1) {
-      const thisHand = hands[i - 1];
-      const forward = hands[i];
-      const comparisonResult = comparatorHandRanking(thisHand, forward);
-
+      const thisHandSmaller = hands[i - 1];
+      const forwardBigger = hands[i];
+      const comparisonResult = comparatorHandRanking(
+        forwardBigger,
+        thisHandSmaller
+      );
+      console.log(comparisonResult);
+      console.log(`comparisonResult`);
+      const thisHandAsString = getHandAsString(thisHandSmaller);
+      console.log(`thisHandAsString`);
+      console.log(thisHandAsString);
+      const forwardAsString = getHandAsString(forwardBigger);
+      console.log(`forwardAsString`);
+      console.log(forwardAsString);
       assertLogTrue(
         true,
         isNoU(comparisonResult) ? comparisonResult : comparisonResult > 0,
         () => {
-          const thisHandAsString = getHandAsString(thisHand);
-          const forwardAsString = getHandAsString(forward);
-
-          return `[${functionName}] [${i}] Comparision expects ${thisHandAsString} > ${forwardAsString}`;
+          const thisHandAsString = getHandAsString(thisHandSmaller);
+          const forwardAsString = getHandAsString(forwardBigger);
+          return `[${functionName}] [${i}] Comparision expects ${forwardAsString} > ${thisHandAsString}`;
         }
       );
     }
