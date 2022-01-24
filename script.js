@@ -96,12 +96,12 @@ const dealCards = (noOfCards) => {
 
 const replaceCard = (newCards, playerHand, cardSelectIndex) => {
   for (index in cardSelectIndex) {
-  // The index of the hand of which cards to be replaced
+  // Index of the hand for cards to be replaced
     const cardIndex = cardSelectIndex[index];
     // Obtain the element of the new card
     const newCard = newCards[index];
     console.log(newCard);
-    // Replace the old card using index, 1 time, with the new element card
+    // Replace the old card using index with new card
     playerHand.splice(cardIndex, 1, newCard);
   }
   return playerHand;
@@ -115,9 +115,6 @@ const analyseHand = () => {
 
   const ele = playerHandRank;
   const eleSuit = playerHandSuit;
-
-  // const ele = [9, 13, 11, 13, 11];
-  // const eleSuit = ['♥', '♠', '♠', '♠', '♠'];
 
   const flush = eleSuit.every((i) => i === eleSuit[0]);
   const group = ELE.map((n, i) => ele.filter((j) => i === j).length).sort((x, y) => y - x);
@@ -151,17 +148,20 @@ const getScore = () => {
   if (result === 'You din get anything') return '0';
 };
 
-const cardSelect = (cardInfo, index) => {
+const cardSelect = (index) => {
   // if index is not inside, append. Otherwise remove.
   if (cardSelectIndex.includes(Number(index)) === false) {
     cardSelectIndex.push(Number(index));
-    console.log(cardSelectIndex);
+    // document.getElementById('card(index)').removeClass('card');
+    // document.getElementById('card(index)').addClass('selected');
   }
   else {
     // Obtain the index of which the number is repeated
     const removeIndex = cardSelectIndex.indexOf(Number(index));
     // Remove the card base on the index, 1 time.
     cardSelectIndex.splice(removeIndex, 1);
+    // document.getElementById('card(index)').removeClass('selected');
+    // document.getElementById('card(index)').addClass('card');
   }
   console.log(cardSelectIndex);
   return cardSelectIndex;
@@ -181,12 +181,11 @@ const createCard = (cardInfo, index) => {
 
   const frontContainer = document.createElement('div');
   frontContainer.classList.add('front-container');
-
   frontContainer.appendChild(name);
   frontContainer.appendChild(suit);
 
   card.addEventListener('click', (e) => {
-    cardSelect(cardInfo, index);
+    cardSelect(index);
   });
   card.appendChild(frontContainer);
 
@@ -195,10 +194,9 @@ const createCard = (cardInfo, index) => {
 
 const drawClick = () => {
   scoreTemp = 0;
-  // Shuffle deck and draw number of cards
   cardContainer.innerHTML = '';
+  // Shuffle deck and draw number of cards
   cardDeck = shuffleCards(makeDeck());
-
   playerHand = dealCards(numberOfCards);
 
   scoreTemp = Number(getScore(playerHand));
@@ -208,6 +206,17 @@ const drawClick = () => {
     const card = createCard(playerHand[index], index);
     cardContainer.appendChild(card);
   }
+
+  // setTimeout method for removing cover
+  //  let x = 0
+  // for (let i = 0; i < numberOfCards; i += 1) {
+  //   x = x + 1000
+  //   setTimeout(()=>{
+  //   const cardElement = createCard(p1Hand[i]);
+  //   cardContainer.appendChild(cardElement)
+  //  },x);
+  // }
+
   // Disable button after click
   document.getElementById('draw-btn').disabled = true;
 };

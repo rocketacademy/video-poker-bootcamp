@@ -33,17 +33,22 @@ body {
   color: white;
 }
 
-.backContainer {
-  background: url("images/cookie_monster.jpeg");
-  background-repeat: no-repeat;
-  background-size: contain;
+.selected {
+  background-color: black;
+  color: white;
+  display: inline-block;
+  border: 3px solid#ffd966;
   height: 4em;
   width: 3em;
+  font-family: "Poppins", sans-serif;
   font-size: 2em;
   margin: 0.5em;
 }
 
-[attribute$="btn"] {
+#draw-btn,
+#swap-btn,
+#lock-btn,
+#reset-btn {
   background-color: black;
   color: white;
   padding: 10px 30px;
@@ -53,7 +58,10 @@ body {
   cursor: pointer;
 }
 
-[attribute$="btn"]:hover {
+#draw-btn:hover,
+#swap-btn:hover,
+#lock-btn:hover,
+#reset-btn:hover {
   background-color: yellow;
   color: black;
 }
