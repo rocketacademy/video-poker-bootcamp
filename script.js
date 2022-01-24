@@ -336,6 +336,7 @@ const checkEndGame =(deck, pointsNum)=>{
   } else {
     setTimeout(()=>{
     if (deck.length < 10) {
+      console.log(deck.length)
       output("out of cards! game ends!")
     } else if (pointsNum <= 0) {
       output ("out of points! game ends!")
