@@ -4,8 +4,246 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Video Poker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <div class="sub-container">
+        <header>
+          <h1>Video Poker</h1>
+              <div id="how-to-play"> 
+                <i class="fa fa-question-circle-o fa-2x" aria-hidden="true"></i>
+        </div>
+        </header>
+  
+        <div class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p><h4>Game Instructions:</h4>1. Enter your bet from 1 to 5 <br> 2. Click the 'DEAL' button <br> 3. Click on the cards you wish to hold <br> 4. Click the 'DEAL' button again! <br><br> Tip! You can hover around the card combination symbol to see which card combination you are closest to! 
+            </p>
+          </div>
+        </div>
+        <div id="payout-info">
+          <div id="left-side">
+            <table>
+              <tr class="payout-row">
+                <td>9</td>
+                <td>Royal Flush</td>
+                <td class="payout-column">1x250</td>
+              </tr>
+              <tr class="payout-row">
+                <td>8</td>
+                <td>Straight Flush</td>
+                <td class="payout-column">1x50</td>
+              </tr>
+              <tr class="payout-row">
+                <td>7</td>
+                <td>Four of a Kind</td>
+                <td class="payout-column">1x25</td>
+              </tr>
+              <tr class="payout-row">
+                <td>6</td>
+                <td>Full House</td>
+                <td class="payout-column">1x9</td>
+              </tr>
+              <tr class="payout-row">
+                <td>5</td>
+                <td>Flush</td>
+                <td class="payout-column">1x6</td>
+              </tr>
+              <tr class="payout-row">
+                <td>4</td>
+                <td>Straight</td>
+                <td class="payout-column">1x4</td>
+              </tr>
+              <tr class="payout-row">
+                <td>3</td>
+                <td>Three of a Kind</td>
+                <td class="payout-column">1x3</td>
+              </tr>
+              <tr class="payout-row">
+                <td>2</td>
+                <td>Two Pairs</td>
+                <td class="payout-column">1x2</td>
+              </tr>
+              <tr class="payout-row">
+                <td>1</td>
+                <td>Jacks or better</td>
+                <td class="payout-column">1x1</td>
+              </tr>
+            </table>
+          </div>
+
+          <div id="right-side">
+            <div class="row">
+              <div class="column">
+                <table>
+                  <tr>
+                    <td class="combo">Royal Flush</td>
+                    <td class="payout" id="royal-flush">x250</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-9.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="combo">Straight Flush</td>
+                    <td class="payout">x50</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-8.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="combo">Four of a Kind</td>
+                    <td class="payout">x25</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-7.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="combo">Full House</td>
+                    <td class="payout">x9</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-6.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="combo">Flush</td>
+                    <td class="payout">x6</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-5.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="column">
+                <table>
+                  <tr>
+                    <td class="combo">Straight</td>
+                    <td class="payout">x4</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-4.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="combo">Three of a Kind</td>
+                    <td class="payout">x3</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-3.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="combo">2 pair</td>
+                    <td class="payout">x2</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-2.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="combo">A pair of Jacks or better</td>
+                    <td class="payout">x1</td>
+                    <td>
+                      <div class="combo-info">
+                        <img
+                          src="Images/CardCombo/Rank-1.jpg"
+                          class="combo-cards"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="output">
+          <div id="cards-display">
+            <div class="card"><div class="hide">Hold</div></div>
+
+            <div class="card"><div class="hide">Hold</div></div>
+
+            <div class="card"><div class="hide">Hold</div></div>
+
+            <div class="card"><div class="hide">Hold</div></div>
+
+            <div class="card"><div class="hide">Hold</div></div>
+          </div>
+        </div>
+        <div class="playing-buttons">
+          <div class="play-function">
+            <div id="bet-function">
+              <button class="change-bet" id="decrease-bet">-</button>
+              <div>
+                <div id="bet-text">Bet</div>
+                <div id="bet-amount">1</div>
+              </div>
+              <button class="change-bet" id="increase-bet">+</button>
+            </div>
+          </div>
+          <div class="play-function">
+            <button id="deal-btn" value="1">Deal</button>
+          </div>
+          <div class="play-function">
+            <div id="total-credit">
+              Total Credits
+              <div id="credits-value">100</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio autoplay loop id="autoplay">
+      <source src="Audio/background-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio src="Audio/hold-sound.mp3" type="audio/mpeg" id="hold-sound"></audio>
+    <audio id="deal-card" src="Audio/deal-card-sound.mp3" type="audio/mpeg"></audio>
+    </audio>
+    <audio id="win-sound" src="Audio/win-sound.mp3" type="audio/mpeg"></audio>
+    <audio id="lose-sound" src="Audio/lose-sound.mp3" type="audio/mpeg"></audio>
+    <audio id="coin-sound" src="Audio/coin-sound.mp3" type="audio/mpeg"></audio>
+  </body>
   <script src="script.js"></script>
 </html>
