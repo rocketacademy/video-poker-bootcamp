@@ -6,7 +6,19 @@ body {
   font-size: 1em;
 }
 
-.front-container {
+.h2 {
+  float: left;
+  background: white;
+  color: #222;
+  padding: 10px;
+  border-radius: 10px;
+  border: double 5px;
+  font-size: 3em;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+}
+
+.card {
   display: inline-block;
   border: 3px solid#ffd966;
   height: 4em;
@@ -16,7 +28,12 @@ body {
   margin: 0.5em;
 }
 
-.back-container {
+.card:hover {
+  background-color: black;
+  color: white;
+}
+
+.backContainer {
   background: url("images/cookie_monster.jpeg");
   background-repeat: no-repeat;
   background-size: contain;
@@ -26,19 +43,17 @@ body {
   margin: 0.5em;
 }
 
-.button {
-  background-color: white;
-  color: salmon;
-  border: none;
+[attribute$="btn"] {
+  background-color: black;
+  color: white;
+  padding: 10px 30px;
+  border-radius: 10px;
   font-size: 1em;
   font-family: "Poppins", sans-serif;
-  width: max-content;
-  height: 2em;
-  width: 3em;
-  line-height: 35px;
-  margin: 30px;
+  cursor: pointer;
 }
 
-.button:active {
+[attribute$="btn"]:hover {
   background-color: yellow;
+  color: black;
 }
