@@ -278,12 +278,22 @@ let payout = {
 
 let totalCredit = 100
 let betAmount = 1
-let win
+let win;
 let totalPayout = 0
+
+const calcCredit = () => {
+ if (win){
+   totalCredit +=totalPayout
+ }
+ else {
+ totalCredit -= betAmount
+ }
+}
 
 const calcHandScore = (handOrder) =>{
   const betValueEl = document.getElementById("bet-amount")
     betAmount = betValueEl.innerHTML 
+  win = null
  for (let comboOrder in payout){
    if (handOrder == comboOrder){
      win = true 
@@ -292,16 +302,12 @@ const calcHandScore = (handOrder) =>{
      if (handOrder ===9 && betAmount ===5){
        comboPayout =800
       } 
-    
-     totalPayout += betAmount*comboPayout
-     totalCredit += totalPayout
+      totalPayout = comboPayout*betAmount
    }
-   else win = false 
  }
- if (!win){
-   totalCredit -= betAmount
- }
+ calcCredit()
 } 
+
 
 
 /* -------------------------------------------------------------------------- */
@@ -329,7 +335,12 @@ const playCardSound = document.getElementById("deal-card")
 const backgroundMusic = document.getElementById("autoplay")
 const winValue = document.getElementsByClassName("win-value")
 
- /* ------------------------- To show gameplay- modal ------------------------ */
+const audioBtn = document.getElementById("audio-icon")
+let audioOn = true
+
+ /* -------------------------ADDITONAL ELEMENTS  ------------------------ */
+
+ //modal for game play 
 playInstructions.onclick = function(){
   modal.style.display = "block"
 }
@@ -345,7 +356,26 @@ window.onclick=function(e){
   }
 }
 
+//to activate audio 
+audioBtn.addEventListener("click",function(){
+  if (audioOn ===true){
+backgroundMusic.pause()
+audioBtn.classList.remove("fa-volume-up")
+audioBtn.classList.add("fa-volume-off")
+audioOn=false
+  }
+else {
+ backgroundMusic.play()
+  audioBtn.classList.remove("fa-volume-off")
+  audioBtn.classList.add("fa-volume-up")
+  audioOn=true
 
+}
+
+  })
+
+
+ /* ------------------------- GAME LOGIC & COMBINING DOM ------------------------ */
 /**Function to show total credits on page 
  * @return {string} - to show credit on page 
  */
@@ -569,16 +599,13 @@ const initGame = () =>{
   if (!firstGame ) {
  restartGame()}
  deck = shuffleCards(makeDeck());
-  hand =  []
-  dealHand()
+
+dealHand()
  showPlayerCards(hand)
  console.log("secondgame", cardEl)
  
 }
  
-decreaseBet.addEventListener("click",decreaseBetAmount)
-increaseBet.addEventListener("click",increaseBetAmount)
-
 dealBtn.addEventListener("click", function(){
   if(this.value === "1"){
     initGame()
@@ -591,22 +618,6 @@ dealBtn.addEventListener("click", function(){
   }
 })
 
-const audioBtn = document.getElementById("audio-icon")
-let audioOn = true
 
-audioBtn.addEventListener("click",function(){
-  if (audioOn ===true){
-backgroundMusic.pause()
-audioBtn.classList.remove("fa-volume-up")
-audioBtn.classList.add("fa-volume-off")
-audioOn=false
-  }
-else {
- backgroundMusic.play()
-  audioBtn.classList.remove("fa-volume-off")
-  audioBtn.classList.add("fa-volume-up")
-  audioOn=true
-
-}
-
-  })
+decreaseBet.addEventListener("click",decreaseBetAmount)
+increaseBet.addEventListener("click",increaseBetAmount)
