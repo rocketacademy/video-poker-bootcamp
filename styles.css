@@ -12,18 +12,19 @@ body {
 }
 
 .container {
-  max-width: 60vw;
+  min-width: 100vw;
   display: flex;
   justify-content: center;
   margin: auto;
   align-self: center;
+  padding: 1vh;
 }
 
 h1 {
   margin: 2.5vh;
   font-weight: 100;
   font-family: Bungee;
-  font-size: 9vh;
+  font-size: 8vh;
   text-align: center;
   color: white;
   text-shadow: 0 0 2vh #acedee;
@@ -36,51 +37,8 @@ header {
   padding: 0;
 }
 
-#payout-info {
-  display: flex;
-  gap: 6vh;
-  justify-content: center;
-}
-
-#left-side > table {
-  border: 1vh solid #01171a;
-  outline: 0.5vh inset #98edee;
-  background-image: radial-gradient(#0c4a54, #0a5c6a, #01171a);
-  font-size: 0.5em;
-  border-radius: 2vh;
-  box-shadow: 0vh 0vh 1vh #01171a;
-}
-
-#left-side td {
-  font-family: Play;
-  text-transform: uppercase;
-  padding: 1vh 1vh;
-  text-shadow: 0.1vh 0.1vh #26111b;
-}
-#left-side td:nth-child(1) {
-  color: #ffa73f;
-}
-
-#left-side td:nth-child(2) {
-  color: #ffa73f;
-  padding: 0.5vh 3vh;
-  white-space: nowrap;
-  text-shadow: 0.2vh 0.2vh #26111b;
-}
-
-#left-side td:nth-child(3) {
+.upper-row {
   color: #fafbe3;
-}
-
-#right-side {
-  display: flex;
-  align-items: center;
-  font-family: bungee;
-}
-
-.row {
-  color: #fafbe3;
-  display: flex;
   border: 1vh solid #01171a;
   outline: 0.5vh inset #98edee;
   background-image: radial-gradient(#0c4a54, #0a5c6a, #01171a);
@@ -89,28 +47,21 @@ header {
     rgba(0, 0, 0, 0.05) 0px 1vh 1.5vh -1vh;
   text-shadow: 0.4vh 0.4vh #0d3950;
 }
-.column {
-  flex: 50%;
-  border: 0.2vh solid #0a5c6a8c;
+
+.payout-row {
+  padding: 4vh;
+}
+
+td {
+  padding: 0.1vh 2vh;
 }
 
 table {
-  vertical-align: top;
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-  font-size: 1.8vh;
-}
-.column td {
-  padding: 1.5vh 2vh;
-}
-.column tr {
-  box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+  font-size: 2vh;
 }
 
 .output {
   border-radius: 5vh;
-  width: 107vh;
   margin: 2vh auto;
   box-shadow: #98edee 3px 3px 6px 0px inset,
     rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
@@ -118,14 +69,14 @@ table {
   padding: 3vh;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .card {
-  display: inline-block;
   width: 14vh;
-  height: 20vh;
+  height: 20.5vh;
   background-image: url(Images/background-image2.jpg);
-  background-size: 14vh, 20vh;
+  background-size: 14vh, 21vh;
   background-color: white;
   margin: 2vh;
   border-radius: 1vh;
@@ -137,9 +88,7 @@ table {
 }
 
 button {
-  width: 18vh;
   background-image: linear-gradient(#015369, #2592b4, #096c7a);
-  padding: 0vh 1vh;
   font-family: Bungee;
   color: #0d3950;
   border-radius: 1vh;
@@ -155,74 +104,60 @@ button:active {
   transform: translateY(0.5vh);
 }
 
+#bet-function {
+  font-size: 1em;
+  font-family: bungee;
+  text-shadow: 0.4vh 0.4vh #0d3950;
+  text-align: center;
+  justify-content: space-between;
+}
+
 .change-bet {
+  font-size: 1.5em;
   width: 8vh;
-  font-size: 1.2vh;
-  position: absolute;
-  font-size: 2em;
-  text-shadow: 1px 1px #98edee;
+  flex-shrink: 1;
+  text-shadow: 0.1vh 0.1vh #98edee;
 }
 
 .change-bet:hover {
   cursor: pointer;
 }
-#decrease-bet {
-  left: 0.2vh;
-}
 
-#increase-bet {
-  right: 0.2vh;
-}
 .playing-buttons {
-  display: flex;
-  gap: 15vh;
   justify-content: space-evenly;
-  margin: 2vh 10vh;
-  align-items: center;
+  border: none;
 }
 
 .play-function {
-  width: 15vw;
-  flex-wrap: wrap;
-  max-height: 10vh;
+  min-width: 32vh;
+  height: 11vh;
   border: 0.5vh solid #015369;
   outline: 0.5vh outset #2592b4;
-  padding: 1vh;
-  flex: 1;
   border-radius: 2vh;
-  position: relative;
   box-shadow: 0px 0px 1vh #31312c;
+  padding: 1vh;
   background-image: linear-gradient(to bottom right, #2592b4, #0d3950);
-}
-.play-function:nth-child(2) {
-  all: unset;
-}
-
-#bet-function {
-  display: flex;
-  justify-content: center;
-  gap: 5vw;
-  font-size: 0.8em;
-  font-family: bungee;
-  text-shadow: 0.4vh 0.4vh #0d3950;
-  flex-wrap: wrap;
+  overflow: hidden;
 }
 
 #bet-text {
-  display: flex;
-  flex-direction: column;
   color: #98edee;
+  font-size: 1em;
 }
 
 #bet-amount {
   text-align: center;
   font-family: Bungee;
-  font-size: 0.8em;
-  width: 6vh;
+  font-size: 2vh;
   border-radius: 1vh;
   background-color: #015369;
   border: inset #015369;
   color: #98edee;
+}
+
+.deal-card {
+  border: none;
+  outline: none;
 }
 
 #deal-btn {
@@ -233,7 +168,9 @@ button:active {
   text-shadow: 0.4vh 0.4vh #26111b;
   background-image: linear-gradient(#ffcc26, #ffa73f, #fd7649);
 }
-
+.bottom-part {
+  gap: 1vw;
+}
 #deal-btn:hover {
   box-shadow: 0 0 2vh #fafbe3;
   cursor: pointer;
@@ -257,6 +194,7 @@ button:active {
 header {
   position: relative;
 }
+
 i {
   color: #98edee;
   text-shadow: 0 0 2vh #acedee;
@@ -265,6 +203,12 @@ i {
 }
 i:hover {
   cursor: pointer;
+}
+.fa-question-circle-o {
+  left: 4vh;
+}
+#audio-icon {
+  color: #fafbe3;
 }
 
 .hide {
@@ -345,6 +289,10 @@ i:hover {
   margin: auto;
 }
 
+.win-value {
+  color: #ffcc26;
+}
+
 .combo-cards {
   width: 5vh;
   height: 2vh;
@@ -358,7 +306,6 @@ i:hover {
 
 .win-row {
   background-color: #acedee5e;
-  border-radius: 1vh;
   box-shadow: 0px 0px 1vh #98edee;
 }
 
