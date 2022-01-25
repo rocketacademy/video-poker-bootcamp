@@ -195,7 +195,7 @@ const newHandWithCards = (cards) => {
  * @param {*} currentCombination
  * @returns
  */
-const _addHandCombinations = (
+const ______WARN_addHandCombinations = (
   hand,
   currentIndex,
   sizePerHandCombination,
@@ -217,7 +217,7 @@ const _addHandCombinations = (
 
   const combination = [...currentCombination, hand[currentIndex]];
 
-  _addHandCombinations(
+  ______WARN_addHandCombinations(
     hand,
     currentIndex + 1,
     sizePerHandCombination,
@@ -225,7 +225,7 @@ const _addHandCombinations = (
     result,
     currentCombination
   );
-  _addHandCombinations(
+  ______WARN_addHandCombinations(
     hand,
     currentIndex + 1,
     sizePerHandCombination,
@@ -238,6 +238,7 @@ const _addHandCombinations = (
 /**
  * Note: permutations is NOT combinations
  * WARNING: If no. of combinations is expected to be big, this method will fry your browser.
+ * If you want to get the best hand immediate @see ______WARN_getHandBestCombination
  * @param {Hand} hand hand of arbitrary size
  * @param {number} sizePerHandCombination No. of cards per hand combination.
  */
@@ -248,7 +249,7 @@ const ______WARN_getHandCombinations = (hand, sizePerHandCombination) => {
   const result = [];
   const currentCombination = [];
 
-  _addHandCombinations(
+  ______WARN_addHandCombinations(
     hand,
     0,
     sizePerHandCombination,
@@ -257,4 +258,80 @@ const ______WARN_getHandCombinations = (hand, sizePerHandCombination) => {
     currentCombination
   );
   return result;
+};
+
+const ______WARN_setSimpleBestHandCombinations = (
+  hand,
+  currentIndex,
+  sizePerHandCombination,
+  toTake,
+  bestScoreProfile,
+  currentCombination
+) => {
+  const { bestScore } = bestScoreProfile;
+  if (currentCombination.length === sizePerHandCombination) {
+    const score = getScoreType(currentCombination);
+    if (getRankOfScoringType(bestScore) < getRankOfScoringType(score)) {
+      bestScoreProfile.bestScore = score;
+      bestScoreProfile.simpleBestHand = currentCombination;
+    }
+    return;
+  }
+  if (0 === toTake) {
+    return;
+  }
+
+  if (currentIndex === hand.length) {
+    return;
+  }
+
+  ______WARN_setSimpleBestHandCombinations(
+    hand,
+    currentIndex + 1,
+    sizePerHandCombination,
+    toTake,
+    bestScoreProfile,
+    currentCombination
+  );
+
+  const combination = [...currentCombination, hand[currentIndex]];
+
+  ______WARN_setSimpleBestHandCombinations(
+    hand,
+    currentIndex + 1,
+    sizePerHandCombination,
+    toTake - 1,
+    bestScoreProfile,
+    combination
+  );
+};
+
+/**
+ * This method compares during first pass and efficiently returns the best hand. The best hand is simple. Does not gaurantee return of highest subranking within a scoring type.
+ * @param {*} hand
+ * @param {*} sizePerHandCombination
+ * @returns
+ */
+const ______WARN_getHandSimpleBestCombination = (
+  hand,
+  sizePerHandCombination
+) => {
+  if (isNoU(sizePerHandCombination)) {
+    throw new Error(`Please specify no. of card per hand.`);
+  }
+  const currentCombination = [];
+
+  const bestScoreProfile = {
+    bestScore: SCORING.UNKNOWN,
+    simpleBestHand: null,
+  };
+  ______WARN_setSimpleBestHandCombinations(
+    hand,
+    0,
+    sizePerHandCombination,
+    sizePerHandCombination,
+    bestScoreProfile,
+    currentCombination
+  );
+  return bestScoreProfile;
 };

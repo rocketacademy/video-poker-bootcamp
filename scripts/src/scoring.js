@@ -35,8 +35,9 @@ const getRankOfScoringType = (scoringType) => {
       return 7;
     case SCORING.HIGH:
       return 6;
+    default:
+      return -1;
   }
-  throw new Error(`Undefined rank`);
 };
 
 /**
@@ -442,14 +443,19 @@ const _calcScoringDistributionSevenStudGivenSomeRevealedCards = (
     addInPlayCardsToHand(handOfX, revealed);
     addInPlayCardsToHand(handOfX, optionsFromDeck);
 
-    const combinationsOfHandOfSeven = ______WARN_getHandCombinations(
+    // const combinationsOfHandOfSeven = ______WARN_getHandCombinations(
+    //   handOfX,
+    //   POKER_HAND_SIZE
+    // );
+    // const bestFromCombinationsOfHandOfX = getBestCombination(
+    //   combinationsOfHandOfSeven
+    // );
+    // const scoringType = getScoreType(bestFromCombinationsOfHandOfX);
+
+    const { bestScore: scoringType } = ______WARN_getHandSimpleBestCombination(
       handOfX,
       POKER_HAND_SIZE
     );
-    const actualBestFromCombinationsOfHandOfX = getBestCombination(
-      combinationsOfHandOfSeven
-    );
-    const scoringType = getScoreType(actualBestFromCombinationsOfHandOfX);
     addToScoringDistribution(distribution, scoringType);
     return;
   }
