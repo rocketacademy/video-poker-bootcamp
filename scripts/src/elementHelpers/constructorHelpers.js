@@ -6,11 +6,11 @@ const CLASS_NAME_DISPLAY = `poker-name-display`;
 const CLASS_PLAYER_CREDIT = `poker-game-config-credit`;
 // CSS Class Names: Game Config button
 const CLASS_BUTTON_WRAPPER_INPUT = `poker-wrapper-game-modes`;
-const CLASS_BUTTON_GAME_MODE = `poker-game-mode`;
+const CLASS_BUTTON_GAME_MODE_STUD_SEVEN = `poker-game-mode-stud-seven`;
 const CLASS_GAME_MODE_DISPLAY = `poker-game-mode-display`;
 
 // CSS Class Names: Game Phase Transition Buttons
-const CLASS_BUTTON_START_GAME = `poker-game-config-start`;
+const CLASS_BUTTON_START_GAME = `poker-game-config-button-start`;
 const CLASS_NAME_CHECKBOX = `poker-game-config-checkbox`;
 const CLASS_NAME_CHECKBOX_DESC = `poker-game-config-checkbox-desc`;
 const CLASS_NAME_CHECKBOX_LABEL = `poker-game-checkbox-label`;
@@ -78,7 +78,7 @@ const newElementNameDisplay = () =>
   _newElementDiv(`${CLASS_NAME_DISPLAY} col text-center`);
 const newElementPlayerCreditDisplay = (config) => {
   const credit = getMoneyOfPlayerConfig(config);
-  const element = _newElementDiv(CLASS_PLAYER_CREDIT);
+  const element = _newElementDiv(` ${CLASS_PLAYER_CREDIT} text-center`);
   setInnerText(element, `💰 ${credit} `);
   return element;
 };
@@ -87,9 +87,9 @@ const newElementPlayerCreditDisplay = (config) => {
 const newElementWrapperButtonGameMode = () =>
   _newElementDiv(CLASS_BUTTON_WRAPPER_INPUT);
 const newElementButtonGameMode = (desc) =>
-  _newElementButton(CLASS_BUTTON_GAME_MODE, desc);
+  _newElementButton(CLASS_BUTTON_GAME_MODE_STUD_SEVEN, desc);
 const newElementDisplayGameMode = () => _newElementDiv(CLASS_GAME_MODE_DISPLAY);
 
 // New Elements: Game Transition
 const newElementButtonStartGame = () =>
-  _newElementButton(CLASS_BUTTON_START_GAME, `START`);
+  _newElementButton(`${CLASS_BUTTON_START_GAME}`, `START`);

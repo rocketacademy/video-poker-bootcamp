@@ -1,7 +1,7 @@
 const CLASS_NAME_CARD_HOLDER = `card-holder`;
 const CLASS_NAME_CARD = `card`;
 const CLASS_NAME_CARD_IMG = `card-img`;
-const CLASS_NAME_HAND = `hand`;
+const CLASS_NAME_HAND = `poker-hand`;
 const URL_CARD_FACE_DOWN = `static/img/cards/JOKER-RED.png`;
 const CLASS_NAME_ACTION_AREA = `action-area`;
 const CLASS_NAME_BUTTON_BET = `action-bet-button`;
@@ -28,7 +28,15 @@ const newElementCardBack = () =>
   );
 
 const newElementCardEmpty = () => newElementCard(null, ``);
-const newElementHand = () => _newElementDiv(CLASS_NAME_HAND);
+
+const newElementStagingCard = () => {
+  const elementStagingCardImg = newElementCardEmpty(null);
+  elementStagingCardImg.style.borderColor = `green`;
+
+  return elementStagingCardImg;
+};
+
+const newElementHand = () => _newElementDiv(`${CLASS_NAME_HAND} row`);
 const newElementActionArea = () => _newElementDiv(CLASS_NAME_ACTION_AREA);
 const newElementBusted = () => {
   const element = _newElementDiv(CLASS_NAME_BUSTED);
@@ -100,16 +108,18 @@ const newGameStudSeven = (core, flags) => {
   };
 
   /** @typedef {CardHolder[]} cardHolders*/
-  const cardHolders = [];
+  const elementCardHolders = [];
 
   for (let i = 0; i < handSizeToSettle; i += 1) {
-    const holder = newElementCardHolder();
-    holder.appendChild(newElementCardEmpty());
-    cardHolders.push(holder);
+    const elementHolder = newElementCardHolder();
+    elementHolder.appendChild(newElementCardEmpty());
+    elementCardHolders.push(elementHolder);
   }
+  replaceChilds(elementCardHolders[0], newElementStagingCard());
+  replaceChilds(elementCardHolders[1], newElementStagingCard());
 
   const wrapper = newElementHand();
-  appendChilds(wrapper, cardHolders);
+  appendChilds(wrapper, elementCardHolders);
 
   const elementActionArea = newElementActionArea();
   const elementButtonBet = newElementBetButton();
@@ -135,6 +145,8 @@ const newGameStudSeven = (core, flags) => {
     if (phase === PHASE_BET_INITIAL) {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
+
+      replaceChilds(getElementCardHolderByPosition(2), newElementStagingCard());
     } else if (phase === PHASE_BET_ROUND_ONE) {
       if (PROBABILTY_FLAG.FLOP === true) {
         const elementLoading = document.createElement("div");
@@ -153,6 +165,8 @@ const newGameStudSeven = (core, flags) => {
       } else {
         drawCardAndUpdateDisplay();
       }
+
+      replaceChilds(getElementCardHolderByPosition(3), newElementStagingCard());
     } else if (phase === PHASE_BET_ROUND_TWO) {
       if (PROBABILTY_FLAG.RIVER === true) {
         const elementLoading = document.createElement("div");
@@ -170,6 +184,10 @@ const newGameStudSeven = (core, flags) => {
       } else {
         drawCardAndUpdateDisplay();
       }
+
+      replaceChilds(getElementCardHolderByPosition(4), newElementStagingCard());
+      replaceChilds(getElementCardHolderByPosition(5), newElementStagingCard());
+      replaceChilds(getElementCardHolderByPosition(6), newElementStagingCard());
     } else if (phase === PHASE_BET_ROUND_THREE) {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
@@ -225,7 +243,7 @@ const newGameStudSeven = (core, flags) => {
   elementActionArea.appendChild(elementSliderBet);
 
   const elements = {
-    hand: { wrapper, cardHolders },
+    hand: { wrapper, cardHolders: elementCardHolders },
     action: {
       area: elementActionArea,
       coin: newElementCoin(),

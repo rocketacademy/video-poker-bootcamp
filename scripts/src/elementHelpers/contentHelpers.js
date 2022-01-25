@@ -16,6 +16,8 @@ const appendChild = (element, child) => element.appendChild(child);
 const appendChilds = (element, childs) =>
   childs.forEach((c) => appendChild(element, c));
 
+const replaceChilds = (element, ...childs) =>
+  element.replaceChildren(...childs);
 const detachAllChildren = (element) => {
   while (element.lastChild) element.removeChild(element.lastChild);
 };

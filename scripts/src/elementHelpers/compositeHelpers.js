@@ -70,13 +70,13 @@ const newElementCheckboxesProbabilityWithFlagToggles = (config) => {
   const labelFourCards = newLabelProbFlag(
     setFlagProbFourCardsOfPlayerConfig,
     config,
-    `4 cards`
+    `🃏🃏🃏🃏`
   );
 
   const labelThreeCards = newLabelProbFlag(
     setFlagProbThreeCardsOfPlayerConfig,
     config,
-    `3 cards`
+    `🃏🃏🃏`
   );
 
   const groupDesc = document.createElement(`div`);
