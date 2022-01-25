@@ -149,20 +149,20 @@ const getScore = () => {
 };
 
 const cardSelect = (index) => {
-  const card = document.getElementById('card(index)');
+  // const card = document.getElementById(`card${index}`);
   // if index is not inside, append. Otherwise remove.
   if (cardSelectIndex.includes(Number(index)) === false) {
     cardSelectIndex.push(Number(index));
-    card.removeClass('card');
-    card.addClass('selected');
+    // card.classList.remove('card');
+    // card.classList.add('selected');
   }
   else {
     // Obtain the index of which the number is repeated
     const removeIndex = cardSelectIndex.indexOf(Number(index));
     // Remove the card based on the index
     cardSelectIndex.splice(removeIndex, 1);
-    card.removeClass('selected');
-    card.addClass('card');
+    // card.classList.remove('selected');
+    // card.classList.add('card');
   }
   console.log(cardSelectIndex);
   return cardSelectIndex;
@@ -170,11 +170,11 @@ const cardSelect = (index) => {
 
 const createCard = (cardInfo, index) => {
   const suit = document.createElement('div');
-  suit.classList.add(cardInfo.suit, cardInfo.color);
+  suit.classList.add(cardInfo.suit);
   suit.innerText = cardInfo.suit;
 
   const name = document.createElement('div');
-  name.classList.add('name', cardInfo.color);
+  name.classList.add('name');
   name.innerText = cardInfo.name;
 
   const card = document.createElement('div');
@@ -206,21 +206,14 @@ const drawClick = () => {
   scoreTemp = Number(getScore(playerHand));
   document.getElementById('lock-btn').disabled = false;
   messageOutput.innerText = `${analyseHand(playerHand)};   +${getScore(playerHand)} if you lock it in!`;
-
+  let count = 0;
   for (index in playerHand) {
     const card = createCard(playerHand[index], index);
-    cardContainer.appendChild(card);
+    count += 500;
+    setTimeout(() => {
+      cardContainer.appendChild(card);
+    }, count);
   }
-
-  // setTimeout method for removing cover
-  //  let x = 0
-  // for (let i = 0; i < numberOfCards; i += 1) {
-  //   x = x + 1000
-  //   setTimeout(()=>{
-  //   const cardElement = createCard(p1Hand[i]);
-  //   cardContainer.appendChild(cardElement)
-  //  },x);
-  // }
 
   // Disable button after click
   document.getElementById('draw-btn').disabled = true;
