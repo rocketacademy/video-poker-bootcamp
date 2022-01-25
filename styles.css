@@ -22,24 +22,13 @@ body {
 h1 {
 	font-size: 2.5rem;
 	line-height: 1.5em;
-	-webkit-text-fill-color: #c40093;
+	color: #c40093;
 	text-shadow: 3px 3px 0 #f0f0f0, -1px -1px 0 #f0f0f0, 1px -1px 0 #f0f0f0,
 		-1px 1px 0 #f0f0f0, 1px 1px 0 #f0f0f0;
-	padding: 10px;
-	/* color: #c40093;
-	-webkit-text-stroke: 0.5px #c40093;
-	text-shadow: 3px 3px 0 #f0f0f0, -1px -1px 0 #f0f0f0, 1px -1px 0 #f0f0f0,
-		-1px 1px 0 #f0f0f0, 1px 1px 0 #f0f0f0; */
 	padding: 10px;
 	width: 80vw;
 	max-width: 600px;
 	margin: 20px auto;
-}
-
-li {
-	list-style: none;
-	font-size: 0.8rem;
-	line-height: 1rem;
 }
 
 /* For main divs */
