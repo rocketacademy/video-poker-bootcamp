@@ -28,11 +28,8 @@ const newElementCardBack = () =>
   );
 
 const newElementCardEmpty = () => newElementCard(null, ``);
-
 const newElementHand = () => _newElementDiv(CLASS_NAME_HAND);
-
 const newElementActionArea = () => _newElementDiv(CLASS_NAME_ACTION_AREA);
-
 const newElementBusted = () => {
   const element = _newElementDiv(CLASS_NAME_BUSTED);
   element.innerText = `No more 🍯`;
@@ -44,20 +41,18 @@ const cardToImgUrl = (card) => {
   const suit = getInPlayCardSuit(card);
   return `static/img/cards/${ordinal}-${suit}.png`;
 };
-
 const newElementCoin = () => {
-  // TODO
   return _newElementDiv(`dummy-coin`);
 };
 const newElementBetButton = () => {
-  // TODO
   const element = _newElementButton(CLASS_NAME_BUTTON_BET, `BET`);
   return element;
 };
-
 const newElementSliderBet = (min, max) => {
   return _newElementSlider(CLASS_NAME_SLIDER_BET, min, max);
 };
+
+const ElementDistribution = () => {};
 
 const newGameStudSeven = (core) => {
   const handSizeToSettle = 7;
@@ -136,23 +131,38 @@ const newGameStudSeven = (core) => {
     } else if (phase === PHASE_BET_ROUND_ONE) {
       drawCardAndUpdateDisplay();
     } else if (phase === PHASE_BET_ROUND_TWO) {
+      const elementLoading = document.createElement("div");
+      elementLoading.innerText = "Please wait for %";
+      elementActionArea.replaceChildren(elementLoading);
+
       drawCardAndUpdateDisplay();
+      setTimeout(() => {
+        const scoringDistribution = calcActualScoringDistributionSevenStud(
+          hand,
+          deck
+        );
+        console.table(scoringDistribution);
+        const scoringDistributionInPercentage = getPMF(scoringDistribution);
+        console.log(scoringDistributionInPercentage);
+        elementActionArea.replaceChildren(elementButtonBet, elementSliderBet);
+      }, 200);
+      // appendChild(elementActionArea,elementButtonBet);
     } else if (phase === PHASE_BET_ROUND_THREE) {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
       detachAllChildren(elementActionArea);
-      const combs = ______WARN_getHandCombinations(hand, POKER_HAND_SIZE);
-      const best = getBestCombination(combs);
-      const handCombinations = getCombinationsSortedByRankAscending(combs);
-      const handTable = [];
-      for (const hand of handCombinations) {
-        const handRow = [];
-        for (const card of hand) {
-          handRow.push(getInPlayCardRankAndSuitString(card));
-        }
-        handTable.push(handRow, getScoreType(hand));
-      }
+      // const combs = ______WARN_getHandCombinations(hand, POKER_HAND_SIZE);
+      // const best = getBestCombination(combs);
+      // const handCombinations = getCombinationsSortedByRankAscending(combs);
+      // const handTable = [];
+      // for (const hand of handCombinations) {
+      //   const handRow = [];
+      //   for (const card of hand) {
+      //     handRow.push(getInPlayCardRankAndSuitString(card));
+      //   }
+      //   handTable.push(handRow, getScoreType(hand));
+      // }
     }
 
     togglePhase();

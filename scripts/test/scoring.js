@@ -1,5 +1,30 @@
 const TEST_SCORINGS = () => {
-  runTest(`testScoreShouldBeFourOfAKind`, () => {});
+  runTest(`testScoreShouldBeHigh`, () => {
+    const card1 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
+    const card2 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
+    const card3 = newCard(CARD_VALUE.FIVE, CARD_SUITS.HEART);
+    const card4 = newCard(CARD_VALUE.SIX, CARD_SUITS.HEART);
+    const cardJOB1 = newCard(CARD_VALUE.JACK, CARD_SUITS.CLUB);
+    const cardJOB2 = newCard(CARD_VALUE.QUEEN, CARD_SUITS.CLUB);
+    const cardJOB3 = newCard(CARD_VALUE.KING, CARD_SUITS.CLUB);
+
+    const precedingCards = [card1, card2, card3, card4];
+    for (const card of [cardJOB1, cardJOB2, cardJOB3]) {
+      const handJacksOrBetter = newHand();
+      addCardToHand(handJacksOrBetter, card);
+      addCardsToHand(handJacksOrBetter, precedingCards);
+
+      assertLogTrue(
+        SCORING.JOB,
+        getScoreType(handJacksOrBetter),
+        () =>
+          `[testScoreShouldBeHigh] ${getHandAsString(
+            handJacksOrBetter
+          )} should be jacks or better.`
+      );
+    }
+  });
+  runTest(`testScoreShouldBeHigh`, () => {});
   runTest(`testScoreShouldBeStraight`, () => {
     const cardYoungest = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
     const cardYounger = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
@@ -426,19 +451,19 @@ const TEST_SCORINGS = () => {
 
   runTest(`testCardScoreShouldBeHigh`, () => {
     const functionName = `testCardScoreShouldBeHigh`;
-    const cardPair1 = newCard(CARD_VALUE.KING, CARD_SUITS.HEART);
+    const cardPair1 = newCard(CARD_VALUE.TWO, CARD_SUITS.HEART);
     const cardPair2 = newCard(CARD_VALUE.THREE, CARD_SUITS.CLUB);
     const cardHigh2 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
-    const cardHigh3 = newCard(CARD_VALUE.JACK, CARD_SUITS.DIAMOND);
+    const cardHigh3 = newCard(CARD_VALUE.SIX, CARD_SUITS.DIAMOND);
     const cardHigh1 = newCard(CARD_VALUE.SEVEN, CARD_SUITS.HEART);
     const cardRange = [cardPair1, cardHigh3, cardPair2, cardHigh2, cardHigh1];
-    const doubsHand = newHand();
+    const handHigh = newHand();
     const sizePerHandCombination = 5;
     for (const card of cardRange) {
-      addCardToHand(doubsHand, card);
+      addCardToHand(handHigh, card);
     }
     const handCombinations = ______WARN_getHandCombinations(
-      doubsHand,
+      handHigh,
       sizePerHandCombination
     );
     assertLogTrue(
@@ -448,15 +473,15 @@ const TEST_SCORINGS = () => {
     );
     const combination = handCombinations[0];
 
-    for (let i = 0; i < doubsHand.length; i++) {
+    for (let i = 0; i < handHigh.length; i++) {
       assertLogTrue(
-        doubsHand[i],
+        handHigh[i],
         combination[i],
         () =>
           `[${functionName}] The five cards chosen from a pool of five should be in original order (don't need to change original card order as we are testing for colors)`
       );
     }
-    const scoreType = getScoreType(doubsHand);
+    const scoreType = getScoreType(handHigh);
     assertLogTrue(
       SCORING.HIGH,
       scoreType,

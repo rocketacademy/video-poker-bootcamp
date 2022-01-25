@@ -7,6 +7,7 @@ const SCORING = {
   TRIPS: `SCORING_TYPE_TRIPS`,
   DOUBLE: `SCORING_TYPE_DOUBLE`,
   PAIR: `SCORING_TYPE_PAIR`,
+  JOB: `SCORING_TYPE_JOB`, // Jacks Or Better
   HIGH: `SCORING_TYPE_HIGH`,
   SIZE_MISMATCH: `SCORING_SIZE_MISMATCH`,
   UNKNOWN: `SCORING_TYPE_UNKNOWN`,
@@ -30,8 +31,10 @@ const getRankOfScoringType = (scoringType) => {
       return 9;
     case SCORING.PAIR:
       return 8;
-    case SCORING.HIGH:
+    case SCORING.JOB:
       return 7;
+    case SCORING.HIGH:
+      return 6;
   }
   throw new Error(`Undefined rank`);
 };
@@ -153,10 +156,24 @@ const _isHandStraight = (hand) => {
   return true;
 };
 
+const _isHandJacksOrBetter = (hand) => {
+  const bagValueByCount = getBagValueByCount(hand);
+  return (
+    bagValueByCount[1].length === 5 &&
+    hand.some((card) => {
+      const value = getInPlayCardValue(card);
+
+      return (
+        value === CARD_VALUE.JACK ||
+        value === CARD_VALUE.QUEEN ||
+        value === CARD_VALUE.KING
+      );
+    })
+  );
+};
 const _isHandHigh = (hand) => {
   const bagValueByCount = getBagValueByCount(hand);
-  const is = bagValueByCount[1].length === 5;
-  return is;
+  return bagValueByCount[1].length === 5;
 };
 
 /**
@@ -191,6 +208,9 @@ const getScoreType = (hand) => {
   }
   if (_isHandPair(hand)) {
     return SCORING.PAIR;
+  }
+  if (_isHandJacksOrBetter(hand)) {
+    return SCORING.JOB;
   }
   if (_isHandHigh(hand)) {
     return SCORING.HIGH;
@@ -330,7 +350,7 @@ const addToScoringDistribution = (distribution, scoreType) => {
 /**
  *
  * @param {Hand} hand
- * @param {number} currentIndex
+ * @param {number} currentIndex of hand
  * @param {number} sizePerHandCombination constant throughout iterations
  * @param {number} toTake
  * @param {ScoringDistribution} distribution Counts the scoring type occurrence of valid poker hands in a multi-card hand
@@ -379,11 +399,11 @@ const _calcActualScoringDistribution = (
 };
 
 /**
- * @param {Hand|Deck}
+ * @param {Hand|Deck} hand Sample Space
  */
-const calcActualScoringDistribution = (hand) => {
+const calcActualScoringDistribution = (hand, distribution) => {
   const handSize = POKER_HAND_SIZE;
-  const distribution = newScoringDistribution();
+  distribution = distribution || newScoringDistribution();
   const currentCombination = [];
 
   _calcActualScoringDistribution(
@@ -395,4 +415,89 @@ const calcActualScoringDistribution = (hand) => {
     currentCombination
   );
   return distribution;
+};
+
+/**
+ *
+ * @param {Hand} deck
+ * @param {number} currentIndex
+ * @param {number} sizePerHandCombination constant throughout iterations
+ * @param {number} toTake
+ * @param {ScoringDistribution} distribution Counts the scoring type occurrence of valid poker hands in a multi-card hand
+ * @param {Hand} currentCombination
+ * @returns
+ */
+const _calcActualScoringDistributionSevenStud = (
+  revealed,
+  deck,
+  currentIndex,
+  sizePerHandCombination,
+  toTake,
+  distribution,
+  currentCombination
+) => {
+  if (currentCombination.length === sizePerHandCombination) {
+    calcActualScoringDistribution(currentCombination, distribution);
+    return;
+  }
+  if (0 === toTake) {
+    return;
+  }
+
+  if (currentIndex === deck.length) {
+    return;
+  }
+
+  const combination = [...currentCombination, deck[currentIndex]];
+
+  _calcActualScoringDistributionSevenStud(
+    revealed,
+    deck,
+    currentIndex + 1,
+    sizePerHandCombination,
+    toTake,
+    distribution,
+    currentCombination
+  );
+  _calcActualScoringDistributionSevenStud(
+    revealed,
+    deck,
+    currentIndex + 1,
+    sizePerHandCombination,
+    toTake - 1,
+    distribution,
+    combination
+  );
+};
+
+/**
+ * @param {Hand|Deck} preceding Sample Space
+ * @param {Hand|Deck} space Sample Space
+ */
+const calcActualScoringDistributionSevenStud = (revealed, deck) => {
+  const handSize = 7;
+  const distribution = newScoringDistribution();
+  _calcActualScoringDistributionSevenStud(
+    revealed,
+    deck,
+    0,
+    handSize,
+    handSize - getHandSize(revealed),
+    distribution,
+    revealed
+  );
+  return distribution;
+};
+
+const getPMF = (distribution) => {
+  const totalSamples = Object.values(distribution).reduce((s, i) => s + i, 0);
+  return Object.entries(distribution).reduce((pmf, [type, occurrence]) => {
+    return {
+      ...pmf,
+      [type]: {
+        occurrence,
+        p: occurrence / totalSamples,
+      },
+    };
+  }, {});
 };
