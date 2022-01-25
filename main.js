@@ -40,6 +40,22 @@ const getElementRootOfCore = (core) => core.elementRoot;
   }
   if (mode === MODES.DEMO) {
     const core = newCore();
-    goToPlayerConfigPage(core);
+
+    const imgLoading = document.createElement(`img`);
+    imgLoading.setAttribute(`src`, `./static/img/circleOfCards.gif`);
+    imgLoading.setAttribute(`alt`, `A loading page gif`);
+    imgLoading.setAttribute(
+      `credit`,
+      `https://tenor.com/view/gamble-cards-pokers-gif-7257796`
+    );
+
+    const imgLoadDiv = document.createElement(`div`);
+    imgLoadDiv.className += ` img-loading-div`;
+    appendChild(imgLoadDiv, imgLoading);
+    appendChild(core.elementRoot, imgLoadDiv);
+    setTimeout(() => {
+      detachAllChildren(core.elementRoot);
+      goToPlayerConfigPage(core);
+    }, 2000);
   }
 })();

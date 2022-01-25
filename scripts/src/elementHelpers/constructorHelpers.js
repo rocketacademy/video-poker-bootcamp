@@ -12,6 +12,10 @@ const CLASS_GAME_MODE_DISPLAY = `poker-game-mode-display`;
 // CSS Class Names: Game Phase Transition Buttons
 const CLASS_BUTTON_START_GAME = `poker-game-config-start`;
 const CLASS_NAME_CHECKBOX = `poker-game-config-checkbox`;
+const CLASS_NAME_CHECKBOX_DESC = `poker-game-config-checkbox-desc`;
+const CLASS_NAME_CHECKBOX_LABEL = `poker-game-checkbox-label`;
+const CLASS_WRAPPER_PROB_CHECKBOXES = `poker-game-wrapper-prob-checkboxes-group`;
+const CLASS_WRAPPER_PROB_GROUP_DESC = `poker-game-wrapper-prob-checkboxes-desc`;
 
 // General Helpers
 const _addClassToElement = (element, className) =>
@@ -70,12 +74,8 @@ const newElementNameInput = () => {
   return element;
 };
 
-const newElementNameDisplay = () => {
-  const element = _newElementDiv(CLASS_NAME_DISPLAY);
-  element.className += ` col justify-content-center text-center`;
-
-  return element;
-};
+const newElementNameDisplay = () =>
+  _newElementDiv(`${CLASS_NAME_DISPLAY} col text-center`);
 const newElementPlayerCreditDisplay = (config) => {
   const credit = getMoneyOfPlayerConfig(config);
   const element = _newElementDiv(CLASS_PLAYER_CREDIT);

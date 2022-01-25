@@ -2,7 +2,19 @@ body {
   display: flex;
   justify-content: center;
 }
+
+.img-loading-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-loading {
+  border-radius: 200px;
+  display: flex;
+}
 .poker-root {
+  margin-top: 25vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,6 +44,9 @@ body {
   margin-top: 10px;
   border-radius: 10px;
   color: white;
+
+  justify-content: center;
+  align-items: center;
 }
 
 .poker-name-banner {
@@ -42,6 +57,39 @@ body {
   justify-content: center;
 
   text-align: center;
+}
+
+.poker-game-wrapper-prob-checkboxes-desc {
+  width: fit-content;
+  display: flex;
+  border: 1px solid blue;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+}
+
+.poker-game-wrapper-prob-checkboxes-group {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+}
+.poker-game-checkbox-label {
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 0 10px;
+
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.poker-game-config-checkbox-desc {
+  display: flex;
+  border: 1px solid blue;
+  white-space: nowrap;
+  margin: 0 0 0 10px;
+  padding: 0;
 }
 
 .card-holder {

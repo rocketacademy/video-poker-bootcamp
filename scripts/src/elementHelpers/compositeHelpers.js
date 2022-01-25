@@ -48,37 +48,44 @@ const newElementButtonGameModeAndSetToggle = (desc, mode, config) => {
   return element;
 };
 
+const newLabelProbFlag = (foo, config, desc) => {
+  const label = document.createElement(`label`);
+  label.className += ` ${CLASS_NAME_CHECKBOX_LABEL} col`;
+
+  const checkbox = document.createElement(`input`);
+  checkbox.className += ` ${CLASS_NAME_CHECKBOX}`;
+  checkbox.setAttribute(`type`, `checkbox`);
+  checkbox.addEventListener(`change`, ({ target: { checked } }) => {
+    foo(config, checked);
+  });
+
+  const checkboxDesc = document.createElement(`div`);
+  checkboxDesc.innerText = desc;
+  checkboxDesc.className += ` ${CLASS_NAME_CHECKBOX_DESC}`;
+  appendChild(label, checkbox);
+  appendChild(label, checkboxDesc);
+  return label;
+};
 const newElementCheckboxesProbabilityWithFlagToggles = (config) => {
-  const labelFourCards = document.createElement(`label`);
-  const checkboxFourCards = document.createElement(`input`);
-  checkboxFourCards.className += ` ${CLASS_NAME_CHECKBOX}`;
-  checkboxFourCards.setAttribute(`type`, `checkbox`);
-  checkboxFourCards.addEventListener(`change`, ({ target: { checked } }) => {
-    setFlagProbFourCardsOfPlayerConfig(config, checked);
-  });
-  const descFourCards = document.createElement(`div`);
-  descFourCards.innerText = `4 Cards`;
-  appendChild(labelFourCards, checkboxFourCards);
-  appendChild(labelFourCards, descFourCards);
+  const labelFourCards = newLabelProbFlag(
+    setFlagProbFourCardsOfPlayerConfig,
+    config,
+    `4 cards`
+  );
 
-  const labelThreeCards = document.createElement(`label`);
-
-  const checkboxThreeCards = document.createElement(`input`);
-  checkboxThreeCards.className += ` ${CLASS_NAME_CHECKBOX}`;
-  checkboxThreeCards.setAttribute(`type`, `checkbox`);
-  checkboxThreeCards.addEventListener(`change`, ({ target: { checked } }) => {
-    setFlagProbThreeCardsOfPlayerConfig(config, checked);
-  });
-  const descThreeCards = document.createElement(`div`);
-  descThreeCards.innerText = `3 Cards`;
-  appendChild(labelThreeCards, checkboxThreeCards);
-  appendChild(labelThreeCards, descThreeCards);
-
-  const group = document.createElement(`div`);
+  const labelThreeCards = newLabelProbFlag(
+    setFlagProbThreeCardsOfPlayerConfig,
+    config,
+    `3 cards`
+  );
 
   const groupDesc = document.createElement(`div`);
   groupDesc.innerText = `Calculate % on: `;
+  groupDesc.className += ` ${CLASS_WRAPPER_PROB_GROUP_DESC} col`;
 
+  const group = document.createElement(`div`);
+
+  group.className += ` ${CLASS_WRAPPER_PROB_CHECKBOXES} row`;
   group.appendChild(groupDesc);
   group.appendChild(labelThreeCards);
   group.appendChild(labelFourCards);
