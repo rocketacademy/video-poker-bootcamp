@@ -12,9 +12,17 @@ let pointsList = [
 
 let bet = [1,2,3,4,5]
 let heading = ["bet amount", "1", "2", "3", "4 "," 5"]
+let betAmt=1;
+let count = 0;
+
+const betButton = document.getElementById("bet")
+betButton.innerText = `Bet: ${betAmt}`
 
 const scoreTable = document.getElementById("scoretable")
-
+/**
+ * Function to create the scoretable
+ */
+const createTable = ()=>{
 for(let j = 0; j <= bet.length; j +=1){
   const column = document.createElement('div')
   for (let i = 1; i <= pointsList.length; i +=1){
@@ -33,7 +41,7 @@ for(let j = 0; j <= bet.length; j +=1){
   }
   scoreTable.append(column)
 }
-
+}
  
 /**
  * A function to highligh the relevant column in the score table based on the bet input
@@ -46,29 +54,11 @@ const highlightScore =(betAmt)=>{
     document.querySelector('#scoretable div:nth-child('+ (betAmt+1) +')').id = "highlight"
   } 
 
-  betButton.innerText = `Bet: ${betAmt}`
-
-  
- 
+  betButton.innerText = `Bet: ${betAmt}` 
 }
 
-let betAmt=1;
-let count = 0;
 
 
-const betButton = document.getElementById("bet")
-betButton.innerText = `Bet: ${betAmt}`
-betButton.addEventListener('click', ()=>{
-  console.log(betAmt)
-  if(betAmt === 5){
-    betAmt = 0
-  }
-  betAmt +=1
-  checkBet(betAmt,pointsNum)
-
-  highlightScore(betAmt)
-  
-  })
 
 /**
  * A function to check if the bet number < points available.
@@ -83,7 +73,7 @@ const checkBet =(betAmt, pointsNum) => {
   output("bet exceeds available amount.")
   dealButton.disabled = true
   } else if(gameEnd === false ){
-  output ("press deal to start")
+  output ("press deal to start.")
   console.log("checkbet")
   dealButton.disabled = false
   }

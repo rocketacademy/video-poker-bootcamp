@@ -3,6 +3,7 @@
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    charset="UTF-8"
   />
   <!-- Bootstrap CSS -->
   <link
@@ -12,7 +13,7 @@
     crossorigin="anonymous"
   />
 
-  <link rel="stylesheet" href="style-bootstrap.css" />
+  <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -25,14 +26,46 @@
   />
 </head>
 <body>
-  <header class="linear-wipe lh-1">VIDEO POKER</header>
-  <div class="container d-flex flex-column">
-    <div>
-      <div id="scoretable"></div>
+  <audio
+    id="clickAudio"
+    src="click.mp3"
+    type="audio/mpeg"
+    preload="auto"
+    autobuffer
+    controls
+  ></audio>
+  <audio
+    id="winSound"
+    src="winsound.mp3"
+    type="audio/mpeg"
+    preload="auto"
+    autobuffer
+    controls
+  ></audio>
+  <audio
+    id="loseSound"
+    src="losesound.mp3"
+    type="audio/mpeg"
+    preload="auto"
+    autobuffer
+    controls
+  ></audio>
+
+  <div class="container my-3">
+    <div class="row justify-content-center">
+      <header class="lh-1 linear-wipe">VIDEO POKER</header>
     </div>
-    <div id="results"></div>
-    <div id="card-container" class="d-flex">
-      <div class="card flex-fill">
+    <div class="row justify-content-center">
+      <div class="px-1" id="scoretable"></div>
+    </div>
+    <div class="row justify-content-center">
+      <div id="results"></div>
+    </div>
+    <div
+      class="d-flex row justify-content-center flex-wrap"
+      id="card-container"
+    >
+      <div class="column col-1 col-sm-4 card">
         <div class="cardfront">
           <img src="pokercardback.svg" alt="back of poker card" />
         </div>
@@ -44,7 +77,7 @@
         </div>
       </div>
 
-      <div class="card flex-fill">
+      <div class="column col-1 card col-sm-4">
         <div class="cardfront">
           <img src="pokercardback.svg" alt="back of poker card" />
         </div>
@@ -56,7 +89,7 @@
         </div>
       </div>
 
-      <div class="card flex-fill">
+      <div class="column col-1 card col-sm-4">
         <div class="cardfront">
           <img src="pokercardback.svg" alt="back of poker card" />
         </div>
@@ -68,7 +101,7 @@
         </div>
       </div>
 
-      <div class="card flex-fill">
+      <div class="column col-1 card col-sm-4">
         <div class="cardfront">
           <img src="pokercardback.svg" alt="back of poker card" />
         </div>
@@ -80,7 +113,7 @@
         </div>
       </div>
 
-      <div class="card flex-fill">
+      <div class="column col-1 card col-sm-4">
         <div class="cardfront">
           <img src="pokercardback.svg" alt="back of poker card" />
         </div>
@@ -92,16 +125,26 @@
         </div>
       </div>
     </div>
-    <div id="numbers">
-      <div id="winrate">Wins:</div>
-      <div id="points"></div>
+    <div class="row justify-content-center">
+      <div id="numbers">
+        <div id="winrate">Wins:</div>
+        <div id="points"></div>
+      </div>
     </div>
-    <div id="buttons">
-      <button id="bet"></button>
-      <button id="reset">Reset</button>
-      <button id="deal"></button>
+
+    <div class="row justify-content-evenly text-center" id="buttons">
+      <div class="column col-4">
+        <button id="bet"></button>
+      </div>
+      <div class="column col-4">
+        <button id="reset">Reset</button>
+      </div>
+      <div class="column col-4">
+        <button id="deal"></button>
+      </div>
     </div>
   </div>
+
   <script src="scoretable.js"></script>
   <script src="script.js"></script>
 

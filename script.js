@@ -1,11 +1,16 @@
 
-
+/**
+ * Global variables
+ */
 const cardContainer = document.getElementById("card-container")
 const cardsInContainer = document.getElementsByClassName("card")
 const cardsBackInContainer = document.getElementsByClassName("cardback")
 
 const resetButton = document.getElementById("reset")
 const winRate = document.getElementById("winrate")
+const dealButton = document.getElementById("deal")
+dealButton.innerText = `Deal`
+
 
 const cardName = document.getElementsByClassName("name")
 const cardSuit = document.getElementsByClassName("suit")
@@ -13,6 +18,9 @@ const cardBody = document.getElementsByClassName("body")
 const holdText = document.getElementsByClassName("hold")
 
 const pointsAmt = document.getElementById("points")
+let clickAudio = document.getElementById("clickAudio")
+const winSound = document.getElementById("winSound")
+const loseSound = document.getElementById("loseSound")
 
 let hold = false;
 let playerHand = Array(5).fill(hold)
@@ -20,8 +28,9 @@ let pointsNum = 100
 let gamesPlayed = 0
 let gamesWon = 0
 let gameEnd = false
+let deck;
 
-pointsAmt.innerText = `Points: ${pointsNum}`
+let deckCheck = []
 
 /**
  * A function to generate a random index ranging from 0 (inclusive) to max (exclusive).
@@ -110,28 +119,6 @@ const makeDeck = () => {
   // Return the completed card deck
   return newDeck;
 };
-
-/**
- * A function to deal cards such that a player always has 5 cards in hand
- * @param playerHand {array} number of cards already in hand 
- * checks if there are any cards in hand and / or whether player has chosen to hold the card
- * replace cards that are not marked as hold
- * @returns 5 cards
- */
-
-
- 
-// let pointsList = [
-//   {hand:'royal flush', points: 250},
-//   {hand: 'straight flush', points: 50},
-//   {hand: 'four of a kind', points: 25},
-//   {hand: 'fullhouse', points: 9},
-//   {hand: 'flush', points: 6},
-//   {hand: 'straight', points: 4},
-//   {hand: 'three of a kind', points: 3},
-//   {hand: 'two pair', points: 2},
-//   {hand: 'jacks or better', points: 1},
-//   {hand: 'lose', points:0}]
 
 let index = []
 
@@ -289,29 +276,30 @@ const deal = (playerHand) =>{
       if(gameEnd === false){
 
       cardsInContainer[i].addEventListener('click', ()=>{
-      
+        
         if (count === 1){
+          clickAudio.play()
           holdClick +=1;
           if(holdClick % 2 !== 0){
             playerHand[i].hold = true
-            holdText[i].innerText = "HOLD"
-            console.log(holdClick)
-            console.log('true')
+            holdText[i].innerText = "✋"
           } else {
              playerHand[i].hold = false
-        holdText[i].innerText = ""
-        console.log('false')
+             holdText[i].innerText = ""
           }
         } 
       })
     }
-
     } 
+    deckCheck.push(playerHand[i])
+    console.log(deckCheck)
     playerHand[i].hold = false
     
   } 
-  output("")
-
+  output("click cards to hold.")
+  if(gameEnd === true){
+    cardsInContainer.disabled = true
+  }
   if (count === 2){
     calcHandScore(playerHand)
     count = 0
@@ -327,27 +315,27 @@ const deal = (playerHand) =>{
  * @param {number} pointsNum 
  * results in the game ending if either of the above conditions are true.
  */
-
-
 const checkEndGame =(deck, pointsNum)=>{
   console.log(pointsNum)
   if(deck.length >= 5 && pointsNum > 0){
     Array.from(document.querySelectorAll('#card-container .card')).forEach(e=>e.classList.add("toggle-half"))
   } else {
+    gameEnd = true
+    betButton.disabled = true
+    dealButton.disabled = true
+    cardContainer.style.pointerEvents = "none"
+    
+    resetButton.style.animation = "glowing 1300ms infinite"
     setTimeout(()=>{
-    if (deck.length < 10) {
+    if (deck.length < 5) {
       console.log(deck.length)
-      output("out of cards! game ends!")
+      calcHandScore(playerHand)
+      setTimeout(output("out of cards! game ends!"), 1500)
+      // output("out of cards! game ends!")
     } else if (pointsNum <= 0) {
       output ("out of points! game ends!")
     }
-    betButton.disabled = true
-    dealButton.disabled = true
-    cardsInContainer.disabled = true
-    resetButton.style.animation = "glowing 1300ms infinite"
-    
   }, 1500)
-  gameEnd = true
   }
 }
 
@@ -370,12 +358,11 @@ const calcHandScore = (playerHand) => {
   if (winningIndex < 9){
     pointsNum = pointsNum + pointsWagered
     gamesWon +=1
+    winSound.play()
   } else {
     pointsNum = pointsNum - betAmt
+    loseSound.play()
   }
-
-  console.log(pointsNum)
-  console.log(betAmt)
 
   pointsAmt.innerText = `Points: ${pointsNum}`
   winRate.innerText = `Wins: ${gamesWon}/${gamesPlayed}`
@@ -395,11 +382,21 @@ const calcHandScore = (playerHand) => {
   
 }
 
-// const deck = shuffleCards(makeDeck())
+/**
+ * A function to initialise the game 
+ * Highlights the column with bet 1
+ * Add event listeners to buttons
+ */
+const initGame =()=>{
+  createTable()
+  document.querySelector('#scoretable div:nth-child('+ (2) +')').id = "highlight"
+  output ("press deal to start.")
+  
+  deck  = shuffleCards(makeDeck())
+  pointsAmt.innerText = `Points: ${pointsNum}`
 
-const dealButton = document.getElementById("deal")
-dealButton.innerText = `Deal`
-dealButton.addEventListener('click', ()=>{
+  dealButton.addEventListener('click', ()=>{
+  clickAudio.play()
   console.log(betAmt)
   count += 1
   console.log(betAmt)
@@ -410,18 +407,22 @@ dealButton.addEventListener('click', ()=>{
   checkEndGame(deck, pointsNum)
   
 })
+  betButton.addEventListener('click', ()=>{
+  clickAudio.play()
+  console.log(betAmt)
+  if(betAmt === 5){
+    betAmt = 0
+  }
+  betAmt +=1
+  checkBet(betAmt,pointsNum)
+  highlightScore(betAmt)
+  })
 
-resetButton.addEventListener('click', ()=>window.location.reload())
-
-let deck;
-/**
- * A function to initialise the game and highlight the column with bet 1
- */
-const initGame =()=>{
-  deck  = shuffleCards(makeDeck())
-  document.querySelector('#scoretable div:nth-child('+ (2) +')').id = "highlight"
-
-  output ("press deal to start")
+  resetButton.addEventListener('click', ()=>{
+  clickAudio.play()
+  setTimeout(()=>window.location.reload(),500)
+})
+  
 }
 
 initGame()
