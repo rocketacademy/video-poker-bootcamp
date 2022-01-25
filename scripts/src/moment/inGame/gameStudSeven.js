@@ -37,11 +37,11 @@ const newElementStagingCard = () => {
 };
 
 const newElementHand = () => _newElementDiv(`${CLASS_NAME_HAND} row`);
-const newElementActionArea = () => _newElementDiv(CLASS_NAME_ACTION_AREA);
+const newElementActionArea = () =>
+  _newElementDiv(`${CLASS_NAME_ACTION_AREA} flex-column`);
 const newElementBusted = () => {
   const element = _newElementDiv(CLASS_NAME_BUSTED);
   element.innerText = `No more 🍯`;
-
   return element;
 };
 const cardToImgUrl = (card) => {
@@ -69,7 +69,7 @@ const newGameStudSeven = (core, flags) => {
 
   const PROBABILTY_FLAG = {
     FLOP: flags.probability.threeCards,
-    RIVER: flags.probability.fourCards,
+    TURN: flags.probability.fourCards,
   };
 
   console.log(PROBABILTY_FLAG);
@@ -81,6 +81,42 @@ const newGameStudSeven = (core, flags) => {
   let pot = 0;
   const addToPot = (credit) => (pot += credit);
 
+  const getPot = () => pot;
+  const elePot = document.createElement(`div`);
+  elePot.className += ` money--`;
+  const updatePotDisplay = () => {
+    elePot.innerText = `Pot: $$${getPot()}`;
+  };
+
+  const elePlayerCredit = document.createElement(`div`);
+  elePlayerCredit.className += ` money--`;
+  const updatePlayerCreditDisplay = () => {
+    elePlayerCredit.innerText = `You Have: $$${getPlayerCreditOfCore(core)}`;
+  };
+
+  const eleInitBet = document.createElement(`div`);
+  eleInitBet.className += ` money--`;
+  const updateInitBetDisplay = () => {
+    eleInitBet.innerText = `Initial Bet: $$${
+      initialBet === null ? `-` : initialBet
+    }`;
+  };
+  const eleMoneys = document.createElement(`div`);
+  eleMoneys.className += ` moneys row`;
+  const inGameHeader = document.createElement(`div`);
+  inGameHeader.className += ` in-game-header`;
+  updatePotDisplay();
+  updatePlayerCreditDisplay();
+  updateInitBetDisplay();
+  eleMoneys.appendChild(elePlayerCredit);
+  eleMoneys.appendChild(elePot);
+  eleMoneys.appendChild(eleInitBet);
+
+  const elementNameDisplay = newElementNameDisplay();
+  elementNameDisplay.innerText = getPlayerNameOfCore(core);
+
+  inGameHeader.appendChild(elementNameDisplay);
+  inGameHeader.appendChild(eleMoneys);
   let phase = PHASE_BET_INITIAL;
 
   const togglePhase = () => (phase += 1); // do this after current phase wants to end
@@ -122,98 +158,125 @@ const newGameStudSeven = (core, flags) => {
   appendChilds(wrapper, elementCardHolders);
 
   const elementActionArea = newElementActionArea();
-  const elementButtonBet = newElementBetButton();
 
+  const elementButtonBar = _newElementDiv(
+    `button-bar row justify-content-center`
+  );
+  const elementButtonBet = newElementBetButton();
+  const elementBetValue = document.createElement(`div`);
+  elementBetValue.innerText = activeBet;
   const isBusted = () => getPlayerCreditOfCore(core) <= 0;
-  elementButtonBet.addEventListener(`click`, () => {
-    setInitialBetIfNull(activeBet);
+
+  const transferAndUpdateDisplayCredit = (activeBet) => {
     addToPot(activeBet);
     minusPlayerCreditOfCore(core, activeBet);
+    updatePotDisplay();
+    updatePlayerCreditDisplay();
+  };
+  elementButtonBet.addEventListener(`click`, () => {
+    // on bet, immediately draw card first, then assess the actions to be taken.
+    setAndDisplayInitialBetIfNull(activeBet);
+    transferAndUpdateDisplayCredit(activeBet);
 
     activeBet = 0; // reset
+    elementBetValue.innerText = activeBet;
 
-    if (isBusted()) {
-      detachAllChildren(elementActionArea);
-      elementActionArea.appendChild(newElementBusted());
-      return;
-    }
     const slider = getElementSliderBet();
     slider.max = getBetLimit();
-    slider.value = 0;
+    slider.value = activeBet;
+
+    if (isBusted()) {
+      elementBetValue.replaceChildren(newElementBusted());
+      slider.parentNode?.removeChild(slider);
+    } else {
+    }
+
     refreshBetButtonVisibility();
 
     if (phase === PHASE_BET_INITIAL) {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
-
-      replaceChilds(getElementCardHolderByPosition(2), newElementStagingCard());
     } else if (phase === PHASE_BET_ROUND_ONE) {
+      drawCardAndUpdateDisplay();
+
       if (PROBABILTY_FLAG.FLOP === true) {
         const elementLoading = document.createElement("div");
         elementLoading.innerText = "Please wait for %";
         elementActionArea.replaceChildren(elementLoading);
 
-        drawCardAndUpdateDisplay();
         setTimeout(() => {
           const scoringDistribution =
             calcScoringDistributionSevenStudGivenSomeRevealedCards(hand, deck);
-          console.table(scoringDistribution);
           const scoringDistributionInPercentage = getPMF(scoringDistribution);
           console.log(scoringDistributionInPercentage);
-          elementActionArea.replaceChildren(elementButtonBet, elementSliderBet);
+          if (isBusted()) {
+            elementActionArea.replaceChildren(
+              elementBetValue,
+              elementButtonBet
+            );
+          } else {
+            elementActionArea.replaceChildren(
+              elementSliderBet,
+              elementBetValue,
+              elementButtonBet
+            );
+          }
         }, 200);
-      } else {
-        drawCardAndUpdateDisplay();
       }
-
       replaceChilds(getElementCardHolderByPosition(3), newElementStagingCard());
     } else if (phase === PHASE_BET_ROUND_TWO) {
-      if (PROBABILTY_FLAG.RIVER === true) {
+      drawCardAndUpdateDisplay();
+
+      if (PROBABILTY_FLAG.TURN === true) {
         const elementLoading = document.createElement("div");
         elementLoading.innerText = "Please wait for %";
         elementActionArea.replaceChildren(elementLoading);
-        drawCardAndUpdateDisplay();
         setTimeout(() => {
           const scoringDistribution =
             calcScoringDistributionSevenStudGivenSomeRevealedCards(hand, deck);
           console.table(scoringDistribution);
           const scoringDistributionInPercentage = getPMF(scoringDistribution);
           console.log(scoringDistributionInPercentage);
-          elementActionArea.replaceChildren(elementButtonBet, elementSliderBet);
+          if (isBusted()) {
+            elementActionArea.replaceChildren(
+              elementBetValue,
+              elementButtonBet
+            );
+          } else {
+            elementActionArea.replaceChildren(
+              elementSliderBet,
+              elementBetValue,
+              elementButtonBet
+            );
+          }
         }, 200);
-      } else {
-        drawCardAndUpdateDisplay();
       }
-
-      replaceChilds(getElementCardHolderByPosition(4), newElementStagingCard());
-      replaceChilds(getElementCardHolderByPosition(5), newElementStagingCard());
-      replaceChilds(getElementCardHolderByPosition(6), newElementStagingCard());
     } else if (phase === PHASE_BET_ROUND_THREE) {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
+    }
+
+    if (phase === PHASE_BET_INITIAL) {
+      replaceChilds(getElementCardHolderByPosition(2), newElementStagingCard());
+    } else if (phase === PHASE_BET_ROUND_ONE) {
+      replaceChilds(getElementCardHolderByPosition(3), newElementStagingCard());
+    } else if (phase === PHASE_BET_ROUND_TWO) {
+      replaceChilds(getElementCardHolderByPosition(4), newElementStagingCard());
+      replaceChilds(getElementCardHolderByPosition(5), newElementStagingCard());
+      replaceChilds(getElementCardHolderByPosition(6), newElementStagingCard());
+    } else if (phase === PHASE_BET_ROUND_THREE) {
       detachAllChildren(elementActionArea);
-      // const combs = ______WARN_getHandCombinations(hand, POKER_HAND_SIZE);
-      // const best = getBestCombination(combs);
-      // const handCombinations = getCombinationsSortedByRankAscending(combs);
-      // const handTable = [];
-      // for (const hand of handCombinations) {
-      //   const handRow = [];
-      //   for (const card of hand) {
-      //     handRow.push(getInPlayCardRankAndSuitString(card));
-      //   }
-      //   handTable.push(handRow, getScoreType(hand));
-      // }
     }
 
     togglePhase();
   });
 
-  elementActionArea.appendChild(elementButtonBet);
   const isInitialBetSet = () => initialBet !== null;
-  const setInitialBetIfNull = (activeBet) => {
+  const setAndDisplayInitialBetIfNull = (activeBet) => {
     if (initialBet === null) {
       initialBet = activeBet;
+      updateInitBetDisplay();
     }
   };
   const getBetLimit = () => {
@@ -224,7 +287,15 @@ const newGameStudSeven = (core, flags) => {
   };
   const refreshBetButtonVisibility = () => {
     if (activeBet > 0) {
-      setInnerText(elementButtonBet, `BET`);
+      if (isBusted()) {
+        setInnerText(elementButtonBet, `CHECK`);
+      } else {
+        if (PHASE_BET_INITIAL === phase) {
+          setInnerText(elementButtonBet, `INITIAL BET`);
+        } else {
+          setInnerText(elementButtonBet, `BET`);
+        }
+      }
       showElement(elementButtonBet);
     } else {
       if (isInitialBetSet()) {
@@ -235,14 +306,22 @@ const newGameStudSeven = (core, flags) => {
     }
   };
   const elementSliderBet = newElementSliderBet(0, getBetLimit());
+
   elementSliderBet.addEventListener(`input`, ({ target: { value } }) => {
-    activeBet = value;
+    activeBet = Number(value);
+    elementBetValue.innerText = activeBet;
     refreshBetButtonVisibility();
   });
 
   elementActionArea.appendChild(elementSliderBet);
+  elementActionArea.appendChild(elementBetValue);
+
+  elementButtonBar.appendChild(elementButtonBet);
+
+  elementActionArea.appendChild(elementButtonBar);
 
   const elements = {
+    header: inGameHeader,
     hand: { wrapper, cardHolders: elementCardHolders },
     action: {
       area: elementActionArea,
@@ -264,27 +343,18 @@ const newGameStudSeven = (core, flags) => {
 
     getElementHand: () => elements.hand.wrapper,
     getElementActionArea: () => elements.action.area,
+    getElementHeader: () => elements.header,
   };
 };
 
 const studSevenGoPaint = (game) => {
   const root = game.getElementRoot();
 
-  const childGameName = _newElementDiv(`dummy-gamename`);
-  const childPlayerName = _newElementDiv(`dummy-playername`);
-  const childPot = _newElementDiv(`dummy-pot`);
+  const childHeader = game.getElementHeader();
   const childHand = game.getElementHand();
   const childAction = game.getElementActionArea();
-  const childCredit = _newElementDiv(`dummy-credit`);
 
-  appendChilds(root, [
-    childGameName,
-    childPlayerName,
-    childPot,
-    childHand,
-    childAction,
-    childCredit,
-  ]);
+  appendChilds(root, [childHeader, childHand, childAction]);
 };
 
 const goToGameStudSeven = (core, flags) => {

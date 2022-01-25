@@ -14,7 +14,7 @@ body {
   display: flex;
 }
 .poker-root {
-  margin-top: 25vh;
+  margin-top: 10vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,15 +33,16 @@ body {
 
 .poker-name-display {
   display: flex;
-
-  height: 1rem;
+  min-height: 1rem;
   background-color: olive;
   margin-top: 1.5rem;
   border-radius: 10px;
   color: white;
-
+  max-width: fit-content;
   justify-content: center;
   align-items: center;
+  padding: 5px 20px;
+  white-space: nowrap;
 }
 
 .poker-name-banner {
@@ -79,7 +80,8 @@ body {
   flex-direction: row;
   width: fit-content;
 }
-.poker-game-config-button-start {
+.poker-game-config-button-start,
+.action-bet-button {
   display: flex;
   margin-top: 10px;
   padding: 0px 10px;
@@ -90,7 +92,8 @@ body {
   border-radius: 3px;
 }
 
-.poker-game-config-button-start:hover {
+.poker-game-config-button-start:hover,
+.action-bet-button:hover {
   background-color: olive;
   color: white;
 }
@@ -108,7 +111,7 @@ body {
 }
 .poker-wrapper-game-modes {
   display: flex;
-  margin: 1rem 0 0 0;
+  margin: 2rem 0 0 0;
 }
 .poker-game-mode-stud-seven {
   display: flex;
@@ -151,4 +154,38 @@ body {
 .poker-hand {
   display: flex;
   flex-direction: row;
+  margin-top: 30px;
+}
+
+.action-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  color: olive;
+}
+
+.slider-bet {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.moneys {
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.money-- {
+  width: fit-content;
+}
+
+.in-game-header {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }

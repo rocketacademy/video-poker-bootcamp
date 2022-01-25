@@ -196,7 +196,7 @@ const _playerConfigReadyInteractivePaint = (playerConfig) => {
 
   const elementNameBanner = _newElementDiv(CLASS_NAME_BANNER);
   elementNameBanner.className += ` row`;
-  elementNameBanner.innerText = `Input your name`;
+  elementNameBanner.innerText = `Your name, please 🙂`;
   setElementNameBannerOfPlayerConfig(playerConfig, elementNameBanner);
 
   const elementNameDisplay = newElementNameDisplay(playerConfig);

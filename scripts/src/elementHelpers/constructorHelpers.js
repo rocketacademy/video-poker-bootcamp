@@ -35,6 +35,7 @@ const _newElementSlider = (className, min, max) => {
   element.value = min;
   element.min = min;
   element.max = max;
+  element.step = 1;
   return element;
 };
 
