@@ -144,7 +144,7 @@ const newGameStudSeven = (core, flags) => {
         drawCardAndUpdateDisplay();
         setTimeout(() => {
           const scoringDistribution =
-            calcActualScoringDistributionSevenStudOnRiver(hand, deck);
+            calcScoringDistributionSevenStudGivenSomeRevealedCards(hand, deck);
           console.table(scoringDistribution);
           const scoringDistributionInPercentage = getPMF(scoringDistribution);
           console.log(scoringDistributionInPercentage);
@@ -161,7 +161,7 @@ const newGameStudSeven = (core, flags) => {
         drawCardAndUpdateDisplay();
         setTimeout(() => {
           const scoringDistribution =
-            calcActualScoringDistributionSevenStudOnRiver(hand, deck);
+            calcScoringDistributionSevenStudGivenSomeRevealedCards(hand, deck);
           console.table(scoringDistribution);
           const scoringDistributionInPercentage = getPMF(scoringDistribution);
           console.log(scoringDistributionInPercentage);

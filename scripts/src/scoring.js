@@ -427,7 +427,7 @@ const calcActualScoringDistribution = (hand, distribution) => {
   return distribution;
 };
 
-const _calcActualScoringDistributionSevenStud = (
+const _calcScoringDistributionSevenStudGivenSomeRevealedCards = (
   revealed,
   deck,
   currentIndex,
@@ -461,7 +461,7 @@ const _calcActualScoringDistributionSevenStud = (
     return;
   }
 
-  _calcActualScoringDistributionSevenStud(
+  _calcScoringDistributionSevenStudGivenSomeRevealedCards(
     revealed,
     deck,
     currentIndex + 1,
@@ -473,7 +473,7 @@ const _calcActualScoringDistributionSevenStud = (
   const thisCard = deck[currentIndex];
   const optionsIncludingThisCard = [...optionsFromDeck, thisCard];
 
-  _calcActualScoringDistributionSevenStud(
+  _calcScoringDistributionSevenStudGivenSomeRevealedCards(
     revealed,
     deck,
     currentIndex + 1,
@@ -485,14 +485,17 @@ const _calcActualScoringDistributionSevenStud = (
 };
 
 /**
- * @param {Hand|Deck} preceding Sample Space
- * @param {Hand|Deck} space Sample Space
+ * @param {Hand|Deck} revealed The cards that are revealed
+ * @param {Hand|Deck} deck The deck to draw cards from to form hands of size handSize.
  */
-const calcActualScoringDistributionSevenStudOnRiver = (revealed, deck) => {
-  const handSize = 7;
+const calcScoringDistributionSevenStudGivenSomeRevealedCards = (
+  revealed,
+  deck,
+  handSize = 7
+) => {
   const distribution = newScoringDistribution();
   const noOfCardsToTake = handSize - getHandSize(revealed);
-  _calcActualScoringDistributionSevenStud(
+  _calcScoringDistributionSevenStudGivenSomeRevealedCards(
     revealed,
     deck,
     0,
