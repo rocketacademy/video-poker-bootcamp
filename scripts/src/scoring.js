@@ -303,12 +303,22 @@ const comparatorHandRanking = (handA, handB) => {
   return rankA - rankB;
 };
 
+/**
+ *
+ * @param {Hand[]} handCombinations Hands of poker hand size (5 cards)
+ * @returns
+ */
 const getCombinationsSortedByRankAscending = (handCombinations) => {
   const hands = handCombinations.slice();
   hands.sort(comparatorHandRanking);
   return hands;
 };
 
+/**
+ *
+ * @param {Hand[]} handCombinations Hands of poker hand size (5 cards)
+ * @returns
+ */
 const getBestCombination = (handCombinations) => {
   const hands = getCombinationsSortedByRankAscending(handCombinations);
   return hands[hands.length - 1];
@@ -417,27 +427,36 @@ const calcActualScoringDistribution = (hand, distribution) => {
   return distribution;
 };
 
-/**
- *
- * @param {Hand} deck
- * @param {number} currentIndex
- * @param {number} sizePerHandCombination constant throughout iterations
- * @param {number} toTake
- * @param {ScoringDistribution} distribution Counts the scoring type occurrence of valid poker hands in a multi-card hand
- * @param {Hand} currentCombination
- * @returns
- */
 const _calcActualScoringDistributionSevenStud = (
   revealed,
   deck,
   currentIndex,
-  sizePerHandCombination,
+  optionsSize,
   toTake,
   distribution,
-  currentCombination
+  noOfOptionsToPickFromOptions,
+  optionsFromDeck
 ) => {
-  if (currentCombination.length === sizePerHandCombination) {
-    calcActualScoringDistribution(currentCombination, distribution);
+  if (optionsFromDeck.length === optionsSize) {
+    // I reach the size limit to choose unrevealed cards
+
+    const optionsCombinations = ______WARN_getHandCombinations(
+      optionsFromDeck,
+      noOfOptionsToPickFromOptions
+    ); // get combinations of options, which combined with revealed cards will form a poker hand
+
+    for (const optionsComb of optionsCombinations) {
+      // for each optionsComb, combine cards revealed and options
+      const hand = newHand();
+      addInPlayCardsToHand(hand, revealed);
+      addInPlayCardsToHand(hand, optionsComb);
+      if (getHandSize(hand) !== POKER_HAND_SIZE) {
+        throw new Error(``);
+      }
+      // get the scoring type and record in scoring distribution
+      const scoringType = getScoreType(hand);
+      addToScoringDistribution(distribution, scoringType);
+    }
     return;
   }
   if (0 === toTake) {
@@ -448,25 +467,28 @@ const _calcActualScoringDistributionSevenStud = (
     return;
   }
 
-  const combination = [...currentCombination, deck[currentIndex]];
+  _calcActualScoringDistributionSevenStud(
+    revealed,
+    deck,
+    currentIndex + 1,
+    optionsSize,
+    toTake,
+    distribution,
+    noOfOptionsToPickFromOptions,
+    optionsFromDeck
+  );
+  const thisCard = deck[currentIndex];
+  const optionsIncludingThisCard = [...optionsFromDeck, thisCard];
 
   _calcActualScoringDistributionSevenStud(
     revealed,
     deck,
     currentIndex + 1,
-    sizePerHandCombination,
-    toTake,
-    distribution,
-    currentCombination
-  );
-  _calcActualScoringDistributionSevenStud(
-    revealed,
-    deck,
-    currentIndex + 1,
-    sizePerHandCombination,
+    optionsSize,
     toTake - 1,
     distribution,
-    combination
+    noOfOptionsToPickFromOptions,
+    optionsIncludingThisCard
   );
 };
 
@@ -474,17 +496,20 @@ const _calcActualScoringDistributionSevenStud = (
  * @param {Hand|Deck} preceding Sample Space
  * @param {Hand|Deck} space Sample Space
  */
-const calcActualScoringDistributionSevenStud = (revealed, deck) => {
+const calcActualScoringDistributionSevenStudOnRiver = (revealed, deck) => {
   const handSize = 7;
   const distribution = newScoringDistribution();
+  const noOfCardsToTake = handSize - getHandSize(revealed);
+  const noOfOptionsToPickFromOptions = POKER_HAND_SIZE - getHandSize(revealed);
   _calcActualScoringDistributionSevenStud(
     revealed,
     deck,
     0,
-    handSize,
-    handSize - getHandSize(revealed),
+    noOfCardsToTake,
+    noOfCardsToTake,
     distribution,
-    revealed
+    noOfOptionsToPickFromOptions,
+    []
   );
   return distribution;
 };

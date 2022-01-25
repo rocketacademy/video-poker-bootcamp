@@ -10,6 +10,7 @@ const CLASS_GAME_MODE_DISPLAY = `poker-game-mode-display`;
 
 // CSS Class Names: Game Phase Transition Buttons
 const CLASS_BUTTON_START_GAME = `poker-game-config-start`;
+const CLASS_NAME_CHECKBOX = `poker-game-config-checkbox`;
 
 // General Helpers
 const _addClassToElement = (element, className) =>

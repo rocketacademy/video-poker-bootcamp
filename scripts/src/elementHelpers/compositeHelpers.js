@@ -48,4 +48,40 @@ const newElementButtonGameModeAndSetToggle = (desc, mode, config) => {
   return element;
 };
 
+const newElementCheckboxesProbabilityWithFlagToggles = (config) => {
+  const labelFourCards = document.createElement(`label`);
+  const checkboxFourCards = document.createElement(`input`);
+  checkboxFourCards.className += ` ${CLASS_NAME_CHECKBOX}`;
+  checkboxFourCards.setAttribute(`type`, `checkbox`);
+  checkboxFourCards.addEventListener(`change`, ({ target: { checked } }) => {
+    setFlagProbFourCardsOfPlayerConfig(config, checked);
+  });
+  const descFourCards = document.createElement(`div`);
+  descFourCards.innerText = `4 Cards`;
+  appendChild(labelFourCards, checkboxFourCards);
+  appendChild(labelFourCards, descFourCards);
+
+  const labelThreeCards = document.createElement(`label`);
+
+  const checkboxThreeCards = document.createElement(`input`);
+  checkboxThreeCards.className += ` ${CLASS_NAME_CHECKBOX}`;
+  checkboxThreeCards.setAttribute(`type`, `checkbox`);
+  checkboxThreeCards.addEventListener(`change`, ({ target: { checked } }) => {
+    setFlagProbThreeCardsOfPlayerConfig(config, checked);
+  });
+  const descThreeCards = document.createElement(`div`);
+  descThreeCards.innerText = `3 Cards`;
+  appendChild(labelThreeCards, checkboxThreeCards);
+  appendChild(labelThreeCards, descThreeCards);
+
+  const group = document.createElement(`div`);
+
+  const groupDesc = document.createElement(`div`);
+  groupDesc.innerText = `Calculate % on: `;
+
+  group.appendChild(groupDesc);
+  group.appendChild(labelThreeCards);
+  group.appendChild(labelFourCards);
+  return group;
+};
 // Stud Seven Page

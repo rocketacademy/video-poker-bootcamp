@@ -155,6 +155,14 @@ const addCardToHand = (hand, card) => hand.push(newInPlayCard(card));
  * @returns
  */
 const addInPlayCardToHand = (hand, inPlayCard) => hand.push(inPlayCard);
+/**
+ *
+ * @param {Hand} hand
+ * @param {InPlayCard} inPlayCard
+ * @returns
+ */
+const addInPlayCardsToHand = (hand, inPlayCards) =>
+  inPlayCards.forEach((c) => hand.push(c));
 
 const getHandAsString = (hand) => {
   const cardStrings = [];
@@ -231,9 +239,12 @@ const _addHandCombinations = (
  * Note: permutations is NOT combinations
  * WARNING: If no. of combinations is expected to be big, this method will fry your browser.
  * @param {Hand} hand
- * @param {number} sizePerHandCombination
+ * @param {number} sizePerHandCombination Please specify no. of card per hand.
  */
 const ______WARN_getHandCombinations = (hand, sizePerHandCombination) => {
+  if (isNoU(sizePerHandCombination)) {
+    throw new Error(`Please specify no. of card per hand.`);
+  }
   const result = [];
   const currentCombination = [];
 

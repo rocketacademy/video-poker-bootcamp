@@ -54,10 +54,17 @@ const newElementSliderBet = (min, max) => {
 
 const ElementDistribution = () => {};
 
-const newGameStudSeven = (core) => {
+const newGameStudSeven = (core, flags) => {
   const handSizeToSettle = 7;
   const hand = newHand();
   const deck = newStandardDeck();
+
+  const PROBABILTY_FLAG = {
+    FLOP: flags.probability.threeCards,
+    RIVER: flags.probability.fourCards,
+  };
+
+  console.log(PROBABILTY_FLAG);
   let currentCardPosition = 0;
 
   let initialBet = null;
@@ -129,24 +136,40 @@ const newGameStudSeven = (core) => {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
     } else if (phase === PHASE_BET_ROUND_ONE) {
-      drawCardAndUpdateDisplay();
-    } else if (phase === PHASE_BET_ROUND_TWO) {
-      const elementLoading = document.createElement("div");
-      elementLoading.innerText = "Please wait for %";
-      elementActionArea.replaceChildren(elementLoading);
+      if (PROBABILTY_FLAG.FLOP === true) {
+        const elementLoading = document.createElement("div");
+        elementLoading.innerText = "Please wait for %";
+        elementActionArea.replaceChildren(elementLoading);
 
-      drawCardAndUpdateDisplay();
-      setTimeout(() => {
-        const scoringDistribution = calcActualScoringDistributionSevenStud(
-          hand,
-          deck
-        );
-        console.table(scoringDistribution);
-        const scoringDistributionInPercentage = getPMF(scoringDistribution);
-        console.log(scoringDistributionInPercentage);
-        elementActionArea.replaceChildren(elementButtonBet, elementSliderBet);
-      }, 200);
-      // appendChild(elementActionArea,elementButtonBet);
+        drawCardAndUpdateDisplay();
+        setTimeout(() => {
+          const scoringDistribution =
+            calcActualScoringDistributionSevenStudOnRiver(hand, deck);
+          console.table(scoringDistribution);
+          const scoringDistributionInPercentage = getPMF(scoringDistribution);
+          console.log(scoringDistributionInPercentage);
+          elementActionArea.replaceChildren(elementButtonBet, elementSliderBet);
+        }, 200);
+      } else {
+        drawCardAndUpdateDisplay();
+      }
+    } else if (phase === PHASE_BET_ROUND_TWO) {
+      if (PROBABILTY_FLAG.RIVER === true) {
+        const elementLoading = document.createElement("div");
+        elementLoading.innerText = "Please wait for %";
+        elementActionArea.replaceChildren(elementLoading);
+        drawCardAndUpdateDisplay();
+        setTimeout(() => {
+          const scoringDistribution =
+            calcActualScoringDistributionSevenStudOnRiver(hand, deck);
+          console.table(scoringDistribution);
+          const scoringDistributionInPercentage = getPMF(scoringDistribution);
+          console.log(scoringDistributionInPercentage);
+          elementActionArea.replaceChildren(elementButtonBet, elementSliderBet);
+        }, 200);
+      } else {
+        drawCardAndUpdateDisplay();
+      }
     } else if (phase === PHASE_BET_ROUND_THREE) {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
@@ -246,7 +269,7 @@ const studSevenGoPaint = (game) => {
   ]);
 };
 
-const goToGameStudSeven = (core) => {
-  const game = newGameStudSeven(core);
+const goToGameStudSeven = (core, flags) => {
+  const game = newGameStudSeven(core, flags);
   studSevenGoPaint(game);
 };

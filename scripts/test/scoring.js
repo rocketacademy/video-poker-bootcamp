@@ -1,5 +1,5 @@
 const TEST_SCORINGS = () => {
-  runTest(`testScoreShouldBeHigh`, () => {
+  runTest(`testScoreShouldBeJacksOrBetter`, () => {
     const card1 = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
     const card2 = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
     const card3 = newCard(CARD_VALUE.FIVE, CARD_SUITS.HEART);
@@ -24,7 +24,7 @@ const TEST_SCORINGS = () => {
       );
     }
   });
-  runTest(`testScoreShouldBeHigh`, () => {});
+  assertToDo(`testScoreShouldBeHigh`);
   runTest(`testScoreShouldBeStraight`, () => {
     const cardYoungest = newCard(CARD_VALUE.THREE, CARD_SUITS.HEART);
     const cardYounger = newCard(CARD_VALUE.FOUR, CARD_SUITS.HEART);
@@ -616,7 +616,8 @@ const TEST_SCORINGS = () => {
     ]);
 
     const actualBestHandOfSeven = getBestCombination(handCombinations);
-
+    console.log(`actualBestHandOfSeven`);
+    console.log(getHandAsString(actualBestHandOfSeven));
     const scoringType = getScoreType(expectedBestHandOfSeven);
 
     assertLogTrue(
@@ -845,5 +846,35 @@ const TEST_SCORINGS = () => {
         }
       );
     }
+  });
+
+  runTest(`sevenStud_testScoreShouldBeDoubs`, () => {
+    const card1 = newCard(CARD_VALUE.THREE, CARD_SUITS.DIAMOND);
+    const card2 = newCard(CARD_VALUE.FOUR, CARD_SUITS.SPADE);
+    const card3 = newCard(CARD_VALUE.FIVE, CARD_SUITS.CLUB);
+    const card4 = newCard(CARD_VALUE.ONE, CARD_SUITS.HEART);
+    const card5 = newCard(CARD_VALUE.ONE, CARD_SUITS.DIAMOND);
+    const card6 = newCard(CARD_VALUE.NINE, CARD_SUITS.SPADE);
+    const card7 = newCard(CARD_VALUE.NINE, CARD_SUITS.CLUB);
+    const cardRange = [card1, card2, card3, card4, card5, card6, card7];
+    const handSeven = newHand();
+    addCardsToHand(handSeven, cardRange);
+
+    const combinations = ______WARN_getHandCombinations(
+      handSeven,
+      POKER_HAND_SIZE
+    );
+    console.log(combinations);
+    const best = getBestCombination(combinations);
+    console.log(getHandAsString(best));
+    assertToDo(`Assertion`);
+    // assertLogTrue(
+    //   SCORING.DOUBLE,
+    //   getScoreType(best),
+    //   () =>
+    //     `[testScoreShouldBeHigh] ${getHandAsString(
+    //       handJacksOrBetter
+    //     )} should be jacks or better.`
+    // );
   });
 };

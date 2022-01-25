@@ -44,7 +44,8 @@ const _clearPlayerConfigDisplayAndGoToGame = (config) => {
 
   const core = getCoreOfPlayerConfig(config);
   const gameMode = getGameModeFromPlayerConfig(config);
-  goToGame(core, gameMode);
+  const flags = getFlagsOfPlayerConfig(config);
+  goToGame(core, flags, gameMode);
 };
 
 const hideStartButton = (config) => {

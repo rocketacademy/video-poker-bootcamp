@@ -7,6 +7,16 @@ const getGameModeFromPlayerConfig = (config) => config.gameMode;
 const setGameModeForPlayerConfig = (config, mode) => (config.gameMode = mode);
 
 const getCoreOfPlayerConfig = (config) => config.core;
+const getFlagsOfPlayerConfig = (config) => config.flags;
+const getFlagProbThreeCardsOfPlayerConfig = (config) =>
+  config.flags.probability.threeCards;
+const getFlagProbFourCardsOfPlayerConfig = (config) =>
+  config.flags.probability.fourCards;
+
+const setFlagProbThreeCardsOfPlayerConfig = (config, is) =>
+  (config.flags.probability.threeCards = is);
+const setFlagProbFourCardsOfPlayerConfig = (config, is) =>
+  (config.flags.probability.fourCards = is);
 
 const getPlayerOfPlayerConfig = (config) => {
   const core = getCoreOfPlayerConfig(config);
@@ -22,37 +32,43 @@ const setPlayerNameOfPlayerConfig = (config, name) => {
   const player = getPlayerOfPlayerConfig(config);
   setPlayerName(player, name);
 };
+const _getElementProbFlagsOfPlayerConfig = (playerConfig) =>
+  playerConfig.elements.probFlags;
 
-const getElementGameGroupOfPlayerConfig = (playerConfig) =>
+const _getElementGameGroupOfPlayerConfig = (playerConfig) =>
   playerConfig.elements.gameMode;
 const getElementGameModeWrapperOfPlayerConfig = (config) =>
-  getElementGameGroupOfPlayerConfig(config).wrapper;
+  _getElementGameGroupOfPlayerConfig(config).wrapper;
 const getElementGameModeOfPlayerConfig = (config, mode) =>
-  getElementGameGroupOfPlayerConfig(config).modes[mode];
+  _getElementGameGroupOfPlayerConfig(config).modes[mode];
 const getElementGameDisplayOfPlayerConfig = (config) =>
-  getElementGameGroupOfPlayerConfig(config).display;
+  _getElementGameGroupOfPlayerConfig(config).display;
+const getElementProbWrapperOfPlayerConfig = (playerConfig) =>
+  _getElementProbFlagsOfPlayerConfig(playerConfig).wrapper;
 
 const setElementGameModeActiveOfPlayerConfig = (config, element) =>
-  (getElementGameGroupOfPlayerConfig(config).active = element);
+  (_getElementGameGroupOfPlayerConfig(config).active = element);
 const getElementGameModeActiveOfPlayerConfig = (config) =>
-  getElementGameGroupOfPlayerConfig(config).active;
+  _getElementGameGroupOfPlayerConfig(config).active;
 const getElementButtonsGameModeOfPlayerConfigAsObject = (config) =>
-  getElementGameGroupOfPlayerConfig(config).modes;
+  _getElementGameGroupOfPlayerConfig(config).modes;
 const getElementButtonsGameModeOfPlayerConfigAsList = (config) =>
   Object.entries(getElementButtonsGameModeOfPlayerConfigAsObject(config));
-
 const setElementGameModeWrapperOfPlayerConfig = (playerConfig, wrapper) =>
-  (getElementGameGroupOfPlayerConfig(playerConfig).wrapper = wrapper);
+  (_getElementGameGroupOfPlayerConfig(playerConfig).wrapper = wrapper);
 const setElementGameModeOfPlayerConfig = (playerConfig, button, mode) =>
-  (getElementGameGroupOfPlayerConfig(playerConfig).modes[mode] = button);
+  (_getElementGameGroupOfPlayerConfig(playerConfig).modes[mode] = button);
 const setElementGameDisplayOfPlayerConfig = (playerConfig, display) => {
-  getElementGameGroupOfPlayerConfig(playerConfig).display = display;
+  _getElementGameGroupOfPlayerConfig(playerConfig).display = display;
 };
 
+const setElementProbWrapperOfPlayerConfig = (playerConfig, element) =>
+  (_getElementProbFlagsOfPlayerConfig(playerConfig).wrapper = element);
+
 const getElementGameModeCurrentOfPlayerConfig = (config) =>
-  getElementGameGroupOfPlayerConfig(config).current;
+  _getElementGameGroupOfPlayerConfig(config).current;
 const setElementGameModeCurrentOfPlayerConfig = (config) =>
-  (getElementGameGroupOfPlayerConfig(config, element).current = element);
+  (_getElementGameGroupOfPlayerConfig(config, element).current = element);
 
 const setElementButtonStartOfPlayConfig = (playerConfig, element) =>
   (playerConfig.elements.start = element);
@@ -140,10 +156,14 @@ const _playerConfigStruct = (core) => {
   return {
     core,
     gameMode: null,
+    flags: { probability: { threeCards: false, fourCards: false } },
     elements: {
       player: {
         name: { wrapper: null, input: null, display: null },
         credit: { display: null },
+      },
+      probFlags: {
+        wrapper: null,
       },
       gameMode: {
         wrapper: null,
@@ -198,6 +218,13 @@ const _playerConfigReadyInteractivePaint = (playerConfig) => {
     setElementGameModeOfPlayerConfig(playerConfig, elementButtonGameMode, mode);
   }
 
+  const elementPropCheckboxesWrapper =
+    newElementCheckboxesProbabilityWithFlagToggles(playerConfig);
+  setElementProbWrapperOfPlayerConfig(
+    playerConfig,
+    elementPropCheckboxesWrapper
+  );
+
   setElementGameModeWrapperOfPlayerConfig(
     playerConfig,
     elementButtonGameModeWrapper
@@ -238,11 +265,14 @@ const _playerConfigGoPaint = (playerConfig) => {
   }
   appendChilds(elementWrapperGameMode, buttons);
 
+  const elementProbCheckboxes =
+    getElementProbWrapperOfPlayerConfig(playerConfig);
   const elementStartButton = getElementButtonStartOfPlayerConfig(playerConfig);
 
   appendChilds(elementRoot, [
     elementPlayerWrapper,
     elementWrapperGameMode,
+    elementProbCheckboxes,
     elementStartButton,
   ]);
 };
