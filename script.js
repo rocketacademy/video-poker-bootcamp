@@ -149,19 +149,20 @@ const getScore = () => {
 };
 
 const cardSelect = (index) => {
+  const card = document.getElementById('card(index)');
   // if index is not inside, append. Otherwise remove.
   if (cardSelectIndex.includes(Number(index)) === false) {
     cardSelectIndex.push(Number(index));
-    // document.getElementById('card(index)').removeClass('card');
-    // document.getElementById('card(index)').addClass('selected');
+    card.removeClass('card');
+    card.addClass('selected');
   }
   else {
     // Obtain the index of which the number is repeated
     const removeIndex = cardSelectIndex.indexOf(Number(index));
-    // Remove the card base on the index, 1 time.
+    // Remove the card based on the index
     cardSelectIndex.splice(removeIndex, 1);
-    // document.getElementById('card(index)').removeClass('selected');
-    // document.getElementById('card(index)').addClass('card');
+    card.removeClass('selected');
+    card.addClass('card');
   }
   console.log(cardSelectIndex);
   return cardSelectIndex;
@@ -193,6 +194,9 @@ const createCard = (cardInfo, index) => {
 };
 
 const drawClick = () => {
+  gameScore -= 10;
+  gameScoreContainer.innerText = gameScore;
+
   scoreTemp = 0;
   cardContainer.innerHTML = '';
   // Shuffle deck and draw number of cards
@@ -200,6 +204,7 @@ const drawClick = () => {
   playerHand = dealCards(numberOfCards);
 
   scoreTemp = Number(getScore(playerHand));
+  document.getElementById('lock-btn').disabled = false;
   messageOutput.innerText = `${analyseHand(playerHand)};   +${getScore(playerHand)} if you lock it in!`;
 
   for (index in playerHand) {
@@ -248,16 +253,16 @@ const lockClick = () => {
   gameScore = Number(gameScore) + Number(scoreTemp);
   gameScoreContainer.innerText = gameScore;
 
+  // const card = document.getElementsByClassName('card-container');
+  // card.removeClass('card-container');
+  // card.addClass('selected');
+
   // Disable button after click
   document.getElementById('lock-btn').disabled = true;
-};
 
-const resetClick = () => {
   cardSelectIndex = [];
-  buildFiveCardContainer();
   document.getElementById('draw-btn').disabled = false;
   document.getElementById('swap-btn').disabled = false;
-  document.getElementById('lock-btn').disabled = false;
   messageOutput.innerText = 'Click to draw a card!';
 };
 
@@ -299,12 +304,6 @@ const initGame = () => {
   lockButton.setAttribute('id', 'lock-btn');
   document.body.appendChild(lockButton);
   lockButton.addEventListener('click', lockClick);
-
-  const resetButton = document.createElement('button');
-  resetButton.innerText = 'Play Again';
-  resetButton.setAttribute('id', 'reset-btn');
-  document.body.appendChild(resetButton);
-  resetButton.addEventListener('click', resetClick);
 };
 initGame();
 
