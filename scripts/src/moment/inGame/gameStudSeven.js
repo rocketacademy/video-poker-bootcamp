@@ -267,6 +267,17 @@ const newGameStudSeven = (core, flags) => {
       replaceChilds(getElementCardHolderByPosition(6), newElementStagingCard());
     } else if (phase === PHASE_BET_ROUND_THREE) {
       detachAllChildren(elementActionArea);
+
+      const buttonRestart = document.createElement(`button`);
+      buttonRestart.className += ` button-restart`;
+      buttonRestart.innerText = "PLAY AGAIN";
+
+      buttonRestart.addEventListener(`click`, () => {
+        const root = getElementRootOfCore(core);
+        detachAllChildren(root);
+        goToGameStudSeven(core, flags);
+      });
+      elementActionArea.appendChild(buttonRestart);
     }
 
     togglePhase();

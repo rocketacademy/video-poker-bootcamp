@@ -81,6 +81,7 @@ body {
   width: fit-content;
 }
 .poker-game-config-button-start,
+.button-restart,
 .action-bet-button {
   display: flex;
   margin-top: 10px;
@@ -93,6 +94,7 @@ body {
 }
 
 .poker-game-config-button-start:hover,
+.button-restart:hover,
 .action-bet-button:hover {
   background-color: olive;
   color: white;
