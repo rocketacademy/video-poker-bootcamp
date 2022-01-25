@@ -5,17 +5,20 @@
  */
 
 // For gameplay
-let points = 100;
-
-const hand = [];
-// const hand = [...pair2Hand];
-const heldCardsIndex = [];
 let deck;
 let bet = 1;
+let points = 100;
+const hand = []; // Comment out for testing
+const heldCardsIndex = []; // Comment out for testing
+
+/* To test winning hands
+-- Comment above 2 lines
+-- Un-comment below 2 lines */
+// const hand = [...kind3Hand];
+// const heldCardsIndex = [0, 1, 2, 3, 4];
 
 const cardNameTally = {};
 const cardSuitTally = {};
-
 const payout = {
 	'Royal Flush': 800,
 	'Straight Flush': 50,
@@ -26,17 +29,23 @@ const payout = {
 	'Three of a Kind': 3,
 	'Two Pairs': 2,
 	'Jacks or Better': 1,
+	'Better luck next round': -bet,
 };
 
 // For HTML elements
-const mainContainer = document.createElement('div');
-const messageBoard = document.createElement('div');
+const mainContainer = document.createElement('main');
+const topRow = document.createElement('div');
 const pointsContainer = document.createElement('div');
+const playerDiv = document.createElement('div');
+const musicContainer = document.createElement('div');
+const musicIcon = document.createElement('i');
+const music = document.createElement('audio');
+
+const messageBoard = document.createElement('div');
 const cardContainer = document.createElement('div');
 const dealBtn = document.createElement('button');
-const gameInfoContainer = document.createElement('div');
-const gameInstructions = document.createElement('div');
-const howToWin = document.createElement('div');
+const payTableBtn = document.createElement('button');
+const payTable = document.createElement('div');
 
 /*
  ********************************************************************
@@ -190,7 +199,32 @@ const createCardElement = () => {
 	}
 };
 
-// Function to update points in
+// Function to create the pay table div
+const createPayTable = () => {
+	for (key in payout) {
+		let p = document.createElement('p');
+		p.innerText = key;
+		let span = document.createElement('span');
+		span.style.color = '#c40093';
+		span.innerText = ` +${payout[key]}`;
+		if (key === 'Better luck next round') {
+			p.innerText = `Nothing`;
+			span.innerText = ` ${payout[key]}`;
+		}
+		p.appendChild(span);
+		payTable.appendChild(p);
+	}
+
+	let closeBtn = document.createElement('button');
+	closeBtn.innerHTML = '<span style="font-size:2em;">→</span> Close';
+	closeBtn.setAttribute('id', 'close-button');
+	closeBtn.addEventListener('click', () => {
+		payTable.classList.toggle('hidden');
+	});
+	payTable.appendChild(closeBtn);
+};
+
+// Function to update credits
 const updatePoints = () => {
 	pointsContainer.innerText = `CREDITS: ${points}`;
 };
@@ -200,19 +234,44 @@ const updateMessage = (message) => {
 	messageBoard.innerText = message;
 };
 
+// Function to change text on Deal / Draw button
+const toggleBtnText = () => {
+	const arrow = '<span style="font-size:2em;">→</span>';
+	if (dealBtn.innerHTML === `${arrow} Deal`) {
+		dealBtn.innerHTML = `${arrow} Draw`;
+	} else {
+		dealBtn.innerHTML = `${arrow} Deal`;
+	}
+};
+
 // Function to allow players to hold / un-hold a card
 const toggleHold = (msg, currentCardIndex) => {
-	if (msg.innerHTML === '') {
-		// Add "hold" message
-		msg.innerHTML = 'Hold';
-		// Store index of held cards in array
-		heldCardsIndex.push(currentCardIndex);
+	if (!dealBtn.disabled) {
+		if (msg.innerHTML === '') {
+			// Add "hold" message
+			msg.innerHTML = 'Hold';
+			// Store index of held cards in array
+			heldCardsIndex.push(currentCardIndex);
+		} else {
+			// Remove "hold" message
+			msg.innerHTML = '';
+			// Remove index of held cards in array
+			const indexToRemove = heldCardsIndex.indexOf(currentCardIndex);
+			heldCardsIndex.splice(indexToRemove, 1);
+		}
+	}
+};
+
+// Function to pause/play the audio track
+const toggleMusic = () => {
+	if (music.paused === false) {
+		music.pause();
+		musicIcon.classList.remove('fa-volume-up');
+		musicIcon.classList.add('fa-volume-off');
 	} else {
-		// Remove "hold" message
-		msg.innerHTML = '';
-		// Remove index of held cards in array
-		const indexToRemove = heldCardsIndex.indexOf(currentCardIndex);
-		heldCardsIndex.splice(indexToRemove, 1);
+		music.play();
+		musicIcon.classList.add('fa-volume-up');
+		musicIcon.classList.remove('fa-volume-off');
 	}
 };
 
@@ -231,7 +290,7 @@ const dealCards = () => {
 		// Display cards
 		createCardElement();
 		updateMessage('Select cards to hold');
-		dealBtn.innerText = `Draw`;
+		toggleBtnText();
 	}
 
 	// If user selects cards to hold
@@ -245,7 +304,16 @@ const dealCards = () => {
 		}
 		createCardElement();
 
-		checkForWin();
+		let outcome = checkForWin();
+		const pointDiff = getWinnings(outcome);
+		updateMessage(outcome);
+		points += pointDiff;
+
+		let pointDiffElement = document.createTextNode(` ${pointDiff}`);
+		if (pointDiff >= 0) {
+			pointDiffElement = document.createTextNode(` +${pointDiff}`);
+		}
+		pointsContainer.appendChild(pointDiffElement);
 
 		dealBtn.disabled = true;
 		setTimeout(newGame, 3000);
@@ -281,6 +349,7 @@ const tallyCards = () => {
 	}
 };
 
+// Function to pull out winnings from payout object
 const getWinnings = (result) => {
 	return bet * payout[result];
 };
@@ -298,7 +367,13 @@ const newGame = () => {
 	createEmptyCardElements();
 
 	dealBtn.disabled = false;
-	dealBtn.innerText = `Deal`;
+	toggleBtnText();
+
+	// No new game when user is out of credits
+	if (points <= 0) {
+		updateMessage(`Game over`);
+		dealBtn.disabled = true;
+	}
 };
 
 /*
@@ -376,21 +451,18 @@ const determineFlush = () => {
 --------------------------------------------------- */
 const checkForWin = (hand) => {
 	tallyCards();
-	let lose = false;
 	let result;
 
 	/* Checking for Royal Flush / Straight Flush / Flush
 	If all cards have the same suit (flush), determine type of flush */
 	if (Object.values(cardSuitTally).includes(5)) {
 		result = determineFlush();
-		points += getWinnings(result);
 	}
 	//
 	/* Checking for Four of a Kind
 	If there are four cards with the same card name */
 	else if (Object.values(cardNameTally).includes(4)) {
 		result = 'Four of a Kind';
-		points += getWinnings(result);
 	}
 	//
 	/* Checking for Full House 
@@ -400,14 +472,12 @@ const checkForWin = (hand) => {
 		Object.values(cardNameTally).includes(3)
 	) {
 		result = 'Full House';
-		points += getWinnings(result);
 	}
 	//
 	/* Checking for Three of a Kind
 	If there are three cards with the same name	*/
 	else if (Object.values(cardNameTally).includes(3)) {
 		result = 'Three of a Kind';
-		points += getWinnings(result);
 	}
 	//
 	/* Checking for Two Pairs
@@ -417,7 +487,6 @@ const checkForWin = (hand) => {
 		Object.values(cardNameTally).length === 3
 	) {
 		result = 'Two Pairs';
-		points += getWinnings(result);
 	}
 	//
 	/* Checking for Jacks or Better
@@ -429,7 +498,6 @@ const checkForWin = (hand) => {
 		cardNameTally['A'] === 2
 	) {
 		result = 'Jacks or Better';
-		points += getWinnings(result);
 	}
 	//
 	/* Checking for Straight
@@ -442,27 +510,18 @@ const checkForWin = (hand) => {
 				Object.keys(cardNameTally).includes('K'))
 		) {
 			result = 'Straight';
-			points += getWinnings(result);
 		}
 		// If not straight
 		else {
-			lose = true;
+			result = 'Better luck next round';
 		}
 	}
 	// For all other combinations
 	else {
-		lose = true;
-	}
-
-	// Show winnings next to points
-
-	if (lose) {
 		result = 'Better luck next round';
-		points -= bet;
 	}
 
-	updateMessage(result);
-	createCardElement(hand);
+	return result;
 };
 
 /*
@@ -474,49 +533,66 @@ const checkForWin = (hand) => {
 const initGame = () => {
 	deck = shuffleCards(makeDeck());
 
-	// Format divs
+	/* Format divs
+	----- Top row */
+	topRow.setAttribute('id', 'top-row');
 	pointsContainer.setAttribute('id', 'points');
+	playerDiv.setAttribute('id', 'player');
+	musicContainer.setAttribute('id', 'music');
+
+	/* -- Play area */
 	messageBoard.setAttribute('id', 'message-board');
 	dealBtn.setAttribute('id', 'deal-button');
 	cardContainer.setAttribute('id', 'card-container');
-	gameInfoContainer.setAttribute('id', 'game-info');
-	gameInstructions.setAttribute('id', 'game-instructions');
-	// payTable.setAttribute('id', 'pay-table');
-	mainContainer.setAttribute('id', 'main');
 
-	// Add content to the elements
-	const howToPlay = [
-		`How to play`,
-		`Click 'Deal' to draw 5 cards`,
-		`Select any cards you want to hold.`,
-		`The rest will be discarded.`,
-		`Click 'Draw' to replace discarded cards.`,
-	];
-	const ul = document.createElement('ul');
-	for (let i = 0; i < howToPlay.length; i += 1) {
-		const li = document.createElement('li');
-		li.innerText = howToPlay[i];
-		ul.appendChild(li);
-	}
-	// gameInstructions.appendChild(ul);
-	// gameInfoContainer.appendChild(gameInstructions);
+	/* -- Bottow row */
+	payTableBtn.setAttribute('id', 'paytable-button');
+	payTable.classList.add('paytable', 'hidden');
+
+	/* Add content to the elements */
 	updatePoints();
-	messageBoard.innerHTML = `Ready to play?`;
-	dealBtn.innerText = `Deal`;
+	messageBoard.innerHTML = `Ready to play ?`;
+	toggleBtnText();
+	playerDiv.innerText = `1P`;
 	createEmptyCardElements();
+	payTableBtn.innerText = `How to score points ? `;
+	createPayTable();
 
+	/* Add event listeners to buttons */
+	musicContainer.addEventListener('click', () => {
+		toggleMusic();
+	});
 	dealBtn.addEventListener('click', () => {
 		dealCards();
 	});
+	payTableBtn.addEventListener('click', () => {
+		payTable.classList.toggle('hidden');
+	});
 
-	// Append divs to doc
-	mainContainer.appendChild(pointsContainer);
+	/* Append divs to docs */
+	musicContainer.appendChild(musicIcon);
+	topRow.appendChild(pointsContainer);
+	topRow.appendChild(playerDiv);
+	topRow.appendChild(musicContainer);
+
+	mainContainer.appendChild(topRow);
 	mainContainer.appendChild(messageBoard);
 	mainContainer.appendChild(dealBtn);
 	mainContainer.appendChild(cardContainer);
-	mainContainer.appendChild(gameInfoContainer);
-
+	mainContainer.appendChild(payTableBtn);
+	document.body.appendChild(payTable);
 	document.body.appendChild(mainContainer);
+
+	/* Add music */
+	let source = document.createElement('source');
+	source.src = 'music/fsm-team-escp-neonscapes.mp3';
+	source.type = 'audio/mp3';
+	music.appendChild(source);
+	musicIcon.classList.add('fa', 'fa-volume-off');
+	music.volume = 0.2;
+	music.loop = true;
+	musicIcon.ariaHidden = true;
+	document.body.appendChild(music);
 };
 
 initGame();
