@@ -1,5 +1,6 @@
 // CSS Class Names: Player
 const CLASS_NAME_INPUT = `poker-name-input`;
+const CLASS_NAME_BANNER = `poker-name-banner`;
 const CLASS_WRAPPER_NAME_CONFIG = `poker-wrapper-config-name`;
 const CLASS_NAME_DISPLAY = `poker-name-display`;
 const CLASS_PLAYER_CREDIT = `poker-game-config-credit`;
@@ -57,10 +58,24 @@ const _newElementImg = (className, src, alt) => {
 
 // New Elements: Players
 
-const newElementNameInput = () => _newElementTextInput(CLASS_NAME_INPUT);
-const newElementWrapperNameConfig = () =>
-  _newElementDiv(CLASS_WRAPPER_NAME_CONFIG);
-const newElementNameDisplay = () => _newElementDiv(CLASS_NAME_DISPLAY);
+const newElementWrapperNameConfig = () => {
+  const element = _newElementDiv(CLASS_WRAPPER_NAME_CONFIG);
+  element.className += ` row flex-column align-items-center justify-content-center`;
+  return element;
+};
+
+const newElementNameInput = () => {
+  const element = _newElementTextInput(CLASS_NAME_INPUT);
+  element.className += ` col text-center`;
+  return element;
+};
+
+const newElementNameDisplay = () => {
+  const element = _newElementDiv(CLASS_NAME_DISPLAY);
+  element.className += ` col justify-content-center text-center`;
+
+  return element;
+};
 const newElementPlayerCreditDisplay = (config) => {
   const credit = getMoneyOfPlayerConfig(config);
   const element = _newElementDiv(CLASS_PLAYER_CREDIT);

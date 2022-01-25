@@ -1,6 +1,13 @@
+body {
+  display: flex;
+  justify-content: center;
+}
 .poker-root {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
 }
 
 .card-img {
@@ -8,6 +15,33 @@
   height: 80px;
   aspect-ratio: 2 / 3;
   border: 1px solid red;
+}
+
+.poker-name-input {
+  display: flex;
+  font-size: 0.8rem;
+  margin: 0px;
+  padding: 0px;
+}
+
+.poker-name-display {
+  display: flex;
+
+  height: 1rem;
+  background-color: olive;
+  margin-top: 10px;
+  border-radius: 10px;
+  color: white;
+}
+
+.poker-name-banner {
+  display: flex;
+  margin-top: 10px;
+  border-radius: 10px;
+  color: olive;
+  justify-content: center;
+
+  text-align: center;
 }
 
 .card-holder {

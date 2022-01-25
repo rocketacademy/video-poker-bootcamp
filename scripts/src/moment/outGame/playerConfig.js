@@ -82,7 +82,8 @@ const getElementPlayerOfPlayerConfig = (playerConfig) =>
  */
 const getElementPlayerGroupOfPlayerConfig = (playerConfig) =>
   getElementPlayerOfPlayerConfig(playerConfig).name;
-
+const getElementNameBannerOfPlayerConfig = (playerConfig) =>
+  getElementPlayerOfPlayerConfig(playerConfig).name.banner;
 /**
  *
  * @param {PlayerConfig} config
@@ -140,6 +141,8 @@ const setElementPlayerCreditOfPlayerConfig = (config, element) =>
 const setElementNameDisplayOfPlayerConfig = (config, element) =>
   (getElementPlayerGroupOfPlayerConfig(config).display = element);
 
+const setElementNameBannerOfPlayerConfig = (config, element) =>
+  (getElementPlayerGroupOfPlayerConfig(config).banner = element);
 const getMoneyOfPlayerConfig = (config) => {
   const player = getPlayerOfPlayerConfig(config);
   return getPlayerCredit(player);
@@ -190,6 +193,11 @@ const _playerConfigReadyInteractivePaint = (playerConfig) => {
   // Elements: Player Info : Name
   const elementPlayerWrapper = newElementWrapperNameConfig();
   setElementNameWrapperOfPlayerConfig(playerConfig, elementPlayerWrapper);
+
+  const elementNameBanner = _newElementDiv(CLASS_NAME_BANNER);
+  elementNameBanner.className += ` row`;
+  elementNameBanner.innerText = `Input your name`;
+  setElementNameBannerOfPlayerConfig(playerConfig, elementNameBanner);
 
   const elementNameDisplay = newElementNameDisplay(playerConfig);
   setElementNameDisplayOfPlayerConfig(playerConfig, elementNameDisplay);
@@ -242,12 +250,15 @@ const _playerConfigGoPaint = (playerConfig) => {
 
   const elementPlayerWrapper =
     getElementPlayerWrapperOfPlayerConfig(playerConfig);
+
+  const elementNameBanner = getElementNameBannerOfPlayerConfig(playerConfig);
   const elementNameInput = getElementNameInputOfPlayerConfig(playerConfig);
   const elementNameDisplay = getElementNameDisplayOfPlayerConfig(playerConfig);
 
   const elementCredit = getElementPlayerCreditOfPlayerConfig(playerConfig);
 
   appendChilds(elementPlayerWrapper, [
+    elementNameBanner,
     elementNameInput,
     elementNameDisplay,
     elementCredit,
