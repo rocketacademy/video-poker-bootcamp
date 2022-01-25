@@ -47,42 +47,21 @@ const makeDeck = () => {
 };
 
 /// ///////GLOBAL VARIABLES//////////
-
 let cardContainer;
-let cardSelectIndex = [];
+const cardSelectIndex = [];
+const cardSelectArray = [];
 let cardDeck;
-
-const numberOfCards = 5;
-let fiveCardContainer;
 let gameScoreContainer;
 let gameScore = 100;
 const gameScoreStep = 20;
+const numberOfCards = 5;
+let messageContainer;
+let messageOutput;
 let playerHand = [];
 let scoreTemp = 0;
-
-// message container
-const messageContainer = document.createElement('div');
-messageContainer.classList.add('message');
-document.body.appendChild(messageContainer);
-
-// message output
-const messageOutput = document.createElement('span');
-messageContainer.append(messageOutput);
-messageOutput.innerText = '';
+let wrapper;
 
 /// ////////////CALLBACK FUNCTIONS/////////
-
-const buildFiveCardContainer = () => {
-  fiveCardContainer = document.getElementById('fiveCardContainer');
-  fiveCardContainer.innerHTML = '';
-
-  for (let i = 0; i < numberOfCards; i += 1) {
-    cardContainer = document.createElement('div');
-    cardContainer.classList.add('card-container');
-    cardContainer.setAttribute('id', `card${i}`);
-    fiveCardContainer.appendChild(cardContainer);
-  }
-};
 
 const dealCards = (noOfCards) => {
   const listOfCards = [];
@@ -148,49 +127,46 @@ const getScore = () => {
   if (result === 'You din get anything') return '0';
 };
 
-const cardSelect = (index) => {
-  // const card = document.getElementById(`card${index}`);
+const cardSelect = (cardInfo, index) => {
   // if index is not inside, append. Otherwise remove.
   if (cardSelectIndex.includes(Number(index)) === false) {
     cardSelectIndex.push(Number(index));
-    // card.classList.remove('card');
-    // card.classList.add('selected');
+    const cardSelected = document.getElementById(`card${index}`);
+    console.log(cardSelected);
+    cardSelected.classList.add('selected');
   }
   else {
     // Obtain the index of which the number is repeated
     const removeIndex = cardSelectIndex.indexOf(Number(index));
-    // Remove the card based on the index
+    // Remove the card from selected card array
     cardSelectIndex.splice(removeIndex, 1);
-    // card.classList.remove('selected');
-    // card.classList.add('card');
+    const cardSelected = document.getElementById(`card${index}`);
+    console.log(cardSelected);
+    cardSelected.classList.remove('selected');
+    cardSelected.classList.add('card');
   }
-  console.log(cardSelectIndex);
   return cardSelectIndex;
 };
 
 const createCard = (cardInfo, index) => {
   const suit = document.createElement('div');
-  suit.classList.add(cardInfo.suit);
+  suit.setAttribute('id', 'suit');
   suit.innerText = cardInfo.suit;
 
   const name = document.createElement('div');
-  name.classList.add('name');
+  name.setAttribute('id', 'name');
   name.innerText = cardInfo.name;
 
-  const card = document.createElement('div');
-  card.classList.add('card');
+  cardContainer = document.createElement('div');
+  cardContainer.setAttribute('id', `card${index}`);
+  cardContainer.appendChild(name);
+  cardContainer.appendChild(suit);
 
-  const frontContainer = document.createElement('div');
-  frontContainer.classList.add('front-container');
-  frontContainer.appendChild(name);
-  frontContainer.appendChild(suit);
-
-  card.addEventListener('click', (e) => {
-    cardSelect(index);
+  cardContainer.addEventListener('click', (e) => {
+    cardSelect(cardInfo, index);
   });
-  card.appendChild(frontContainer);
 
-  return card;
+  return cardContainer;
 };
 
 const drawClick = () => {
@@ -198,22 +174,29 @@ const drawClick = () => {
   gameScoreContainer.innerText = gameScore;
 
   scoreTemp = 0;
-  cardContainer.innerHTML = '';
+
   // Shuffle deck and draw number of cards
   cardDeck = shuffleCards(makeDeck());
   playerHand = dealCards(numberOfCards);
 
   scoreTemp = Number(getScore(playerHand));
   document.getElementById('lock-btn').disabled = false;
-  messageOutput.innerText = `${analyseHand(playerHand)};   +${getScore(playerHand)} if you lock it in!`;
+
+  // display cards drawn one by one
   let count = 0;
+  wrapper = document.getElementById('wrapper');
   for (index in playerHand) {
     const card = createCard(playerHand[index], index);
+    console.log(card);
     count += 500;
     setTimeout(() => {
-      cardContainer.appendChild(card);
+      wrapper.appendChild(card);
     }, count);
   }
+
+  setTimeout(() => {
+    messageOutput.innerText = `${analyseHand(playerHand)};   +${getScore(playerHand)} if you lock it in!`;
+  }, 2500);
 
   // Disable button after click
   document.getElementById('draw-btn').disabled = true;
@@ -228,11 +211,11 @@ const swapClick = () => {
   // Replace cards in player's Hand
   playerHand = replaceCard(newCards, playerHand, cardSelectIndex);
 
-  // Update DOM with new cards
-  cardContainer.innerHTML = ''; // Empty the container
+  // Empty card container and replace cards
+  wrapper.innerHTML = '';
   for (index in playerHand) {
     const card = createCard(playerHand[index], index);
-    cardContainer.appendChild(card);
+    wrapper.appendChild(card);
   }
   scoreTemp = Number(getScore(playerHand));
   messageOutput.innerText = `${analyseHand(playerHand)};   +${getScore(playerHand)} if you lock it in!`;
@@ -246,26 +229,27 @@ const lockClick = () => {
   gameScore = Number(gameScore) + Number(scoreTemp);
   gameScoreContainer.innerText = gameScore;
 
-  // const card = document.getElementsByClassName('card-container');
-  // card.removeClass('card-container');
-  // card.addClass('selected');
-
   // Disable button after click
   document.getElementById('lock-btn').disabled = true;
 
-  cardSelectIndex = [];
   document.getElementById('draw-btn').disabled = false;
   document.getElementById('swap-btn').disabled = false;
   messageOutput.innerText = 'Click to draw a card!';
+  // Empty card container and replace cards
+  wrapper.innerHTML = '';
 };
 
 /// ////////////INITISATION///////////////
 const initGame = () => {
-  // fill game info div with starting instructions
-  messageOutput.innerText = 'Click to draw a card!';
-
-  const messageContainer = document.createElement('div');
+  // message container
+  messageContainer = document.createElement('div');
   messageContainer.classList.add('message');
+  document.body.appendChild(messageContainer);
+
+  // message output
+  messageOutput = document.createElement('span');
+  messageContainer.append(messageOutput);
+  messageOutput.innerText = 'Click to draw a card!';
 
   // fill game score div with score
   gameScoreContainer = document.createElement('div');
@@ -274,10 +258,10 @@ const initGame = () => {
   gameScoreContainer.setAttribute('class', 'h2');
   document.body.appendChild(gameScoreContainer);
 
-  // initialise div fivecardContainer'
-  fiveCardContainer = document.createElement('div');
-  fiveCardContainer.setAttribute('id', 'fiveCardContainer');
-  document.body.appendChild(fiveCardContainer);
+  // initialise div wrapper to contain card elements'
+  wrapper = document.createElement('div');
+  wrapper.setAttribute('id', 'wrapper');
+  document.body.appendChild(wrapper);
 
   // set up 3 buttons for draw, swap, reset
   const drawButton = document.createElement('button');
@@ -299,6 +283,3 @@ const initGame = () => {
   lockButton.addEventListener('click', lockClick);
 };
 initGame();
-
-// build card container to hold five cards
-buildFiveCardContainer();

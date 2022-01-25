@@ -18,19 +18,39 @@ body {
   cursor: pointer;
 }
 
+#card0,
+#card1,
+#card2,
+#card3,
+#card4 {
+  display: inline-block;
+  border: 3px solid#ffd966;
+  height: 4em;
+  width: 3em;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  font-size: 2em;
+  margin: 0.5em;
+}
+
+#card0:hover,
+#card1:hover,
+#card2:hover,
+#card3:hover,
+#card4:hover {
+  background-color: black;
+  color: white;
+}
+
 .card {
   display: inline-block;
   border: 3px solid#ffd966;
   height: 4em;
   width: 3em;
   font-family: "Poppins", sans-serif;
+  color: white;
   font-size: 2em;
   margin: 0.5em;
-}
-
-.card:hover {
-  background-color: black;
-  color: white;
 }
 
 .selected {
