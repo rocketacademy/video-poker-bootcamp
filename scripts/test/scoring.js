@@ -615,9 +615,9 @@ const TEST_SCORINGS = () => {
       card3,
     ]);
 
-    const actualBestHandOfSeven = getBestCombination(handCombinations);
-    console.log(`actualBestHandOfSeven`);
-    console.log(getHandAsString(actualBestHandOfSeven));
+    const actualBestFromCombinationsOfHandOfSeven =
+      getBestCombination(handCombinations);
+
     const scoringType = getScoreType(expectedBestHandOfSeven);
 
     assertLogTrue(

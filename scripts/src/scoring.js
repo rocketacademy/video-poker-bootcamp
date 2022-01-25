@@ -434,29 +434,23 @@ const _calcActualScoringDistributionSevenStud = (
   optionsSize,
   toTake,
   distribution,
-  noOfOptionsToPickFromOptions,
   optionsFromDeck
 ) => {
   if (optionsFromDeck.length === optionsSize) {
-    // I reach the size limit to choose unrevealed cards
+    // I reach the size limit to choose unrevealed cards (options from deck)
+    const handOfX = newHand(); // x = no. of revealed + no. of options card
+    addInPlayCardsToHand(handOfX, revealed);
+    addInPlayCardsToHand(handOfX, optionsFromDeck);
 
-    const optionsCombinations = ______WARN_getHandCombinations(
-      optionsFromDeck,
-      noOfOptionsToPickFromOptions
-    ); // get combinations of options, which combined with revealed cards will form a poker hand
-
-    for (const optionsComb of optionsCombinations) {
-      // for each optionsComb, combine cards revealed and options
-      const hand = newHand();
-      addInPlayCardsToHand(hand, revealed);
-      addInPlayCardsToHand(hand, optionsComb);
-      if (getHandSize(hand) !== POKER_HAND_SIZE) {
-        throw new Error(``);
-      }
-      // get the scoring type and record in scoring distribution
-      const scoringType = getScoreType(hand);
-      addToScoringDistribution(distribution, scoringType);
-    }
+    const combinationsOfHandOfSeven = ______WARN_getHandCombinations(
+      handOfX,
+      POKER_HAND_SIZE
+    );
+    const actualBestFromCombinationsOfHandOfX = getBestCombination(
+      combinationsOfHandOfSeven
+    );
+    const scoringType = getScoreType(actualBestFromCombinationsOfHandOfX);
+    addToScoringDistribution(distribution, scoringType);
     return;
   }
   if (0 === toTake) {
@@ -474,7 +468,6 @@ const _calcActualScoringDistributionSevenStud = (
     optionsSize,
     toTake,
     distribution,
-    noOfOptionsToPickFromOptions,
     optionsFromDeck
   );
   const thisCard = deck[currentIndex];
@@ -487,7 +480,6 @@ const _calcActualScoringDistributionSevenStud = (
     optionsSize,
     toTake - 1,
     distribution,
-    noOfOptionsToPickFromOptions,
     optionsIncludingThisCard
   );
 };
@@ -500,7 +492,6 @@ const calcActualScoringDistributionSevenStudOnRiver = (revealed, deck) => {
   const handSize = 7;
   const distribution = newScoringDistribution();
   const noOfCardsToTake = handSize - getHandSize(revealed);
-  const noOfOptionsToPickFromOptions = POKER_HAND_SIZE - getHandSize(revealed);
   _calcActualScoringDistributionSevenStud(
     revealed,
     deck,
@@ -508,7 +499,6 @@ const calcActualScoringDistributionSevenStudOnRiver = (revealed, deck) => {
     noOfCardsToTake,
     noOfCardsToTake,
     distribution,
-    noOfOptionsToPickFromOptions,
     []
   );
   return distribution;

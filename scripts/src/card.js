@@ -238,8 +238,8 @@ const _addHandCombinations = (
 /**
  * Note: permutations is NOT combinations
  * WARNING: If no. of combinations is expected to be big, this method will fry your browser.
- * @param {Hand} hand
- * @param {number} sizePerHandCombination Please specify no. of card per hand.
+ * @param {Hand} hand hand of arbitrary size
+ * @param {number} sizePerHandCombination No. of cards per hand combination.
  */
 const ______WARN_getHandCombinations = (hand, sizePerHandCombination) => {
   if (isNoU(sizePerHandCombination)) {
