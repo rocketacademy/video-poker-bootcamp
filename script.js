@@ -1,9 +1,11 @@
 
+/* ---------------------------- Clobal variables ---------------------------- */
   
-//Global Variables 
-
 let deck; 
 
+/* -------------------------------------------------------------------------- */
+/*                              Helper Functions                              */
+/* -------------------------------------------------------------------------- */
 //<---------------Functions to make deck and give cards ---------> 
 /**
  * a function that gives a deck of card 
@@ -96,7 +98,9 @@ for (let i = 0; i < 5; i += 1) {
 console.log("playerHand", hand)
 }
 
-//<-----------To Check for Winning Combinations ----> 
+/* -------------------------------------------------------------------------- */
+/*                      Check for Winning Combinations                        */
+/* -------------------------------------------------------------------------- */
 let order = 0
 let cardNameTally = {};
 
@@ -104,7 +108,6 @@ let cardNameTally = {};
  * @param {array} - player hand 
  * @return {object} - tally of cards and freq of cards appearing 
  */
-
 const createTally = (playerHand) =>{
   cardNameTally = {}
 // Create Object as tally
@@ -127,7 +130,6 @@ for (let i = 0; i < playerHand.length; i += 1) {
  * @param {array} - player hand 
  * @return {boolean} whether running sequence exists 
  */
-
 let flush;
 const checkSameSuit = (cards) =>{
   //iterate through each card object in player hand array, 
@@ -144,7 +146,6 @@ if (cardSuits.every(suit => suit === cardSuits[0]))
 else flush = false
 }
  
-
 let straightExist;
 /**function to check for whether a running squence exist 
  * @param {object} tally --> tally of all cards 
@@ -172,14 +173,10 @@ if (difference.every(element => element === 1 )){
 const checker = (cardArray,target)=> {
 return cardArray.some(element => target.includes(element))
 }
-
-
 /**function to check for X of the same kind 
- * 
  * @param {object} tally  -- tally that records the freq of cards appearing 
  * @return {boolean} 
  */
-
 const checkForSameKind = (tally) =>{
   let highValueCards = ["J","Q","K","A"]
   let freqOfCardAppearing = []
@@ -250,8 +247,7 @@ const checkForRoyalFlush = (cards) =>{
   }
 }
 }
-
- //<-----------To Calculate score for Winning Combinations ----> 
+/* --------------- To Calculate score for Winning Combinations -------------- */
 
   //check for order of winning combo, higher number is higher value combo 
 const checkForWinningCombo = (playerHand) => {
@@ -265,7 +261,6 @@ checkForSameKind(cardNameTally)
 //the following - order does matter 
 checkForStraightFlush(playerHand)
 checkForRoyalFlush(playerHand)
-
 }
 
 //key --> order, value --> payout value 
@@ -308,18 +303,57 @@ const calcHandScore = (handOrder) =>{
  }
 } 
 
+
+/* -------------------------------------------------------------------------- */
+/*                              DOM Manipulation                              */
+/* -------------------------------------------------------------------------- */
+const modal = document.getElementsByClassName("modal")[0]
+const closeBtn = document.getElementsByClassName("close")[0]
+const playInstructions = document.getElementsByTagName("i")[0]
+
+const messageDiv = document.createElement("div")
+const cardEl = document.getElementsByClassName("card")
+const payoutRow = document.getElementsByClassName("payout-row")
+
+const decreaseBet = document.getElementById("decrease-bet")
+const increaseBet = document.getElementById("increase-bet")
+
+const dealBtn = document.getElementById("deal-btn")
+
+let betInputEl = document.querySelector("#bet-amount")
+const payoutColumn = document.querySelectorAll(".payout-column")
+const royalFlushEl =document.getElementById("royal-flush")
+
+const coinAudio = document.getElementById("coin-sound")
+const playCardSound = document.getElementById("deal-card")
+const backgroundMusic = document.getElementById("autoplay")
+const winValue = document.getElementsByClassName("win-value")
+
+ /* ------------------------- To show gameplay- modal ------------------------ */
+playInstructions.onclick = function(){
+  modal.style.display = "block"
+}
+
+closeBtn.onclick=function(){
+    modal.style.display = "none"
+}
+
+window.onclick=function(e){
+  console.log(e.target)
+  if(e.target == modal){
+    modal.style.display = "none"
+  }
+}
+
+
+/**Function to show total credits on page 
+ * @return {string} - to show credit on page 
+ */
 const calculateTotalCredits = () =>{
   const creditEl = document.getElementById("credits-value")
   console.log(totalCredit)
   creditEl.innerHTML = totalCredit
 }
-
-
- //======================DOM Manipulation ===================
-
- const messageDiv = document.createElement("div")
-const cardEl = document.getElementsByClassName("card")
-  const payoutRow = document.getElementsByClassName("payout-row")
 
 /** Function to show message of win/lose
  * @param {number} - which order does the card combo belongs to 
@@ -335,19 +369,20 @@ for (let comboOrder in payout){
     console.log(payoutRow)
     payoutRow[9-handOrder].classList.add("win-row")
     messageDiv.innerHTML = `${handOrder}. ${payout[handOrder][1]}`
+    winValue[0].innerHTML = `+${totalPayout}`
   }
 }
 if (handOrder ==0) {
   const loseAudio = document.getElementById("lose-sound")
+  winValue[0].innerHTML = `-${betAmount}`
+  console.log(winValue)
   loseAudio.play()
-
   
   let loseMsg = `Sorry, no luck this time round!<br> Play the deal button to start the game again`
   messageDiv.innerHTML = loseMsg
 }
 
 const cardsLayoutEl = document.getElementById("cards-display")
-console.log(cardsLayoutEl)
 cardsLayoutEl.appendChild(messageDiv)
 
 //to restart the dom card manipualtion 
@@ -366,13 +401,15 @@ for (let i =0; i<cardEl.length;i+=1){
   hideEl.classList.add("hide")
   cardEl[i].appendChild(hideEl)
 }
+
+  setTimeout(()=>{
+    winValue[0].innerHTML = ""
+  },2500)
 }
 
-/**Function to show player cards 
- *  @param {array} playerHand 
+/**Function to display card images on page 
+ * @param {array} playerHand 
  */
-const playCardSound = document.getElementById("deal-card")
-
 const showPlayerCards = (playerHand) =>
 {
 console.log(cardEl)
@@ -398,15 +435,7 @@ decreaseBet.disabled = true;
 increaseBet.disabled = true;
 }
 
-
-let betInputEl = document.querySelector("#bet-amount")
-const payoutColumn = document.querySelectorAll(".payout-column")
-console.log(payoutColumn)
- const royalFlushEl =document.getElementById("royal-flush")
-
-
-const coinAudio = document.getElementById("coin-sound")
-//function to decrease bet amount 
+//function to decrease bet amount and show amount on page 
 const decreaseBetAmount = () =>{
   coinAudio.play()
 betAmount -=1 
@@ -426,7 +455,7 @@ royalFlushEl.innerHTML = "x250"
 }
 }
 
-//function to increase bet amount 
+//function to increase bet amount and show amount on page 
 const increaseBetAmount = () =>{
   coinAudio.play()
 betAmount +=1 
@@ -465,7 +494,6 @@ clickedEl.classList.remove("clicked")
 }
 
 /**function when called will show new cards that are clicked (hold)
- * 
  */
 const makeNewHand = () =>{
   firstGame = false 
@@ -491,8 +519,8 @@ console.log(notClickedCards)
  let indexOfClickedElements =[]
 for (let i=0;i<notClickedCards.length;i+=1){
   
-  notClickedCards[i].style.backgroundImage=`url(Images/background-image2.jpg)`
-  notClickedCards[i].style.backgroundImage = `url(Images/card-images-52/${newCards[i].name}_of_${newCards[i].suit}.png`
+notClickedCards[i].style.backgroundImage=`url(Images/background-image2.jpg)`
+notClickedCards[i].style.backgroundImage = `url(Images/card-images-52/${newCards[i].name}_of_${newCards[i].suit}.png`
 console.log(cardEl)
 
  //to find out how many cards are clicked 
@@ -512,7 +540,6 @@ let exisitingCards = []
 indexOfClickedElements.forEach(index => 
 exisitingCards.push(hand[index])
   )
-  console.log(exisitingCards)
 
 //to get the new set of cards by combining new cards and exisiting cards array 
  let newSetHand = [...newCards,...exisitingCards]
@@ -522,6 +549,7 @@ checkForWinningCombo(newSetHand)
 showMessageDiv(order)
 calculateTotalCredits()
  console.log(totalCredit)
+
 
  decreaseBet.disabled = false;
 increaseBet.disabled = false;
@@ -548,12 +576,8 @@ const initGame = () =>{
  
 }
  
-const decreaseBet = document.getElementById("decrease-bet")
-const increaseBet = document.getElementById("increase-bet")
 decreaseBet.addEventListener("click",decreaseBetAmount)
 increaseBet.addEventListener("click",increaseBetAmount)
-
-const dealBtn = document.getElementById("deal-btn")
 
 dealBtn.addEventListener("click", function(){
   if(this.value === "1"){
@@ -567,23 +591,22 @@ dealBtn.addEventListener("click", function(){
   }
 })
 
-const modal = document.getElementsByClassName("modal")[0]
-const closeBtn = document.getElementsByClassName("close")[0]
-const playInstructions = document.getElementsByTagName("i")[0]
-playInstructions.onclick = function(){
-  modal.style.display = "block"
-}
+const audioBtn = document.getElementById("audio-icon")
+let audioOn = true
 
-closeBtn.onclick=function(){
-    modal.style.display = "none"
-}
-
-window.onclick=function(e){
-  console.log(e.target)
-  if(e.target == modal){
-    modal.style.display = "none"
+audioBtn.addEventListener("click",function(){
+  if (audioOn ===true){
+backgroundMusic.pause()
+audioBtn.classList.remove("fa-volume-up")
+audioBtn.classList.add("fa-volume-off")
+audioOn=false
   }
+else {
+ backgroundMusic.play()
+  audioBtn.classList.remove("fa-volume-off")
+  audioBtn.classList.add("fa-volume-up")
+  audioOn=true
+
 }
 
-console.log(modal)
-console.log(playInstructions)
+  })
