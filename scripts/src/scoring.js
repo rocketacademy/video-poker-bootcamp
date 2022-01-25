@@ -114,38 +114,60 @@ const newAscendingHand = (hand) => {
   thisHand.sort(comparatorCardOrdinal);
   return thisHand;
 };
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandFullHouse = ({ bagValueByCount }) =>
+  bagValueByCount[3].length === 1 && bagValueByCount[2].length === 1;
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandTrips = ({ bagValueByCount }) =>
+  bagValueByCount[3].length === 1 && bagValueByCount[2].length !== 1;
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandDouble = ({ bagValueByCount }) => bagValueByCount[2].length === 2;
 
-const _isHandFullHouse = (hand) => {
-  const bagValueByCount = getBagValueByCount(hand);
-  return bagValueByCount[3].length === 1 && bagValueByCount[2].length === 1;
-};
-
-const _isHandTrips = (hand) => {
-  const bagValueByCount = getBagValueByCount(hand);
-  return bagValueByCount[3].length === 1 && bagValueByCount[2].length !== 1;
-};
-
-const _isHandDouble = (hand) => {
-  const bagValueByCount = getBagValueByCount(hand);
-  return bagValueByCount[2].length === 2;
-};
-
-const _isHandPair = (hand) => {
-  const bagValueByCount = getBagValueByCount(hand);
-  return bagValueByCount[2].length === 1 && bagValueByCount[1].length === 3;
-};
-const _isHandFourOfAKind = (hand) => {
-  const bagValueByCount = getBagValueByCount(hand);
-  const is = bagValueByCount[4].length === 1;
-  return is;
-};
-const _isHandStraightFlush = (hand) =>
-  _isHandStraight(hand) && _isHandFlush(hand);
-const _isHandFlush = (hand) => {
-  const bagSuitByCount = getBagSuitByCount(hand);
-  return bagSuitByCount[5].length === 1;
-};
-const _isHandStraight = (hand) => {
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandPair = ({ bagValueByCount }) =>
+  bagValueByCount[2].length === 1 && bagValueByCount[1].length === 3;
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandFourOfAKind = ({ bagValueByCount }) =>
+  bagValueByCount[4].length === 1;
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandStraightFlush = ({ hand, bagSuitByCount }) =>
+  _isHandStraight({ hand }) && _isHandFlush({ bagSuitByCount });
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandFlush = ({ bagSuitByCount }) => bagSuitByCount[5].length === 1;
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandStraight = ({ hand }) => {
   const thisHand = newAscendingHand(hand);
   for (let i = 1; i < POKER_HAND_SIZE; i += 1) {
     const thisCard = thisHand[i - 1];
@@ -156,9 +178,12 @@ const _isHandStraight = (hand) => {
   }
   return true;
 };
-
-const _isHandJacksOrBetter = (hand) => {
-  const bagValueByCount = getBagValueByCount(hand);
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandJacksOrBetter = ({ bagValueByCount, hand }) => {
   return (
     bagValueByCount[1].length === 5 &&
     hand.some((card) => {
@@ -167,13 +192,18 @@ const _isHandJacksOrBetter = (hand) => {
       return (
         value === CARD_VALUE.JACK ||
         value === CARD_VALUE.QUEEN ||
-        value === CARD_VALUE.KING
+        value === CARD_VALUE.KING ||
+        value === CARD_VALUE.ONE
       );
     })
   );
 };
-const _isHandHigh = (hand) => {
-  const bagValueByCount = getBagValueByCount(hand);
+/**
+ * Warning: inner helper function of @see getScoreType
+ * @param {*} param0
+ * @returns
+ */
+const _isHandHigh = ({ bagValueByCount }) => {
   return bagValueByCount[1].length === 5;
 };
 
@@ -186,34 +216,39 @@ const getScoreType = (hand) => {
   if (getHandSize(hand) !== POKER_HAND_SIZE) {
     return SCORING.SIZE_MISMATCH;
   }
-  if (_isHandStraightFlush(hand)) {
+
+  const bagValueByCount = getBagValueByCount(hand);
+  const bagSuitByCount = getBagSuitByCount(hand);
+  const handAndItsBags = { bagValueByCount, bagSuitByCount, hand };
+
+  if (_isHandStraightFlush(handAndItsBags)) {
     return SCORING.STRAIGHT_FLUSH;
   }
-  if (_isHandFourOfAKind(hand)) {
+  if (_isHandFourOfAKind(handAndItsBags)) {
     return SCORING.FOUR_OF_A_KIND;
   }
-  if (_isHandFullHouse(hand)) {
+  if (_isHandFullHouse(handAndItsBags)) {
     return SCORING.FULL_HOUSE;
   }
-  if (_isHandTrips(hand)) {
+  if (_isHandTrips(handAndItsBags)) {
     return SCORING.TRIPS;
   }
-  if (_isHandDouble(hand)) {
+  if (_isHandDouble(handAndItsBags)) {
     return SCORING.DOUBLE;
   }
-  if (_isHandFlush(hand)) {
+  if (_isHandFlush(handAndItsBags)) {
     return SCORING.FLUSH;
   }
-  if (_isHandStraight(hand)) {
+  if (_isHandStraight(handAndItsBags)) {
     return SCORING.STRAIGHTS;
   }
-  if (_isHandPair(hand)) {
+  if (_isHandPair(handAndItsBags)) {
     return SCORING.PAIR;
   }
-  if (_isHandJacksOrBetter(hand)) {
+  if (_isHandJacksOrBetter(handAndItsBags)) {
     return SCORING.JOB;
   }
-  if (_isHandHigh(hand)) {
+  if (_isHandHigh(handAndItsBags)) {
     return SCORING.HIGH;
   }
   return SCORING.UNKNOWN;
@@ -280,7 +315,7 @@ const _isSameScoringTypesLessThan = (handA, handB) => {
     return _comparatorSubRankStraightFlush(handA, handB);
   }
 
-  if (_isHandStraight(handA)) {
+  if (_isHandStraight({ hand: handA })) {
     return _comparatorSubRankStraight(handA, handB);
   }
 
