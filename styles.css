@@ -144,6 +144,7 @@ button:active {
 
 /* increase/decrease button*/
 .change-bet {
+  height: 8vh;
   font-size: 1.5em;
   width: 7.5vh;
   flex-shrink: 1;
