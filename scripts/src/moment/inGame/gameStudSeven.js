@@ -249,7 +249,7 @@ const newGameStudSeven = (core, flags) => {
               elementButtonBet
             );
           }
-          elementActionArea.appendChild(elementXValue);
+          // elementActionArea.appendChild(elementXValue); // Please check payout table
           elementActionArea.appendChild(elementPmfTable);
         }, 200);
       }
