@@ -172,6 +172,7 @@ const createCard = (cardInfo, index) => {
 const drawClick = () => {
   gameScore -= 10;
   gameScoreContainer.innerText = gameScore;
+  // document.getElementById('macquee').style.visibility = 'hidden';
 
   scoreTemp = 0;
 
@@ -250,6 +251,11 @@ const initGame = () => {
   messageOutput = document.createElement('span');
   messageContainer.append(messageOutput);
   messageOutput.innerText = 'Click to draw a card!';
+
+  // empty container to create space
+  const spaceContainer = document.createElement('div');
+  spaceContainer.classList.add('space');
+  document.body.appendChild(spaceContainer);
 
   // fill game score div with score
   gameScoreContainer = document.createElement('div');

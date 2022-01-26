@@ -85,3 +85,23 @@ body {
   background-color: yellow;
   color: black;
 }
+
+.wrapper2 {
+  display: flex;
+  background: black;
+  height: 1.5em;
+  text-align: right;
+}
+
+.space {
+  display: flex;
+  height: 1em;
+}
+
+#marquee {
+  color: white;
+  font-size: 0.75em;
+  font-family: "Poppins", sans-serif;
+  white-space: nowrap;
+  -webkit-animation: rightThenLeft 4s linear;
+}
