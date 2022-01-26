@@ -265,11 +265,17 @@ const newGameStudSeven = (core, flags) => {
       console.log(getHandAsString(simpleBestHand));
       console.log(bestScore);
 
+      const netPayout = getPayoutOfScoringType(bestScore, pot);
+      addPlayerCreditOfCore(core, netPayout);
       const elementBestScore = document.createElement(`div`);
       elementBestScore.className += ` best-score--`;
       elementBestScore.innerText = `Your hand: ${getNiceStringOfScoringType(
         bestScore
-      )}, Payout: ${getPayoutOfScoringType(bestScore)}`;
+      )}, Base Payout: ${getBasePayoutOfScoringType(
+        bestScore
+      )},  Payout: ${netPayout}, Player Credit After Settlement: ${getPlayerCreditOfCore(
+        core
+      )}`;
 
       detachAllChildren(elementActionArea);
 

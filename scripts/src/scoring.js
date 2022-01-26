@@ -67,7 +67,7 @@ const getNiceStringOfScoringType = (scoringType) => {
   }
 };
 
-const getPayoutOfScoringType = (scoringType) => {
+const getBasePayoutOfScoringType = (scoringType, pot = 1) => {
   switch (scoringType) {
     case SCORING.STRAIGHT_FLUSH:
       return 51;
@@ -84,6 +84,10 @@ const getPayoutOfScoringType = (scoringType) => {
     default:
       return 0;
   }
+};
+
+const getPayoutOfScoringType = (scoringType, pot = 1) => {
+  return getBasePayoutOfScoringType(scoringType) * pot;
 };
 
 /**
