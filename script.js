@@ -59,6 +59,8 @@ let messageContainer;
 let messageOutput;
 let playerHand = [];
 let scoreTemp = 0;
+let scroll;
+let scrollContent;
 let wrapper;
 
 /// ////////////CALLBACK FUNCTIONS/////////
@@ -169,10 +171,19 @@ const createCard = (cardInfo, index) => {
   return cardContainer;
 };
 
+const getScrollContent = () => {
+  if (analyseHand(playerHand) === 'one-pair' || analyseHand(playerHand) === 'two-pair' || analyseHand(playerHand) === 'three-of-a-kind') {
+    scrollContent = 'The odds of getting a full house are 1 in 102!';
+  }
+  else {
+    scrollContent = 'The odds of getting a pair are 1 in 16!';
+  }
+};
+
 const drawClick = () => {
   gameScore -= 10;
   gameScoreContainer.innerText = gameScore;
-  // document.getElementById('macquee').style.visibility = 'hidden';
+  scroll = document.getElementById('marquee');
 
   scoreTemp = 0;
 
@@ -195,7 +206,10 @@ const drawClick = () => {
     }, count);
   }
 
+  getScrollContent();
+
   setTimeout(() => {
+    scroll.textContent = `${scrollContent}`;
     messageOutput.innerText = `${analyseHand(playerHand)};   +${getScore(playerHand)} if you lock it in!`;
   }, 2500);
 
@@ -226,6 +240,7 @@ const swapClick = () => {
 };
 
 const lockClick = () => {
+  scroll.textContent = '';
   // calculate and update game score
   gameScore = Number(gameScore) + Number(scoreTemp);
   gameScoreContainer.innerText = gameScore;
