@@ -1,0 +1,373 @@
+@import url("https://fonts.googleapis.com/css2?family=Bungee&family=Lobster&family=Marcellus&family=Pacifico&family=Play:wght@400;700&family=Raleway:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,300&display=swap");
+
+body {
+  font-family: play;
+  font-size: 1.5em;
+  font-weight: 600;
+  background-image: url("Images/Gradient-Background-Best-Wallpaper-16349-Baltana.jpeg");
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container {
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  align-self: center;
+  padding: 1vh;
+}
+
+h1 {
+  margin: 2.5vh;
+  font-weight: 100;
+  font-family: Bungee;
+  font-size: 8vh;
+  text-align: center;
+  color: white;
+  text-shadow: 0 0 2vh #acedee;
+}
+
+header {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+#how-to-play {
+  z-index: 2;
+  position: absolute;
+  left: 0vw;
+}
+
+header {
+  position: relative;
+}
+
+i {
+  color: #98edee;
+  text-shadow: 0 0 2vh #acedee;
+  position: absolute;
+  top: 4vh;
+}
+i:hover {
+  cursor: pointer;
+}
+.fa-question-circle-o {
+  left: 4vh;
+}
+#audio-icon {
+  color: #fafbe3;
+}
+
+/* contains the payout value for each card combo */
+.upper-row {
+  color: #fafbe3;
+  border: 1vh solid #01171a;
+  outline: 0.5vh inset #98edee;
+  background-image: radial-gradient(#0c4a54, #0a5c6a, #01171a);
+  border-radius: 1vh;
+  box-shadow: rgba(0, 0, 0, 0.1) 0vh 1vh 1.2vh -0.5vh,
+    rgba(0, 0, 0, 0.05) 0px 1vh 1.5vh -1vh;
+  text-shadow: 0.4vh 0.4vh #0d3950;
+}
+
+.payout-row {
+  padding: 4vh;
+}
+
+td {
+  padding: 0.1vh 2vh;
+}
+
+table {
+  font-size: 2vh;
+}
+
+/* contains the cards display */
+.output {
+  border-radius: 5vh;
+  margin: 2vh auto;
+  box-shadow: #98edee 3px 3px 6px 0px inset,
+    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  flex: 1;
+  padding: 3vh;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 14vh;
+  height: 20.5vh;
+  background-image: url(Images/background-image2.jpg);
+  background-size: 14vh, 21vh;
+  background-color: white;
+  margin: 2vh;
+  border-radius: 1vh;
+  box-shadow: 0px 0px 1vh #31312c;
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+/* format all buttons*/
+button {
+  background-image: linear-gradient(#015369, #2592b4, #096c7a);
+  font-family: Bungee;
+  color: #0d3950;
+  border-radius: 1vh;
+  border: 0.5vh outset #015369;
+  box-shadow: 0 0.8vh #0d3950;
+  text-shadow: 0.2vh 0.2vh #2592b4;
+}
+button:hover {
+  box-shadow: 0 0 3vh #0d3950;
+}
+button:active {
+  box-shadow: 0 0.4vh #096c7a;
+  transform: translateY(0.5vh);
+}
+
+/* to contain the betting buttons*/
+#bet-function {
+  font-size: 1em;
+  font-family: bungee;
+  text-shadow: 0.4vh 0.4vh #0d3950;
+  text-align: center;
+  justify-content: space-between;
+}
+
+/* increase/decrease button*/
+.change-bet {
+  height: 8vh;
+  font-size: 1.5em;
+  width: 7.5vh;
+  flex-shrink: 1;
+  text-shadow: 0.1vh 0.1vh #98edee;
+}
+
+.change-bet:hover {
+  cursor: pointer;
+}
+
+/* div containing all the buttons*/
+.playing-buttons {
+  justify-content: space-evenly;
+  border: none;
+}
+
+/* individual div*/
+.play-function {
+  min-width: 32vh;
+  height: 11vh;
+  border: 0.5vh solid #015369;
+  outline: 0.5vh outset #2592b4;
+  border-radius: 2vh;
+  box-shadow: 0px 0px 1vh #31312c;
+  padding: 1vh;
+  background-image: linear-gradient(to bottom right, #2592b4, #0d3950);
+  overflow: hidden;
+}
+
+#bet-text {
+  color: #98edee;
+  font-size: 1em;
+}
+
+#bet-amount {
+  text-align: center;
+  font-family: Bungee;
+  font-size: 2vh;
+  border-radius: 1vh;
+  background-color: #015369;
+  border: inset #015369;
+  color: #98edee;
+}
+
+.deal-card {
+  border: none;
+  outline: none;
+}
+
+#deal-btn {
+  border-color: #fafbe3;
+  font-size: 1.3em;
+  padding: 1.5vh;
+  color: #fafbe3;
+  text-shadow: 0.4vh 0.4vh #26111b;
+  background-image: linear-gradient(#ffcc26, #ffa73f, #fd7649);
+}
+.bottom-part {
+  gap: 1vw;
+}
+#deal-btn:hover {
+  box-shadow: 0 0 2vh #fafbe3;
+  cursor: pointer;
+}
+
+/*hover around the flipped cards, the card border glows and moves up */
+.flip:hover {
+  cursor: pointer;
+  color: #111;
+  border: #fafbe3;
+  box-shadow: 0 0 3vh #fafbe3;
+  transform: translateY(-1vh);
+  position: relative;
+}
+
+/* "hold" div */
+.hide {
+  display: none;
+  font-family: Bungee;
+  color: #fafbe3;
+  position: absolute;
+  top: 1vh;
+  border-radius: 0.4vh;
+  margin: auto;
+  background-image: linear-gradient(#ffcc26, #ffa73f, #fd7649);
+  width: 14vh;
+  text-align: center;
+  box-shadow: 0px 0px 1vh #31312c;
+  -webkit-text-stroke: 0.2vh #31312c;
+}
+
+/* when flipped card is hovered, the  hold div appears */
+.flip:hover > .hide {
+  display: block;
+}
+
+/* when card is clicked, the  hold div appears */
+.clicked > .hide {
+  display: block;
+  transform: none;
+  box-shadow: none;
+}
+
+.clicked {
+  position: relative;
+  transform: translateY(-1vh);
+  box-shadow: 0 0 3vh #fafbe3;
+}
+
+.hold-show {
+  transform: none;
+}
+
+#cards-display {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* message div  */
+.message {
+  font-family: Bungee;
+  font-weight: 100;
+  position: absolute;
+  top: 8vh;
+  width: 90vh;
+  height: auto;
+  border: solid;
+  background-image: linear-gradient(#ffcc26, #ffa73f, #fd7649);
+  border-radius: 10px;
+  text-shadow: 0.2vh 0.2vh #26111b;
+  text-align: center;
+  padding: 0.8vh;
+  font-size: 0.8em;
+}
+
+.hidden {
+  display: none;
+}
+
+#total-credit {
+  font-size: 0.8em;
+  flex-direction: column;
+  text-align: center;
+  font-family: Bungee;
+  color: #98edee;
+  text-shadow: 0.2vh 0.2vh #26111b;
+  display: flex;
+}
+
+#credits-value {
+  width: 7vh;
+  border-radius: 1vh;
+  background-color: #015369;
+  border: inset #015369;
+  color: #98edee;
+  margin: auto;
+}
+
+.win-value {
+  color: #ffcc26;
+}
+
+.combo-cards {
+  width: 5vh;
+  height: 2vh;
+  border-radius: 0.5vh;
+  border: 1px solid #98edee;
+}
+
+.combo-cards:hover {
+  transform: scale(2.5);
+}
+
+.win-row {
+  background-color: #acedee5e;
+  box-shadow: 0px 0px 1vh #98edee;
+}
+
+.modal {
+  display: none;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #05141d;
+  box-shadow: #abe6f3 3px 3px 6px 0px inset, #abe6f3 -3px -3px 6px 1px inset;
+  color: #fafbe3;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+  border-radius: 2vh;
+  position: relative;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 0vh;
+  right: 3vh;
+  font-size: 5vh;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #05141d;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+h4 {
+  font-family: Bungee;
+  color: #98edee;
+}
