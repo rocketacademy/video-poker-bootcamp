@@ -304,7 +304,6 @@ let quadPositive2 = [
   },
 ];
 
-
 let quadPositive3 = [
   {
     name: 'ace',
@@ -647,6 +646,7 @@ let royalFlushPositive = [
     value: 12,
   },
 ];
+
 let highCardPositive2 = [
   {
     name: 'ace',
@@ -684,4 +684,3 @@ let highCardPositive2 = [
     value: 12,
   },
 ];
-/* ################################ CARD IN HAND TEST BLOC ABOVE #################### */

@@ -1,7 +1,6 @@
-/* ======================
+/* =====================================
  * ---CHECK WINNING HAND COMBINATIONS---
- * ====================== */
-
+ * ===================================== */
 
 /* FN: ROYAL FLUSH */
 const checkRoyalFlush = (hand) => {
@@ -17,7 +16,7 @@ const checkRoyalFlush = (hand) => {
     answer = true;
   }
 return answer;
-};   
+};
 
 /* FN: STRAIGHT FLUSH */
 const checkStrFlush = (hand) => {
@@ -31,7 +30,6 @@ const checkStrFlush = (hand) => {
   return answer;
 };
 
-
 /* FN: 4-OF-A-KIND */
 const checkQuads = (hand) => {
   let answer = false;
@@ -43,10 +41,10 @@ const checkQuads = (hand) => {
     let handRanks = [];
     for (let j = 0; j < handClone.length; j += 1) {
       handRanks.push(handClone[j].rank);
-      console.log ('handRanks =', handRanks);
+      console.log('handRanks =', handRanks);
     }
     const handRankSet = new Set(handRanks);
-    console.log ('handRankSet =', handRankSet);
+    console.log('handRankSet =', handRankSet);
     if (handRankSet.size === 1) {
       answer = true;
     }
@@ -54,17 +52,19 @@ const checkQuads = (hand) => {
   return answer;
 };
 
-/* FN: CHECK FOR FULL HOUSE (1 Triplet + 1 Pair) */ /* ===================> ERROR, CHANGE COUNT PAIRS STRATEGY */
-/* 3-of-a-kind position is grouped to 1 Pair position, use checkTriplet coding to build.
- * once confirm triplet is present, subtract and use set to check? */
+/* FN: CHECK FOR FULL HOUSE (1 Triplet + 1 Pair) */ 
+/* 3-of-a-kind position is grouped to 1 Pair position, use checkTriplet coding to build. */
+/* once confirm triplet is present, subtract and use set to check? */
 const checkFullHouse = (hand) => {
   let answer = false;
+  /* there are 2 tiers to check for full house */
+  /* each tier works of a primary check function */
   let tier1Triplets = 0;
   let tier1pairs = 0;
   let tier1FullHouse= 0;
   let tier2Triplets = 0;
   let tier2pairs = 0;
-  let tier2FullHouse= 0;
+  let tier2FullHouse = 0;
   let handClone = JSON.parse(JSON.stringify(hand));
   sortRank(handClone);
   /* Tier 1, combi 1, 2, 3, in excel diagram */
@@ -92,13 +92,13 @@ const checkFullHouse = (hand) => {
       if (remainderT1.size === 1) {
         tier1pairs += 1;
         tier1FullHouse += 1;
-/*         console.log('=> tier1pairs count =', tier1pairs);
-        console.log('====> tier1FullHouse count =', tier1FullHouse); */
+      /* console.log('=> tier1pairs count =', tier1pairs); */
+      /* console.log('====> tier1FullHouse count =', tier1FullHouse); */
       } else {
         tier1pairs += 0;
         tier1FullHouse += 0;
-/*         console.log('=> tier1pairs count =', tier1pairs);
-        console.log('====> tier1FullHouse count =', tier1FullHouse); */
+      /* console.log('=> tier1pairs count =', tier1pairs); */
+      /*  console.log('====> tier1FullHouse count =', tier1FullHouse); */
       }
     }
   }
@@ -115,7 +115,6 @@ const checkFullHouse = (hand) => {
       console.log('Tier 2 triplet count =', tier2Triplets);
       /* if 1 triplet is found, proceed to check if remaining 2 cards form a pair */
       /* , is remainder 2 cards = pair, return full house is true */
-    
       /* loop for parsing ranks of remainder into an array for ranks */
       if (j === 1) {
         let tier2Rmdr = [];
@@ -205,7 +204,6 @@ const checkStraight = (hand) => {
 
 /* FN: CHECK 3-of-a-Kind PAIRS */
 /* checkQuads === FALSE and checkTriplets === True */
-
 const check3OfAKind = (hand) => {
   let answer = false;
   const handClone = JSON.parse(JSON.stringify(hand));
@@ -269,7 +267,6 @@ const check1Pair =  (hand) => {
 /* NO SIMULT REPEATS (FULL HOUSE) */
 /* NO SEQUENTIALS */
 /* NO SAME SUITS */
-
 const checkHighCard = (hand) => {
   let result = '';
   let score = 0;

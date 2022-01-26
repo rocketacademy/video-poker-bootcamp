@@ -1,3 +1,4 @@
+/* use this to test the rest of the score cards */
 let highCardPositive = [
   {
     name: 'ace',

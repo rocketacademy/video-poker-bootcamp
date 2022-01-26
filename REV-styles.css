@@ -1,0 +1,190 @@
+body {
+  background-color: black;
+/*   background-image: url(./images/hearts-13.png);
+  background-size:300px 140px; */
+}
+
+.wrapper{
+display: flex;
+align-self: center;
+justify-content: center;
+flex-direction: column;
+width: 100vw;
+border:2px solid white;
+
+}
+
+.banner{
+ height: 5vh;
+ width: 100vw;
+ background-color: green;
+ border: 5px solid orange;
+ text-align: center;
+ font-size: 5vh;
+ color: white;
+}
+
+.table{
+  display: flex;
+  /* z-index: 2; */
+  justify-content: center;
+  align-items: center;
+  background-color: green;
+  height: 25vh;
+  width: 100vw;
+  margin: 2vh 0vw 0vh 0vw;
+  padding: 0px;
+}
+
+.msgCenter{
+  display: flex;
+  justify-content: center;
+  align-content:flex-start;
+  background-color:yellow;
+  color:black;
+  height: 7vh;
+  text-align: center;
+  font-size: 3vh;
+}
+
+.btnWrap{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+  height: 10vh;
+  margin:3px;
+  padding:0px;
+  border: 3px solid grey;
+}
+
+.btnWrap2{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+  height: 10vh;
+  margin:0px;
+  padding:0px;
+  border: 3px solid yellow;
+}
+
+
+.btn{
+/*   display: flex;
+  justify-content: center; */
+  height: 4vh;
+  /* width: 25vw; */
+  text-align: center;
+  padding:0px;
+  font-size:4vh;
+  margin: 0px;
+  padding: 0px;
+}
+
+.bidInput{
+height:3.5vh;
+width: 15vw;
+font-size:4vh;
+text-align: center;
+padding-top: 13px;
+padding-right:3px;
+margin-right:10px;
+}
+
+.bidContainer{
+  display:flex;
+  justify-content: flex-end;
+  align-items:center;
+  border: 2px solid orange;
+}
+
+
+
+
+.cardHolder{
+  display: flex;
+  justify-content:center;
+  align-items: center;  
+  background-color:white;
+  background-image: url(./images/rbt2.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size:164px 228px; 
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 14px 12px 14px 12px;
+  padding: 2px;
+/*   background-color:white; */
+  width: 157px;
+  height: 220px; 
+  text-align: center;
+  border-radius: 9px;
+  border: 1px solid black
+}
+
+.cardImg{
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  z-index: 2;
+  border-radius: 9px;
+
+}
+
+.none{
+ display: none;
+}
+
+.fadeOut{
+  opacity: 0.15;
+}
+
+.showBack{
+  display: flex;
+  opacity: 1;
+  background-color:white;
+  background-image: url(./images/rbt2.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size:164px 228px; 
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 9px;
+  border: 1px solid black
+}
+
+.holdLabel{
+  display: flex;
+  z-index:5;  /* z-index not working */
+  opacity: 0.93;
+  background-color: rgb(223, 28, 28);
+  background-image: url(./images/z-label.png);
+  background-size:164px 228px; 
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 9px;
+  border: 1px solid black
+
+}
+
+.cardCover{
+  display: flex;
+  z-index:5;/* z-index not working */
+  opacity: 1;
+  background-color: white;
+  background-image: url(./images/rbt2.png);
+  background-size:164px 228px; 
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 9px;
+  border: 1px solid black
+
+}
+/* for the user interface buttons use  
+ * position: relative for the parent container
+ * position: absolute for the child 
+ * these should hold in the fixed position in the container
+ * regardless of window magnification and scrolling 
+ * source: https://css-tricks.com/absolute-positioning-inside-relative-positioning/* / 
+
+ /* reset button- consider using position: fixed 
+  * to keep button stuck in the viewport even if the window scrolls*/
