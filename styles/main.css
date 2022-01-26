@@ -175,6 +175,7 @@ input[type="range"] {
   display: flex;
   margin: 0;
   padding: 0;
+  max-width: 100px;
 }
 .moneys {
   justify-content: center;
@@ -190,4 +191,32 @@ input[type="range"] {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+}
+
+table {
+  display: flex;
+  flex-direction: column;
+}
+
+thead,
+tbody {
+  display: flex;
+  flex-direction: column;
+}
+
+tr {
+  display: flex;
+  flex-direction: row;
+}
+
+th,
+td {
+  display: flex;
+  white-space: nowrap;
+  padding: 1px 7px;
+  width: 300px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
 }

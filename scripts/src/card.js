@@ -307,18 +307,11 @@ const ______WARN_setSimpleBestHandCombinations = (
 };
 
 /**
- * This method compares during first pass and efficiently returns the best hand. The best hand is simple. Does not gaurantee return of highest subranking within a scoring type.
- * @param {*} hand
- * @param {*} sizePerHandCombination
+ * This method compares during first pass and efficiently returns the best hand. The best hand is compared simply and does not gaurantee return of highest subranking within a scoring type.
+ * @param {*} hand of arbitrary size
  * @returns
  */
-const ______WARN_getHandSimpleBestCombination = (
-  hand,
-  sizePerHandCombination
-) => {
-  if (isNoU(sizePerHandCombination)) {
-    throw new Error(`Please specify no. of card per hand.`);
-  }
+const ______WARN_getHandSimpleBestCombination = (hand) => {
   const currentCombination = [];
 
   const bestScoreProfile = {
@@ -328,8 +321,8 @@ const ______WARN_getHandSimpleBestCombination = (
   ______WARN_setSimpleBestHandCombinations(
     hand,
     0,
-    sizePerHandCombination,
-    sizePerHandCombination,
+    POKER_HAND_SIZE,
+    POKER_HAND_SIZE,
     bestScoreProfile,
     currentCombination
   );

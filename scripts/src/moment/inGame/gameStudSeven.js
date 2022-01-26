@@ -203,7 +203,6 @@ const newGameStudSeven = (core, flags) => {
         const elementLoading = document.createElement("div");
         elementLoading.innerText = "Please wait for %";
         elementActionArea.replaceChildren(elementLoading);
-
         setTimeout(() => {
           const scoringDistribution =
             calcScoringDistributionSevenStudGivenSomeRevealedCards(hand, deck);
@@ -226,7 +225,6 @@ const newGameStudSeven = (core, flags) => {
       replaceChilds(getElementCardHolderByPosition(3), newElementStagingCard());
     } else if (phase === PHASE_BET_ROUND_TWO) {
       drawCardAndUpdateDisplay();
-
       if (PROBABILTY_FLAG.TURN === true) {
         const elementLoading = document.createElement("div");
         elementLoading.innerText = "Please wait for %";
@@ -235,8 +233,10 @@ const newGameStudSeven = (core, flags) => {
           const scoringDistribution =
             calcScoringDistributionSevenStudGivenSomeRevealedCards(hand, deck);
           console.table(scoringDistribution);
-          const scoringDistributionInPercentage = getPMF(scoringDistribution);
-          console.log(scoringDistributionInPercentage);
+          const pmf = getPMF(scoringDistribution);
+
+          const [elementXValue, elementPmfTable] = newDistributionTable(pmf);
+          console.log(scoringDistribution);
           if (isBusted()) {
             elementActionArea.replaceChildren(
               elementBetValue,
@@ -249,23 +249,28 @@ const newGameStudSeven = (core, flags) => {
               elementButtonBet
             );
           }
+          elementActionArea.appendChild(elementXValue);
+          elementActionArea.appendChild(elementPmfTable);
         }, 200);
       }
     } else if (phase === PHASE_BET_ROUND_THREE) {
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
       drawCardAndUpdateDisplay();
-    }
 
-    if (phase === PHASE_BET_INITIAL) {
-      replaceChilds(getElementCardHolderByPosition(2), newElementStagingCard());
-    } else if (phase === PHASE_BET_ROUND_ONE) {
-      replaceChilds(getElementCardHolderByPosition(3), newElementStagingCard());
-    } else if (phase === PHASE_BET_ROUND_TWO) {
-      replaceChilds(getElementCardHolderByPosition(4), newElementStagingCard());
-      replaceChilds(getElementCardHolderByPosition(5), newElementStagingCard());
-      replaceChilds(getElementCardHolderByPosition(6), newElementStagingCard());
-    } else if (phase === PHASE_BET_ROUND_THREE) {
+      // settle score here, my hand will have seven cards
+      const { bestScore, simpleBestHand } =
+        ______WARN_getHandSimpleBestCombination(hand);
+
+      console.log(getHandAsString(simpleBestHand));
+      console.log(bestScore);
+
+      const elementBestScore = document.createElement(`div`);
+      elementBestScore.className += ` best-score--`;
+      elementBestScore.innerText = `Your hand: ${getNiceStringOfScoringType(
+        bestScore
+      )}, Payout: ${getPayoutOfScoringType(bestScore)}`;
+
       detachAllChildren(elementActionArea);
 
       const buttonRestart = document.createElement(`button`);
@@ -277,7 +282,21 @@ const newGameStudSeven = (core, flags) => {
         detachAllChildren(root);
         goToGameStudSeven(core, flags);
       });
+      elementActionArea.appendChild(elementBestScore);
       elementActionArea.appendChild(buttonRestart);
+    }
+
+    // display
+
+    if (phase === PHASE_BET_INITIAL) {
+      replaceChilds(getElementCardHolderByPosition(2), newElementStagingCard());
+    } else if (phase === PHASE_BET_ROUND_ONE) {
+      replaceChilds(getElementCardHolderByPosition(3), newElementStagingCard());
+    } else if (phase === PHASE_BET_ROUND_TWO) {
+      replaceChilds(getElementCardHolderByPosition(4), newElementStagingCard());
+      replaceChilds(getElementCardHolderByPosition(5), newElementStagingCard());
+      replaceChilds(getElementCardHolderByPosition(6), newElementStagingCard());
+    } else if (phase === PHASE_BET_ROUND_THREE) {
     }
 
     togglePhase();
@@ -294,7 +313,7 @@ const newGameStudSeven = (core, flags) => {
     if (isInitialBetSet()) {
       return Math.min(initialBet, getPlayerCreditOfCore(core));
     }
-    return getPlayerCreditOfCore(core);
+    return 5;
   };
   const refreshBetButtonVisibility = () => {
     if (activeBet > 0) {
@@ -371,4 +390,61 @@ const studSevenGoPaint = (game) => {
 const goToGameStudSeven = (core, flags) => {
   const game = newGameStudSeven(core, flags);
   studSevenGoPaint(game);
+};
+
+const newDistributionTable = (pmf) => {
+  const rows = [
+    { text: "Hand", key: "hand" },
+    { text: "%", key: "p" },
+    { text: "Payout", key: "payoutRatio" },
+  ];
+
+  const arrayData = Object.entries(pmf);
+
+  const expectedValue = arrayData.reduce((sum, [key, { payoutRatio, p }]) => {
+    return sum + payoutRatio * p;
+  }, 0);
+
+  const elementXValue = document.createElement(`div`);
+
+  elementXValue.className += ` x-val--`;
+  elementXValue.innerText = `xPayout: ${(expectedValue / 100).toFixed(2)}`;
+
+  // TABLE
+  const length = arrayData.length;
+
+  const eTable = document.createElement(`table`);
+
+  const eHead = document.createElement(`thead`);
+
+  const eHeaderRow = document.createElement(`tr`);
+
+  for (const { text: colHeaderVal } of rows) {
+    const th = document.createElement(`th`);
+    th.innerText = colHeaderVal;
+    eHeaderRow.appendChild(th);
+  }
+  eHead.appendChild(eHeaderRow);
+
+  const eBody = document.createElement(`tbody`);
+  for (let i = 0; i < length; i += 1) {
+    const [key, rv] = arrayData[i];
+
+    const { occurrence } = rv;
+    if (occurrence > 0) {
+      const eRow = document.createElement(`tr`);
+      for (const { key } of rows) {
+        const td = document.createElement(`td`);
+        td.innerText = rv[key];
+        eRow.appendChild(td);
+      }
+
+      eBody.appendChild(eRow);
+    }
+  }
+
+  eTable.appendChild(eHead);
+  eTable.appendChild(eBody);
+
+  return [elementXValue, eTable];
 };

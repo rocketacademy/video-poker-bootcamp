@@ -40,6 +40,52 @@ const getRankOfScoringType = (scoringType) => {
   }
 };
 
+const getNiceStringOfScoringType = (scoringType) => {
+  switch (scoringType) {
+    case SCORING.STRAIGHT_FLUSH:
+      return `STRAIGHT FLUSH`;
+    case SCORING.FOUR_OF_A_KIND:
+      return `FOUR OF A KIND`;
+    case SCORING.FULL_HOUSE:
+      return `FULL HOUSE`;
+    case SCORING.FLUSH:
+      return `FLUSH`;
+    case SCORING.STRAIGHTS:
+      return `STRAIGHTS`;
+    case SCORING.TRIPS:
+      return `TRIPS`;
+    case SCORING.DOUBLE:
+      return `DOUBLE`;
+    case SCORING.PAIR:
+      return `PAIR`;
+    case SCORING.JOB:
+      return `> JACKS`;
+    case SCORING.HIGH:
+      return `HIGH`;
+    default:
+      return -1;
+  }
+};
+
+const getPayoutOfScoringType = (scoringType) => {
+  switch (scoringType) {
+    case SCORING.STRAIGHT_FLUSH:
+      return 51;
+    case SCORING.FOUR_OF_A_KIND:
+      return 15;
+    case SCORING.FULL_HOUSE:
+      return 4;
+    case SCORING.FLUSH:
+      return 3;
+    case SCORING.STRAIGHTS:
+      return 2;
+    case SCORING.TRIPS:
+      return 1;
+    default:
+      return 0;
+  }
+};
+
 /**
  *
  * @param {InPlayCard} card
@@ -478,19 +524,8 @@ const _calcScoringDistributionSevenStudGivenSomeRevealedCards = (
     addInPlayCardsToHand(handOfX, revealed);
     addInPlayCardsToHand(handOfX, optionsFromDeck);
 
-    // const combinationsOfHandOfSeven = ______WARN_getHandCombinations(
-    //   handOfX,
-    //   POKER_HAND_SIZE
-    // );
-    // const bestFromCombinationsOfHandOfX = getBestCombination(
-    //   combinationsOfHandOfSeven
-    // );
-    // const scoringType = getScoreType(bestFromCombinationsOfHandOfX);
-
-    const { bestScore: scoringType } = ______WARN_getHandSimpleBestCombination(
-      handOfX,
-      POKER_HAND_SIZE
-    );
+    const { bestScore: scoringType } =
+      ______WARN_getHandSimpleBestCombination(handOfX);
     addToScoringDistribution(distribution, scoringType);
     return;
   }
@@ -555,7 +590,9 @@ const getPMF = (distribution) => {
       ...pmf,
       [type]: {
         occurrence,
-        p: occurrence / totalSamples,
+        p: ((occurrence / totalSamples) * 100).toFixed(2),
+        payoutRatio: getPayoutOfScoringType(type),
+        hand: getNiceStringOfScoringType(type),
       },
     };
   }, {});
