@@ -1,0 +1,332 @@
+body {
+  background-color: rgb(84, 98, 111);
+  width: 100vw;
+  margin: 0;
+  top: 0;
+  left: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 1000px;
+  margin: 0 auto;
+}
+
+h1 {
+  width: 400px;
+  padding: 10px 0px;
+  margin: 5% auto 0;
+  font-size: 40px;
+  font-family: "Mochiy Pop P One", sans-serif;
+  text-align: center;
+  color: rgb(49, 48, 45);
+  background-color: rgb(174, 217, 224);
+  vertical-align: middle;
+  box-shadow: 0 4px 8px 0 rgb(36, 36, 36);
+}
+
+.instructions {
+  background-color: rgb(250, 243, 221);
+  border: solid;
+  font-family: "Mochiy Pop P One", sans-serif;
+  color: rgb(49, 48, 45);
+  padding: 10px 20px;
+  align-self: flex-end;
+}
+
+.instructions:hover {
+  background-color: rgb(185, 180, 161);
+}
+
+.instructionBox {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.89);
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.closeButton {
+  height: 50px;
+  width: 50px;
+  font-size: 30px;
+  margin: 40px 100px 30px 0;
+  font-family: "Mochiy Pop P One", sans-serif;
+  color: rgb(49, 48, 45);
+}
+
+.stakeContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  width: 80vw;
+  align-self: center;
+  background-color: rgb(84, 98, 111);
+}
+
+.topHeader {
+  font-family: "Mochiy Pop P One", sans-serif;
+  font-size: 200%;
+  color: rgb(250, 243, 221);
+  text-shadow: 3px 5px rgba(0, 0, 0, 0.5);
+  padding-bottom: 30px;
+  animation: 1.2s anim-popoutin ease infinite;
+}
+
+table,
+th,
+td {
+  border: solid;
+  border-color: rgb(19, 19, 19);
+  font-family: "Mochiy Pop P One", sans-serif;
+  background-color: rgb(174, 213, 218);
+}
+
+table {
+  width: 75vw;
+  box-shadow: 0 4px 8px 0 rgb(36, 36, 36);
+}
+
+th {
+  background-color: rgb(109, 145, 151);
+}
+
+th,
+td {
+  min-width: 4vw;
+}
+
+.row {
+  text-align: center;
+}
+
+.cardContainer {
+  display: flex;
+  justify-content: center;
+  height: auto;
+  width: 1000px;
+  margin: 1% auto 1%;
+  background-color: rgb(184, 242, 230);
+  padding: 30px 50px;
+  text-align: center;
+  vertical-align: middle;
+  box-shadow: 0 4px 8px 0 rgb(36, 36, 36);
+}
+
+.card:hover {
+  background-color: rgb(189, 189, 189);
+}
+
+.emptyCard {
+  border: black;
+  border-style: solid;
+  margin: 0 5px;
+  min-width: 170px;
+  height: 30vh;
+  min-height: 200px;
+  max-height: 200px;
+  border-radius: 10%;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 8px 0 rgba(66, 66, 66, 0.2);
+  transition: 0.3s;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: repeat(8, 12.5%);
+  border: black;
+  border-style: solid;
+  margin: 0 5px;
+  min-width: 170px;
+  height: 30vh;
+  min-height: 200px;
+  max-height: 200px;
+  border-radius: 10%;
+  background-color: rgb(255, 255, 255);
+  vertical-align: middle;
+  box-shadow: 0 4px 8px 0 rgba(66, 66, 66, 0.2);
+  transition: 0.3s;
+}
+
+.cardDisp1 {
+  margin-top: 5px;
+  font-family: "Mochiy Pop P One", sans-serif;
+}
+
+.cardDisp2 {
+  grid-row: 2;
+  margin-left: 3px;
+}
+
+.cardDisp3 {
+  grid-row: 4;
+  grid-column: 3;
+  font-size: 30px;
+}
+
+.cardDisp4 {
+  text-align: center;
+  margin-top: 3px;
+  grid-row: 7;
+  grid-column: 5;
+  transform: rotate(180deg);
+}
+
+.cardDisp5 {
+  text-align: center;
+  margin-left: 3px;
+  grid-row: 8;
+  grid-column: 5;
+  font-family: "Mochiy Pop P One", sans-serif;
+  transform: rotate(180deg);
+}
+
+.black {
+  color: rgb(49, 48, 45);
+}
+.red {
+  color: rgb(235, 85, 68);
+}
+
+.hold {
+  grid-row: 6;
+  grid-column: span 5;
+  text-align: center;
+  width: 100%;
+  font-size: 120%;
+  font-family: "Mochiy Pop P One", sans-serif;
+  color: rgb(235, 85, 68);
+  padding-left: 2%;
+  text-shadow: 2px 2px rgba(128, 128, 128, 0.5);
+}
+
+.output {
+  text-align: center;
+  font-family: "Mochiy Pop P One", sans-serif;
+  color: rgb(250, 243, 221);
+  font-size: 25px;
+  max-width: 80vw;
+  margin: 0 auto;
+  text-shadow: 3px 10px 5px rgba(0, 0, 0, 0.5);
+  animation: 1.2s anim-popoutin ease infinite;
+}
+
+@keyframes anim-popoutin {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    text-shadow: 3px 10px 5px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 1;
+    text-shadow: 3px 10px 5px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    text-shadow: 3px 10px 5px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.action {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 1000px;
+  margin: 1.5% auto 1%;
+  height: 100px;
+  padding: 20px 50px;
+  background-color: rgb(174, 217, 224);
+  box-shadow: 0 4px 8px 0 rgb(36, 36, 36);
+}
+
+.pointsBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.currentPoints {
+  font-family: "Mochiy Pop P One", sans-serif;
+  color: rgb(49, 48, 45);
+  display: inline-block;
+  font-size: 20px;
+}
+
+.currentBet {
+  font-family: "Mochiy Pop P One", sans-serif;
+  color: rgb(49, 48, 45);
+  display: inline-block;
+  margin-left: 90px;
+  font-size: 20px;
+  min-width: 170px;
+}
+
+.betButton {
+  border: black;
+  display: inline-block;
+  font-family: "Mochiy Pop P One", sans-serif;
+  margin: 0 5px;
+  background-color: rgb(84, 98, 111);
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  vertical-align: middle;
+  border-style: solid;
+  border-radius: 10%;
+  box-shadow: 0 4px 8px 0 rgba(66, 66, 66, 0.2);
+  transition: 0.3s;
+}
+
+.betButton:hover {
+  background-color: rgb(133, 155, 173);
+}
+
+.betButton:disabled {
+  background-color: rgb(48, 48, 48);
+}
+
+.dealResetBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 120px;
+  position: relative;
+}
+
+.userButton {
+  display: block;
+  border: solid;
+  margin: 5px auto;
+  width: 150px;
+  height: 40px;
+  border-radius: 10%;
+  background-color: rgb(84, 98, 111);
+  border-color: black;
+  background-color: rgb(255, 166, 158);
+  font-family: "Mochiy Pop P One", sans-serif;
+  font-size: 17px;
+  padding: 0 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(66, 66, 66, 0.2);
+  transition: 0.3s;
+}
+
+.userButton:hover {
+  background-color: rgb(177, 115, 109);
+}
+
+.userButton:disabled {
+  background-color: rgb(48, 48, 48);
+  color: rgb(63, 61, 55);
+}
