@@ -599,7 +599,7 @@ const initGame = () =>{
   if (!firstGame ) {
  restartGame()}
  deck = shuffleCards(makeDeck());
-
+ hand = []
 dealHand()
  showPlayerCards(hand)
  console.log("secondgame", cardEl)
