@@ -30,7 +30,7 @@ const makeDeck = () => {
       display: "joker",
       colour: "joker",
       rank: 0,
-      cardFront: `../public/fronts/joker_red.svg`,
+      cardFront: `.public/fronts/joker_red.svg`,
     },
   ];
 
@@ -80,7 +80,7 @@ const makeDeck = () => {
         display: displayName,
         colour: currentColour,
         rank: rankCounter,
-        cardFront: `../public/fronts/${currentSuit}_${cardName}.svg`,
+        cardFront: `./public/fronts/${currentSuit}_${cardName}.svg`,
       };
 
       // Add the new card to the deck
@@ -198,7 +198,7 @@ const buildBoardElements = () => {
     square = document.createElement("div");
     // set a class for CSS purposes
     square.classList.add("square");
-    square.innerHTML = `<img src ="../public/snowman.png"/>`;
+    square.innerHTML = `<img src ="./public/snowman.png"/>`;
     boardElement.appendChild(square);
   }
   document.body.insertBefore(boardElement, gameInfo);
