@@ -117,7 +117,7 @@ margin-right:10px;
 }
 
 .cardHolder{
-  position relative;
+  position: relative;
   z-index: 1;
 /*   justify-content:center;
   align-items: center;   */
@@ -151,11 +151,12 @@ margin-right:10px;
 }
 
 .fadeOut{ /* applied to cardImage */
+  position: absolute; /* not working once again */
   opacity: 0.15;
-  z-index:-500;
+  z-index:-1000;
 }
 
-/* showBack may not be used */
+/* showBack is likely not be used */
 .showBack{
   display: flex;
   opacity: 1;
@@ -221,20 +222,20 @@ margin-right:10px;
     background-size:13.2vw auto; 
     margin: 50px 6px 14px 6px;
     padding: 0px;
-    width: 13vw;
-    height: 29vh;
+    width: 13.2vw;
+    height: 21.01vh;
     border: 0.13vw solid black;
     border-radius: 0.7vw;
   }
 
   .cardImg{
-        /* opacity:0.5; */
+      /*   opacity:0.3; */
         /*zoom:1; */
         width: 13vw;
         right:0.15vw;
         bottom: 0.1vh;
         height: auto;
-        /* border:2px solid orangered; */
+        border:2px solid black;
         border-radius: 0.75vw;
       }
 
@@ -271,6 +272,87 @@ margin-right:10px;
     background-size:12.8vw auto; 
     width: 13vw;
     height: 29vh;
+    border: 0.4vw solid rgb(223, 28, 28);
+  }
+
+
+}
+
+
+@media only screen and (min-width: 1280px) {
+  .wrapper{
+    width:98vw;
+  }
+  .gutterTop{
+    height: 2vh;
+  }
+  
+  .table{
+    height:46vh;
+    width: 98vw;
+    border-top-left-radius:4.30vw;
+    border-top-right-radius:4.30vw;
+    background-color: green;
+  }
+  
+  .banner{
+    width:98vw;
+  }
+
+  .cardHolder{
+    background-size:13.2vw auto; 
+    margin: 50px 6px 14px 6px;
+    padding: 0px;
+    width: 13.0vw;
+    height: 37.0vh;
+    border: 0.13vw solid black;
+    border-radius: 0.7vw;
+  }
+
+  .cardImg{
+    /*     opacity:1.0; */
+        /*zoom:1; */
+        width: 13vw;
+        right:0.15vw;
+        bottom: 0.1vh;
+        height: auto;
+        border:2px solid black;
+        border-radius: 0.75vw;
+      }
+
+  .showBack{
+    width: 13vw;
+    height: auto;
+  }
+
+  .cardCover{
+    width: 13vw;
+    height: auto;
+  }
+
+  .msgCtr{
+    width:98vw;
+  }
+
+  .btnWrap{
+  justify-content: space-around;
+   width: 98vw;
+  }
+
+  .btnWrap2{
+    justify-content: space-around;
+    width: 98vw;
+  }
+
+  .bidInput{
+    width: 5vw;
+  }
+
+
+  .holdLabel{
+    background-size:13.0vw 37.2vh; 
+    width: 13.6vw;
+    height: 37.6vh;
     border: 0.4vw solid rgb(223, 28, 28);
   }
 
