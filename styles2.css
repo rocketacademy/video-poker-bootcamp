@@ -1,5 +1,7 @@
 body {
   background-color: black;
+  display: flex;
+  justify-content:center;
 }
 
 .gutterTop{
@@ -115,33 +117,31 @@ margin-right:10px;
 }
 
 .cardHolder{
-  display: flex;
+  position relative;
   z-index: 1;
-  justify-content:center;
-  align-items: center;  
+/*   justify-content:center;
+  align-items: center;   */
   background-color:white;
   background-image: url(./images/rbt2.png);
   background-repeat: no-repeat;
   background-position: center;
-  background-size:14vw auto; 
+  background-size:15.2vw auto; 
   background-repeat: no-repeat;
   background-position: center;
+  width: 15.0vw; 
+  height: 9.5vh;
   margin-top:0vw;
-  padding: 1vw;
-  width: 14vw; 
-  height: auto; 
+  padding: 0vw;
   text-align: center;
   border-radius: 1vw;
   border: 1px solid black
 }
 
 .cardImg{
-  display: flex;
-  justify-self: center;
-  align-self: center;
+  position: relative;
+  z-index: 2;
   width: 15vw; 
   height: auto; 
-  z-index: 2;
   border-radius: 1vw;
 
 }
@@ -151,10 +151,11 @@ margin-right:10px;
 }
 
 .fadeOut{ /* applied to cardImage */
-  opacity: 0.25;
-  z-index:3;
+  opacity: 0.15;
+  z-index:-500;
 }
 
+/* showBack may not be used */
 .showBack{
   display: flex;
   opacity: 1;
@@ -207,8 +208,8 @@ margin-right:10px;
   .table{
     height:46vh;
     width: 98vw;
-    border-top-left-radius:4.75vw;
-    border-top-right-radius:4.75vw;
+    border-top-left-radius:4.30vw;
+    border-top-right-radius:4.30vw;
     background-color: green;
   }
   
@@ -217,19 +218,24 @@ margin-right:10px;
   }
 
   .cardHolder{
+    background-size:13.2vw auto; 
     margin: 50px 6px 14px 6px;
     padding: 0px;
     width: 13vw;
-    height: auto;
+    height: 29vh;
     border: 0.13vw solid black;
     border-radius: 0.7vw;
   }
 
   .cardImg{
-    /*     opacity:0.3;
-        zoom:1; */
+        /* opacity:0.5; */
+        /*zoom:1; */
         width: 13vw;
+        right:0.15vw;
+        bottom: 0.1vh;
         height: auto;
+        /* border:2px solid orangered; */
+        border-radius: 0.75vw;
       }
 
   .showBack{
@@ -262,8 +268,9 @@ margin-right:10px;
 
 
   .holdLabel{
+    background-size:12.8vw auto; 
     width: 13vw;
-    height: auto;
+    height: 29vh;
     border: 0.4vw solid rgb(223, 28, 28);
   }
 

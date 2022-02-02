@@ -289,11 +289,14 @@ const refreshScore = () => {
 const bidBtn = document.querySelector('#wagerBtn');
 bidBtn.addEventListener('click', () => {
   if (gameState === 1) {
-    const bidInput = document.querySelector('#bidAmt');
+    const bidInput = document.querySelector('#bidAmt'); /* it always returns a string */
     bidAmount = bidInput.valueAsNumber;
 
-    /* if (Number.isNaN(bidInput) === false) {
-      bidAmount = 0;} */ /* ===> check isNaN input still doesn't work */
+   if (isNaN(bidAmount)) {
+      bidAmount = 0;
+      output('Please enter a bid amount, if not your bid is 0 points');
+    } 
+       
     output(`You bidded ${bidAmount} pts. Score multiplier will be ${bidAmount}.`);
   }
   console.log('bidAmount =', bidAmount);
@@ -360,6 +363,7 @@ const resetBtnClicked = () =>
   plyr1Pts = 100;
   refreshScore();
   gameState = 0;
+  bidAmount = 0;
   
 };
 resetButton.addEventListener('click', resetBtnClicked);

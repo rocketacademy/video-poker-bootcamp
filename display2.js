@@ -39,8 +39,7 @@ const removeHoldLabel = (hand) => {
 
       const cardImage = document.getElementById(`pic${i}`);
       cardImage.classList.remove('fadeOut');
-
-      plyr1Hand[i] === false;
+      plyr1Hand[i].hold = false;
     }
   }
   return;
