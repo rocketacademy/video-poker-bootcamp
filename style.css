@@ -3,10 +3,10 @@ body {
   font-family: "Poppins", sans-serif;
   color: white;
   text-align: center;
-  font-size: 1em;
+  font-size: 2.5em;
 }
 
-.h2 {
+.h1 {
   float: left;
   background: white;
   color: #222;
@@ -24,6 +24,7 @@ body {
 #card3,
 #card4 {
   display: inline-block;
+  justify-content: right;
   border: 3px solid#ffd966;
   height: 4em;
   width: 3em;
@@ -42,8 +43,12 @@ body {
   color: white;
 }
 
+.wrapper {
+  justify-content: right;
+  flex-flow: column wrap;
+}
+
 .card {
-  display: inline-block;
   border: 3px solid#ffd966;
   height: 4em;
   width: 3em;
@@ -69,6 +74,7 @@ body {
 #swap-btn,
 #lock-btn,
 #reset-btn {
+  float: center;
   background-color: black;
   color: white;
   padding: 10px 30px;
@@ -84,24 +90,4 @@ body {
 #reset-btn:hover {
   background-color: yellow;
   color: black;
-}
-
-.wrapper2 {
-  display: flex;
-  background: black;
-  height: 1.5em;
-  text-align: right;
-}
-
-.space {
-  display: flex;
-  height: 1em;
-}
-
-#marquee {
-  color: white;
-  font-size: 0.75em;
-  font-family: "Poppins", sans-serif;
-  white-space: nowrap;
-  -webkit-animation: rightThenLeft 4s linear;
 }

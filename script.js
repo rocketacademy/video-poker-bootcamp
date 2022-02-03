@@ -49,18 +49,15 @@ const makeDeck = () => {
 /// ///////GLOBAL VARIABLES//////////
 let cardContainer;
 const cardSelectIndex = [];
-const cardSelectArray = [];
 let cardDeck;
 let gameScoreContainer;
 let gameScore = 100;
-const gameScoreStep = 20;
+const gameScoreStep = 25;
 const numberOfCards = 5;
 let messageContainer;
 let messageOutput;
 let playerHand = [];
 let scoreTemp = 0;
-let scroll;
-let scrollContent;
 let wrapper;
 
 /// ////////////CALLBACK FUNCTIONS/////////
@@ -77,12 +74,9 @@ const dealCards = (noOfCards) => {
 
 const replaceCard = (newCards, playerHand, cardSelectIndex) => {
   for (index in cardSelectIndex) {
-  // Index of the hand for cards to be replaced
     const cardIndex = cardSelectIndex[index];
-    // Obtain the element of the new card
     const newCard = newCards[index];
     console.log(newCard);
-    // Replace the old card using index with new card
     playerHand.splice(cardIndex, 1, newCard);
   }
   return playerHand;
@@ -171,19 +165,9 @@ const createCard = (cardInfo, index) => {
   return cardContainer;
 };
 
-const getScrollContent = () => {
-  if (analyseHand(playerHand) === 'one-pair' || analyseHand(playerHand) === 'two-pair' || analyseHand(playerHand) === 'three-of-a-kind') {
-    scrollContent = 'The odds of getting a full house are 1 in 102!';
-  }
-  else {
-    scrollContent = 'The odds of getting a pair are 1 in 16!';
-  }
-};
-
 const drawClick = () => {
   gameScore -= 10;
   gameScoreContainer.innerText = gameScore;
-  scroll = document.getElementById('marquee');
 
   scoreTemp = 0;
 
@@ -206,10 +190,7 @@ const drawClick = () => {
     }, count);
   }
 
-  getScrollContent();
-
   setTimeout(() => {
-    scroll.textContent = `${scrollContent}`;
     messageOutput.innerText = `${analyseHand(playerHand)};   +${getScore(playerHand)} if you lock it in!`;
   }, 2500);
 
@@ -240,7 +221,6 @@ const swapClick = () => {
 };
 
 const lockClick = () => {
-  scroll.textContent = '';
   // calculate and update game score
   gameScore = Number(gameScore) + Number(scoreTemp);
   gameScoreContainer.innerText = gameScore;
@@ -267,16 +247,11 @@ const initGame = () => {
   messageContainer.append(messageOutput);
   messageOutput.innerText = 'Click to draw a card!';
 
-  // empty container to create space
-  const spaceContainer = document.createElement('div');
-  spaceContainer.classList.add('space');
-  document.body.appendChild(spaceContainer);
-
   // fill game score div with score
   gameScoreContainer = document.createElement('div');
-  gameScoreContainer.classList.add('h2');
+  gameScoreContainer.classList.add('h1');
   gameScoreContainer.innerText = gameScore;
-  gameScoreContainer.setAttribute('class', 'h2');
+  gameScoreContainer.setAttribute('class', 'h1');
   document.body.appendChild(gameScoreContainer);
 
   // initialise div wrapper to contain card elements'
