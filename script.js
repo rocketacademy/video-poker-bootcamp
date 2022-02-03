@@ -166,7 +166,7 @@ const createCard = (cardInfo, index) => {
 };
 
 const drawClick = () => {
-  gameScore -= 10;
+  gameScore -= 20;
   gameScoreContainer.innerText = gameScore;
 
   scoreTemp = 0;
