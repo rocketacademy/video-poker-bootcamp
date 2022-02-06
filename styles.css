@@ -1,0 +1,271 @@
+body {
+  background-color: black;
+}
+
+.gutterTop{
+  height: 5vh;
+  padding: 0px;
+  margin: 0px;
+  border: 0px solid black;
+}
+
+.wrapper{
+display: flex;
+justify-content: center;
+flex-direction: column;
+width: 96vw;
+border:4px solid #fff2cd;
+border-radius: 5vw;
+}
+
+ .table{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: green;
+  height: 25vh;
+  width: 96vw;
+  margin: 0vh 0vw 0vh 0vw;
+  padding: 0px;
+  border-bottom: 0px solid green;
+  border-top-left-radius:4.5vw;
+  border-top-right-radius:4.5vw;
+}
+
+.banner{
+ height: 5vh;
+ width: 96vw;
+ background-color: green;
+ color: white;
+ font-family: cursive;
+ text-align: center;
+ font-size: 4vh;
+ padding-top: 0vh;
+ padding-bottom: 1.5vh;
+ border-top: 0px solid green;
+}
+
+
+
+.msgCtr{
+  display: flex;
+  justify-content: center;
+  align-content:space-between;
+  background-color:yellow;
+  color:black;
+  width:96vw;
+  height: 8vh;
+  text-align: center;
+  font-family: cursive;
+  font-weight: bold;
+  font-size: 2.5vh;
+  padding-top: 1vh;
+}
+
+.btnWrap{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+  width: 96vw;
+  height: 10vh;
+  margin-top:2px;
+  padding:0px;
+  border: 0px solid black;
+}
+
+.btnWrap2{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+  width: 96vw;
+  height: 10vh;
+  margin:0px;
+  padding:0px;
+  border: 0px solid black;
+}
+
+
+.btn{
+  background-color:black;
+  color: grey;
+  height: 4vh;
+  text-align: center;
+  padding:5vw;
+  font-size:4vh;
+  margin: 0px;
+  padding: 0px;
+  border: 0px solid black;
+}
+
+.bidInput{
+height:3.5vh;
+width: 15vw;
+font-size:4vh;
+text-align: center;
+padding-top: 13px;
+padding-right:3px;
+margin-right:10px;
+}
+
+.bidContainer{
+  display:flex;
+  justify-content: flex-end;
+  align-items:center;
+  border: 0px solid black;
+}
+
+.cardHolder{
+  display: flex;
+  z-index: 1;
+  justify-content:center;
+  align-items: center;  
+  background-color:white;
+  background-image: url(./images/rbt2.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size:14vw auto; 
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top:0vw;
+  padding: 1vw;
+  width: 14vw; 
+  height: auto; 
+  text-align: center;
+  border-radius: 1vw;
+  border: 1px solid black
+}
+
+.cardImg{
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  width: 15vw; 
+  height: auto; 
+  z-index: 2;
+  border-radius: 1vw;
+
+}
+
+.none{
+ display: none;
+}
+
+.fadeOut{ /* applied to cardImage */
+  opacity: 0.25;
+  z-index:3;
+}
+
+.showBack{
+  display: flex;
+  opacity: 1;
+  background-color:white;
+  background-image: url(./images/rbt2.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size:14vw auto; /* 171px 236px */
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 1vw;
+  border: 1px solid black
+}
+
+.holdLabel{ /* applied to cardHolder */
+  display: flex;
+  z-index:100;  /* z-index not working */
+  opacity: 1;
+  background-color: rgb(223, 28, 28);
+  background-image: url(./images/z-label.png);
+  background-size:33vw auto; 
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 9px;
+  border: 3.5px solid rgb(223, 28, 28);
+
+}
+
+.cardCover{
+  display: flex;
+  z-index: 5; /* z-index not working */
+  opacity: 1;
+  background-color: white;
+  background-image: url(./images/rbt2.png);
+  background-size:14vw auto; 
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 1vw;
+  border: 1px solid black
+}
+
+@media only screen and (min-width: 768px) {
+  .wrapper{
+    width:98vw;
+  }
+  .gutterTop{
+    height: 2vh;
+  }
+  
+  .table{
+    height:46vh;
+    width: 98vw;
+    border-top-left-radius:4.75vw;
+    border-top-right-radius:4.75vw;
+    background-color: green;
+  }
+  
+  .banner{
+    width:98vw;
+  }
+
+  .cardHolder{
+    margin: 50px 6px 14px 6px;
+    padding: 0px;
+    width: 13vw;
+    height: auto;
+    border: 0.13vw solid black;
+    border-radius: 0.7vw;
+  }
+
+  .cardImg{
+    /*     opacity:0.3;
+        zoom:1; */
+        width: 13vw;
+        height: auto;
+      }
+
+  .showBack{
+    width: 13vw;
+    height: auto;
+  }
+
+  .cardCover{
+    width: 13vw;
+    height: auto;
+  }
+
+  .msgCtr{
+    width:98vw;
+  }
+
+  .btnWrap{
+  justify-content: space-around;
+   width: 98vw;
+  }
+
+  .btnWrap2{
+    justify-content: space-around;
+    width: 98vw;
+  }
+
+  .bidInput{
+    width: 5vw;
+  }
+
+
+  .holdLabel{
+    width: 13vw;
+    height: auto;
+    border: 0.4vw solid rgb(223, 28, 28);
+  }
+
+
+}
