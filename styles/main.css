@@ -1,0 +1,222 @@
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.img-loading-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-loading {
+  border-radius: 200px;
+  display: flex;
+}
+.poker-root {
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+.card-img {
+  display: flex;
+  height: 25vh;
+  aspect-ratio: 2 / 3;
+  border: 1px solid white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.poker-name-display {
+  display: flex;
+  min-height: 1rem;
+  background-color: olive;
+  margin-top: 1.5rem;
+  border-radius: 10px;
+  color: white;
+  max-width: fit-content;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 20px;
+  white-space: nowrap;
+}
+
+.poker-name-banner {
+  display: flex;
+  margin-top: 10px;
+  border-radius: 10px;
+  color: olive;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.poker-name-input {
+  display: flex;
+  font-size: 0.8rem;
+  margin: 0px;
+  padding: 0px;
+  border-radius: 5px;
+  transition-property: border-right;
+  transition-duration: 5000ms;
+  border-right: 1px solid black; /* added property */
+}
+
+.poker-game-wrapper-prob-checkboxes-desc {
+  width: fit-content;
+  display: flex;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+}
+
+.poker-game-wrapper-prob-checkboxes-group {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+}
+.poker-game-config-button-start,
+.button-restart,
+.action-bet-button {
+  display: flex;
+  margin-top: 10px;
+  padding: 0px 10px;
+
+  background-color: white;
+  color: olive;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.poker-game-config-button-start:hover,
+.button-restart:hover,
+.action-bet-button:hover {
+  background-color: olive;
+  color: white;
+}
+.poker-game-checkbox-label {
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 0 10px;
+
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+.poker-game-config-checkbox {
+  accent-color: olive;
+}
+.poker-wrapper-game-modes {
+  display: flex;
+  margin: 2rem 0 0 0;
+}
+.poker-game-mode-stud-seven {
+  display: flex;
+  background-color: white;
+  border: 1px solid grey;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-align: center;
+
+  background: linear-gradient(to left, black 40%, firebrick 60%, black 80%);
+  background-size: 200% auto;
+
+  color: #000;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: wipe 1s linear infinite;
+}
+
+@keyframes wipe {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.poker-game-config-checkbox-desc {
+  display: flex;
+  white-space: nowrap;
+  margin: 0 0 0 10px;
+  padding: 0;
+}
+
+.card-holder {
+  display: flex;
+  height: 100%;
+  width: auto;
+}
+
+.poker-hand {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+
+.action-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  color: olive;
+}
+
+.slider-bet {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  max-width: 100px;
+}
+.moneys {
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.money-- {
+  width: fit-content;
+}
+
+.in-game-header {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+table {
+  display: flex;
+  flex-direction: column;
+}
+
+thead,
+tbody {
+  display: flex;
+  flex-direction: column;
+}
+
+tr {
+  display: flex;
+  flex-direction: row;
+}
+
+th,
+td {
+  display: flex;
+  white-space: nowrap;
+  padding: 1px 7px;
+  width: 300px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
