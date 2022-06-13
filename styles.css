@@ -1,0 +1,237 @@
+* {
+  font-family: Helvetica;
+  zoom: 105%;
+}
+
+.guidetable {
+  width: 900px; /* reasonable default size of a central box */
+  border: solid 10px;
+  background-color: blanchedalmond;
+  padding: 20px;
+  margin: 50px auto; /* left and right margin auto*/
+}
+
+.guide {
+  content: "\1F0A4";
+  content: "\1F0B5";
+  content: "\1F0A0";
+  content: "\1F0C5";
+  content: "\1F0D5";
+  content: "\1F0A5";
+  content: "\1F0A8";
+  content: "\1F0B2";
+  color: black;
+  font-size: 50px;
+  height: 140px;
+  background-color: whitesmoke;
+}
+
+body {
+  background-image: url(lo-fi-24.png);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card-div {
+  padding: 10px;
+  cursor: pointer;
+
+  align-items: center;
+}
+
+.card-empty {
+  display: inline-block;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.hold {
+  text-align: center;
+  font-weight: bold;
+  color: black;
+}
+
+.empty-card {
+  font-size: 50px;
+  width: 100px;
+  height: 140px;
+  min-width: auto;
+  background-color: whitesmoke;
+  text-align: center;
+
+  border: rgb(24, 24, 24) solid 4px;
+}
+
+.card {
+  font-size: 50px;
+  width: 100px;
+  height: 140px;
+  min-width: auto;
+  background-color: whitesmoke;
+  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  border: rgb(24, 24, 24) solid 4px;
+}
+
+.suit {
+  position: absolute;
+  margin: 5px;
+  font-size: 35px;
+  top: 70px;
+}
+
+.name {
+  position: absolute;
+  margin: 30px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.card-div:hover {
+  position: relative;
+  z-index: 100;
+  left: -5px;
+  top: -15px;
+}
+
+:root {
+  --darkBg: #ffcc33;
+  --lightBg: #fff3ce;
+}
+
+.down {
+  border: 6px solid #fff;
+  background: url(lo-fi-girl.jpg);
+  background-size: 140px;
+}
+
+.deal-button {
+  width: 100%;
+  max-width: 650px;
+  min-height: 50px;
+  align-items: center;
+}
+
+#main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  box-sizing: content-box;
+}
+
+.message {
+  border: solid 4px;
+  font-size: 27px;
+  height: 80px;
+  width: 93%;
+  max-width: 650px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+
+#header1 {
+  font: 75px/75px Monoton, Cursive;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0 80px red, 0 0 30px FireBrick, 0 0 6px DarkRed;
+  color: red;
+}
+
+#header2 {
+  font-size: 50px;
+  color: #fff;
+  text-shadow: 0 0 80px #ffffff, 0 0 30px #008000, 0 0 6px #0000ff;
+  text-align: center;
+}
+
+.credits {
+  font-size: 50px;
+}
+
+.hidden {
+  display: none;
+}
+
+.score-table {
+  width: 200px; /* reasonable default size of a central box */
+  padding: 20px;
+  margin: 40px auto; /* left and right margin auto*/
+  position: absolute;
+  border: solid;
+  background-image: url(wp5893677-chill-anime-girl-wallpapers.jpg);
+  color: white;
+  font-weight: bold;
+  left: 10%;
+}
+
+/*Original CSS
+/*
+body {
+  background-color: pink;
+}
+
+.card-div {
+  display: inline-block;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.hold {
+  text-align: center;
+}
+
+.card {
+  margin: 10px;
+  padding: 10px;
+  background-color: grey;
+  width: 50px;
+  height: 65px;
+  text-align: center;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.suit {
+  margin: 5px;
+  font-size: 20px;
+}
+
+.name {
+  margin: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+*/
