@@ -1,0 +1,158 @@
+@font-face {
+  font-family: Mode7;
+  src: url("MODE7GX3.TTF");
+}
+body {
+  background-color: #e5c484;
+}
+
+h1 {
+  text-align: center;
+  font-family: Mode7, monospace, courier, fixed;
+}
+
+.score-table {
+  background-color: #554435;
+  margin: 0 auto;
+  font-family: Mode7, monospace, courier, fixed;
+  border-radius: 8px;
+}
+
+thead {
+  background-color: #333;
+  color: #e5c484;
+}
+
+td {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  padding-right: 40px;
+  color: yellow;
+  text-align: center;
+}
+
+.game-info {
+  background-color: none;
+  margin: 0px auto;
+  margin-top: 5px;
+  /* padding: 20px; */
+  max-width: 900px;
+  font-family: Mode7, monospace, courier, fixed;
+
+  text-align: center;
+  padding: 10px 50px;
+}
+.card-container {
+  margin: 0px auto;
+
+  max-width: 900px;
+  min-height: 250px;
+
+  /* width: 300px;
+  height: 2000px; */
+  text-align: center;
+
+  background-color: #a0be47;
+  border-radius: 8px;
+  border: solid 5px #554435;
+}
+
+.card {
+  margin: 20px 10px;
+  padding: 10px;
+  background-color: white;
+  width: 150px;
+  border-radius: 8px;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.card-animate {
+  animation: cardflip 1s;
+}
+
+@keyframes cardflip {
+  0% {
+    transform: rotateY(90deg);
+  }
+}
+
+.selected-card {
+  background-color: #e5c484;
+}
+
+.decision-container {
+  margin: 0 auto;
+  max-width: 900px;
+  min-height: 20px;
+  text-align: center;
+}
+
+.decision {
+  margin: 0px 10px 0px 10px;
+  padding: 0px 10px 0px 10px;
+  width: 150px;
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+  font-family: Mode7, monospace, courier, fixed;
+}
+
+.credits-tracker {
+  background-color: none;
+  margin: 0px auto;
+  /* padding: 20px; */
+  max-width: 700px;
+  font-family: "Lucida Console", "Courier New", monospace;
+  text-align: center;
+  padding: 10px 50px;
+  font-family: Mode7, monospace, courier, fixed;
+  font-size: 20px;
+  color: maroon;
+  text-shadow: 2px 2px yellow;
+}
+
+.buttons-container {
+  max-width: 900;
+  text-align: center;
+}
+
+.buttons-container > button {
+  /* background-color: yellow; */
+  margin: 5px 5px;
+  padding: 10px 5px;
+  /* font-family: "Arial Black", sans-serif; */
+  font-family: Mode7, monospace, courier, fixed;
+  font-weight: bold;
+  color: #554435;
+  border: 2px solid #554435;
+  border-radius: 25px;
+}
+
+.disabled-button {
+  background-color: #b79e7d;
+}
+
+.blinking {
+  font-size: 20px;
+  text-shadow: 2px 2px yellow;
+  animation: blinkingText 0.5s infinite;
+}
+@keyframes blinkingText {
+  0% {
+    color: red;
+  }
+  49% {
+    color: red;
+  }
+  60% {
+    color: transparent;
+  }
+  99% {
+    color: transparent;
+  }
+  100% {
+    color: red;
+  }
+}
