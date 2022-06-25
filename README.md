@@ -36,4 +36,6 @@ What would you do differently next time?
 - Learn about new features like "click to popup" to show table or prob table separately in mobile layout
 - or hamburger menu for user to toggle between features
 
+https://github.com/rocketacademy/video-poker-bootcamp/pull/44
+
 ##End
