@@ -4,12 +4,12 @@ import { readFile } from "fs";
 const handleIncomingRequest = (request, response) => {
   // request.url contains the portion of the URL after the domain.
   // E.g. for https://ra.co/index.html, request.url would return "/index.html".
-  console.log("request url", request.url);
+  // console.log("request url", request.url);
 
-  // "." refers to the Unix filesystem ".", which represents the current directory.
-  const filePath = "." + request.url;
+  // // "." refers to the Unix filesystem ".", which represents the current directory.
+  // const filePath = "." + request.url;
 
-  readFile(filePath, (err, content) => {
+  readFile("./index.html", (err, content) => {
     if (err) {
       console.error("error reading file", err);
       return;
