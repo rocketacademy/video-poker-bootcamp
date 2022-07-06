@@ -8,7 +8,7 @@ const envFilePath = ".env";
 dotenv.config({ path: path.normalize(envFilePath) });
 
 const app = express();
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT;
 
 app.use(express.static("public"));
 app.get("/", (req, res) => {
