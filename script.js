@@ -18,6 +18,10 @@ const playerPoints = document.getElementById("player-points");
 const playerBetsDiv = document.getElementById("player-bets");
 
 /** Plays the sound when the person presses the bet one or bet max */
+// const playSound = (filename) => {
+//   new Audio(filename).play();
+// };
+
 const betSound = () => {
   new Audio("./buttonsound.wav").play();
 };
