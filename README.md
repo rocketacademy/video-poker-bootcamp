@@ -1,4 +1,4 @@
-# Video Poker
+# :clubs::diamonds: Video Poker :spades::hearts:
 
 [Video Poker](https://en.wikipedia.org/wiki/Video_poker) is a card based game. 
 
