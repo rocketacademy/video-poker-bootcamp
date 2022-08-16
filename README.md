@@ -15,5 +15,6 @@ Deployed: https://ericfoosd.github.io/video-poker-bootcamp/
 - Custom cursor
 - Sound effects
 - Music toggling
+- CSS animations
 - Responsive design
 
