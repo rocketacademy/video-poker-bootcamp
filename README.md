@@ -18,3 +18,7 @@ Deployed: https://ericfoosd.github.io/video-poker-bootcamp/
 - CSS animations
 - Responsive design
 
+## Showcase
+
+![VideoPoker1](https://user-images.githubusercontent.com/86565793/185616780-e3c71d59-be38-4fca-871b-3c4d8e8eee60.png)
+![VideoPoker2](https://user-images.githubusercontent.com/86565793/185616790-9a08018a-7521-4fc1-91cb-d855a7986a63.png)
