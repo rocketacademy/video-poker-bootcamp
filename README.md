@@ -4,7 +4,7 @@
 
 Pokermon is a video poker game with Pokemon theme, done in 8-bit gaming style.
 
-**LIVE LINK** : https://hertantoirawan.github.io/video-poker-bootcamp/
+**LIVE LINK** : https://hertantoirawan.github.io/pokermon/
 
 ## Features
 
