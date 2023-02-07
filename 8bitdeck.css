@@ -1,0 +1,341 @@
+.pokemon-back {
+  background: url("./assets/pokemon-back.png") no-repeat;
+  width: 90px;
+  height: 123px;
+}
+
+.red-back {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -2px -2px;
+  width: 90px;
+  height: 123px;
+}
+
+.blue-back {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -2px -129px;
+  width: 90px;
+  height: 123px;
+}
+
+.red-joker {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -2px -256px;
+  width: 90px;
+  height: 123px;
+}
+
+.blue-joker {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -2px -383px;
+  width: 90px;
+  height: 123px;
+}
+
+.hearts-2 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -96px -2px;
+  width: 91px;
+  height: 123px;
+}
+
+.hearts-3 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -191px -2px;
+  width: 90px;
+  height: 123px;
+}
+
+.hearts-4 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -285px -2px;
+  width: 91px;
+  height: 123px;
+}
+
+.hearts-5 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -380px -2px;
+  width: 90px;
+  height: 123px;
+}
+
+.hearts-6 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -474px -2px;
+  width: 91px;
+  height: 123px;
+}
+
+.hearts-7 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -569px -2px;
+  width: 90px;
+  height: 123px;
+}
+
+.hearts-8 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -663px -2px;
+  width: 91px;
+  height: 123px;
+}
+
+.hearts-9 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -758px -2px;
+  width: 90px;
+  height: 123px;
+}
+
+.hearts-10 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -852px -2px;
+  width: 91px;
+  height: 123px;
+}
+
+.hearts-jack {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -947px -2px;
+  width: 90px;
+  height: 123px;
+}
+
+.hearts-queen {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1041px -2px;
+  width: 91px;
+  height: 123px;
+}
+
+.hearts-king {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1136px -2px;
+  width: 90px;
+  height: 123px;
+}
+
+.hearts-ace {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1231px -2px;
+  width: 90px;
+  height: 123px;
+}
+
+.clubs-2 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -96px -129px;
+  width: 91px;
+  height: 123px;
+}
+
+.clubs-3 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -191px -129px;
+  width: 90px;
+  height: 123px;
+}
+
+.clubs-4 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -285px -129px;
+  width: 91px;
+  height: 123px;
+}
+
+.clubs-5 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -380px -129px;
+  width: 90px;
+  height: 123px;
+}
+
+.clubs-6 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -474px -129px;
+  width: 91px;
+  height: 123px;
+}
+
+.clubs-7 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -569px -129px;
+  width: 90px;
+  height: 123px;
+}
+
+.clubs-8 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -663px -129px;
+  width: 91px;
+  height: 123px;
+}
+
+.clubs-9 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -758px -129px;
+  width: 90px;
+  height: 123px;
+}
+
+.clubs-10 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -852px -129px;
+  width: 91px;
+  height: 123px;
+}
+
+.clubs-jack {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -947px -129px;
+  width: 90px;
+  height: 123px;
+}
+
+.clubs-queen {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1041px -129px;
+  width: 91px;
+  height: 123px;
+}
+
+.clubs-king {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1136px -129px;
+  width: 90px;
+  height: 123px;
+}
+
+.clubs-ace {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1231px -129px;
+  width: 90px;
+  height: 123px;
+}
+
+.diamonds-2 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -96px -256px;
+  width: 91px;
+  height: 123px;
+}
+
+.diamonds-3 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -191px -256px;
+  width: 90px;
+  height: 123px;
+}
+
+.diamonds-4 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -285px -256px;
+  width: 91px;
+  height: 123px;
+}
+
+.diamonds-5 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -380px -256px;
+  width: 90px;
+  height: 123px;
+}
+
+.diamonds-6 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -474px -256px;
+  width: 91px;
+  height: 123px;
+}
+
+.diamonds-7 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -569px -256px;
+  width: 90px;
+  height: 123px;
+}
+
+.diamonds-8 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -663px -256px;
+  width: 91px;
+  height: 123px;
+}
+
+.diamonds-9 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -758px -256px;
+  width: 90px;
+  height: 123px;
+}
+
+.diamonds-10 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -852px -256px;
+  width: 91px;
+  height: 123px;
+}
+
+.diamonds-jack {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -947px -256px;
+  width: 90px;
+  height: 123px;
+}
+
+.diamonds-queen {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1041px -256px;
+  width: 91px;
+  height: 123px;
+}
+
+.diamonds-king {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1136px -256px;
+  width: 90px;
+  height: 123px;
+}
+
+.diamonds-ace {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1231px -256px;
+  width: 90px;
+  height: 123px;
+}
+
+.spades-2 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -96px -383px;
+  width: 91px;
+  height: 123px;
+}
+
+.spades-3 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -191px -383px;
+  width: 90px;
+  height: 123px;
+}
+
+.spades-4 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -285px -383px;
+  width: 91px;
+  height: 123px;
+}
+
+.spades-5 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -380px -383px;
+  width: 90px;
+  height: 123px;
+}
+
+.spades-6 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -474px -383px;
+  width: 91px;
+  height: 123px;
+}
+
+.spades-7 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -569px -383px;
+  width: 90px;
+  height: 123px;
+}
+
+.spades-8 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -663px -383px;
+  width: 91px;
+  height: 123px;
+}
+
+.spades-9 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -758px -383px;
+  width: 90px;
+  height: 123px;
+}
+
+.spades-10 {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -852px -383px;
+  width: 91px;
+  height: 123px;
+}
+
+.spades-jack {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -947px -383px;
+  width: 90px;
+  height: 123px;
+}
+
+.spades-queen {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1041px -383px;
+  width: 91px;
+  height: 123px;
+}
+
+.spades-king {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1136px -383px;
+  width: 90px;
+  height: 123px;
+}
+
+.spades-ace {
+  background: url("./assets/8BitDeckAssets.png") no-repeat -1231px -383px;
+  width: 90px;
+  height: 123px;
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokermon</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
+    <style>
+      body {
+        font-family: "Press Start 2P", cursive;
+        background-color: #212529;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .logo {
+        text-align: center;
+      }
+      .option {
+        background-color: #212529;
+        padding: 1rem 1.2rem 1rem 1rem;
+        width: calc(100% + 8px);
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nes-container is-dark with-title is-centered">
+      <p class="title">OPTION</p>
+      <div class="logo">
+        <i class="nes-ash"></i>
+        <i class="nes-logo"></i>
+      </div>
+      <div class="option">
+        <label>
+          <input
+            type="radio"
+            class="nes-radio is-dark"
+            name="answer-dark"
+            id="answer-host"
+            checked
+          />
+          <span>Host</span>
+        </label>
+        <div class="nes-select is-dark">
+          <select required id="host_select">
+            <option value="nes-bulbasaur" selected>Bulbasaur</option>
+            <option value="nes-charmander">Charmander</option>
+            <option value="nes-squirtle">Squirtle</option>
+          </select>
+        </div>
+      </div>
+      <div class="option">
+        <label>
+          <input
+            type="radio"
+            class="nes-radio is-dark"
+            name="answer-dark"
+            id="answer-music"
+          />
+          <span>Music</span>
+        </label>
+        <div class="nes-select is-dark">
+          <select required id="music_select">
+            <option value="./assets/pokemon-center.mp3" selected>
+              Pokemon Center
+            </option>
+            <option value="./assets/pokemon-gym.mp3">Pokemon Gym</option>
+            <option value="./assets/pokemon-battle.mp3">Pokemon Battle</option>
+          </select>
+        </div>
+      </div>
+      <div class="option">
+        <label>
+          <input
+            type="radio"
+            class="nes-radio is-dark"
+            name="answer-dark"
+            id="answer-hints"
+          />
+          <span>Hints</span>
+        </label>
+        <div class="nes-select is-dark">
+          <select required id="hints_select">
+            <option value="yes">Yes</option>
+            <option value="no" selected>No</option>
+          </select>
+        </div>
+      </div>
+      <div class="option">
+        <label>
+          <input type="radio" class="nes-radio is-dark" name="answer-dark" />
+          <span id="exit">Exit</span>
+        </label>
+      </div>
+      <br />
+    </div>
+    <audio id="audio" class="audio"></audio>
+    <audio
+      id="notification-audio"
+      class="audio"
+      src="./assets/pokemon-notification.mp3"
+    ></audio>
+    <script>
+      const host = document.getElementById("host_select");
+      const music = document.getElementById("music_select");
+      const hints = document.getElementById("hints_select");
+
+      const exit = document.getElementById("exit");
+      const audio = document.getElementById("audio");
+      const answerHost = document.getElementById("answer-host");
+      const answerMusic = document.getElementById("answer-music");
+      const answerHints = document.getElementById("answer-hints");
+
+      // reselect previous selections
+      const storedHost = localStorage.getItem("host");
+      if (storedHost !== "" && storedHost !== null) {
+        host.value = localStorage.getItem("host");
+      }
+      const storedMusic = localStorage.getItem("music");
+      if (storedMusic !== "" && storedMusic !== null) {
+        music.value = localStorage.getItem("music");
+      }
+      const storedHints = localStorage.getItem("hints");
+      if (storedHints !== "" && storedHints !== null) {
+        hints.value = localStorage.getItem("hints");
+      }
+
+      host.onchange = () => {
+        answerHost.checked = true;
+        audio.pause();
+      };
+
+      // play music when selected
+      music.onchange = () => {
+        answerMusic.checked = true;
+
+        audio.src = music.value;
+        audio.play();
+      };
+
+      hints.onchange = () => {
+        answerHints.checked = true;
+        audio.pause();
+      };
+
+      // stop music when focusing on other options
+      answerHost.onclick = () => {
+        audio.pause();
+      };
+      answerHints.onclick = () => {
+        audio.pause();
+      };
+
+      // save selection and exit
+      exit.onclick = () => {
+        // store option selection in local storage
+        localStorage.setItem("host", host.value);
+        localStorage.setItem("music", music.value);
+        localStorage.setItem("hints", hints.value);
+
+        audio.pause();
+        document.getElementById("notification-audio").play();
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 3000);
+      };
+    </script>
+  </body>
+</html>
